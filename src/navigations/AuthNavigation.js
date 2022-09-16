@@ -1,0 +1,90 @@
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { StatusBar } from 'react-native'
+import Discover from '../screens/front/Discover'
+import BusinessSignup from '../screens/front/BusinessSignup'
+import BusinessOtp from '../screens/front/BusinessOtp'
+import Category from '../screens/front/Category'
+import BusinessRegistration from '../screens/front/BusinessRegistration'
+import AadhaarNo from '../screens/front/AddharNo'
+import AdharVerification from '../screens/front/AadharVerification'
+import ForgotPassword from '../screens/front/ForgotPassword'
+import ResetPassword from '../screens/front/ResetPassword'
+import ChangePassword from '../screens/front/ChangePassword'
+import ExplorerSignup from '../screens/front/explore/ExploreSignup'
+import ExploreOtp from '../screens/front/explore/ExploreOtp'
+import SignupDetails from '../screens/front/explore/SignupDetails'
+import Signin from '../screens/front/explore/Signin'
+import Reels from '../screens/back/explore/Reels'
+import InfluencerSignup from '../screens/front/influence/InfluencerSignup'
+import InfluencerOtp from '../screens/front/influence/InfluencerOtp'
+import InfluencerDob from '../screens/front/influence/InfluenerDob'
+import InfluencerRegistration from '../screens/front/influence/InfluencerRegistration'
+import StackNavigationInfluencer from '../navigations/StackNavigationInfluencer'
+import AdvertiserSignin from '../screens/front/advertiser/AdvertiserSignin'
+import AdvertiserOtp from '../screens/front/advertiser/AdvertiserOtp'
+import AdvertiserCategory from '../screens/back/advertiser/AdvertiserCategory'
+import AdvertiserSiginWithPass from '../screens/front/advertiser/AdvertiserSiginWithPass'
+import ForgotPasswordAdvertiser from '../screens/front/advertiser/ForgotPasswordAdvertiser'
+import UpdatePasswordAdvertiser from '../screens/front/advertiser/UpdatePasswordAdvertiser'
+import AdvertiserRegistration from '../screens/front/advertiser/AdvertiserRegistration'
+import OtherDetails from '../screens/front/advertiser/OtherDetails'
+import StackNavigationAdvertiser from './StatckNavigationAdvertiser'
+import AdminSignin from '../screens/front/admin/AdminSignin'
+import ForgotPasswordAdmin from '../screens/front/admin/ForgotPasswordAdmin'
+import SetPasswordAdmin from '../screens/front/admin/SetPasswordAdmin'
+import ChangePasswordAdmin from '../screens/front/admin/ChangePassword'
+import StackNavigationAdmin from '../navigations/StackNavigationAdmin'
+import BankDetails from '../screens/front/BankDetails'
+
+const Stack = createNativeStackNavigator()
+
+const AuthNavigation=(props)=>{
+
+    return (
+        <>
+            <StatusBar backgroundColor="transparent" translucent={true} />
+            <Stack.Navigator screenOptions={{
+                headerShown: false,
+            }}>
+                <Stack.Screen name="/" component={Discover} />
+                <Stack.Screen name="/business-signup" component={BusinessSignup} barStyle={{backgroundColor: 'transparent',}} />
+                <Stack.Screen name="/business-otp" component={BusinessOtp} barStyle={{backgroundColor: 'transparent',}} initialParams={{authentication: props.authentication}}/>
+                <Stack.Screen name="/categories" component={Category} barStyle={{backgroundColor: 'transparent',}} />
+                <Stack.Screen name="/business-registration" component={BusinessRegistration} />
+                <Stack.Screen name="/addhaar-no" component={AadhaarNo} />
+                <Stack.Screen name="/aadhar-verification" component={AdharVerification} initialParams={{authentication: props.authentication}} />
+                <Stack.Screen name="/bank-details" component={BankDetails} initialParams={{authentication: props.authentication}} />
+                <Stack.Screen name="/forgot-password" component={ForgotPassword} />
+                <Stack.Screen name='/reset-password' component={ResetPassword} />
+                <Stack.Screen name='/change-password' component={ChangePassword} />
+                <Stack.Screen name='/exploer-registration' component={ExplorerSignup} />
+                <Stack.Screen name='/explore-otp' component={ExploreOtp} />
+                <Stack.Screen name='/signup-details' component={SignupDetails} initialParams={{authentication: props.authentication}} />
+                <Stack.Screen name='/goto-signin' component={Signin} initialParams={{authentication: props.authentication}} />
+                <Stack.Screen name='/reels' component={Reels} />
+                <Stack.Screen name='/infliencer-signup' component={InfluencerSignup} />
+                <Stack.Screen name='/influencer-otp' component={InfluencerOtp} />
+                <Stack.Screen name='/dob' component={InfluencerDob} />
+                <Stack.Screen name='/influencer-registration' component={InfluencerRegistration} />
+                <Stack.Screen name='/influencer-stack-navigation' component={StackNavigationInfluencer} />
+                <Stack.Screen name='/advertiser-signup' component={AdvertiserSignin} />
+                <Stack.Screen name='/advertiser-otp' component={AdvertiserOtp} />
+                <Stack.Screen name='/advertiser-categories' component={AdvertiserCategory} />
+                <Stack.Screen name='/advertiser-signin-with-pass' component={AdvertiserSiginWithPass} />
+                <Stack.Screen name='/forgot-password-advertiser' component={ForgotPasswordAdvertiser} />
+                <Stack.Screen name='/update-password-advertiser' component={UpdatePasswordAdvertiser} />
+                <Stack.Screen name='/advertise-registration' component={AdvertiserRegistration} />
+                <Stack.Screen name='/other-details' component={OtherDetails} />
+                <Stack.Screen name='/advertiser-product' component={StackNavigationAdvertiser} />
+                {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
+                <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
+                <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />
+                <Stack.Screen name='/change-password-admin' component={ChangePasswordAdmin} />
+                <Stack.Screen name='/admin-stack-navigation' component={StackNavigationAdmin} /> */}
+            </Stack.Navigator>
+        </>
+    )
+}
+
+export default AuthNavigation
