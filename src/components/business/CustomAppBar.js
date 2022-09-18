@@ -16,17 +16,17 @@ const CustomAppBar=(props)=>{
     }
     return (
         <View style={styles.wrapper}>
-            {
+            { 
                 props.isMainscreen?(
                     <View style={[styles.logoContainer, props.title?({alignItems: 'center'}):null]}>
-                        <Pressable onPress={()=>props.navigation.openDrawer()}>
+                        <Pressable onPress={()=>props.openDrawer()}>
                             <Image source={Images.hamburgerMenuIcon} />
                         </Pressable>
                         {
                             props.title?<Text style={styles.title}>{props.title}</Text>:(
                                 <View style={{marginStart: 20,marginTop: -12}}>
                                     <Text style={styles.welcome}>Hello!</Text>
-                                    <Text style={styles.companyName}>XYZ Company</Text>
+                                    <Text style={styles.companyName}>{props.name}</Text>
                                 </View>
                             )
                         }
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontSize: 24,
         fontWeight: '500',
+        textTransform:'capitalize'
     },
     reelBackBtn: {
         color: Constants.colors.whiteColor,

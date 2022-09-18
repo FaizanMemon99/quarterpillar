@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -20,11 +20,16 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 import globatStyles from '../../../shared/globatStyles'
 import RenderRecentOrders from './RenderRecentOrders'
 import { useNavigation } from '@react-navigation/native'
+import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
 
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
     const navigation = useNavigation()
+    const [showDrawer, setShowDrawer] = useState(false)
+    const openDrawer = ()=>{
+        setShowDrawer(!showDrawer)
+    }
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,
@@ -37,6 +42,7 @@ const HomeScreen=(props)=>{
         barPercentage: 10,
         useShadowColorFromDataset: false // optional
     }
+    
     const data = {
         labels: ["15-25", "26-35", "36-45", "46-55", "56-65", "65+"],
         datasets: [
@@ -87,7 +93,7 @@ const HomeScreen=(props)=>{
     }
     return (
         <View>
-            <CustomAppBar navigation={props.navigation} isMainscreen={true} isReel={false} />
+            <CustomAppBar name={props.route.params.userDetails.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
             <ScrollView style={styles.container}>
                 <SearchBar />
                 <View style={styles.totalRevenue}>
@@ -293,7 +299,7 @@ const HomeScreen=(props)=>{
                     </View>
                 </View>:null
             }
-                
+                <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'/>
         </View>
     )
 }

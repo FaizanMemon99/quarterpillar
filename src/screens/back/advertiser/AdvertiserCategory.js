@@ -15,7 +15,7 @@ const  AdvertiserCategory=()=>{
     const navigation = useNavigation()
     const businessRegistration = (category)=>{
         
-        navigation.navigate('/open-camera', {'category': category})
+        navigation.navigate('/business-registration', {'category': category})
 
     }
     return (

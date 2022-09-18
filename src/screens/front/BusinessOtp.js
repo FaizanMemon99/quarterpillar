@@ -18,14 +18,17 @@ import endPoints from '../../shared/endPoints'
 import { storeData } from '../../shared/asyncStorage'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const BusinessOtp = (props) => {
+    
     const [otp, setOtp] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [coundownTime, setCountDownTime] = useState(30)
     const navigation = useNavigation()
-    const { mobileNumber } = props.route.params
+    const { phoneNumber } = props.route.params
     useEffect(()=>{
+        
         let timer = setInterval(()=>{
             if(coundownTime>0){
                 clearInterval(timer)
@@ -34,6 +37,8 @@ const BusinessOtp = (props) => {
             }
         }, 1000)
     },[coundownTime])
+    
+    
     const verifyOtpBusiness = () => {
         if (otp === '' || otp === null) {
             showToastmsg('Please enter OTP')
@@ -45,25 +50,36 @@ const BusinessOtp = (props) => {
     const verifyOtp = async () => {
         setIsLoading(true)
         try {
-            const response = await apiCall('POST', endPoints.VERIFY_OTP, null, { mobile_number: mobileNumber, otp: otp })
-            if (response && response.error === false && response.data.token && response.data.userExist) {
+            const response = await apiCall('POST', endPoints.VERIFY_OTP, null, { mobile_number: phoneNumber, otp: otp })
+            if (response && response.error === false && response.data.userExist) {
                 try {
                     await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: 'businesss', userDetails: response.data.user }))
+                                                navigation.navigate('/business-login')
+
                 } catch (error) {
                     console.log(error)
                 }
-                if(!response.data.aadhaarVerification){
-                    navigation.navigate('/addhaar-no')
-                }
-                else if(response.data.aadhaarVerification && !response.data.has_bank_details){
-                    navigation.navigate('/bank-details', {mobileNumber: mobileNumber})
-                }
-                else{
-                    props.route.params.authentication('business')
-                }               
+                
+                // if(response.data.busnisse_details.is_owner_email_verified=="false"){
+                //     axios.post(`${Constants.BASE_URL}auth/email-otp`,{aadhaar_number:response.data.busnisse_details.owner_email}).then((res)=>{
+                        
+                //         if(!res.data.error){
+                //             setIsLoading(false)
+                //             console.log("dataaaa",res.data.data.Mahareferid.map(item=>item))
+                //             navigation.navigate('/email-verification',{"userDetails":response.data.user,aadhaarNumber:response.data.busnisse_details.owner_adhar,"MahaRefId":res.data.data.Mahareferid[0].mahareferid})
+                //         }
+                //     })            
+                // }
+                // else if(response.data.busnisse_details.is_adhar_verifedn && !response.data.busnisse_details.is_adhar_verifeds){
+                //     navigation.navigate('/bank-details', {phoneNumber: phoneNumber})
+                // }
+                // else{
+                    
+                //     props.route.params.authentication('business')
+                // }               
             }
             else if (response.error === false && !response.data.userExist) {
-                navigation.navigate('/business-registration', {mobileNumber: mobileNumber})
+                navigation.navigate('/business-registration', {phoneNumber: phoneNumber})
             }
             else {
                 setIsLoading(false)
@@ -80,7 +96,7 @@ const BusinessOtp = (props) => {
     const resendOtp = async () =>{
         setIsLoading(true)
         try {
-            const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: mobileNumber})
+            const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: phoneNumber})
             if(response.error===null && response.data.otp){
                 setIsLoading(false)
                 showToastmsg('OTP resend successfully')
@@ -97,7 +113,7 @@ const BusinessOtp = (props) => {
         }
     }
     const gotRenterMobileNumber = ()=>{
-        navigation('/business-signup')
+        navigation.navigate('/business-signup',{"phoneNumber":props.route.params.phoneNumber})
     }
     return (
         <View style={styles.background}>
@@ -135,7 +151,7 @@ const BusinessOtp = (props) => {
                     <Text style={styles.businessText}>Business</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter OTP sent to +91-8797687635 <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
+                <Text style={styles.textBelowBusiness}>Enter OTP sent to +91-{props.route.params.phoneNumber} <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
                 <OTPTextInput inputCount={4} inputCellLength={10} textInputStyle={styles.otpField} handleTextChange={(otp) => setOtp(otp)} inputCellLength={1} />
                 {
                     coundownTime === 0?

@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native"
 const Constants = {
     APP_NAME: 'Quarterpillars',
-    BASE_URL: 'https://qpapi.crossbits.in/api/v1/',
+    BASE_URL:'http://qp.flymingotech.in/quarterpillars_backend/public/api/v1/',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
     colors: {

@@ -33,6 +33,7 @@ const AdharVerification = (props)=>{
                 setCountDownTime(coundownT)
             }
         }, 1000)
+        
     },[coundownTime])
     const verifyAddhaar = async ()=>{
         if(!otp){
@@ -50,7 +51,7 @@ const AdharVerification = (props)=>{
                 console.log(error)
             }
             try{
-                const response = await apiCall('POST', endPoints.VERIFY_AADHAAR, null, { business_id: user.userDetails.id, Mahareferid: props.route.params.Mahareferid, otp: otp, mobile_number: user.userDetails.mobile_number })
+                const response = await apiCall('POST', endPoints.VERIFY_AADHAAR, null, { business_id: user.userDetails.id, Mahareferid: props.route.params.MahaRefId, otp: otp, mobile_number: user.userDetails.mobile_number })
                 setIsLoading(false)
                 console.log( response)
                 if(response && response.error===false && response.has_ban_details){

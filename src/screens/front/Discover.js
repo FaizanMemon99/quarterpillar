@@ -32,7 +32,7 @@ const Discover = () => {
         navigation.navigate('/exploer-registration')
     }
     const gotoBusinessSignup = () => {
-        navigation.navigate('/business-signup')
+        navigation.navigate('/business-login')
     }
     const gotoInfluencer = () => {
         navigation.navigate('/infliencer-signup')

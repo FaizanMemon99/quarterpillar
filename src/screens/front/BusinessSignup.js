@@ -18,10 +18,10 @@ import showToastmsg from '../../shared/showToastmsg'
 import { apiCall } from '../../service/service'
 import endPoints from '../../shared/endPoints'
 
-const BusinessSignup=()=>{
+const BusinessSignup=(props)=>{
     const navation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
-    const [mobileNumber, setMobileNumber] = useState('')
+    const [mobileNumber, setMobileNumber] = useState(props.route.params.phoneNumber?props.route.params.phoneNumber:'')
     const [isLoading, setIsLoading] = useState(false)
     const generateOtpBusiness = ()=>{
         if(mobileNumber==='' || mobileNumber===null){
@@ -40,7 +40,8 @@ const BusinessSignup=()=>{
             const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: mobileNumber})
             if(response.error===null && response.data.otp){
                 setIsLoading(false)
-                navation.navigate('/business-otp', {mobileNumber: mobileNumber})
+                navation.navigate('/business-otp', {phoneNumber: mobileNumber})
+                console.log("number otp",response.data.otp)
             }
             else{
                 setIsLoading(false)
@@ -87,7 +88,7 @@ const BusinessSignup=()=>{
                     <Text style={styles.businessText}>Business</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter Mobile Number and Sign In</Text>
+                <Text style={styles.textBelowBusiness}>Enter Mobile Number for verification</Text>
                 <View style={styles.phoneNumberContainer}>
                     <View style={styles.countryCode}>
                         <Image source={Images.indiaFlag} style={styles.countryFlag} />
@@ -100,7 +101,9 @@ const BusinessSignup=()=>{
                         }} />
                         <Image source={Images.dropdownIcon} style={styles.dropdownIcon} />
                     </View>
-                    <TextInput keyboardType={'numeric'} style={styles.textInput} placeholder='Mobile Phone' onChangeText={(e)=>setMobileNumber(e)} />
+                    <TextInput keyboardType={'numeric'} style={styles.textInput} 
+                    defaultValue={props.route.params.phoneNumber}
+                    placeholder='Mobile Phone' onChangeText={(e)=>setMobileNumber(e)} />
                 </View>
                 <Text style={styles.belowPhoneNumber}>We will send you an OTP to validate your mobile number.</Text>
                 {

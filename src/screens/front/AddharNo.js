@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     View,
     Text,
@@ -16,6 +16,8 @@ import endPoints from '../../shared/endPoints'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AadhaarNo = (props)=>{
+    
+    
     const [aadhaarNo, setAadhaarNo] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const navigation = useNavigation()
@@ -51,6 +53,11 @@ const AadhaarNo = (props)=>{
            }
         }
     }
+    useEffect(() => {
+        if(props.route.params.aadhaarNumber)
+        setAadhaarNo(props.route.params.aadhaarNumber)
+        console.log("maharef",props.route.params)
+    }, [])
     return (
         <View style={styles.wrapper}>
             <Text style={styles.heading}>Aadhar Verification</Text>

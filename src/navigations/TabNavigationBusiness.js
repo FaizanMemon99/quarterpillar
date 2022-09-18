@@ -71,7 +71,9 @@ const TabNavigationBusiness=(props)=>{
                 },
                 })}
             >
-                <Tab.Screen name="Home" component={HomeScreen} initialParams={props.route.params}/>
+                <Tab.Screen name="Home" component={HomeScreen} 
+                // initialParams={props.route.params}
+                />
                 <Tab.Screen name="Products" component={ProductsScreen} />
                 <Tab.Screen name="Notification" component={NotificationScreen} />
                 <Tab.Screen name="Profile" component={ProfileScreen} />
