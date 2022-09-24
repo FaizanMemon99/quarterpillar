@@ -31,8 +31,9 @@ const Discover = () => {
     const gotoExploer = () => {
         navigation.navigate('/exploer-registration')
     }
-    const gotoBusinessSignup = () => {
-        navigation.navigate('/business-login')
+    const gotoLogin = (val) => {
+        console.log("data val",val)
+        navigation.navigate('/business-login',{login_type:val})
     }
     const gotoInfluencer = () => {
         navigation.navigate('/infliencer-signup')
@@ -49,7 +50,7 @@ const Discover = () => {
             {
                 users.users && users.users.length > 0 ? users.users.map(user =>
                     user.role_name !== 'Admin' ? (
-                        <Pressable style={{ marginBottom: Constants.margin, }} onPress={user.role_name === 'Explorer' ? gotoExploer : user.role_name === 'Influencer' ? gotoInfluencer : user.role_name === 'Business' ? gotoBusinessSignup : user.role_name === 'Advertiser' ? gotoAdvertiser : null} key={user.id}>
+                        <Pressable style={{ marginBottom: Constants.margin, }} onPress={()=>gotoLogin(user.role_name)} key={user.id}>
                             <VideoPlayer
                                 video={{ uri: user.bg_video }}
                                 autoplay
@@ -90,14 +91,14 @@ const Discover = () => {
                     ) : null
                 ) : <Loading />
             }
-            {
+            {/* {
                 users.users && users.users.length > 0 ? (
                     <Pressable style={styles.enterAsAdmin} onPress={enterAsAdmin}>
                         <Image source={Images.usaerIcon} style={styles.userIcon} />
                         <Text>Enter as Admin</Text>
                     </Pressable>
                 ) : null
-            }
+            } */}
         </ScrollView>
     )
 }

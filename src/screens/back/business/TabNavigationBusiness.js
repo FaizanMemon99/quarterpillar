@@ -6,14 +6,13 @@ import {
 } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import HomeScreen from '../screens/back/business/HomeScreen'
-import ProductsScreen from '../screens/back/business/ProductsScreen'
+import ProductsScreen from './ProductsScreen'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
-import Constants from '../shared/Constants'
-import NotificationScreen from '../screens/back/business/NotificationScreen'
-import ProfileScreen from '../screens/back/business/ProfileScreen'
+import NotificationScreen from './NotificationScreen'
+import ProfileScreen from './ProfileScreen'
+import Constants from '../../../shared/Constants'
 
 const Tab = createBottomTabNavigator()
 
@@ -42,8 +41,9 @@ const TabNavigationBusiness=(props)=>{
                     return  <>
                                 
                                 {
-                                    route.name === 'Home'?<AntDesign name={iconName} size={28} color={color} />:
-                                    route.name === 'Products'?<Feather name={iconName} size={28} color={color} />:
+                                    route.name === 'Products'?<Feather 
+                                    
+                                    name={iconName} size={28} color={color} />:
                                     route.name === 'Notification'?<View><View style={styles.notificationIndicator}></View><Ionicons name={iconName} size={28} color={color} /></View>:
                                     <Feather name={iconName}  size={28} color={color} />
                                 }
@@ -71,9 +71,7 @@ const TabNavigationBusiness=(props)=>{
                 },
                 })}
             >
-                <Tab.Screen name="Home" component={HomeScreen} 
-                // initialParams={props.route.params}
-                />
+                
                 <Tab.Screen name="Products" component={ProductsScreen} />
                 <Tab.Screen name="Notification" component={NotificationScreen} />
                 <Tab.Screen name="Profile" component={ProfileScreen} />

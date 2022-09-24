@@ -15,11 +15,16 @@ import RenderProducts from './RenderProducts'
 import Feather from 'react-native-vector-icons/Feather'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
+import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
 
-const ProductsScreen=()=>{
+const ProductsScreen=(props)=>{
     const [tabs, setTabs] = useState('travel')
     const [showActionMenu, setShowActionMenu] = useState(false)
     const navigation = useNavigation()
+    const [showDrawer, setShowDrawer] = useState(false)
+    const openDrawer = ()=>{
+        setShowDrawer(!showDrawer)
+    }
     const travel = [
        {
             id: 1,
@@ -125,18 +130,18 @@ const ProductsScreen=()=>{
         }
     ]
     const toggleActionMenu = ()=>{
-        setShowActionMenu(!showActionMenu)
+        navigation.navigate('/add-product',{userDetails:props?.route?.params?.userDetails})
     }
-    const gotoAddProducts = ()=>{
-        setShowActionMenu(false)
-        navigation.navigate('/add-product')
-    }
+    // const gotoAddProducts = ()=>{
+    //     setShowActionMenu(false)
+    // }
     return (
-      <View>
-            <CustomAppBar navigation={navigation} isMainscreen={true} isReel={false} />
+        <View style={{flex:1}}>
+
+            <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={true} isReel={false} />
             <ScrollView style={styles.container}>
                 <SearchBar />
-                <View style={styles.tabs}>
+                {/* <View style={styles.tabs}>
                     <Pressable onPress={()=>setTabs('travel')}>
                         <Text style={{...styles.tabText, color: tabs==='travel'?Constants.colors.primaryColor:null, fontWeight: tabs==='travel'?'800':'400', textDecorationColor: tabs==='travel'?Constants.colors.primaryColor: 'transparent'}}>Travel (8)</Text>
                         {tabs==='travel'?<View style={styles.activeTab}></View>:<View style={{...styles.activeTab, backgroundColor: 'transparent'}}></View>}
@@ -153,8 +158,8 @@ const ProductsScreen=()=>{
                         <Text style={{...styles.tabText, color: tabs==='food'?Constants.colors.primaryColor:null, fontWeight: tabs==='food'?'800':'400', textDecorationColor: tabs==='food'?Constants.colors.primaryColor: 'transparent'}}>Food (5)</Text>
                         {tabs==='food'?<View style={styles.activeTab}></View>:<View style={{...styles.activeTab, backgroundColor: 'transparent'}}></View>}
                     </Pressable>
-                </View>
-                <View>
+                </View> */}
+                <View style={{paddingTop:10}}>
                     <FlatList 
                         data={tabs==='travel'?travel:tabs==='fashion'?fashion:tabs==='lifestyle'?lifestyle:food}
                         renderItem={item=><RenderProducts products={item} />}
@@ -166,7 +171,7 @@ const ProductsScreen=()=>{
                     <Feather name='plus' size={28} color='#007635' />
                 </View>
             </Pressable>
-            {
+            {/* {
                 showActionMenu?<Pressable onPress={toggleActionMenu} style={globatStyles.overlay}></Pressable>:null
             }
             {
@@ -178,14 +183,19 @@ const ProductsScreen=()=>{
                         <Pressable onPress={()=>setTabs('lifestyle')}><Text style={styles.actionSubMenuItem}>Lifestyle</Text></Pressable>
                         <Pressable onPress={()=>setTabs('food')}><Text style={[styles.actionSubMenuItem, {borderBottomWidth: 0}]}>Food</Text></Pressable>
                     </View>:null
-            }
+            } */}
+            
+            <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='productScreen'
+                propValue={props?.route?.params?.userDetails}
+                />
       </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
+        flexGrow:0,
         padding: Constants.padding,
-        marginBottom: 185,
+        marginBottom: 100,
     },
     tabs: {
         flexDirection: 'row',
@@ -206,7 +216,7 @@ const styles = StyleSheet.create({
     },
     actionBtn: {
         position: 'absolute',
-        top: Constants.height-160,
+        top: Constants.height-120,
         right: 25,
         borderRadius: 40,
         backgroundColor: '#007635',

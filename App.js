@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler'
 import React, { useEffect, useState } from 'react'
 import {
+    StatusBar,
     StyleSheet
 } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'

@@ -38,6 +38,10 @@ import StackNavigationAdmin from '../navigations/StackNavigationAdmin'
 import BankDetails from '../screens/front/BankDetails'
 import BusinessSignIn from '../screens/front/business/BusinessSignIn'
 import HomeScreen from '../screens/back/business/HomeScreen'
+import ProductsScreen from '../screens/back/business/ProductsScreen'
+import AddProduct from '../screens/back/business/AddProduct'
+import ProductOverview from '../screens/back/business/ProductOverview'
+import ProductPreview from '../screens/back/influencer/ProductPreview'
 
 const Stack = createNativeStackNavigator()
 
@@ -52,6 +56,10 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name="/" component={Discover} />
                 <Stack.Screen name="/home" component={HomeScreen} />
                 {/* <Stack.Screen name='/add-product' component={AddProduct} /> */}
+                <Stack.Screen name="/productScreen" component={ProductsScreen}/>
+                <Stack.Screen name="/add-product" component={AddProduct}/>
+                <Stack.Screen name="/product-overview" component={ProductOverview}/>
+                <Stack.Screen name="/product-preview" component={ProductPreview}/>
                 <Stack.Screen name="/business-signup" component={BusinessSignup} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-login" component={BusinessSignIn} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-otp" component={BusinessOtp} barStyle={{backgroundColor: 'transparent',}} initialParams={{authentication: props.authentication}}/>

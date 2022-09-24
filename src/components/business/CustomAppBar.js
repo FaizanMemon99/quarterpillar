@@ -5,6 +5,8 @@ import {
     Image,
     StyleSheet,
     Pressable,
+    SafeAreaView,
+    StatusBar,
 } from 'react-native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
@@ -15,6 +17,7 @@ const CustomAppBar=(props)=>{
         props.navigation.goBack()
     }
     return (
+        <SafeAreaView>
         <View style={styles.wrapper}>
             { 
                 props.isMainscreen?(
@@ -40,11 +43,13 @@ const CustomAppBar=(props)=>{
                 )
             }
         </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
     wrapper: {
         padding: Constants.padding,
+        paddingTop:StatusBar.currentHeight,
         flexDirection: 'row',
     },
     logoContainer: {

@@ -21,6 +21,7 @@ import globatStyles from '../../../shared/globatStyles'
 import RenderRecentOrders from './RenderRecentOrders'
 import { useNavigation } from '@react-navigation/native'
 import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
+import TabNavigationBusiness from './TabNavigationBusiness'
 
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
@@ -92,8 +93,10 @@ const HomeScreen=(props)=>{
         navigation.navigate('/all-orders')
     }
     return (
-        <View>
-            <CustomAppBar name={props.route.params.userDetails.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
+        <View style={{flex:1}}>
+            
+
+            <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
             <ScrollView style={styles.container}>
                 <SearchBar />
                 <View style={styles.totalRevenue}>
@@ -155,6 +158,7 @@ const HomeScreen=(props)=>{
                         </View>
                     </View>
                 </View>
+                
                 <View style={styles.countryWise}>
                     <View style={styles.tabContainer}>
                         <Pressable onPress={()=>setTabs('city')} style={{...styles.tabs, backgroundColor: tabs==='city'?Constants.whiteColor:'rgba(229, 235, 237, 0.38)',}}><Text style={{...styles.tabText, fontWeight: tabs==='city'?'800':'400',}}>Cities</Text></Pressable>
@@ -199,6 +203,7 @@ const HomeScreen=(props)=>{
                         )
                     }
                 </View>
+                
                 <View style={styles.ageAndGender}>
                     <Text style={styles.ageAndGenderHeading}>Age Range & Gender</Text>
                     <LineChart
@@ -247,6 +252,7 @@ const HomeScreen=(props)=>{
                             animationType="slide"/>
                     </View>
                 </View>
+                
                 <View style={styles.recentOrderContainer}>
                     <View style={styles.orderHeading}>
                         <Text style={styles.heading}>Recent Orders</Text>
@@ -265,6 +271,7 @@ const HomeScreen=(props)=>{
                         renderItem={(item)=><RenderRecentOrders order={item} />}
                     />
                 </View>
+                
             </ScrollView>
             {
                 showSwitchAcountModal?<View style={styles.switchContainer}>
@@ -299,7 +306,9 @@ const HomeScreen=(props)=>{
                     </View>
                 </View>:null
             }
-                <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'/>
+                <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'
+                propValue={props?.route?.params?.userDetails}
+                />
         </View>
     )
 }

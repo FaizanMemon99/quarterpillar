@@ -15,7 +15,7 @@ const CustomTabNavigationAdmin=(props)=>{
     const navigation = useNavigation()
     const gotToPage = (page)=>{
         setCurrentTab(page)
-        navigation.navigate(`/${page}`)
+        navigation.navigate(`/${page}`,{userDetails:props.propValue})
     }
     return (
         <View style={[styles.container, {borderBottomLeftRadius: props.showDrawer?30:0}]}>
@@ -23,15 +23,15 @@ const CustomTabNavigationAdmin=(props)=>{
                 <AntDesign name='home' style={[styles.tabIcon, {color: props.activeTab==='home'?Constants.colors.primaryColor:'#BBBBBB',}]} />
                 <Text style={[styles.tabLabel, {color: props.activeTab==='home'?Constants.colors.primaryColor:'#BBBBBB', }]}>Home</Text>
             </Pressable>
-            <Pressable onPress={()=>gotToPage('support')} style={styles.tabItem}>
-                <Feather name='help-circle' style={[styles.tabIcon, {color: props.activeTab==='support'?Constants.colors.primaryColor:'#BBBBBB', }]} />
-                <Text style={[styles.tabLabel, {color: props.activeTab==='support'?Constants.colors.primaryColor:'#BBBBBB', }]}>Support</Text>
+            <Pressable onPress={()=>gotToPage('productScreen')} style={styles.tabItem}>
+                <Feather name='archive' style={[styles.tabIcon, {color: props.activeTab==='productScreen'?Constants.colors.primaryColor:'#BBBBBB', }]} />
+                <Text style={[styles.tabLabel, {color: props.activeTab==='productScreen'?Constants.colors.primaryColor:'#BBBBBB', }]}>Products</Text>
             </Pressable>
-            <Pressable onPress={()=>gotToPage('setting')} style={styles.tabItem}>
-                <AntDesign name='setting' style={[styles.tabIcon, {color: props.activeTab==='setting'?Constants.colors.primaryColor:'#BBBBBB', }]} />
-                <Text style={[styles.tabLabel, , {color: props.activeTab==='setting'?Constants.colors.primaryColor:'#BBBBBB', }]}>Settings</Text>
+            <Pressable onPress={()=>gotToPage('notificationScreen')} style={styles.tabItem}>
+                <Feather name='bell' style={[styles.tabIcon, {color: props.activeTab==='notification'?Constants.colors.primaryColor:'#BBBBBB', }]} />
+                <Text style={[styles.tabLabel, , {color: props.activeTab==='notification'?Constants.colors.primaryColor:'#BBBBBB', }]}>Notification</Text>
             </Pressable>
-            <Pressable onPress={()=>gotToPage('profile')} style={styles.tabItem}>
+            <Pressable onPress={()=>gotToPage('profileScreen')} style={styles.tabItem}>
                 <Feather name='user' style={[styles.tabIcon, {color: props.activeTab==='profile'?Constants.colors.primaryColor:'#BBBBBB', }]} />
                 <Text style={[styles.tabLabel, {color: props.activeTab==='profile'?Constants.colors.primaryColor:'#BBBBBB', }]}>Profile</Text>
             </Pressable>
