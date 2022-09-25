@@ -10,7 +10,7 @@ import {
     Modal,
 } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
-import { launchCamera } from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import Constants from '../../../shared/Constants'
@@ -58,7 +58,7 @@ const AddProduct=(props)=>{
     const openCamera = async ()=>{
 		try{
 			const result = await launchCamera()
-            console.log("images",result.assets[0].uri)
+            console.log("images",result)
 
 			cameraImg.push(result)
             setCameraImg([...cameraImg])
@@ -144,20 +144,18 @@ const AddProduct=(props)=>{
         }
         else 
         { 
-            let formdata = new FormData();
-            
-            if(cameraImg.length>0){
-                var tempvar =[]
-                cameraImg.map(item=>{
-                    
-                    tempvar.push({uri: item.path?item.path:item.assets[0].uri, name: item.path?item.path.split('/react-native-image-crop-picker/')[1]:item.assets[0].fileName, type: item.mime?item.mime:item.assets[0].type})                    
-                })
-                console.log("temp var",tempvar)
-            formdata.append("product_image", tempvar)
-            }
-            else {
-                formdata.append("product_image",[])
-            }
+            // let formdata = new FormData();
+            // console.log("camera image",cameraImg)
+            // if(cameraImg.length>0){
+                
+            //     for(let i=0;i<cameraImg.length;i++){
+            //         formdata.append(`product_image[${i}]`, cameraImg[i].assets[0])
+            //     }
+                
+            // }
+            // else {
+            //     formdata.append("product_image",[])
+            // }
             // formdata.append("product_category",props?.route?.params?.userDetails?.business?.catorige)
             // formdata.append("product_video_url",productVideoUrl)
             // formdata.append("product_name",productName)
@@ -183,65 +181,85 @@ const AddProduct=(props)=>{
             // formdata.append("delivery_type",productDeliveryType)
             // formdata.append("pin_code",productPincode)
             // formdata.append("business_id",props?.route?.params?.userDetails?.business?.business_id)
-            setbuttonLoader(true)
-            console.log("response data",tempvar)  
-            axios.post(`${Constants.BASE_URL}business/add-product`,{
-                product_category:props?.route?.params?.userDetails?.business?.catorige,
-                product_image:tempvar,
-                product_video_url:productVideoUrl,
-                product_name:productName,
-                product_brand:productBrand,
-                unit_id:productUnit,
-                minimum_qty:minimumQuantity,
-                product_tags:productTags,
-                is_refundable:isRefundable,
-                is_cod:cod,
-                product_description:productDescription,
-                unit_price:productUnitPrice,
-                sales_price:productSellingPrice,
-                dicount:productDiscount,
-                product_type:productType,
-                colors:productColor,
-                sizes:productSize,
-                units:productVUnits,
-                qty:productQuantity,
-                warning_qty:productLowStock,
-                product_tax:productTax,
-                tax_type:productTaxType,
-                service_company:productCompany,
-                delivery_type:productDeliveryType,
-                pin_code:productPincode,
-                business_id:props?.route?.params?.userDetails?.business?.business_id
-            }).then((res)=>{
-                       console.log("response123",res.data)         
-                if(res.data.response==200){
-                    setbuttonLoader(false)
-                    console.log("successful",res.data)
-                    // navigation.navigate('/product-overview',{userDetails:props?.route?.params?.userDetails})
-                    showToastmsg(res.data.msg)
-                    // console.log("mobile otp value",res.data.data.otp)
-                }
-                else {
-                    setbuttonLoader(false)
-                    console.log("data1",res)
-                    showToastmsg(res.data.msg)
-                }
+            // setbuttonLoader(true)
+            // console.log("form data object",formdata._parts[0])
+          
+            // axios.post(`${Constants.BASE_URL}business/add-product`,formdata).then((res)=>{
+            //            console.log("response123",res.data)         
+            //     if(res.data.response==200){
+            //         setbuttonLoader(false)
+            //         console.log("successful",res.data)
+            //         // navigation.navigate('/product-overview',{userDetails:props?.route?.params?.userDetails})
+            //         showToastmsg(res.data.msg)
+            //         // console.log("mobile otp value",res.data.data.otp)
+            //     }
+            //     else {
+            //         setbuttonLoader(false)
+            //         console.log("data1",res)
+            //         showToastmsg(res.data.msg)
+            //     }
                 
-            }).catch((err)=>{
-                setbuttonLoader(false)
-                console.log("product regsitration",err.response)
-            })
-        }
+            // }).catch((err)=>{
+            //     setbuttonLoader(false)
+            //     console.log("product regsitration",err.response)
+            // })
+            
+        }var formdata = new FormData();
+        formdata.append("product_category", "FASHION");
+        for(let i=0;i<cameraImg.length;i++){
+                    formdata.append('product_image['+i+']', cameraImg[i].assets[0], cameraImg[i].assets[0].name)
+                }
+       // formdata.append("product_image[0]", fileInput.files[0], "[PROXY]");
+        formdata.append("product_video_url", "abc");
+        formdata.append("product_name", "xyz");
+        formdata.append("product_brand", "yoga");
+        formdata.append("unit_id", "2");
+        formdata.append("minimum_qty", "2");
+        formdata.append("product_tags", "travel");
+        formdata.append("is_refundable", "true");
+        formdata.append("is_cod", "true");
+        formdata.append("product_description", "abc");
+        formdata.append("unit_price", "111");
+        formdata.append("sales_price", "111");
+        formdata.append("dicount", "3%");
+        formdata.append("product_type", "3");
+        formdata.append("colors", "red");
+        formdata.append("sizes", "7");
+        formdata.append("units", "2");
+        formdata.append("qty", "2");
+        formdata.append("warning_qty", "1");
+        formdata.append("product_tax", "11");
+        formdata.append("tax_type", "gst");
+        formdata.append("service_company", "xyz");
+        formdata.append("delivery_type", "cod");
+        formdata.append("pin_code", "411048");
+        formdata.append("business_id", "51");
+        
+        
+        var requestOptions = {
+          method: 'POST',
+          body: formdata,
+          redirect: 'follow'
+        };
+
+        console.log(formdata);
+        
+        fetch("http://qp.flymingotech.in/quarterpillars_backend/public/api/v1/business/add-product", requestOptions)
+          .then(response => response.json())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
     }
-    const choosePhotoFromLibrary = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-          }).then(image => {
-            cameraImg.push(image);
+    const choosePhotoFromLibrary = async ()=>{
+		try{
+			const result = await launchImageLibrary()
+
+			cameraImg.push(result)
             setCameraImg([...cameraImg])
-          });
-      }
+		}
+        catch(err){
+			console.log("err")
+		}
+    }
     
      
     return (
@@ -256,6 +274,7 @@ const AddProduct=(props)=>{
                         <>
                         
                         <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',padding: Constants.padding,}}>
+                            
                         {cameraImg.map((item,index)=>
                                 <View style={styles.cameraContainer}>
                                     <Image source={{uri: item.path?item.path:item.assets[0].uri}} alt='Img' style={{
