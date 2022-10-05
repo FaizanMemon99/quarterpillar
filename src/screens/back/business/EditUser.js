@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -12,34 +12,86 @@ import DatePicker from 'react-native-date-picker'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import Constants from '../../../shared/Constants'
-import { launchCamera } from 'react-native-image-picker'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
+import Dialog, { SlideAnimation, DialogContent,DialogTitle } from 'react-native-popup-dialog';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import Feather from 'react-native-vector-icons/Feather'
+import axios from 'axios'
 
 const EditUser = (props)=>{
     const [cameraImg, setCameraImg] = useState(null)
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [gender,setGender] = useState('m')
+    const [visible,setvisible]=useState(false)
     const navigation = useNavigation()
-    const openCamera = async ()=>{
-		try{
-			const result = await launchCamera()
-			setCameraImg(result.assets[0].uri)
-		}catch(err){
-			console.log(err)
-		}
-    }
-    const removeImg = ()=>{
-        setCameraImg(null)
-    }
+    
+    console.log('data val',props?.route?.params);
     const gotoUserManagement = ()=>{
         navigation.navigate('/user-management')
     }
+    const openCamera = async ()=>{
+		try{
+			const result = await launchCamera()
+            console.log("images",result.assets[0])
+
+			setCameraImg(result.assets[0])
+            setvisible(false)
+            // setCameraImg([...cameraImg])
+		}
+        catch(err){
+			console.log("err")
+		}
+    }
+    const choosePhotoFromLibrary = async ()=>{
+		try{
+			const result = await launchImageLibrary()
+console.log("folder image",result.assets[0]);
+			setCameraImg(result.assets[0])
+            setvisible(false)
+		}
+        catch(err){
+			console.log("err")
+		}
+    }
+    const removeImg = ()=>{
+        setCameraImg()
+    }
+    useEffect(()=>{
+        
+        axios.get(`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`, { responseType:"stream" })
+    .then((response)=> {
+        if(props?.route?.params?.type=='influencer')
+        {setCameraImg({"fileName":props?.route?.params?.userDetails?.influencer?.avatar.split('/')[props?.route?.params?.userDetails?.influencer?.avatar.split('/').length-1], "fileSize": response.headers['content-length'], "height": 177, "type": response.headers['content-type'], "uri": Constants.BASE_IMAGE_URL+props?.route?.params?.userDetails?.influencer?.avatar, "width": 285})}
+    });
+    },[])
     return (
         <View style={styles.wrapper}>
             <CustomAppBar navigation={props.navigation} isMainscreen={false} isReel={false} title='Edit User Info' />
+            <Dialog
+    visible={visible}
+    onTouchOutside={()=>setvisible(!visible)}
+    onHardwareBackPress={()=>setvisible(!visible)}
+    dialogTitle={<DialogTitle title="Profile Image" />}
+    dialogAnimation={new SlideAnimation({
+      slideFrom: 'bottom',
+    })}
+  >
+    <DialogContent>
+    <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+                            <Pressable style={styles.cameraContainerinner} onPress={openCamera}>
+                                <Image source={Images.cameraIcon} alt='Img' />
+                                <Text style={styles.addCameraText}>Add</Text>
+                            </Pressable>
+                             <Pressable style={[styles.cameraContainerinner,{marginLeft:10}]} onPress={choosePhotoFromLibrary}>
+                             <Feather name="folder-plus" />
+                             <Text style={styles.addCameraText}>Add</Text>
+                         </Pressable>
+                         </View>
+    </DialogContent>
+  </Dialog>
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.editText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
@@ -48,11 +100,13 @@ const EditUser = (props)=>{
                 {
                     cameraImg?(
                         <View style={styles.cameraContainer}>
-                            <Image source={{uri: cameraImg}} alt='Img' style={styles.logo} />
+                            <Pressable onPress={()=>setvisible(!visible)}>
+                            <Image source={{uri: cameraImg.uri}} alt='Img' style={styles.logo} />
+                            </Pressable>
                             <Pressable onPress={removeImg} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
                         </View>
                     ):(
-                        <Pressable style={styles.cameraContainer} onPress={openCamera}>
+                        <Pressable style={styles.cameraContainer} onPress={()=>setvisible(!visible)}>
                             <Image source={Images.userInfoLogo} style={styles.logo} />
                             <Image source={Images.cameraIcontTwo} style={styles.cameraIcon} />
                         </Pressable>
@@ -175,6 +229,19 @@ const styles= StyleSheet.create({
         marginLeft: 8,
         marginRight: Constants.margin+12,
         marginTop: 10,
+    },
+    cameraContainerinner: {
+        marginTop: Constants.margin,
+        marginBottom: 12,
+        width: 90,
+        height: 90,
+        backgroundColor: Constants.colors.inputBgColor,
+        borderWidth: 0.7,
+        borderColor: '#D2D2D2',
+        borderStyle: 'dashed',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: Constants.borderRadius,
     },
 })
 

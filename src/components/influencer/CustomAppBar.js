@@ -11,6 +11,7 @@ import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const CustomAppBar=(props)=>{
     const goBack = ()=>{
@@ -47,6 +48,7 @@ const CustomAppBar=(props)=>{
                     
                 ):(
                     <View style={styles.titleBar}>
+                        <View style={{display:'flex',alignItems:'center',flexDirection:'row'}}>
                         <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
                         <Text style={{...styles.title, color: props.isReel?Constants.colors.whiteColor: 'rgba(0, 0, 0, 1)',}}>{props.title}</Text>
                         {
@@ -55,6 +57,9 @@ const CustomAppBar=(props)=>{
                         {
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
+                        </View>
+                        <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
+                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
                     </View>
                 )
             }
@@ -127,6 +132,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         zIndex: 99,
+        justifyContent:'space-between',
+        width:'100%'
     },
     title: {
         fontFamily: Constants.fontFamily,

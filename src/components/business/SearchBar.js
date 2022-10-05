@@ -8,10 +8,10 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Constants from '../../shared/Constants'
 
-const SearchBar=()=>{
+const SearchBar=(props)=>{
   return (
     <View>
-        <TextInput style={styles.searchInputBox} placeholder='Search' />
+        <TextInput style={styles.searchInputBox} placeholder='Search' onChangeText={props.setsearchText}/>
         <FontAwesome name='search' size={26} style={styles.searchIcon} />
     </View>
   )

@@ -16,12 +16,44 @@ import Feather from 'react-native-vector-icons/Feather'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
 import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
+import Loading from '../../../components/Loading'
+import axios from 'axios'
+import { useEffect } from 'react'
+import showToastmsg from '../../../shared/showToastmsg'
 
 const ProductsScreen=(props)=>{
     const [tabs, setTabs] = useState('travel')
     const [showActionMenu, setShowActionMenu] = useState(false)
+    const [userProdcuts,setuserProducts]=useState([])
     const navigation = useNavigation()
     const [showDrawer, setShowDrawer] = useState(false)
+    const [pageLoader,setpageLoader] = useState(false)
+    const [searchText,setsearchText]=useState('')
+    const getProductsbyuserid=()=>{
+        if(props.route.params.userDetails.business.business_id)
+        {
+            setpageLoader(true)
+            axios.get(`${Constants.BASE_URL}business/get-product-details/${props.route.params.userDetails.business.business_id}`).then((data)=>{
+                if(data.status==200){
+                    setpageLoader(false)
+                    if(data.data[0].user_product&&data.data[0].user_product.length>0){
+                        setuserProducts(data.data[0].user_product)
+                    }
+                    else setuserProducts([])
+                }
+                else {
+                    setpageLoader(false)
+                    setuserProducts([])
+                    showToastmsg('Error while getting data')
+                }
+            }).catch((err)=>{
+                showToastmsg('Error while getting data')
+            })
+    }
+    else {
+        showToastmsg('Business id not found')
+    }
+    }
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
@@ -132,15 +164,17 @@ const ProductsScreen=(props)=>{
     const toggleActionMenu = ()=>{
         navigation.navigate('/add-product',{userDetails:props?.route?.params?.userDetails})
     }
-    // const gotoAddProducts = ()=>{
-    //     setShowActionMenu(false)
-    // }
+
+    useEffect(() => {
+getProductsbyuserid()
+    }, [])
     return (
         <View style={{flex:1}}>
 
             <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={true} isReel={false} />
-            <ScrollView style={styles.container}>
-                <SearchBar />
+            {pageLoader?<Loading/>:
+                <><ScrollView style={styles.container}>
+                <SearchBar setsearchText={setsearchText} searchText={searchText}/>
                 {/* <View style={styles.tabs}>
                     <Pressable onPress={()=>setTabs('travel')}>
                         <Text style={{...styles.tabText, color: tabs==='travel'?Constants.colors.primaryColor:null, fontWeight: tabs==='travel'?'800':'400', textDecorationColor: tabs==='travel'?Constants.colors.primaryColor: 'transparent'}}>Travel (8)</Text>
@@ -161,9 +195,9 @@ const ProductsScreen=(props)=>{
                 </View> */}
                 <View style={{paddingTop:10}}>
                     <FlatList 
-                        data={tabs==='travel'?travel:tabs==='fashion'?fashion:tabs==='lifestyle'?lifestyle:food}
+                        data={userProdcuts}
                         renderItem={item=><RenderProducts products={item} />}
-                        keyExtractor={item=>item?.id?.toString()}/>
+                        keyExtractor={item=>item?.index}/>
                 </View>
             </ScrollView>
             <Pressable style={styles.actionBtn} onPress={toggleActionMenu}>
@@ -171,6 +205,7 @@ const ProductsScreen=(props)=>{
                     <Feather name='plus' size={28} color='#007635' />
                 </View>
             </Pressable>
+            </>}
             {/* {
                 showActionMenu?<Pressable onPress={toggleActionMenu} style={globatStyles.overlay}></Pressable>:null
             }

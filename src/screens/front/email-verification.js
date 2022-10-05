@@ -19,58 +19,74 @@ import { apiCall } from '../../service/service'
 import endPoints from '../../shared/endPoints'
 import axios from 'axios'
 
-const BusinessSignup=(props)=>{
+const EmailVerification=(props)=>{
     const navigation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
-    const [mobileNumber, setMobileNumber] = useState(props?.route?.params?.phoneNumber?props?.route?.params?.phoneNumber:'')
+    const [email, setemail] = useState(props?.route?.params?.emailId?props?.route?.params?.emailId:'')
     const [isLoading, setIsLoading] = useState(false)
+    const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     const generateOtpBusiness = ()=>{
-        if(mobileNumber==='' || mobileNumber===null){
-            showToastmsg('Please enter your mobile number')
+        if(email==='' || email===null){
+            showToastmsg('Please enter your email id')
         }
-        else if(mobileNumber.length<10){
-            showToastmsg('Please enter 10 digits mobile number')
+        else if(!emailIdPattern.test(email)){
+            showToastmsg('Please enter valid email id')
         }
         else{
             setIsLoading(true)
             userSignup()
         }
     }
-    const gottoEmailVerification=()=>{
-        navigation.navigate("/email-verify",{phoneType:props?.route?.params?.phoneType,userType:props?.route?.params?.userType})
-    }
     const userSignup = async () =>{
         try {
             if(props?.route?.params?.phoneType){
                 axios.post(`${Constants.BASE_URL}auth/forgot-password`,{
-                    "data":mobileNumber
+                    "data":email
                 }).then((response)=>{
                     setIsLoading(false)
                     if(!response.data.error){
-                        navigation.navigate('/business-otp', 
-                        {phoneNumber:mobileNumber,userType:props?.route?.params?.userType,otpId:response.data.data.otp_id,phoneType:props?.route?.params?.phoneType}
+                        navigation.navigate('/email-otp', 
+                        {emailId:email,userType:props?.route?.params?.userType,otpId:response.data.data.otp_id,phoneType:props?.route?.params?.phoneType}
                         )
-                        console.log("number otp",response.data.data.otp,"----",response.data.data.otp_id)
+                        console.log("email otp",response.data.data.otp,"----",response.data.data.otp_id)
                     }
                 }).catch((error)=>{
                     setIsLoading(false)
                     console.log("phone otp error",error);
                 })
             }
-            else{const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: mobileNumber})
-            if(response.error===null && response.data.otp){
-                setIsLoading(false)
-                navigation.navigate('/business-otp', {userDetails: props?.route?.params?.userDetails,phoneNumber:mobileNumber,userType:props?.route?.params?.userType})
-                console.log("number otp",response.data.otp)
+            else {
+                axios.post(`${Constants.BASE_URL}auth/email-otp`,{
+                    "email":email
+                }).then((response)=>{
+                    setIsLoading(false)
+                    if(!response.data.error){
+                        navigation.navigate('/email-otp', {userDetails: props?.route?.params?.userDetails,emailId:email,userType:props?.route?.params?.userType})
+                        console.log("email otp",response.data.data.otp)     
+                    }
+                }).catch((error)=>{
+                    console.log("email otp error",error);
+                    showToastmsg("Email otp validation failed")
+                    setIsLoading(false)
+                })
             }
-            else{
-                setIsLoading(false)
-                showToastmsg(response.msg)
-            }}
+            // const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: email})
+            // if(response.error===null && response.data.otp){
+            //     setIsLoading(false)
+            //     navigation.navigate('/business-otp', {userDetails: props?.route?.params?.userDetails,emailId:email,userType:props?.route?.params?.userType})
+            //     console.log("number otp",response.data.otp)
+            // }
+            // else{
+            //     setIsLoading(false)
+            //     showToastmsg(response.msg)
+            // }
         } catch (error) {
             console.log(error)
             setIsLoading(false)
         }
+    }
+    const gotoPhoneVerification=()=>{
+        navigation.navigate("/business-signup",{phoneType:"forgotpassword",userType:props?.route?.params?.userType})
     }
     return (
         <View style={styles.background}>
@@ -108,9 +124,9 @@ const BusinessSignup=(props)=>{
                     <Text style={styles.businessText}>{props?.route?.params?.userType}</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter Mobile Number for verification</Text>
+                <Text style={styles.textBelowBusiness}>Enter Email Id for verification</Text>
                 <View style={styles.phoneNumberContainer}>
-                    <View style={styles.countryCode}>
+                    {/* <View style={styles.countryCode}>
                         <Image source={Images.indiaFlag} style={styles.countryFlag} />
                         <SelectDropdown
                             data={countries}
@@ -120,18 +136,26 @@ const BusinessSignup=(props)=>{
                                 console.log(selectedItem, index)
                         }} />
                         <Image source={Images.dropdownIcon} style={styles.dropdownIcon} />
-                    </View>
-                    <TextInput keyboardType={'numeric'} style={styles.textInput} 
-                    defaultValue={props?.route?.params?.phoneNumber}
-                    placeholder='Mobile Phone' onChangeText={(e)=>setMobileNumber(e)} />
+                    </View> */}
+                    <TextInput keyboardType={'email-address'} style={styles.textInput} 
+                    defaultValue={props?.route?.params?.emailId}
+                    placeholder='Email Id' onChangeText={(e)=>setemail(e)} />
                 </View>
-                <Text style={styles.belowPhoneNumber}>We will send you an OTP to {props?.route?.params?.phoneType?'reset password on your mobile':'validate your mobile number'}.</Text>
+                <Text style={styles.belowPhoneNumber}>We will send you an OTP to {props?.route?.params?.phoneType?'reset password on your email id':'validate your email id'}.</Text>
                 {
                     isLoading?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Pressable style={[globatStyles.button, {width: '92%'}]} onPress={generateOtpBusiness}><Text style={globatStyles.btnText}>Generate OTP</Text></Pressable>
                 }
-                {props?.route?.params?.phoneType&&<Pressable onPress={gottoEmailVerification}
+                {props?.route?.params?.phoneType&&
+                <>
+                 <View style={{flexDirection: 'row', marginTop: 20, alignItems: 'center',}}>
+                    <View style={styles.divider}></View> 
+                    <View><Text style={{fontFamily: Constants.fontFamily, color: '#FFFFFF',}}>&nbsp; or &nbsp;</Text></View>
+                    
+                    <View style={styles.divider}></View>
+                </View>
+                <Pressable onPress={gotoPhoneVerification}
                 ><Text style={{fontFamily: Constants.fontFamily, color: '#FFFFFF',textDecoration:"underline",textTransform:"capitalize"}}
-                > &nbsp;  Reset through <Text style={styles.forgotPassLink}>Phone number</Text> &nbsp; </Text></Pressable>}
+                > &nbsp;  Reset through <Text style={styles.forgotPassLink}>Phone number</Text> &nbsp; </Text></Pressable></>}
             </View>
         </View>
     )
@@ -150,6 +174,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
+    },
+    forgotPassLink: {
+        // alignSelf: 'flex-end',
+        // marginEnd: '5%',
+        fontSize: 16,
+        color: Constants.colors.primaryColor,
+        fontFamily: Constants.fontFamily,
+        textDecorationLine: 'underline',
+        textDecorationColor: Constants.colors.primaryColor,
     },
     textBelowLogo: {
         fontFamily: Constants.fontFamily,
@@ -211,10 +244,11 @@ const styles = StyleSheet.create({
     },
     textInput: {
         backgroundColor: Constants.colors.whiteColor,
-        width: '60%',
+        width: '80%',
         borderRadius: Constants.borderRadius,
         marginLeft: 20,
         paddingLeft: 12,
+        height: 50,
     },
     dropdownIcon: {
         position: 'absolute',
@@ -229,4 +263,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default BusinessSignup
+export default EmailVerification

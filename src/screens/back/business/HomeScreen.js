@@ -94,8 +94,6 @@ const HomeScreen=(props)=>{
     }
     return (
         <View style={{flex:1}}>
-            
-
             <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
             <ScrollView style={styles.container}>
                 <SearchBar />
@@ -309,6 +307,7 @@ const HomeScreen=(props)=>{
                 <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'
                 propValue={props?.route?.params?.userDetails}
                 />
+        
         </View>
     )
 }

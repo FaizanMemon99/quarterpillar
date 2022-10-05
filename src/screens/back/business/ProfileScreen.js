@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import {
     View,
@@ -9,18 +10,29 @@ import {
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/business/CustomAppBar'
+import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
 import Constants from '../../../shared/Constants'
 
-const ProfileScreen=({navigation})=>{
+const ProfileScreen=(props)=>{
+    const [showDrawer, setShowDrawer] = useState(false)
+    const navigation=useNavigation()
+    const openDrawer = ()=>{
+        setShowDrawer(!showDrawer)
+    }
+    console.log("props values",props?.route?.params?.userDetails);
+    function isImage(url) {
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+      }
     return (
-        <View>
-            <CustomAppBar navigation={navigation} isMainscreen={true} isReel={false} />
-            <ScrollView style={styles.container}>
+        <View style={{flex:1}}>
+        <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>           
+        <View style={styles.container}>
+         <ScrollView style={{paddingBottom:10}}>
                <View style={styles.companyDetails}>
-                    <Image source={Images.companyLogo} style={styles.companyLogo} />
+                    <Image source={isImage(`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`)?{uri:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`}:Images.companyLogo} style={styles.companyLogo} />
                     <View style={styles.companyInfo}>
-                        <Text style={styles.email}>tanveer.inamdar@company.com</Text>
-                        <Text style={styles.phone}>+91-8976546789</Text>
+                        <Text style={styles.email}>{props?.route?.params?.userDetails?.email}</Text>
+                        <Text style={styles.phone}>+91-{props?.route?.params?.userDetails?.mobile_number}</Text>
                         <Pressable><Text style={styles.moreInfo}>More Info</Text></Pressable>
                     </View>
                </View>
@@ -46,13 +58,21 @@ const ProfileScreen=({navigation})=>{
                     <Image source={Images.profileFour} style={styles.profileBgImg} />
                </View>
             </ScrollView>
+           
+        </View>
+        <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='profile'
+                propValue={props?.route?.params?.userDetails}
+                />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 190,
+        padding: Constants.padding,
+        paddingLeft:0,
+        paddingRight:0,
+        // marginBottom: 130,
     },
     companyDetails: {
         flexDirection: 'row',
@@ -120,6 +140,7 @@ const styles = StyleSheet.create({
     profileSection: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        paddingBottom:210
     },
     profileBgImg: {
         width: '50%',

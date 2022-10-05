@@ -20,9 +20,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
+import { useNavigation } from '@react-navigation/native'
 
-const Product=({navigation})=>{
+const Product=(props)=>{
     const [newPost, setNewPost] = useState(false)
+    const navigation=useNavigation()
     const [showDrawer, setShowDrawer] = useState(false)
     const [activeMenu, setActiveMenu] = useState('')
     const offsetValue = useRef(new Animated.Value(0)).current
@@ -57,8 +59,8 @@ const Product=({navigation})=>{
                             <Image source={Images.avatar} />
                         </View>
                         <View>
-                            <Text style={styles.preofileName}>Tanveer Inamdar</Text>
-                            <Text style={styles.founder}>Fashion Blogger</Text>
+                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.advertiser?.name}</Text>
+                            <Text style={styles.founder}>{Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]}</Text>
                         </View>
                     </View>
                 </View>
@@ -79,7 +81,9 @@ const Product=({navigation})=>{
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about')
                     }
                 </ScrollView>
-                <Pressable style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
+                <Pressable
+                 onPress={()=>navigation.navigate("/")}
+                style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
                     <AntDesign name='logout' size={22} color={Constants.colors.whiteColor} />
                     <Text style={{color: Constants.colors.whiteColor, fontFamily: Constants.fontFamily, fontWeight: '700', fontSize: 18, marginLeft: 12,}}>Logout</Text>
                 </Pressable>
@@ -285,12 +289,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
+        textTransform:'capitalize'
     },
     founder: {
         color: '#424242',
         opacity: 0.78,
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
+        textTransform:'capitalize'
     },
 })
 

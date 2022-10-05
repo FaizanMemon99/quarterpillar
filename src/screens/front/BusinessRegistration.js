@@ -8,7 +8,6 @@ import {
     ScrollView,
     Image
 } from 'react-native'
-import ImagePicker from 'react-native-image-crop-picker';
 import { useNavigation } from '@react-navigation/native'
 import SelectDropdown from 'react-native-select-dropdown'
 import Constants from '../../shared/Constants'
@@ -16,15 +15,18 @@ import globatStyles from '../../shared/globatStyles'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import showToastmsg from '../../shared/showToastmsg'
 import { apiCall } from '../../service/service'
-
-import endPoints from '../../shared/endPoints'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
+import Images from '../../assets/images/Images'
+import Feather from 'react-native-vector-icons/Feather'
+
 const BusinessRegistration = (props)=>{
     const [companyName, setCompanyName] = useState('')
     const [subCategory, setSubCategory] = useState('')
-    const [year, setYear] = useState('')
+    const [cameraImg, setCameraImg]= useState()
+    const [buttonLoader,setButtonLoader]=useState(false)
     const [emailId, setEmailId] = useState('')
     const [businessemailId, setBusinessEmailId] = useState('')
     const [ownerName, setOwnerName] = useState('')
@@ -44,13 +46,15 @@ const BusinessRegistration = (props)=>{
     const [businessType, setbusinessType] = useState("Product")
     const [businessDocId, setbusinessDocId] = useState(1)
     // const years = [ '20012', '2013', '2015', '2016', '2017' ]
-    const [filePath, setFilePath] = useState();
     const usernamePattern=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/; 
     const navigation = useNavigation()
     const userRegistration = async ()=>{
-        if(companyName==='' || companyName===null){
+         if(!cameraImg){
+            showToastmsg('Please add avatar image')
+        }
+        else if(companyName==='' || companyName===null){
             showToastmsg('Please enter company name')
         }
         else if(ownerName==='' || ownerName===null){
@@ -123,91 +127,147 @@ const BusinessRegistration = (props)=>{
             showToastmsg('Password did not match')
         }
         else{
-            try{
-                const response = await apiCall( 'POST', 'business/registration', null, 
-                {    
-                    "catorige":props.route.params.category,
-                    "sub_category":subCategory,
-                    "company_name":companyName,
-                    "owner_name":ownerName,
-                    "business_email":businessemailId,
-                    "owner_email":emailId,
-                    "owner_phone":PhoneNumber,
-                    "is_biz_email_verified":"false",
-                    "is_owner_email_verified":"false",
-                    "is_phone_no_verified":"false",
-                    "owner_adhar":aadharNo,
-                    "is_adhar_verifed":"false",
-                    "business_doc_id":businessDocId,
-                    "is_business_doc_verfied":"false",
-                    "has_gst":isgst==="Yes"?gstNo:"",
-                    "is_gst_verfied":"false",
-                    "business_profile_pic":filePath.path,
-                    "business_password":password,
-                    "business_address":address,
-                    "username":username,
-                    "is_product":businessType==="Product",
-                    "is_service":businessType==="Service",
-                    "city":city,
-                    "state":state,
-                    "country":"india"
-                }
-                 )
-               
-                if(response.error===false){
-                    try {
-                        if(response.data.registration_success){
-                            axios.post(`${Constants.BASE_URL}auth/mobile-number`,{mobile_number:PhoneNumber}).then((res)=>{
-                                
-                                if(res.data.response==200){
-                                    navigation.navigate('/business-otp',{userDetails: response.data.user,phoneNumber:PhoneNumber})
-                                    showToastmsg(res.data.msg)
-                                    console.log("mobile otp value",res.data.data.otp)
-                                }
-                                else {
-                                    showToastmsg(res.msg)
-                                }
-                                
-                            }).catch((err)=>{
-                                console.log("phone number otp error",err)
-                            })
+            setButtonLoader(true)
+           const headers = {
+            'x-device-id': 'stuff',
+            'Content-Type': 'multipart/form-data',
+          }
+          var formdata = new FormData();
+formdata.append("catorige", props.route.params.category);
+formdata.append("company_name", companyName);
+formdata.append("owner_name", ownerName);
+formdata.append("business_email", businessemailId);
+formdata.append("owner_email", emailId);
+formdata.append("owner_phone", PhoneNumber);
+formdata.append("owner_adhar", aadharNo);
+formdata.append("business_doc_id", businessDocId);
+formdata.append("has_gst", isgst==="Yes"?gstNo:"");
+formdata.append("business_password", password);
+formdata.append("business_address", address);
+formdata.append("username", username);
+formdata.append("is_product", businessType==="Product");
+formdata.append("is_service", businessType==="Service");
+formdata.append("city", city);
+formdata.append("state", state);
+formdata.append("country", "India");
+formdata.append("is_biz_email_verified", "false");
+formdata.append("is_owner_email_verified", "false");
+formdata.append("is_phone_no_verified", "false");
+formdata.append("is_adhar_verifed", "false");
+formdata.append("is_business_doc_verfied", "false");
+formdata.append("is_gst_verfied", "false");
+formdata.append('profile_avatar', { uri: cameraImg.uri, name: cameraImg.fileName, type:cameraImg.type });
+formdata.append("sub_catorige", subCategory);
+
+           axios.post(`${Constants.BASE_URL}business/registration`,formdata,{
+            headers:headers
+        }).then((response)=>{
+            if(response.status==200){
+                
+                try {
+                        axios.post(`${Constants.BASE_URL}auth/mobile-number`,{mobile_number:phone}).then((res)=>{
                             
-                            await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: props.route.params.category, userDetails: response.data.user }))
-                        }
-                        
-                    } catch (error) {
-                        console.log(error)
-                    }
-                    // navigation.navigate( '/addhaar-no' )
-                }
-                else{
-                    showToastmsg(response.msg)
+                            if(res.data.response==200){
+                                                setButtonLoader(false)
+                                navigation.navigate('/business-otp',{userDetails: response.data.data.user_details,phoneNumber:PhoneNumber,userType:props.route.params.type})
+                                // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
+
+                                showToastmsg(res.data.msg)
+                                console.log("mobile otp value",res.data.data.otp)
+                            }
+                            else {
+                                setButtonLoader(false)
+                                showToastmsg(res.msg)
+                            }
+                            
+                        }).catch((err)=>{
+                            setButtonLoader(false)
+                            console.log("phone number otp error",err)
+                        })
+                    
+                    
+                } catch (error) {
+                    setButtonLoader(false)
+                    console.log(error)
+                    showToastmsg('Registration failed')
                 }
             }
-            catch(err){
-                console.log(err)
+            else {
+                setButtonLoader(false)
+                showToastmsg('Registration failed')
             }
+        }).catch((err)=>{
+            showToastmsg('Registration failed')
+            setButtonLoader(false)
+            console.log("influencer registration error",err.response);
+        })
         }
     }
     
     
-    const chooseFile = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-          }).then(image => {
-            console.log("image value",image)
-            
-            setFilePath(image);
-          });
-      };
+    const openCamera = async ()=>{
+		try{
+			const result = await launchCamera()
+            console.log("images",result.assets[0])
+
+			setCameraImg(result.assets[0])
+            // setCameraImg([...cameraImg])
+		}
+        catch(err){
+			console.log("err")
+		}
+    }
+    const choosePhotoFromLibrary = async ()=>{
+		try{
+			const result = await launchImageLibrary()
+console.log("folder image",result.assets[0]);
+			setCameraImg(result.assets[0])
+		}
+        catch(err){
+			console.log("err")
+		}
+    }
+    const removeImg = ()=>{
+        setCameraImg()
+    }
       const businessDocarray=["With GST","With Shopact License","With MCA"]
     return (
         <ScrollView style={styles.container}>
         <View style={styles.wrapper}>
             <Text style={styles.heading}>Business Registration</Text>
             <Text style={styles.subHeading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
+            <Text style={styles.heading}>Avatar image</Text>
+                {
+                    cameraImg?(
+                        <>
+                        
+                        <View style={{display:'flex',flexDirection:'row',justifyContent:'center',flexWrap:'wrap',padding: Constants.padding,}}>
+                            
+                                <View style={styles.cameraContainer}>
+                                    <Image source={{uri: cameraImg.uri}} alt='Img' style={{
+                    width: '100%',
+                    height: 100,
+                    resizeMode: 'contain',
+                    margin: 5,marginBottom:20
+                  }}  />
+                                    <Pressable onPress={()=>removeImg()} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
+                                </View>
+                        
+                        </View>
+                        </>
+                        
+                            ):( <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+                            <Pressable style={styles.cameraContainer} onPress={openCamera}>
+                                <Image source={Images.cameraIcon} alt='Img' />
+                                <Text style={styles.addCameraText}>Add</Text>
+                            </Pressable>
+                             <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
+                             <Feather name="folder-plus" />
+                             <Text style={styles.addCameraText}>Add</Text>
+                         </Pressable>
+                         </View>
+                            )
+                }
             <TextInput placeholder='Company Name' style={globatStyles.inputText} onChangeText={text=>setCompanyName(text)} />
             <TextInput placeholder='Owner Name' style={globatStyles.inputText} onChangeText={text=>setOwnerName(text)} />
             <SelectDropdown
@@ -275,18 +335,7 @@ const BusinessRegistration = (props)=>{
                 onSelect={(selectedItem, index) => {
                     setbusinessType(selectedItem)
             }} /> 
-                {filePath?
-                <>
-                <Text style={styles.subHeading}>
-                Business profile image
-            </Text>
-                <Pressable onPress={chooseFile}><Image source={{uri:filePath.path}} style={{
-                    width: '100%',
-                    height: 100,
-                    resizeMode: 'contain',
-                    margin: 5,marginBottom:20
-                  }} /></Pressable></>:
-                <Pressable style={[globatStyles.button,{marginTop:0,marginBottom:15}]} onPress={chooseFile}><Text style={globatStyles.btnText}>Add profile photo</Text></Pressable>}
+
             <TextInput placeholder='Username' style={globatStyles.inputText} onChangeText={text=>setusername(text)} />
             <View style={{flex: 1, width: '100%',justifyContent:"center",position:"relative"}}>
                         <TextInput style={globatStyles.inputText} placeholder='Create Password' onChangeText={text=>setPassword(text)} secureTextEntry={!showPass} />
@@ -297,9 +346,9 @@ const BusinessRegistration = (props)=>{
                         <FontAwesome name={showCPass?'eye-slash':'eye'} style={styles.eyeIcon} onPress={()=>setShowCPass(!showCPass)} />
                     </View>   
             <Pressable style={[globatStyles.button,{marginTop:10}]} 
-            onPress={userRegistration}
+            onPress={!buttonLoader&&userRegistration}
             // onPress={()=>navigation.navigate('/business-otp')}
-            ><Text style={globatStyles.btnText}>Next</Text></Pressable>
+            >{buttonLoader?<ActivityIndicator size={20} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>Next</Text>}</Pressable>
         </View>
         </ScrollView>
     )
@@ -330,6 +379,53 @@ const styles = StyleSheet.create({
         right: 25,
         color: '#999999',
         fontSize: 24,
+    },
+    cameraContainer: {
+        marginTop: Constants.margin,
+        marginBottom: 12,
+        width: 90,
+        height: 90,
+        backgroundColor: Constants.colors.inputBgColor,
+        borderWidth: 0.7,
+        borderColor: '#D2D2D2',
+        borderStyle: 'dashed',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: Constants.borderRadius,
+    },
+    cameraImgContainer: {
+        marginTop: Constants.margin,
+        marginBottom: 12,
+        width: 90,
+        height: 90,
+        backgroundColor: Constants.colors.inputBgColor,
+        borderWidth: 0.7,
+        borderColor: '#D2D2D2',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: Constants.borderRadius,
+    },
+    removeImg: {
+        position: 'absolute',
+        left: 80,
+        top: 10,
+        width: 25,
+        height: 25,
+        borderRadius: 25,
+        backgroundColor: Constants.colors.primaryColor,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: Constants.colors.whiteColor,
+    },
+    removeIcon: {
+        fontSize: 16,
+        color: Constants.colors.inputBgColor,
+    },
+    addCameraText: {
+        marginTop: 10,
+        color: '#007635',
+        fontWeight: '700'
     },
 })
 

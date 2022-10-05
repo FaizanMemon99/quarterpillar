@@ -29,13 +29,15 @@ import ChangePassword from '../screens/back/influencer/ChangePassword'
 const Stack = createNativeStackNavigator()
 
 const StackNavigationInfluencer=(props)=>{
+    console.log("adadadad",props.route.params);
     return (
         <>
             <StatusBar backgroundColor="transparent" translucent={true} />
             <Stack.Navigator initialRouteName='product' screenOptions={{
                 headerShown: false,
-            }}>
-                <Stack.Screen name="/product" component={Product} />
+            }}
+            >
+                <Stack.Screen name="/product" component={Product} initialParams={{userDetails: props?.route?.params?.userDetails}}/>
                 <Stack.Screen name="/category" component={Category} />
                 <Stack.Screen name="/open-camera" component={OpenCamera} />
                 <Stack.Screen name="/add-post" component={AddPost} />

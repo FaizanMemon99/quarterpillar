@@ -8,7 +8,11 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 <uses-feature android:name="android.hardware.camera.front" android:required="false" />
-
+ <provider
+    android:name="com.facebook.react.modules.blob.BlobProvider"
+    android:authorities="@string/blob_provider_authority"
+    android:exported="false"
+  />
     <application
       android:usesCleartextTraffic="true"
       android:name=".MainApplication"

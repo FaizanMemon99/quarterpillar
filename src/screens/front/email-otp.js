@@ -20,14 +20,14 @@ import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
-const BusinessOtp = (props) => {
+const EmailOtp = (props) => {
     
     const [otp, setOtp] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [coundownTime, setCountDownTime] = useState(30)
     const navigation = useNavigation()
     const [optId,setotpId]=useState(props?.route?.params?.otpId)
-    const { phoneNumber } = props.route.params
+    const { emailId } = props.route.params
     useEffect(()=>{
         // if(props?.route?.params?.phoneType){
         //     setotpId(props?.route?.params?.otpId)
@@ -77,24 +77,43 @@ const BusinessOtp = (props) => {
                 console.log('catch error',err.response);
             })
         }
-        else{axios.post(Constants.BASE_URL+endPoints.VERIFY_OTP,{
-            mobile_number:phoneNumber,
-            otp:otp
-        }).then((response)=>{
-            if(response.status==200){
+        else{
+            axios.post(`${Constants.BASE_URL}auth/email-verify`,{
+                email:emailId,
+                otp:otp
+            }).then((response)=>{
                 setIsLoading(false)
-                        //   navigation.navigate('/email-verification',{login_type:props.route.params.userType})
-                          navigation.navigate('/email-verify',{userType:props.route.params.userType})
-            }
-            else {
+                if(!response.data.error){
+                    navigation.navigate("/business-login",{
+                        login_type:props?.route?.params?.userType
+                    })
+                }
+                else{
+                    showToastmsg(response.data.data.msg);
+                }
+            }).catch((err)=>{
+                showToastmsg('Otp verification failed')
                 setIsLoading(false)
-                console.log('error response',response.data);
-            }
-        }).catch((err)=>{
-            showToastmsg('Otp verification failed')
-            setIsLoading(false)
-            console.log('catch error',err.response);
-        })}
+                console.log('catch error',err.response);
+            }) 
+        //     axios.post(Constants.BASE_URL+endPoints.VERIFY_OTP,{
+        //     mobile_number:phoneNumber,
+        //     otp:otp
+        // }).then((response)=>{
+        //     if(response.status==200){
+        //         setIsLoading(false)
+        //                   navigation.navigate('/business-login',{login_type:props.route.params.userType})
+        //     }
+        //     else {
+        //         setIsLoading(false)
+        //         console.log('error response',response.data);
+        //     }
+        // }).catch((err)=>{
+        //     showToastmsg('Otp verification failed')
+        //     setIsLoading(false)
+        //     console.log('catch error',err.response);
+        // })
+    }
         // try {
         //     const response = await apiCall('POST', endPoints.VERIFY_OTP, null, { mobile_number: phoneNumber, otp: otp })
         //     if (response && response.error === false && response.data.userExist) {
@@ -144,14 +163,15 @@ const BusinessOtp = (props) => {
         try {
             if(props?.route?.params?.phoneType){
                 axios.post(`${Constants.BASE_URL}auth/forgot-password`,{
-                    "data":phoneNumber
+                    "data":emailId
                 }).then((response)=>{
                     if(!response.data.error){
                         setIsLoading(false)
-                        setotpId(response.data.data.otp_id)        
                         showToastmsg('OTP resend successfully')
+                        setotpId(response.data.data.otp_id)        
                         setCountDownTime(30)
-                        console.log(response.data.data.otp);
+                        console.log(response.data.data.otp,"---",response.data.data.otp_id);
+                        
                     }
                 }).catch((error)=>{
                     console.log(error)
@@ -159,16 +179,24 @@ const BusinessOtp = (props) => {
                     setIsLoading(false)  
                 })
             }
-            else {const response = await apiCall('POST', endPoints.USER_LOGIN, null, { mobile_number: phoneNumber})
-            if(response.error===null && response.data.otp){
-                setIsLoading(false)
-                showToastmsg('OTP resend successfully')
-                setCountDownTime(30)
+            else {
+                axios.post(`${Constants.BASE_URL}auth/email-otp`,{
+                    "email":emailId
+                }).then((response)=>{
+                    if(!response.data.error){
+                        setIsLoading(false)
+                        showToastmsg('OTP resend successfully')
+                        setotpId(response.data.data.otp_id)        
+                        setCountDownTime(30)
+                        console.log(response.data.data.otp);
+                        
+                    }
+                }).catch((error)=>{
+                    console.log(error)
+                    showToastmsg('Sorry OTP not sent')
+                    setIsLoading(false)  
+                })
             }
-            else{
-                setIsLoading(false)
-                showToastmsg(response.msg)
-            }}
         } catch (error) {
             console.log(error)
             showToastmsg('Sorry OTP not sent')
@@ -177,10 +205,10 @@ const BusinessOtp = (props) => {
     }
     const gotRenterMobileNumber = ()=>{
         if(props?.route?.params?.phoneType){
-            navigation.navigate('/business-signup',{userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber,phoneType:props?.route?.params?.phoneType})    
+            navigation.navigate('/email-verify',{userType:props.route.params.userType,emailId:props.route.params.emailId,phoneType:props?.route?.params?.phoneType})    
         }
         else 
-        {navigation.navigate('/business-signup',{userDetails: props.route.params.user_details,userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber})}
+        {navigation.navigate('/email-verify',{userDetails: props.route.params.user_details,userType:props.route.params.userType,emailId:props.route.params.emailId})}
     }
     return (
         <View style={styles.background}>
@@ -218,7 +246,7 @@ const BusinessOtp = (props) => {
                     <Text style={styles.businessText}>{props.route.params.userType}</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter OTP sent to +91-{props.route.params.phoneNumber} <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
+                <Text style={styles.textBelowBusiness}>Enter OTP sent to {props?.route?.params?.emailId} <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
                 <OTPTextInput inputCount={4} textInputStyle={styles.otpField} handleTextChange={(otp) => setOtp(otp)} inputCellLength={1}/>
                 {
                     coundownTime === 0?
@@ -338,4 +366,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default BusinessOtp
+export default EmailOtp

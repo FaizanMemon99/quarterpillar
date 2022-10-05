@@ -31,12 +31,19 @@ const BusinessSignIn=(props)=>{
                 setIsLoading(false)
                 showToastmsg('Please enter login id and password')
             }
-           else{ const response = await apiCall('POST', 'auth/login', null, { data: LoginId, password: Password })
+           else{ const response = await apiCall('POST', 'auth/login', null, { data: LoginId, password: Password ,type:props?.route?.params?.login_type=='Influencer'?2:props?.route?.params?.login_type=='Explorer'?1:props?.route?.params?.login_type=='Business'?4:props?.route?.params?.login_type=='Advertiser'?3:5})
             if (response && response.error === false && response.data.token) {
                 setIsLoading(false)
                 try {
                     if( response.data.login_success)
-                    {navigation.navigate('/home',{"userDetails":response.data.user})
+                    {
+                        if(props.route.params.login_type=='Business')
+                        {navigation.navigate('/home',{"userDetails":response.data.user})}
+                        else if(props.route.params.login_type=='Influencer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else {
+                            navigation.navigate('/advertiser-product',{userDetails:response.data.user})
+                        }
                     await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: 'businesss', userDetails: response.data.user }))}
                     else {
                         setIsLoading(false)
@@ -56,19 +63,24 @@ const BusinessSignIn=(props)=>{
         }
     }
     const gotoForgotPass = () =>{
-        navigation.navigate('/forgot-password-advertiser')
+        navigation.navigate('/email-verify',{userType:props.route.params.login_type,phoneType:"forgotpassword"})
     }
     const gotoCreateAccount = () =>{
-        navigation.navigate('/advertiser-categories')
+        if(props?.route?.params?.login_type=='Business')
+        {navigation.navigate('/advertiser-categories')}
+        else if(props?.route?.params?.login_type=='Influencer'||props.route.params.login_type=='Explorer'){
+            navigation.navigate('/influencer-registration',{type:props.route.params.login_type})
+        }
+        else {
+            navigation.navigate('/advertise-registration',{type:props.route.params.login_type})
+        }
 
     }
     return (
         <View style={styles.background}>
             <VideoPlayer
-                 video={{ uri: 'http://qp.flymingotech.in/public/videos/pexels-artem-podrez-6780089.mp4' }}
+                 video={{ uri: props.route.params.login_type==="Business"?"https://acapp.in/uploads/biz1.mp4":props.route.params.login_type==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":props.route.params.login_type==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                  autoplay
-                 loop
-                 disableSeek
                  resizeMode={'cover'}
                  customStyles={{
                      wrapper: {
@@ -95,7 +107,7 @@ const BusinessSignIn=(props)=>{
                 <Image source={Images.logo} />
                 <Text style={styles.textBelowLogo}>Welcome to Quarterpillars</Text>
                 <View style={styles.business}>
-                <Text style={styles.businessText}>BUSINESS</Text>
+                <Text style={styles.businessText}>{props?.route?.params?.login_type?props?.route?.params?.login_type:''}</Text>
                     <Image source={Images.businessIcon} />
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter Mobile Number/Email Id/Username</Text>
@@ -163,6 +175,7 @@ const styles = StyleSheet.create({
         color: Constants.colors.whiteColor,
         fontWeight: '700',
         marginRight: Constants.margin,
+        textTransform:'capitalize'
     },
     textBelowBusiness: {
         fontFamily: Constants.fontFamily,

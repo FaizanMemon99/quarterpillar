@@ -23,7 +23,7 @@ const  AdvertiserCategory=()=>{
         <View style={styles.wrapper}>  
             <Pressable onPress={()=>businessRegistration('Travel')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/travel.mp4' }}
                     autoplay
                     loop
                     disableSeek
@@ -53,7 +53,7 @@ const  AdvertiserCategory=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Fashion')} style={styles.category}>
             <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/food.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/fashion.mp4' }}
                     autoplay
                     loop
                     disableSeek
@@ -83,7 +83,7 @@ const  AdvertiserCategory=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Life Style')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/videoFashion.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/lifestyle.mp4' }}
                     autoplay
                     loop
                     disableSeek
@@ -113,7 +113,7 @@ const  AdvertiserCategory=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Food')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/lifesty.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/food.mp4' }}
                     autoplay
                     loop
                     disableSeek

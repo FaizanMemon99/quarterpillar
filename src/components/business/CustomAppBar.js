@@ -11,7 +11,8 @@ import {
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 const CustomAppBar=(props)=>{
     const goBack = ()=>{
         props.navigation.goBack()
@@ -28,7 +29,10 @@ const CustomAppBar=(props)=>{
                         {
                             props.title?<Text style={styles.title}>{props.title}</Text>:(
                                 <View style={{marginStart: 20,marginTop: -12}}>
+                                    <View style={{width:Constants.width,display:'flex',alignItems:'center',flexDirection:'row'}}>
                                     <Text style={styles.welcome}>Hello!</Text>
+                                    <FontAwesome5Icon name="pen" size={20} style={{paddingLeft:100}}/>
+                                    </View>
                                     <Text style={styles.companyName}>{props.name}</Text>
                                 </View>
                             )

@@ -42,6 +42,10 @@ import ProductsScreen from '../screens/back/business/ProductsScreen'
 import AddProduct from '../screens/back/business/AddProduct'
 import ProductOverview from '../screens/back/business/ProductOverview'
 import ProductPreview from '../screens/back/influencer/ProductPreview'
+import EmailVerification from '../screens/front/email-verification'
+import EmailOtp from '../screens/front/email-otp'
+import ProfileScreen from '../screens/back/business/ProfileScreen'
+import EditUser from '../screens/back/business/EditUser'
 
 const Stack = createNativeStackNavigator()
 
@@ -60,8 +64,10 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name="/add-product" component={AddProduct}/>
                 <Stack.Screen name="/product-overview" component={ProductOverview}/>
                 <Stack.Screen name="/product-preview" component={ProductPreview}/>
+                <Stack.Screen name="/email-verify" component={EmailVerification}/>
                 <Stack.Screen name="/business-signup" component={BusinessSignup} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-login" component={BusinessSignIn} barStyle={{backgroundColor: 'transparent',}} />
+                <Stack.Screen name="/email-otp" component={EmailOtp} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-otp" component={BusinessOtp} barStyle={{backgroundColor: 'transparent',}} initialParams={{authentication: props.authentication}}/>
                 <Stack.Screen name="/categories" component={Category} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-registration" component={BusinessRegistration} />
@@ -86,10 +92,12 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/advertiser-categories' component={AdvertiserCategory} />
                 <Stack.Screen name='/advertiser-signin-with-pass' component={AdvertiserSiginWithPass} />
                 <Stack.Screen name='/forgot-password-advertiser' component={ForgotPasswordAdvertiser} />
-                <Stack.Screen name='/update-password-advertiser' component={UpdatePasswordAdvertiser} />
+                <Stack.Screen name='/update-password' component={UpdatePasswordAdvertiser} />
                 <Stack.Screen name='/advertise-registration' component={AdvertiserRegistration} />
                 <Stack.Screen name='/other-details' component={OtherDetails} />
                 <Stack.Screen name='/advertiser-product' component={StackNavigationAdvertiser} />
+                <Stack.Screen name='/profileScreen' component={ProfileScreen}/>
+                <Stack.Screen name='/edit-user-info' component={EditUser}/>
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

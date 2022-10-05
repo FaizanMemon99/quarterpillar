@@ -30,7 +30,7 @@ const StackNavigationAdvertiser=(props)=>{
             <Stack.Navigator initialRouteName='product' screenOptions={{
                 headerShown: false,
             }}>
-                <Stack.Screen name="/product" component={Product} />
+                <Stack.Screen name="/product" component={Product} initialParams={{userDetails: props?.route?.params?.userDetails}}/>
                 <Stack.Screen name="/category" component={AdvertiserCategory} />
                 <Stack.Screen name="/open-camera" component={OpenCamera} />
                 <Stack.Screen name="/new-advertisment" component={OpenCamera} />

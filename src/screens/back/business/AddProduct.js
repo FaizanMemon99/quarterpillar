@@ -8,6 +8,7 @@ import {
     Pressable,
     TextInput,
     Modal,
+    ActivityIndicator,
 } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
@@ -58,9 +59,9 @@ const AddProduct=(props)=>{
     const openCamera = async ()=>{
 		try{
 			const result = await launchCamera()
-            console.log("images",result)
+            console.log("images",result.assets[0])
 
-			cameraImg.push(result)
+			cameraImg.push(result.assets[0])
             setCameraImg([...cameraImg])
 		}
         catch(err){
@@ -144,116 +145,67 @@ const AddProduct=(props)=>{
         }
         else 
         { 
-            // let formdata = new FormData();
-            // console.log("camera image",cameraImg)
-            // if(cameraImg.length>0){
-                
-            //     for(let i=0;i<cameraImg.length;i++){
-            //         formdata.append(`product_image[${i}]`, cameraImg[i].assets[0])
-            //     }
-                
-            // }
-            // else {
-            //     formdata.append("product_image",[])
-            // }
-            // formdata.append("product_category",props?.route?.params?.userDetails?.business?.catorige)
-            // formdata.append("product_video_url",productVideoUrl)
-            // formdata.append("product_name",productName)
-            // formdata.append("product_brand",productBrand)
-            // formdata.append("unit_id",productUnit)
-            // formdata.append("minimum_qty",minimumQuantity)
-            // formdata.append("product_tags",productTags)
-            // formdata.append("is_refundable",isRefundable)
-            // formdata.append("is_cod",cod)
-            // formdata.append("product_description",productDescription)
-            // formdata.append("unit_price",productUnitPrice)
-            // formdata.append("sales_price",productSellingPrice)
-            // formdata.append("dicount",productDiscount)
-            // formdata.append("product_type",productType)
-            // formdata.append("colors",productColor)
-            // formdata.append("sizes",productSize)
-            // formdata.append("units",productVUnits)
-            // formdata.append("qty",productQuantity)
-            // formdata.append("warning_qty",productLowStock)
-            // formdata.append("product_tax",productTax)
-            // formdata.append("tax_type",productTaxType)
-            // formdata.append("service_company",productCompany)
-            // formdata.append("delivery_type",productDeliveryType)
-            // formdata.append("pin_code",productPincode)
-            // formdata.append("business_id",props?.route?.params?.userDetails?.business?.business_id)
-            // setbuttonLoader(true)
-            // console.log("form data object",formdata._parts[0])
+            const headers = {
+                'x-device-id': 'stuff',
+                'Content-Type': 'multipart/form-data',
+              }
+            var formdata = new FormData();
+            for(let i=0;i<cameraImg.length;i++ ){    
+                formdata.append('product_image[]', { uri: cameraImg[i].uri, name: cameraImg[i].fileName, type:cameraImg[i].type });
+              }
+            formdata.append("product_category",props?.route?.params?.userDetails?.business?.catorige)
+            formdata.append("product_video_url",productVideoUrl)
+            formdata.append("product_name",productName)
+            formdata.append("product_brand",productBrand)
+            formdata.append("unit_id",productUnit)
+            formdata.append("minimum_qty",minimumQuantity)
+            formdata.append("product_tags",productTags)
+            formdata.append("is_refundable",isRefundable)
+            formdata.append("is_cod",cod)
+            formdata.append("product_description",productDescription)
+            formdata.append("unit_price",productUnitPrice)
+            formdata.append("sales_price",productSellingPrice)
+            formdata.append("dicount",productDiscount)
+            formdata.append("product_type",productType)
+            formdata.append("colors",productColor)
+            formdata.append("sizes",productSize)
+            formdata.append("units",productVUnits)
+            formdata.append("qty",productQuantity)
+            formdata.append("warning_qty",productLowStock)
+            formdata.append("product_tax",productTax)
+            formdata.append("tax_type",productTaxType)
+            formdata.append("service_company",productCompany)
+            formdata.append("delivery_type",productDeliveryType)
+            formdata.append("pin_code",productPincode)
+            formdata.append("business_id",props?.route?.params?.userDetails?.business?.business_id)
+            setbuttonLoader(true)
+            console.log("form data object",formdata._parts[0])
           
-            // axios.post(`${Constants.BASE_URL}business/add-product`,formdata).then((res)=>{
-            //            console.log("response123",res.data)         
-            //     if(res.data.response==200){
-            //         setbuttonLoader(false)
-            //         console.log("successful",res.data)
-            //         // navigation.navigate('/product-overview',{userDetails:props?.route?.params?.userDetails})
-            //         showToastmsg(res.data.msg)
-            //         // console.log("mobile otp value",res.data.data.otp)
-            //     }
-            //     else {
-            //         setbuttonLoader(false)
-            //         console.log("data1",res)
-            //         showToastmsg(res.data.msg)
-            //     }
-                
-            // }).catch((err)=>{
-            //     setbuttonLoader(false)
-            //     console.log("product regsitration",err.response)
-            // })
-            
-        }var formdata = new FormData();
-        formdata.append("product_category", "FASHION");
-        for(let i=0;i<cameraImg.length;i++){
-                    formdata.append('product_image['+i+']', cameraImg[i].assets[0], cameraImg[i].assets[0].name)
+            axios.post(`${Constants.BASE_URL}business/add-product`,formdata,{
+                headers: headers
+              }).then((res)=>{
+                if(res.status==200){
+                    navigation.navigate('/productScreen',{userDetails:props?.route?.params?.userDetails})
+                    setbuttonLoader(false)
                 }
-       // formdata.append("product_image[0]", fileInput.files[0], "[PROXY]");
-        formdata.append("product_video_url", "abc");
-        formdata.append("product_name", "xyz");
-        formdata.append("product_brand", "yoga");
-        formdata.append("unit_id", "2");
-        formdata.append("minimum_qty", "2");
-        formdata.append("product_tags", "travel");
-        formdata.append("is_refundable", "true");
-        formdata.append("is_cod", "true");
-        formdata.append("product_description", "abc");
-        formdata.append("unit_price", "111");
-        formdata.append("sales_price", "111");
-        formdata.append("dicount", "3%");
-        formdata.append("product_type", "3");
-        formdata.append("colors", "red");
-        formdata.append("sizes", "7");
-        formdata.append("units", "2");
-        formdata.append("qty", "2");
-        formdata.append("warning_qty", "1");
-        formdata.append("product_tax", "11");
-        formdata.append("tax_type", "gst");
-        formdata.append("service_company", "xyz");
-        formdata.append("delivery_type", "cod");
-        formdata.append("pin_code", "411048");
-        formdata.append("business_id", "51");
-        
-        
-        var requestOptions = {
-          method: 'POST',
-          body: formdata,
-          redirect: 'follow'
-        };
-
-        console.log(formdata);
-        
-        fetch("http://qp.flymingotech.in/quarterpillars_backend/public/api/v1/business/add-product", requestOptions)
-          .then(response => response.json())
-          .then(result => console.log(result))
-          .catch(error => console.log('error', error));
+                else {
+                    setbuttonLoader(false)
+                    console.log("data1",res.data)
+                    showToastmsg(res.data.msg)
+                }
+                
+            }).catch((err)=>{
+                setbuttonLoader(false)
+                console.log("product regsitration",err.response)
+            })
+            
+        }
     }
     const choosePhotoFromLibrary = async ()=>{
 		try{
 			const result = await launchImageLibrary()
-
-			cameraImg.push(result)
+console.log("folder image",result.assets[0]);
+			cameraImg.push(result.assets[0])
             setCameraImg([...cameraImg])
 		}
         catch(err){
@@ -277,7 +229,7 @@ const AddProduct=(props)=>{
                             
                         {cameraImg.map((item,index)=>
                                 <View style={styles.cameraContainer}>
-                                    <Image source={{uri: item.path?item.path:item.assets[0].uri}} alt='Img' style={{
+                                    <Image source={{uri: item.uri}} alt='Img' style={{
                     width: '100%',
                     height: 100,
                     resizeMode: 'contain',
@@ -427,9 +379,9 @@ const AddProduct=(props)=>{
                     <TextInput style={[globatStyles.inputText, {width: '48%',}]} keyboardType={'number-pad'} onChangeText={text=>setproductPincode(text)} placeholder='Pin Code' />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Pressable onPress={()=>navigation.navigate("/product-preview")}
+                    <Pressable onPress={()=>navigation.navigate("/product-preview",{userDetails:props.route.params.userDetails})}
                      style={[globatStyles.button, styles.btnOutline]}><Text style={[globatStyles.btnText, {color: Constants.colors.primaryColor,}]}>PREVIEW</Text></Pressable>
-                    <Pressable onPress={gotoProducts} style={[globatStyles.button, , {width: '48%'}]}><Text style={globatStyles.btnText}>ADD </Text></Pressable>
+                    <Pressable onPress={!buttonLoader&&gotoProducts} style={[globatStyles.button, , {width: '48%'}]}>{buttonLoader?<ActivityIndicator size={20} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>ADD </Text>}</Pressable>
                 </View>
             </ScrollView>
         </View>

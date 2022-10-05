@@ -12,31 +12,51 @@ import CustomAppBar from '../../../components/influencer/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { useNavigation } from '@react-navigation/native'
 
-const Profile=({navigation})=>{
+const Profile=(props)=>{
+    const navigation=useNavigation()
+    console.log('props value',props?.route?.params?.userDetails);
+    function isImage() {
+        var url=''
+        if(Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'){
+url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`
+console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`);
+        }
+        else
+        {
+            url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`
+        console.log('images111',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`);
+        }
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+      }
     return (
         <View>
-            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Profile' />
+            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Profile' userDetails={props?.route?.params?.userDetails} type={Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]} />
+            <Text style={styles.summaryDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                </Text>
             <ScrollView style={styles.container}>
                <View style={styles.companyDetails}>
-                    <Image source={Images.profileIcon} style={styles.companyLogo} />
+                    <Image source={isImage?
+                            {uri:Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}:Images.profileIcon} style={styles.companyLogo} />
                     <View style={styles.companyInfo}>
-                        <Text style={styles.email}>Ruchika Das</Text>
-                        <Text style={styles.phone}>Fashion Blogger</Text>
+                        <Text style={styles.email}>{props?.route?.params?.userDetails?.name}</Text>
+                        <Text style={styles.phone}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
                     </View>
                </View>
                <View style={styles.socialDetails}>
                     <View style={styles.socialContainer}>
-                        <Text style={styles.socialValue}>1.2M</Text>
-                        <Text style={styles.socialActivity}>Follower</Text>
+                        <Text style={styles.socialValue}>250</Text>
+                        <Text style={styles.socialActivity}>Posts</Text>
                     </View>
                     <View style={styles.socialContainer}>
                         <Text style={styles.socialValue}>98</Text>
                         <Text style={styles.socialActivity}>Following</Text>
                     </View>
                     <View style={{...styles.socialContainer, borderRightWidth: 0,}}>
-                        <Text style={styles.socialValue}>250</Text>
-                        <Text style={styles.socialActivity}>Posts</Text>
+                        <Text style={styles.socialValue}>1.2M</Text>
+                        <Text style={styles.socialActivity}>Follower</Text>
                     </View>
                </View>
                <View style={styles.divider}></View>
@@ -104,11 +124,14 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
         fontSize: 20,
+        textTransform:'capitalize'
     },
     phone: {
         fontFamily: Constants.fontFamily,
         marginTop: 8,
         color: '#A4A4B2',
+        fontSize:20,
+        textTransform:'capitalize'
     },
     moreInfo: {
         fontFamily: Constants.fontFamily,
@@ -123,6 +146,8 @@ const styles = StyleSheet.create({
     socialDetails: {
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems:'center',
+        // paddingLeft:46
     },
     socialContainer:{
         padding: Constants.padding,
@@ -166,6 +191,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         left: 30,
+    },
+    summaryDesc: {
+        padding:Constants.padding,
+        fontFamily: Constants.fontFamily,
     },
 })
 

@@ -20,8 +20,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
+import { useNavigation } from '@react-navigation/native'
 
-const Product=({navigation})=>{
+const Product=(props)=>{
+    const navigation=useNavigation()
     const [newPost, setNewPost] = useState(false)
     const [showDrawer, setShowDrawer] = useState(false)
     const [showRateus, setShowRateus] = useState(true)
@@ -34,6 +36,20 @@ const Product=({navigation})=>{
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
+    function isImage() {
+        var url=''
+        if(Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'){
+url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`
+console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`);
+        }
+        else
+        {
+            url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`
+        console.log('images111',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`);
+        }
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+      }
+    console.log("props value",Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]);
     return (
         <View style={globatStyles.wrapper}>
             {
@@ -55,53 +71,58 @@ const Product=({navigation})=>{
                 <View style={styles.header}>
                     <View style={styles.profileDetails}>
                         <View style={styles.profileIcon}>
-                            <Image source={Images.avatar} />
+                            <Image source={isImage?
+                            {uri:Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
+                            :
+                                Images.avatar}  style={{width:50,height:'100%'}}/>
                         </View>
                         <View>
-                            <Text style={styles.preofileName}>Tanveer Inamdar</Text>
-                            <Text style={styles.founder}>Fashion Blogger</Text>
+                            <Text style={styles.preofileName}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?props?.route?.params?.userDetails?.influencer?.name:props?.route?.params?.userDetails?.explore?.name}</Text>
+                            <Text style={styles.founder}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
                         </View>
                     </View>
                 </View>
                 <ScrollView style={styles.drawerItemContainer}>
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification')
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'fa5', 'comments-dollar', 'Share & Earn', navigation, '/share-and-earn')
+                        setMenuItem(setActiveMenu, activeMenu, 'fa5', 'comments-dollar', 'Share & Earn', navigation, '/share-and-earn',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'fa', 'money', 'Earnings', navigation, '/earnings')
+                        setMenuItem(setActiveMenu, activeMenu, 'fa', 'money', 'Earnings', navigation, '/earnings',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'dashboard', 'Dashboard', navigation, '/dashboard')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'dashboard', 'Dashboard', navigation, '/dashboard',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'en', 'box', 'My Orders', navigation, '/my-orders')
+                        setMenuItem(setActiveMenu, activeMenu, 'en', 'box', 'My Orders', navigation, '/my-orders',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list')
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings')
+                        setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support')
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'fa', 'bank', 'Bank Details', navigation, '/bank-details')
+                        setMenuItem(setActiveMenu, activeMenu, 'fa', 'bank', 'Bank Details', navigation, '/bank-details',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'redenvelopes', 'Drafts', navigation, '/all-drafts')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'redenvelopes', 'Drafts', navigation, '/all-drafts',props)
                     }
                 </ScrollView>
-                <Pressable style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
+                <Pressable
+               onPress={()=>navigation.navigate('/')}
+                style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
                     <AntDesign name='logout' size={22} color={Constants.colors.whiteColor} />
                     <Text style={{color: Constants.colors.whiteColor, fontFamily: Constants.fontFamily, fontWeight: '700', fontSize: 18, marginLeft: 12,}}>Logout</Text>
                 </Pressable>
@@ -165,11 +186,11 @@ const Product=({navigation})=>{
     )
 }
 
-const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url)=>{
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
     return(
         <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(60, 255, 106, 0.47)':'transparent', padding: 14,}]} onPress={()=>{
             setActiveMenu(title)
-            navigation.navigate(url)
+            navigation.navigate(url,{userDetails:props.route.params.userDetails})
         }}>
             {
                 icon==='feather'?<Feather name={iconName} size={26} color={Constants.colors.whiteColor} />:null
@@ -324,18 +345,21 @@ const styles = StyleSheet.create({
         borderColor: '#000000',
         padding: 8,
         marginEnd: 6,
+        marginTop:10
     },
     preofileName: {
         fontFamily: Constants.fontFamily,
         fontSize: 20,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
+        textTransform:"capitalize"
     },
     founder: {
         color: '#424242',
         opacity: 0.78,
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
+        textTransform:"capitalize"
     },
     rateusContainer: {
         position: 'absolute',

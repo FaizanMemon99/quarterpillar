@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import {
     View,
@@ -15,14 +16,15 @@ import Constants from '../../../shared/Constants'
 import globatStyles from '../../../shared/globatStyles'
 
 const ProductPreview = (props)=>{
+    const navigation=useNavigation()
     const gotoProductDescription = ()=>{
-        props.navigation.navigate('/product-description')
+        navigation.navigate('/product-description')
     }
     return (
         <View style={globatStyles.wrapper}>
             <ImageBackground source={Images.nature} style={styles.nature}>
                 <StatusBar translucent={true} backgroundColor='transparent' />
-                <CustomAppBar navigation={props.navigation} isMainscreen={false} isReel={true} headerRight={false} title='Nature' subtitle={props.route.params.category} />
+                <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} headerRight={false} title='Nature' subtitle={props?.route?.params?.userDetails?.business?.catorige} />
                 <View style={globatStyles.overlay}></View>
                 <View style={styles.productDetailsContainer}>
                     <LinearGradient style={styles.productInfoContainer} colors={[ '#FFFFFF', '#A4A4B2']} start={{x:0, y:0}} end={{x: 1, y: 0}}>

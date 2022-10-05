@@ -65,6 +65,7 @@ const globatStyles = {
     },
     inputLabel: {
         fontFamily: Constants.fontFamily,
+        marginTop:10
     },
     followBtn: {
         backgroundColor: 'transparent',

@@ -15,45 +15,49 @@ import globatStyles from '../../shared/globatStyles'
 import { apiCall } from '../../service/service'
 import endPoints from '../../shared/endPoints'
 import Loading from '../../components/Loading'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Video from 'react-native-video'
+
 
 const Discover = () => {
 
     const [users, setUsers] = useState([])
-
     const getAllUsers = async () => {
         const users = await apiCall('GET', endPoints.USER_TYPES, '', '')
         setUsers(users)
     }
-    useEffect(() => {
+    var url="https://acapp.in/uploads/biz1.mp4"
+    useEffect(()=>{
         getAllUsers()
-    }, [])
+         },[])
     const navigation = useNavigation()
-    const gotoExploer = () => {
-        navigation.navigate('/exploer-registration')
-    }
+    // const gotoExploer = () => {
+    //     navigation.navigate('/exploer-registration')
+    // }
     const gotoLogin = (val) => {
-        console.log("data val",val)
         navigation.navigate('/business-login',{login_type:val})
     }
-    const gotoInfluencer = () => {
-        navigation.navigate('/infliencer-signup')
-    }
-    const gotoAdvertiser = () => {
-        navigation.navigate('/advertiser-signup')
-    }
-    const enterAsAdmin = () => {
-        //navigation.navigate('/admin-signin')
-    }
+    // const gotoInfluencer = () => {
+    //     navigation.navigate('/infliencer-signup')
+    // }
+    // const gotoAdvertiser = () => {
+    //     navigation.navigate('/advertiser-signup')
+    // }
+    // const enterAsAdmin = () => {
+    //     //navigation.navigate('/admin-signin')
+    // }
     return (
-        <ScrollView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+        <ScrollView >
             <Text style={styles.header}>Discover</Text>
             {
                 users.users && users.users.length > 0 ? users.users.map(user =>
                     user.role_name !== 'Admin' ? (
                         <Pressable style={{ marginBottom: Constants.margin, }} onPress={()=>gotoLogin(user.role_name)} key={user.id}>
                             <VideoPlayer
-                                video={{ uri: user.bg_video }}
+                                video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                                 autoplay
+                                muted
                                 loop
                                 disableSeek
                                 resizeMode={'cover'}
@@ -100,6 +104,7 @@ const Discover = () => {
                 ) : null
             } */}
         </ScrollView>
+        </SafeAreaView>
     )
 }
 
