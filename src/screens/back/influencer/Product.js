@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     Text,
@@ -36,6 +36,7 @@ const Product=(props)=>{
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
+    const userType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
     function isImage() {
         var url=''
         if(Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'){
@@ -49,7 +50,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
         }
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
       }
-    console.log("props value",Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]);
+    // console.log("props value",Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]);
     return (
         <View style={globatStyles.wrapper}>
             {
@@ -77,7 +78,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                                 Images.avatar}  style={{width:50,height:'100%'}}/>
                         </View>
                         <View>
-                            <Text style={styles.preofileName}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?props?.route?.params?.userDetails?.influencer?.name:props?.route?.params?.userDetails?.explore?.name}</Text>
+                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name.length>10?props?.route?.params?.userDetails?.name.slice(0,10)+'...':props?.route?.params?.userDetails?.name}</Text>
                             <Text style={styles.founder}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
                         </View>
                     </View>
@@ -86,20 +87,24 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
                     }
-                    {
+                    {userType=='influencer'&&
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'comments-dollar', 'Share & Earn', navigation, '/share-and-earn',props)
                     }
-                    {
+                    {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'fa', 'money', 'Earnings', navigation, '/earnings',props)
-                    }
-                    {
+                    } */}
+                    
+                    {userType=='influencer'&&
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'dashboard', 'Dashboard', navigation, '/dashboard',props)
                     }
-                    {
+                    {(userType=='influencer'||userType=='explore')&&
                         setMenuItem(setActiveMenu, activeMenu, 'en', 'box', 'My Orders', navigation, '/my-orders',props)
                     }
+                    {(userType=='influencer'||userType=='advertiser')&&
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'My Requests', navigation, '/my-requests',props)
+                    }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list',props)
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
@@ -110,15 +115,12 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about',props)
                     }
-                    {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
-                    }
-                    {
+                    {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'fa', 'bank', 'Bank Details', navigation, '/bank-details',props)
-                    }
-                    {
+                    } */}
+                    {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'redenvelopes', 'Drafts', navigation, '/all-drafts',props)
-                    }
+                    } */}
                 </ScrollView>
                 <Pressable
                onPress={()=>navigation.navigate('/')}

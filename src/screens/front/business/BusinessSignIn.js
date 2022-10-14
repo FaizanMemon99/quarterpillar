@@ -81,6 +81,7 @@ const BusinessSignIn=(props)=>{
             <VideoPlayer
                  video={{ uri: props.route.params.login_type==="Business"?"https://acapp.in/uploads/biz1.mp4":props.route.params.login_type==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":props.route.params.login_type==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                  autoplay
+                 repeat={true}
                  resizeMode={'cover'}
                  customStyles={{
                      wrapper: {

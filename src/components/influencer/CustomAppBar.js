@@ -58,8 +58,8 @@ const CustomAppBar=(props)=>{
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
                         </View>
-                        <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
-                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
+                        {!props.isReel&&<Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
+                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>}
                     </View>
                 )
             }

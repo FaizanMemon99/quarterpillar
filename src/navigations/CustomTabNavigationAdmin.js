@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
+        shadowColor: '#171717',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
     tabItem: {
         alignItems: 'center',

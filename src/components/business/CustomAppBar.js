@@ -15,7 +15,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 const CustomAppBar=(props)=>{
     const goBack = ()=>{
-        props.navigation.goBack()
+        props.navigation.goBack() 
     }
     return (
         <SafeAreaView>
@@ -23,15 +23,18 @@ const CustomAppBar=(props)=>{
             { 
                 props.isMainscreen?(
                     <View style={[styles.logoContainer, props.title?({alignItems: 'center'}):null]}>
-                        <Pressable onPress={()=>props.openDrawer()}>
-                            <Image source={Images.hamburgerMenuIcon} />
-                        </Pressable>
+                      <Pressable onPress={()=>props.openDrawer()} style={{zIndex: 999}}>
+                            {
+                                !props.showDrawer?<Image source={Images.hamburgerMenuIcon} />:<AntDesign name='close' size={26} />
+                            }
+                            
+                        </Pressable> 
                         {
                             props.title?<Text style={styles.title}>{props.title}</Text>:(
                                 <View style={{marginStart: 20,marginTop: -12}}>
                                     <View style={{width:Constants.width,display:'flex',alignItems:'center',flexDirection:'row'}}>
                                     <Text style={styles.welcome}>Hello!</Text>
-                                    <FontAwesome5Icon name="pen" size={20} style={{paddingLeft:100}}/>
+                                    {/* <FontAwesome5Icon name="pen" size={20} style={{paddingLeft:100}}/> */}
                                     </View>
                                     <Text style={styles.companyName}>{props.name}</Text>
                                 </View>
@@ -40,9 +43,23 @@ const CustomAppBar=(props)=>{
                     </View>
                     
                 ):(
-                    <View style={styles.titleBar}>
+                    <View style={[styles.logoContainer,{display:'flex',width:'100%'}]}><View style={styles.titleBar}>
+                        <View style={{display:'flex',alignItems:'center',flexDirection:'row'}}>
                         <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
-                        <Text style={{...styles.title, color: props.isReel?Constants.colors.whiteColor: 'rgba(0,0,0,1)'}}>{props.title}</Text>
+                        <Text style={{...styles.title, color: props.isReel?Constants.colors.whiteColor: 'rgba(0, 0, 0, 1)',}}>{props.isInfluencer?props.name:props.title}</Text>
+                        {
+                            props.subtitle?<Text style={styles.subtitle}>{props.subtitle}</Text>:null
+                        }
+                        {
+                            props.isDraft?<Text style={styles.draft}>Draft</Text>:null
+                        }
+                        </View>
+                        {props.editable?
+                            <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
+                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
+                            
+                    </View>
+                    <Text style={[styles.companyName,{paddingLeft:'12%'}]}>{props.name}</Text>
                     </View>
                 )
             }
@@ -90,6 +107,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         zIndex: 99,
+        justifyContent:'space-between',
+        width:'100%'
     },
     title: {
         fontFamily: Constants.fontFamily,

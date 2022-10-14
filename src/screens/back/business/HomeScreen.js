@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef } from 'react'
 import {
     View,
     Text,
@@ -6,6 +6,8 @@ import {
     Image,
     StyleSheet,
     FlatList,
+    Animated,
+    StatusBar
 } from 'react-native'
 import SearchBar from '../../../components/business/SearchBar'
 import LinearGradient from 'react-native-linear-gradient'
@@ -14,23 +16,34 @@ import { DonutChart } from 'react-native-circular-chart'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import Images from '../../../assets/images/Images'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 import globatStyles from '../../../shared/globatStyles'
 import RenderRecentOrders from './RenderRecentOrders'
 import { useNavigation } from '@react-navigation/native'
 import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
-import TabNavigationBusiness from './TabNavigationBusiness'
-
+import Feather from 'react-native-vector-icons/Feather'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Entypo from 'react-native-vector-icons/Entypo'
+import Octicons from 'react-native-vector-icons/Octicons'
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
     const navigation = useNavigation()
     const [showDrawer, setShowDrawer] = useState(false)
+    const [activeMenu, setActiveMenu] = useState('')
+    const offsetValue = useRef(new Animated.Value(0)).current
+    const scaleValue = useRef(new Animated.Value(1)).current
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
+        console.log("open drawer : ",showDrawer);
+
     }
+    const closeDrawer = ()=>{
+        setShowDrawer(!showDrawer)
+    }
+    console.log("props value",props?.route?.params);
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,
@@ -92,9 +105,84 @@ const HomeScreen=(props)=>{
     const gotoAllOrders = ()=>{
         navigation.navigate('/all-orders')
     }
+    function isImage(url) {
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+    }
+    useEffect(()=>{
+        setActiveMenu('')
+    },[props])
     return (
-        <View style={{flex:1}}>
-            <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
+        <View style={globatStyles.wrapper}>
+             {
+                Animated.timing(scaleValue, {
+                    toValue: showDrawer?1:1,
+                    duration: 300,
+                    useNativeDriver: false,
+                }).start()
+            }
+            {
+                Animated.timing(offsetValue, {
+                    toValue: showDrawer?0:0,
+                    duration: 300,
+                    useNativeDriver: false,
+                }).start()
+            }
+            {showDrawer&&  <View style={styles.menubg}>
+                <StatusBar translucent={true} backgroundColor={'transparent'} />
+                <View style={styles.header}>
+                
+                    <View style={styles.profileDetails}>
+                    <Pressable onPress={openDrawer} style={{zIndex: 999,paddingTop:10}}><AntDesign name='close' size={26} style={{paddingRight:10}}/></Pressable>
+                        <View style={styles.profileIcon}>
+                            <Image source={isImage(props?.route?.params?.userDetails?.business.avatar)?
+                            {uri:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.avatar}`}
+                            :
+                                Images.avatar}  style={{width:60,height:'100%'}}/>
+                        </View>
+                        <View>
+                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name.length>20?props?.route?.params?.userDetails?.name.slice(0,20)+'...':props?.route?.params?.userDetails?.name}</Text>
+                            <Text style={styles.founder}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
+                        </View>
+                    </View>
+                </View>
+                <ScrollView style={styles.drawerItemContainer}>
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'layout', 'My Pillars', navigation, '/my-pillars',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'fa5', 'confluence', 'Influencer list', navigation, '/influencer-list',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'My Users', navigation, '/my-requests',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'oct', 'arrow-switch', 'Switch View As', navigation, '/about',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support',props)
+
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'alert-octagon', 'About', navigation, '/about',props)
+                    }
+                    
+                </ScrollView>
+                <Pressable
+               onPress={()=>navigation.navigate('/')}
+                style={{flexDirection: 'row', margin: 12, marginLeft: 0,  backgroundColor: 'rgba(0, 169, 40, 0.1)', padding: 16,paddingRight:0}}>
+                    <AntDesign name='logout' size={22} color={'black'} style={{marginLeft: 12}}/>
+                    <Text style={{color: 'black', fontFamily: Constants.fontFamily, fontWeight: '700', fontSize: 18, marginLeft: 12}}>Logout</Text>
+                </Pressable>
+            </View>}
+            <Animated.View style={{opacity:showDrawer?0.3:1,position: 'absolute',zIndex:1, top: 0, right: 0, bottom: 0, left: 0,backgroundColor: '#E5E5E5', transform: [
+                {scale: scaleValue},
+                {translateX: offsetValue}
+            ]}}>
+                {/* <View> */}
+     <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
             <ScrollView style={styles.container}>
                 <SearchBar />
                 <View style={styles.totalRevenue}>
@@ -304,17 +392,108 @@ const HomeScreen=(props)=>{
                     </View>
                 </View>:null
             }
-                <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'
+               <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'
                 propValue={props?.route?.params?.userDetails}
                 />
-        
+                
+        </Animated.View>
+        {/* </View> */}
         </View>
     )
 }
+
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
+    return(
+        <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(0, 169, 40, 0.1);':'transparent', padding: 14}]} onPress={()=>{
+            setActiveMenu(title)
+            navigation.navigate(url,{userDetails:props.route.params.userDetails})
+        }}>
+            {
+                icon==='feather'?<Feather name={iconName} size={26} color={'black'} />:null
+            }
+            {
+                icon==='fa5'?<FontAwesome5 name={iconName} size={26} color={'black'} />:null
+            }
+            {
+                icon==='ant'?<AntDesign name={iconName} size={26} color={'black'} />:null
+            }
+            {
+                icon==='en'?<Entypo name={iconName} size={26} color={'black'} />:null
+            }
+            {
+                icon==='oct'?<Octicons name={iconName} size={26} color={'black'} />:null
+            }
+            {
+                icon==='fa'?<FontAwesome name={iconName} size={26} color={'black'} />:null
+            }
+            <Text style={[styles.menuName]}>{title}</Text>
+        </Pressable>
+    )
+}
+
 const styles = StyleSheet.create({
+    menubg: {
+        flex: 1,
+        zIndex:2,
+        width:'80%',
+        backgroundColor: '#fff',
+    },
+    menuName: {
+        fontFamily: Constants.fontFamily,
+        color: 'black',
+        fontWeight: '700',
+        fontSize: 18,
+        marginLeft: 12,
+    },
+    header: {
+        padding: Constants.padding,
+        paddingStart: 12,
+        height: 120,
+        marginTop: 20,
+    },
+    profileDetails: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#676767',
+        // width: '62%',
+        paddingBottom: Constants.padding,
+    },
+    profileIcon: {
+        borderRadius: Constants.borderRadius,
+        borderWidth: 1,
+        borderColor: '#000000',
+        padding: 8,
+        marginEnd: 6,
+        marginTop:10
+    },
+    preofileName: {
+        fontFamily: Constants.fontFamily,
+        fontSize: 20,
+        fontWeight: '700',
+        color: 'black',
+        textTransform:"capitalize"
+    },
+    founder: {
+        color: 'black',
+        opacity: 0.78,
+        fontFamily: Constants.fontFamily,
+        // color: Constants.colors.whiteColor,
+        textTransform:"capitalize"
+    },
+    drawerItemContainer: {
+        marginTop: 12,
+        padding: 12,
+        // paddingLeft: 0,
+        flexGrow: 1,
+    },
+    drawerItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     container: {
         padding: Constants.padding,
-        paddingBottom: 100,
+        // paddingBottom: 100,
     },
     totalRevenue: {
         backgroundColor: Constants.colors.whiteColor,
@@ -487,7 +666,7 @@ const styles = StyleSheet.create({
     },
     recentOrderContainer: {
         marginTop: 50,
-        paddingBottom: 220,
+        paddingBottom: 120,
     },
     orderHeading: {
         flexDirection: 'row',

@@ -46,6 +46,12 @@ import EmailVerification from '../screens/front/email-verification'
 import EmailOtp from '../screens/front/email-otp'
 import ProfileScreen from '../screens/back/business/ProfileScreen'
 import EditUser from '../screens/back/business/EditUser'
+import UserManagement from '../screens/back/business/UserManagement'
+import AllOrders from '../screens/back/business/AllOrders'
+import MyRequest from '../screens/back/business/MyRequest'
+import MyPillars from '../screens/back/business/MyPillars'
+import InfluencerList from '../screens/back/advertiser/InfluencerList'
+import BusinessRequest from '../screens/back/advertiser/BusinessRequest'
 
 const Stack = createNativeStackNavigator()
 
@@ -58,9 +64,13 @@ const AuthNavigation=(props)=>{
                 headerShown: false,
             }}> 
                 <Stack.Screen name="/" component={Discover} />
-                <Stack.Screen name="/home" component={HomeScreen} />
-                {/* <Stack.Screen name='/add-product' component={AddProduct} /> */}
+                <Stack.Screen name="/home" component={HomeScreen} initialParams={{authentication: props.authentication}}/>
+                <Stack.Screen name='/my-requests' component={MyRequest} />
+                <Stack.Screen name='/my-pillars' component={MyPillars} />
+                <Stack.Screen name='/influencer-list' component={InfluencerList} />
+                <Stack.Screen name='/influencer-request' component={BusinessRequest} />
                 <Stack.Screen name="/productScreen" component={ProductsScreen}/>
+                <Stack.Screen name="/all-orders" component={AllOrders}/>
                 <Stack.Screen name="/add-product" component={AddProduct}/>
                 <Stack.Screen name="/product-overview" component={ProductOverview}/>
                 <Stack.Screen name="/product-preview" component={ProductPreview}/>
@@ -98,6 +108,7 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/advertiser-product' component={StackNavigationAdvertiser} />
                 <Stack.Screen name='/profileScreen' component={ProfileScreen}/>
                 <Stack.Screen name='/edit-user-info' component={EditUser}/>
+                <Stack.Screen name='/user-management' component={UserManagement}/>
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

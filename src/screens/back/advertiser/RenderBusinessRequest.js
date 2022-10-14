@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     Pressable,
+    ActivityIndicator,
 } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
 import Images from '../../../assets/images/Images'
@@ -12,22 +13,51 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
+import { useNavigation } from '@react-navigation/native'
 
-const RenderBusinessRequest = () => {
-    
+const RenderBusinessRequest = ({item,userDetails}) => {
+    const [loader,setLoader]=useState(false)
+    const navigation=useNavigation()
+    const sendRequest=()=>{
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}business/req-business-collobration`,{
+            "business_id":userDetails?.business?.business_id,
+            "influencer_id":item?.item?.influencer_id
+        }).then((response)=>{
+            setLoader(false)
+            if(response.data.response==200){
+                showToastmsg('Request for collaboration sended to influencer')
+                navigation.navigate('/my-pillars',{userDetails:userDetails})
+            }
+            else {
+                showToastmsg('Cannot send request to influencer. Please try again later')
+            }
+        }).catch((error)=>{
+            setLoader(false)
+            console.log("error data",error.response);
+            showToastmsg('Cannot send request to influencer. Please try again later')
+        })
+    }
+    console.log("values",item);
+    console.log("props val",userDetails);
     return (
         <View style={styles.container}>
             <View style={styles.headingLine}>
                 <View style={{flexDirection: 'row',}}>
                     <View style={styles.barndIcon}>
-                        <Image source={Images.nike} />
+                        <Image source={item?.item?.avatar?
+                        {uri:`${Constants.BASE_IMAGE_URL}${item?.item?.avatar}`}
+                            :Images.nike} style={{width:item?.item?.avatar&& 48,
+                                height: item?.item?.avatar&&48,}}/>
                     </View>
                     <View>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, fontWeight: '700',}}>Robert Phan</Text>
-                        <Text style={{fontFamily: Constants.fontFamily, color: '#A4A4B2'}}>Fashion</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, fontWeight: '700',textTransform:'capitalize'}}>{item?.item?.username}</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, color: '#A4A4B2'}}>Influencer</Text>
                     </View>
                 </View>
-                <Text style={{fontFamily: Constants.fontFamily,fontWeight: '700',}}>24M Followers</Text>
+                <Text style={{fontFamily: Constants.fontFamily,fontWeight: '700',}}>{item?.item?.insta_follower_count} Followers</Text>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={{width: '70%'}}>
@@ -39,7 +69,10 @@ const RenderBusinessRequest = () => {
                 </View>
             </View>
             <View style={{justifyContent: 'center',}}>
-                <Pressable style={[globatStyles.btnOutline, {width: '50%', alignSelf: 'center', padding: 6,}]}><Text style={globatStyles.btnOutlineText}>Send Request</Text></Pressable>
+                {loader?
+                <ActivityIndicator size={30} color={'#80FFB9'}/>
+                :
+                    <Pressable onPress={sendRequest} style={[globatStyles.btnOutline, {width: '50%', alignSelf: 'center', padding: 6,}]}><Text style={globatStyles.btnOutlineText}>Send Request</Text></Pressable>}
             </View>
         </View>
     )

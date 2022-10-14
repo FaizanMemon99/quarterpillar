@@ -11,6 +11,7 @@ import Images from '../../../assets/images/Images'
 import Constants from '../../../shared/Constants'
 import RenderOrders from './RenderOrders'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 const AllOrders = (props)=>{
@@ -45,6 +46,7 @@ const AllOrders = (props)=>{
     ]
     return (
         <View style={StyleSheet.wrapper}>
+            <SafeAreaView style={{paddingBottom:Constants.padding}}>
             <View style={styles.titleBar}>
                 <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
                 <Text style={styles.title}>Orders (105)</Text>
@@ -64,6 +66,7 @@ const AllOrders = (props)=>{
                         keyExtractor={item=>item?.id?.toString()}/>
                 </View>
             </ScrollView>
+            </SafeAreaView>
         </View>
     )
 }

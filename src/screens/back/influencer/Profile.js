@@ -16,7 +16,8 @@ import { useNavigation } from '@react-navigation/native'
 
 const Profile=(props)=>{
     const navigation=useNavigation()
-    console.log('props value',props?.route?.params?.userDetails);
+    const UserType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
+    // console.log('props value',props?.route?.params?.userDetails);
     function isImage() {
         var url=''
         if(Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'){
@@ -42,7 +43,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                             {uri:Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}:Images.profileIcon} style={styles.companyLogo} />
                     <View style={styles.companyInfo}>
                         <Text style={styles.email}>{props?.route?.params?.userDetails?.name}</Text>
-                        <Text style={styles.phone}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
+                        <Text style={styles.phone}>{UserType}</Text>
                     </View>
                </View>
                <View style={styles.socialDetails}>
@@ -105,7 +106,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 110,
+        marginBottom: 190,
     },
     companyDetails: {
         flexDirection: 'row',

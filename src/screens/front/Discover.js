@@ -57,6 +57,7 @@ const Discover = () => {
                             <VideoPlayer
                                 video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                                 autoplay
+                                repeat={true}
                                 muted
                                 loop
                                 disableSeek

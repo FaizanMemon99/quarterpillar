@@ -1,40 +1,125 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     View,
     Text,
     StyleSheet,
     Pressable,
     Image,
+    ActivityIndicator,
 } from 'react-native'
+import axios from 'axios'
 import Images from '../../../assets/images/Images'
 import Constants from '../../../shared/Constants'
+import showToastmsg from '../../../shared/showToastmsg'
+import { useNavigation } from '@react-navigation/native'
 
-const RenderMyRequest = ({pillars})=>{
+const RenderMyRequest = ({pillars,tabs,getBussinessRequests})=>{
+    const navigation=useNavigation()
+    const [loader,setLoader]=useState(false)
+    const endContractFn=(status)=>{
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}influencer/res-business-collobration`,{
+            "collobration_id":pillars?.item?.collabration_id,
+            "status":status
+        }).then((response)=>{
+            if(response.data.response==200){
+                setLoader(false)
+                showToastmsg(`Collaboration ${status} successfully`)
+                getBussinessRequests(tabs)
+            }
+        }).catch((error)=>{
+            setLoader(false)
+            console.log("error data",error.response);
+            showToastmsg(`Can't ${status} this collaboration, please try again later.`)
+        })
+    }
+    const createPost=()=>{
+        navigation.navigate('/profileScreen',{userDetails:pillars.item,type:'influencer'})
+    }
+    console.log("business data",pillars.item);
     return (
         <View style={styles.wrapper}>
-            <View style={styles.cardHeading}>
-                <Image source={Images.myPillarIcon} />
-                <View style={{alignItems: 'flex-start', marginLeft: 16, marginRight: 16,}}>
-                    <Text style={styles.heading}>Robert Phan</Text>
-                    <Text style={styles.designation}>Designer</Text>
-                </View>
-                <View style={styles.ongoingWrapper}>
-                    <Text style={styles.onGoing}>Ongoing</Text>
-                </View>
+        <View style={styles.cardHeading}>
+            <Image source={{uri:`${Constants.BASE_IMAGE_URL}${pillars?.item?.business_profile_pic}`}} style={{width:'20%',height:'100%'}} />
+            <View style={{alignItems: 'flex-start', marginLeft: 16, marginRight: 16,}}>
+                <Text style={styles.heading}>{pillars?.item?.username}</Text>
+                <Text style={styles.designation}>Business</Text>
             </View>
-            <View style={styles.cardFooter}>
-                <Pressable style={[styles.btnOutline, {borderColor: Constants.colors.primaryColor}]}>
-                    <Text style={[styles.btnText, {color: Constants.colors.primary}]}>Accept</Text>
+            <View style={styles.ongoingWrapper}>
+                <Text style={styles.onGoing}>{pillars?.item?.collabration_status=="approve"?'Ongoing':pillars?.item?.collabration_status}</Text>
+            </View>
+        </View>
+        <View style={styles.cardBody}>
+            <Text style={styles.bodyText}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut . Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+            </Text>
+        </View>
+        <View style={styles.cardFooter}>
+            {tabs=='ongoing'?<Text style={styles.footerText}>{pillars?.item?.collabration_status=='ended'?'Ended':'Started'} on: 12/08/2021</Text>:null}
+            {/* {tabs=='ongoing'?
+            loader?
+                <ActivityIndicator size={30} color={'#FF0000'}/>:
+                
+                    <Pressable style={styles.btnOutline} onPress={()=>endContractFn('ended')}>
+                <Text style={styles.btnText}>End Contract</Text>
+            </Pressable>:null} */}
+            {tabs=='ongoing'?loader?
+                <ActivityIndicator size={30} color={'#FF0000'}/>:
+                <View style={{display:'flex',flexDirection:'row',marginTop:10}}>
+                <Pressable onPress={createPost} style={[styles.btnOutline, {borderColor: Constants.colors.primaryColor,marginRight:8}]}>
+                    <Text style={[styles.btnText, {color: '#00A928'}]}>Create Post</Text>
+                </Pressable>
+                <Pressable style={styles.btnOutline} onPress={()=>endContractFn('ended')}>
+                <Text style={styles.btnText}>End Contract</Text>
+            </Pressable>
+            </View>:null}
+            {tabs=='pending'?loader?
+                <ActivityIndicator size={30} color={'#FF0000'}/>:
+                <View style={{display:'flex',flexDirection:'row',marginTop:10}}>
+                <Pressable onPress={()=>endContractFn('approve')} style={[styles.btnOutline, {borderColor: Constants.colors.primaryColor,marginRight:8}]}>
+                    <Text style={[styles.btnText, {color: '#00A928'}]}>Accept</Text>
+                </Pressable>
+                <Pressable onPress={()=>endContractFn('reject')} style={styles.btnOutline}>
+                    <Text style={styles.btnText}>Reject</Text>
+                </Pressable>
+            </View>:null}
+        </View>
+        {/* {tabs=='pending'?<View style={styles.cardFooter}>
+                <Pressable style={[styles.btnOutline, {borderColor: Constants.colors.primaryColor,marginRight:8}]}>
+                    <Text style={[styles.btnText, {color: '#00A928'}]}>Accept</Text>
                 </Pressable>
                 <Pressable style={styles.btnOutline}>
                     <Text style={styles.btnText}>Reject</Text>
                 </Pressable>
-            </View>
-        </View>
+            </View>:null} */}
+        
+    </View>
+        
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: Constants.colors.whiteColor,
+        padding: 12,
+        marginTop: 12,
+        borderRadius: Constants.borderRadius,
+        paddingBottom: Constants.padding+12,
+    },
+    headingLine: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    barndIcon: {
+        width: 48,
+        height: 48,
+        backgroundColor: '#000000',
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+    },
     wrapper: {
         backgroundColor: Constants.colors.whiteColor,
         padding: Constants.padding,
@@ -60,12 +145,14 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: Constants.borderRadius,
         backgroundColor: '#80FFB9',
+        marginLeft:30
     },
     onGoing: {
         color: '#04751F',
         fontFamily: Constants.fontFamily,
         fontSize: 14,
-        fontWeight: '800'
+        fontWeight: '800',
+        textTransform:'capitalize'
     },
     cardBody: {
         marginTop: 16,
@@ -76,9 +163,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     cardFooter: {
-        flexDirection: 'row',
+        // flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
     },
     footerText: {
         fontFamily: Constants.fontFamily,
@@ -92,6 +179,7 @@ const styles = StyleSheet.create({
         borderColor: '#FF0000',
         borderRadius: Constants.borderRadius,
         width: '48%',
+        marginLeft:10
     },
     btnText: {
         fontFamily: Constants.fontFamily,

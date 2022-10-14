@@ -84,7 +84,7 @@ const BusinessOtp = (props) => {
             if(response.status==200){
                 setIsLoading(false)
                         //   navigation.navigate('/email-verification',{login_type:props.route.params.userType})
-                          navigation.navigate('/email-verify',{userType:props.route.params.userType})
+                          navigation.navigate('/email-verify',{userType:props.route.params.userType,userDetails: props.route.params.userDetails,emailId: props.route.params.userDetails?.email})
             }
             else {
                 setIsLoading(false)
@@ -177,10 +177,10 @@ const BusinessOtp = (props) => {
     }
     const gotRenterMobileNumber = ()=>{
         if(props?.route?.params?.phoneType){
-            navigation.navigate('/business-signup',{userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber,phoneType:props?.route?.params?.phoneType})    
+            navigation.navigate('/business-signup',{userDetails: props.route.params.userDetails,userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber,phoneType:props?.route?.params?.phoneType})    
         }
         else 
-        {navigation.navigate('/business-signup',{userDetails: props.route.params.user_details,userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber})}
+        {navigation.navigate('/business-signup',{userDetails: props.route.params.userDetails,userType:props.route.params.userType,"phoneNumber":props.route.params.phoneNumber})}
     }
     return (
         <View style={styles.background}>
@@ -188,6 +188,7 @@ const BusinessOtp = (props) => {
                 video={{ uri: props?.route?.params?.userType==="Business"?"https://acapp.in/uploads/biz1.mp4":props?.route?.params?.userType==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":props?.route?.params?.userType==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                 autoplay
                 loop
+                repeat={true}
                 disableSeek
                 resizeMode={'cover'}
                 customStyles={{

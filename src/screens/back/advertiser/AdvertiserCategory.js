@@ -25,6 +25,7 @@ const  AdvertiserCategory=()=>{
                 <VideoPlayer
                     video={{ uri: 'https://acapp.in/uploads/biztypes/travel.mp4' }}
                     autoplay
+                    repeat={true}
                     loop
                     disableSeek
                     resizeMode={'cover'}
@@ -55,6 +56,7 @@ const  AdvertiserCategory=()=>{
             <VideoPlayer
                     video={{ uri: 'https://acapp.in/uploads/biztypes/fashion.mp4' }}
                     autoplay
+                    repeat={true}
                     loop
                     disableSeek
                     resizeMode={'cover'}
@@ -85,6 +87,7 @@ const  AdvertiserCategory=()=>{
                 <VideoPlayer
                     video={{ uri: 'https://acapp.in/uploads/biztypes/lifestyle.mp4' }}
                     autoplay
+                    repeat={true}
                     loop
                     disableSeek
                     resizeMode={'cover'}
@@ -115,6 +118,7 @@ const  AdvertiserCategory=()=>{
                 <VideoPlayer
                     video={{ uri: 'https://acapp.in/uploads/biztypes/food.mp4' }}
                     autoplay
+                    repeat={true}
                     loop
                     disableSeek
                     resizeMode={'cover'}

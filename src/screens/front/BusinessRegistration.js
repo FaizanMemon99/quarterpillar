@@ -6,7 +6,8 @@ import {
     TextInput,
     Pressable,
     ScrollView,
-    Image
+    Image,
+    ActivityIndicator
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import SelectDropdown from 'react-native-select-dropdown'
@@ -165,10 +166,11 @@ formdata.append("sub_catorige", subCategory);
             if(response.status==200){
                 
                 try {
-                        axios.post(`${Constants.BASE_URL}auth/mobile-number`,{mobile_number:phone}).then((res)=>{
+                        axios.post(`${Constants.BASE_URL}auth/mobile-number`,{mobile_number:PhoneNumber}).then((res)=>{
                             
                             if(res.data.response==200){
                                                 setButtonLoader(false)
+                                                console.log("data values",response.data.data.user_details);
                                 navigation.navigate('/business-otp',{userDetails: response.data.data.user_details,phoneNumber:PhoneNumber,userType:props.route.params.type})
                                 // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
 

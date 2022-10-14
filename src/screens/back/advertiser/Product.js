@@ -35,6 +35,10 @@ const Product=(props)=>{
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
+    // console.log("props values",props?.route?.params?.userDetails);
+    function isImage(url) {
+        return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+      }
     return (
         <View style={globatStyles.wrapper}>
             {
@@ -56,29 +60,32 @@ const Product=(props)=>{
                 <View style={styles.header}>
                     <View style={styles.profileDetails}>
                         <View style={styles.profileIcon}>
-                            <Image source={Images.avatar} />
+                            <Image style={{width:50,height:'100%'}} source={isImage(`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`)?{uri:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`}:Images.avatar} />
                         </View>
                         <View>
-                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.advertiser?.name}</Text>
+                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name.length>10?props?.route?.params?.userDetails?.name.slice(0,10)+'...':props?.route?.params?.userDetails?.name}</Text>
                             <Text style={styles.founder}>{Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]}</Text>
                         </View>
                     </View>
                 </View>
                 <ScrollView style={styles.drawerItemContainer}>
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification')
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list')
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings')
+                        setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/edit-user-info',props)
+                    }
+                    { 
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about')
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about',props)
                     }
                 </ScrollView>
                 <Pressable
@@ -124,11 +131,11 @@ const Product=(props)=>{
     )
 }
 
-const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url)=>{
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
     return(
         <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(60, 255, 106, 0.47)':'transparent', padding: 14,}]} onPress={()=>{
             setActiveMenu(title)
-            navigation.navigate(url)
+            navigation.navigate(url,{userDetails:props.route.params.userDetails,type:Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]})
         }}>
             {
                 icon==='feather'?<Feather name={iconName} size={26} color={Constants.colors.whiteColor} />:null
@@ -283,6 +290,7 @@ const styles = StyleSheet.create({
         borderColor: '#000000',
         padding: 8,
         marginEnd: 6,
+        marginTop:10
     },
     preofileName: {
         fontFamily: Constants.fontFamily,
