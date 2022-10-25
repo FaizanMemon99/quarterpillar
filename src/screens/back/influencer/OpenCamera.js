@@ -24,62 +24,11 @@ const  OpenCamera=(props)=>{
     const navigation = useNavigation()
     const [cameraImg, setCameraImg]= useState(null)
     const [video, setVideo]= useState(null)
-    useEffect(()=>{
-        // openCamera()
-
-    },[])
-    // const openCamera = async ()=>{
-    //     try{
-          
-	// 		const result = await launchCamera()
-	// 		setCameraImg(result.assets[0].uri)
-	// 	}
-    //     catch(err){
-	// 		console.log(err)
-	// 	}
-    // }
-    // const openVideoCamera = async ()=>{
-    //     try{
-    //         const options = {
-    //             title: 'Video Picker', 
-    //             mediaType: 'video', 
-    //             storageOptions:{
-    //               skipBackup:true,
-    //               path:'images'
-    //             }
-    //       };
-	// 		const result = await launchCamera(options,(response)=>{
-    //             if(response.didCancel){
-    //                 console.log('user cancelled');
-    //               }else if (response.error) {
-    //                 console.log('ERROR'+response.error);
-              
-    //               }else if (response.customButton) {
-    //                 console.log('user tapped'+response.customButton);
-    //               }else {
-    //                 setValue({
-    //                   imagePath: response.uri,
-    //                   imageHeight: response.height,
-    //                   imageWidth: response.width
-    //                 })
-    //               }
-    //         })
-	// 		setCameraImg(result.assets[0].uri)
-	// 	}
-    //     catch(err){
-	// 		console.log(err)
-	// 	}
-    // }
     const gotoAddPost = ()=>{
-        navigation.navigate('/add-post', {img: cameraImg, category: props?.route?.params?.category,productData:props?.route?.params?.productData})
-    }
-    const editImg = async ()=>{
-        try {
-            const result = await PhotoEditor.open({path: video.assets[0].uri})
-            setCameraImg(result)
-        }catch(err){
-            console.log(err)
-        }
+        navigation.navigate('/add-post', {video: video, category: props?.route?.params?.category,productData:props?.route?.params?.productData,
+            userDetails:props?.route?.params?.userDetails,
+            influencerData:props?.route?.params?.influencerData
+        })
     }
     const requestCameraPermission = async () => {
         if (Platform.OS === 'android') {
@@ -114,92 +63,81 @@ const  OpenCamera=(props)=>{
             return granted === PermissionsAndroid.RESULTS.GRANTED;
           } catch (err) {
             console.warn(err);
-            alert('Write permission err', err);
+            console.log('Write permission err', err);
           }
           return false;
         } else return true;
       };
-      const captureImage = async (type) => {
+      const captureImage = async () => {
         setCameraImg(null)
         setVideo(null)
         let options = {
-          mediaType: type,
+          mediaType: 'video',
           maxWidth: 300,
           maxHeight: 550,
           quality: 1,
           videoQuality: 'low',
           durationLimit: 30, //Video max duration in seconds
-          saveToPhotos: true,
+          saveToPhotos: false,
         };
         let isCameraPermitted = await requestCameraPermission();
         let isStoragePermitted = await requestExternalWritePermission();
         if (isCameraPermitted && isStoragePermitted) {
           launchCamera(options, (response) => {
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
      
             if (response.didCancel) {
-              alert('User cancelled camera picker');
+              console.log('User cancelled camera picker');
               return;
             } else if (response.errorCode == 'camera_unavailable') {
-              alert('Camera not available on device');
+              console.log('Camera not available on device');
               return;
             } else if (response.errorCode == 'permission') {
-              alert('Permission not satisfied');
+              console.log('Permission not satisfied');
               return;
             } else if (response.errorCode == 'others') {
-              alert(response.errorMessage);
+              console.log(response.errorMessage);
               return;
             }
-            console.log('base64 -> ', response.base64);
-            console.log('uri -> ', response.uri);
-            console.log('width -> ', response.width);
-            console.log('height -> ', response.height);
-            console.log('fileSize -> ', response.fileSize);
-            console.log('type -> ', response.type);
-            console.log('fileName -> ', response.fileName);
-            if(type=='video'){
+            // if(type=='video'){
+              console.log("repsonse video",response);
                 setVideo(response)
-            }
-            else
-            {setCameraImg(response)};
+            // }
+            // else
+            // {setCameraImg(response)};
           });
         }
       };
      
-      const chooseFile = (type) => {
+      const chooseFile = () => {
         let options = {
-          mediaType: type,
+          mediaType: 'video',
           maxWidth: 300,
           maxHeight: 550,
           quality: 1,
         };
         launchImageLibrary(options, (response) => {
-          console.log('Response = ', response);
+        //   console.log('Response = ', response);
      
           if (response.didCancel) {
-            alert('User cancelled camera picker');
+            console.log('User cancelled camera picker');
             return;
           } else if (response.errorCode == 'camera_unavailable') {
-            alert('Camera not available on device');
+            console.log('Camera not available on device');
             return;
           } else if (response.errorCode == 'permission') {
-            alert('Permission not satisfied');
+            console.log('Permission not satisfied');
             return;
           } else if (response.errorCode == 'others') {
-            alert(response.errorMessage);
+            console.log(response.errorMessage);
             return;
           }
-          console.log('base64 -> ', response.base64);
-          console.log('uri -> ', response.uri);
-          console.log('width -> ', response.width);
-          console.log('height -> ', response.height);
-          console.log('fileSize -> ', response.fileSize);
-          console.log('type -> ', response.type);
-          console.log('fileName -> ', response.fileName);
-          setCameraImg(response);
+          setVideo(response);
         });
       };
-
+      useEffect(()=>{
+        if(!video){captureImage('video')}
+    },[])
 
     return (
         <View style={[globatStyles.wrapper,{backgroundColor: '#000000'}]}>
@@ -208,7 +146,7 @@ const  OpenCamera=(props)=>{
             <View style={{flex: 1, alignItems: 'stretch'}}>
                 <View style={styles.imgContainer}>
                     {cameraImg&&<Image source={{uri: cameraImg.assets[0].uri}} alt='Img' style={styles.cameraImg} />}
-                    {/* {video&&
+                    {video&&
                     <VideoPlayer
                     video={{ uri: video.assets[0].uri}}
                     autoplay
@@ -234,14 +172,16 @@ const  OpenCamera=(props)=>{
                             backgroundColor: 'transparent',
                         },
                    }} />
-                    } */}
+                    }
                 </View>
                 <View style={styles.options}>
-                    <Text style={styles.retake} onPress={()=>captureImage('video')}>Retake</Text>
-                    <Text style={styles.retake} onPress={()=>editImg()}>Edit</Text>
+                    <Text style={styles.retake} onPress={captureImage}>{video?'Retake':'Take'} video</Text>
+                    <Text style={styles.retake} onPress={chooseFile}>Select From File</Text>
                 </View>
                 <View style={{padding: Constants.padding}}>
-                    <Pressable onPress={gotoAddPost} style={[globatStyles.button, {marginBottom: 20,}]}><Text style={globatStyles.btnText}>Continue</Text></Pressable>
+                    <Pressable onPress={gotoAddPost} style={[globatStyles.button, {marginBottom: 20,}]}
+                    disabled={!video}
+                    ><Text style={globatStyles.btnText}>Continue</Text></Pressable>
                 </View>
             </View>
         </View>

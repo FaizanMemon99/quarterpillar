@@ -16,22 +16,19 @@ import RenderOrders from './RenderOrders'
 
 const MyOrders =({navigation})=>{
     const [tabs, setTabs] = useState('products')
+    let img=`${Constants.BASE_IMAGE_URL}image/153/6749701.png`
     const products = [
-        {id: 1, name: 'Statue of Boris'},
-        {id: 1, name: 'Statue of Boris'},
-        {id: 1, name: 'Statue of Boris'},
-        {id: 1, name: 'Statue of Boris'},
-        {id: 1, name: 'Statue of Boris'},
-        {id: 1, name: 'Statue of Boris'},
+        {id: 1, name: 'Iphone Watch',actualPrice:2400, price:2400,discount:1000,qty:2,size:'XL',img:img},
+        {id: 2, name: 'Statue of Boris',actualPrice:1500, price:1200,discount:300,qty:1,size:'M'},
     ]
-    const services = [
-        {id: 1, name: 'Statue of Liberty'},
-        {id: 1, name: 'Statue of Liberty'},
-        {id: 1, name: 'Statue of Liberty'},
-        {id: 1, name: 'Statue of Liberty'},
-        {id: 1, name: 'Statue of Liberty'},
-        {id: 1, name: 'Statue of Liberty'},
-    ]
+    // const services = [
+    //     {id: 1, name: 'Statue of Liberty'},
+    //     {id: 1, name: 'Statue of Liberty'},
+    //     {id: 1, name: 'Statue of Liberty'},
+    //     {id: 1, name: 'Statue of Liberty'},
+    //     {id: 1, name: 'Statue of Liberty'},
+    //     {id: 1, name: 'Statue of Liberty'},
+    // ]
     return (
         <View style={globatStyles.container}>
             <StatusBar translucent={true} backgroundColor='transparent' />
@@ -43,7 +40,7 @@ const MyOrders =({navigation})=>{
                     <Pressable onPress={()=>setTabs('services')}><Text style={[styles.tabs, tabs==='services'?styles.activeTabs:null]}>Services</Text></Pressable>
                 </View>
                 <FlatList
-                    data={tabs==='products'?products:services}
+                    data={products}
                     renderItem={item=><RenderOrders item={item} />}
                     style={{paddingBottom: 130,}}
                     keyExtractor={item=>item?.id?.toString()} />

@@ -67,7 +67,7 @@ const BusinessSignIn=(props)=>{
     }
     const gotoCreateAccount = () =>{
         if(props?.route?.params?.login_type=='Business')
-        {navigation.navigate('/advertiser-categories')}
+        {navigation.navigate('/advertiser-categories',{type:props.route.params.login_type})}
         else if(props?.route?.params?.login_type=='Influencer'||props.route.params.login_type=='Explorer'){
             navigation.navigate('/influencer-registration',{type:props.route.params.login_type})
         }
@@ -113,7 +113,7 @@ const BusinessSignIn=(props)=>{
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter Mobile Number/Email Id/Username</Text>
                 <View style={styles.phoneNumberContainer}>
-                    <TextInput style={styles.textInput} placeholder='Login Credentials' onChangeText={setLoginId}/>
+                    <TextInput style={styles.textInput} placeholder='Login Credentials' onChangeText={setLoginId} autoFocus/>
                     <View style={{flex: 1, width: '100%', alignItems: 'center',}}>
                         <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={!showPass} onChangeText={setPassword}/>
                         <FontAwesome name={showPass?'eye-slash':'eye'} style={styles.eyeIcon} onPress={()=>setShowPass(!showPass)} />

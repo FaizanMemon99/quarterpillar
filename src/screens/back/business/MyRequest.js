@@ -27,7 +27,7 @@ const MyRequest = (props)=>{
           <Text
             style={styles.emptyListStyle}
             >
-            No Data Found
+            {tabs==='pending'?'No pending requests found':'No ongoing request found'}
           </Text>
         );
       };
@@ -108,11 +108,14 @@ const MyRequest = (props)=>{
         },
     ]
     useEffect(()=>{
+        if(props?.route?.params?.page)
+        getBussinessRequests(props?.route?.params?.page)
+        else
         getBussinessRequests(tabs)
-    },[])
+    },[props?.route?.params])
     return (
         <View style={StyleSheet.wrapper}>
-            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='My Request' />
+            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title={`My Request (${tabs==='pending'?influencerRequestdata.length:influencerApprovedata.length})`} />
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.myPillarText}>

@@ -52,6 +52,15 @@ import MyRequest from '../screens/back/business/MyRequest'
 import MyPillars from '../screens/back/business/MyPillars'
 import InfluencerList from '../screens/back/advertiser/InfluencerList'
 import BusinessRequest from '../screens/back/advertiser/BusinessRequest'
+import ProductDetails from '../screens/back/explore/ProductDetails'
+import Cart from '../screens/back/explore/Cart'
+import SelectAddress from '../screens/back/explore/SelectAddress'
+import AddAddress from '../screens/back/explore/AddAddress'
+import ExpoerReview from '../screens/back/explore/ExpoerReview'
+import PaymentDetails from '../screens/back/explore/PaymentDetails'
+import Coupons from '../screens/back/explore/Coupons'
+import PaymentSuccess from '../screens/back/explore/PaymentSuccess'
+import MyOrders from '../screens/back/explore/MyOrders'
 
 const Stack = createNativeStackNavigator()
 
@@ -109,6 +118,15 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/profileScreen' component={ProfileScreen}/>
                 <Stack.Screen name='/edit-user-info' component={EditUser}/>
                 <Stack.Screen name='/user-management' component={UserManagement}/>
+                <Stack.Screen name='/product-details' component={ProductDetails}/>
+                <Stack.Screen name='/cart' component={Cart}/>
+                <Stack.Screen name='/goto-select-address' component={SelectAddress} />
+                <Stack.Screen name='/add-address' component={AddAddress} />
+                <Stack.Screen name='/explore-review' component={ExpoerReview} />
+                <Stack.Screen name='/payment-details' component={PaymentDetails} />
+                <Stack.Screen name='/all-coupons' component={Coupons} />
+                <Stack.Screen name='/payment-success' component={PaymentSuccess} />
+                <Stack.Screen name='/my-orders' component={MyOrders} />
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

@@ -11,11 +11,11 @@ import VideoPlayer from 'react-native-video-player'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 
-const  AdvertiserCategory=()=>{
+const  AdvertiserCategory=(props)=>{
     const navigation = useNavigation()
     const businessRegistration = (category)=>{
         
-        navigation.navigate('/business-registration', {'category': category})
+        navigation.navigate('/business-registration', {'category': category,type:props?.route?.params?.type})
 
     }
     return (

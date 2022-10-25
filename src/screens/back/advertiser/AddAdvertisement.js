@@ -8,6 +8,8 @@ import {
     Pressable,
     ScrollView,
     TextInput,
+    Platform,
+    PermissionsAndroid
 } from 'react-native'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
 import { useNavigation } from '@react-navigation/native'
@@ -23,10 +25,51 @@ const  AddAdvertisement=(props)=>{
     const [postImg, setPostImg] = useState([props.route.params.img])
     const [products, setProducts] = useState('products')
     const [services, setServicess] = useState('')
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.CAMERA,
+              {
+                title: 'Camera Permission',
+                message: 'App needs camera permission',
+              },
+            );
+            // If CAMERA Permission is granted
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+          } catch (err) {
+            console.warn(err);
+            return false;
+          }
+        } else return true;
+      };
+     
+      const requestExternalWritePermission = async () => {
+        if (Platform.OS === 'android') {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title: 'External Storage Write Permission',
+                message: 'App needs write permission',
+              },
+            );
+            // If WRITE_EXTERNAL_STORAGE Permission is granted
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+          } catch (err) {
+            console.warn(err);
+            console.log('Write permission err', err);
+          }
+          return false;
+        } else return true;
+      };
     const openCamera = async ()=>{
         try{
+            let isCameraPermitted = await requestCameraPermission();
+        let isStoragePermitted = await requestExternalWritePermission();
+        if (isCameraPermitted && isStoragePermitted) {
 			const result = await launchCamera()
-			setPostImg([...postImg, result.assets[0].uri])
+			setPostImg([...postImg, result.assets[0].uri])}
 		}
         catch(err){
 			console.log(err)

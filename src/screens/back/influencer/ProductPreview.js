@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 import {
     View,
     Text,
@@ -8,23 +9,116 @@ import {
     ImageBackground,
     StatusBar,
     Pressable,
+    ActivityIndicator,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import VideoPlayer from 'react-native-video-player';
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import globatStyles from '../../../shared/globatStyles'
+import showToastmsg from '../../../shared/showToastmsg';
 
 const ProductPreview = (props)=>{
     const navigation=useNavigation()
-    const gotoProductDescription = ()=>{
-        navigation.navigate('/product-description')
+    const [loader,setLoader]=useState(false)
+    const [draftLoader,setdraftLoader]=useState(false)
+    const gotoProductDescription = (type)=>{
+        if(type=='draft')
+        {setdraftLoader(true)}
+        else {
+            setLoader(true)
+        }
+        let formdata=props?.route?.params?.formdata
+        const headers = {
+            'x-device-id': 'stuff',
+            'Content-Type': 'multipart/form-data',
+          }
+          
+          if(type=='draft'){
+            formdata.append('status', 'draft');
+          }
+          else {
+            formdata.append('status', 'complete');
+          }
+          console.log("form data",formdata);
+          if(props?.route?.params?.draft){
+            axios.post(`${Constants.BASE_URL}influencer/influencer-post-product-update`,formdata,{
+                headers:headers
+            }).then((response)=>{
+                setLoader(false)
+                if(response.status==200){
+                    
+                    setdraftLoader(false)
+                    console.log("data values",props?.route?.params?.influencerData);
+                    showToastmsg(type=='draft'?'Post added to draft successfully':'Post added successfully')
+                    navigation.navigate('/influencer-stack-navigation',{userDetails:props?.route?.params?.influencerData?.userDetails})
+                }
+            else{
+                setdraftLoader(false)
+        console.log("response",response);
+            }
+            }).catch((error)=>{
+                setdraftLoader(false)
+                console.log("error message",error.response);
+                    showToastmsg('Cant save post, Please try again later')
+                });
+          }
+  else{  axios.post(`${Constants.BASE_URL}influencer/influencer-post-product`,formdata,{
+        headers:headers
+    }).then((response)=>{
+        setLoader(false)
+        if(response.status==200){
+            
+            setdraftLoader(false)
+            console.log("data values",props?.route?.params?.influencerData);
+            showToastmsg(type=='draft'?'Post added to draft successfully':'Post added successfully')
+            navigation.navigate('/influencer-stack-navigation',{userDetails:props?.route?.params?.influencerData?.userDetails})
+        }
+    else{
+        setdraftLoader(false)
+console.log("response",response);
     }
+    }).catch((error)=>{
+        setdraftLoader(false)
+        console.log("error message",error.response);
+            showToastmsg('Cant save post, Please try again later')
+        });}
+        // navigation.navigate('/product-description')
+    }
+    console.log("post details",props?.route?.params?.postDetails);
     return (
         <View style={globatStyles.wrapper}>
-            <ImageBackground source={Images.nature} style={styles.nature}>
+           <VideoPlayer
+                                video={{ uri: props?.route?.params?.postDetails?.postVideo?.assets[0].uri}}
+                                autoplay
+                                repeat={true}
+                                loop
+                                disableSeek
+                                resizeMode={'cover'}
+                                customStyles={{
+                                    wrapper: {
+                                        width: Constants.width,
+                                        height: Constants.height,
+                                        paddingBottom: Constants.padding,
+                                    },
+                                    video: {
+                                        width: Constants.width,
+                                        height: Constants.height+50,
+                                    },
+                                    controls: {
+                                        display: 'none',
+                                    },
+                                    seekBarBackground: {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    seekBarProgress: {
+                                        backgroundColor: 'transparent',
+                                    },
+                                }} />
+                                <View style={[globatStyles.overlay,{opacity:1,backfaceVisibility:'hidden',backgroundColor:'transparent'}]}>
                 <StatusBar translucent={true} backgroundColor='transparent' />
-                <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} headerRight={false} title='Nature' subtitle={props?.route?.params?.userDetails?.business?.catorige} />
+                <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} headerRight={false} title={props?.route?.params?.postDetails?.title} subtitle={props?.route?.params?.userDetails?.business?.catorige} />
                 <View style={globatStyles.overlay}></View>
                 <View style={styles.productDetailsContainer}>
                     <LinearGradient style={styles.productInfoContainer} colors={[ '#FFFFFF', '#A4A4B2']} start={{x:0, y:0}} end={{x: 1, y: 0}}>
@@ -32,43 +126,45 @@ const ProductPreview = (props)=>{
                             <View style={{flexDirection: 'row', marginBottom: 20,}}>
                                 <Text style={styles.tags}>Tags</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    <Text style={styles.tags}>#nature,</Text>
-                                    <Text style={styles.tags}>#alive,</Text>
-                                    <Text style={styles.tags}>#nature,</Text>
-                                    <Text style={styles.tags}>#nalive,</Text>
-                                    <Text style={styles.tags}>#nature,</Text>
-                                    <Text style={styles.tags}>#nalive,</Text>
+                                    {props?.route?.params?.postDetails?.tags.split(",").map((item)=>
+                                        (
+<Text style={styles.tags}>#{item},</Text>
+                                        )
+                                    )
+
+                                    }
                                 </View>
                             </View>
                             <View style={{flexDirection: 'row', marginBottom: 20}}>
                                 <Text style={styles.tags}>Tags Business</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    <Text style={styles.tags}>Makemytrip,</Text>
+                                    <Text style={[styles.tags,{textTransform:'capitalize'}]}>{props?.route?.params?.postDetails?.businessTags}</Text>
                                 </View>
                             </View>
                             <View style={{flexDirection: 'row', marginBottom: 20}}>
                                 <Text style={styles.tags}>Type</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    <Text style={styles.tags}>Service</Text>
+                                    <Text style={styles.tags}>{props?.route?.params?.postDetails?.type}</Text>
                                 </View>
                             </View>
                             <View style={{flexDirection: 'row', marginBottom: 20}}>
                                 <Text style={styles.tags}>Service name</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                                    <Text style={styles.tags}>Varanasi 3D & 2D,</Text>
+                                    <Text style={styles.tags}>{props?.route?.params?.postDetails?.productName}</Text>
                                 </View>
                             </View>
                             <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut . Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                                {props?.route?.params?.postDetails?.description}
                             </Text>
                         </ScrollView>
                     </LinearGradient>
                     <View style={{flexDirection: 'row',}}>
-                        <Pressable style={[globatStyles.btnOutline, {width: '46%'}]}><Text style={globatStyles.btnOutlineText}>Save as draft</Text></Pressable>
-                        <Pressable style={[globatStyles.button, {width: '46%', marginLeft: '8%',}]} onPress={gotoProductDescription}><Text style={globatStyles.btnText}>Post</Text></Pressable>
+                        <Pressable style={[globatStyles.btnOutline, {width: '46%'}]} onPress={()=>gotoProductDescription('draft')}>{draftLoader?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnOutlineText}>Save as draft</Text>}</Pressable>
+                        <Pressable style={[globatStyles.button, {width: '46%', marginLeft: '8%',}]} onPress={gotoProductDescription}>{loader?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>Post</Text>}</Pressable>
                     </View>
                 </View>
-            </ImageBackground>
+                </View>
+            {/* </VideoPlayer> */}
         </View>
     )
 }

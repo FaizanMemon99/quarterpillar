@@ -9,6 +9,7 @@ import {
     Pressable,
     Animated,
     ScrollView,
+    ActivityIndicator,
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
@@ -21,25 +22,112 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
 import { useNavigation } from '@react-navigation/native'
-
+import RenderReeels from '../explore/RenderReeels'
+import Swiper from 'react-native-swiper'
+import { SwiperFlatList } from 'react-native-swiper-flatlist'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 const Product=(props)=>{
     const navigation=useNavigation()
     const [newPost, setNewPost] = useState(false)
     const [showDrawer, setShowDrawer] = useState(false)
     const [showRateus, setShowRateus] = useState(true)
+    const [postData,setpostData]=useState([])
     const [activeMenu, setActiveMenu] = useState('')
+    const [postLoader,setpostLoader]=useState(false)
+    const [swiperData,setswiperData]=useState([])
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
+    const travelPosts = [
+        {id:1, video: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4'},
+        {id:2, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
+        {id:3, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
+        {id:4, video: 'http://qp.flymingotech.in/public/videos/business.mp4'}
+    ]
+    const fashionPosts = [
+        {id:5, video: 'http://qp.flymingotech.in/public/videos/food.mp4'},
+        {id:6, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
+        {id:7, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
+        {id:8, video: 'http://qp.flymingotech.in/public/videos/business.mp4'}
+    ]
+    const lifestylePosts = [
+        {id:9, video: 'http://qp.flymingotech.in/public/videos/videoFashion.mp4'},
+        {id:10, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
+        {id:11, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
+        {id:12, video: 'http://qp.flymingotech.in/public/videos/business.mp4'},
+    ]
+    const foodPosts = [
+        {id:13, video: 'http://qp.flymingotech.in/public/videos/lifesty.mp4'},
+        {id:14, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
+        {id:15, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
+        {id:16, video: 'http://qp.flymingotech.in/public/videos/business.mp4'}
+    ]
+
     const openPopup = ()=>{
         setNewPost(!newPost)
     }
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
-    const userType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
+    const userType=Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]
+    const getReelsApi=()=>{
+        setpostLoader(true)
+        if(userType=='influencer')
+        {
+            axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
+                console.log("repsonse",response.data.data.influencerPosts);
+                setpostLoader(false)
+                if(response.data.data.influencerPosts){
+                    setpostData(response.data.data.influencerPosts.filter((i)=>i.status=='complete'&&i.influencer_id==props?.route?.params?.userDetails?.influencer?.influencer_id))
+                }
+            })
+            .catch((error)=>{
+                setpostLoader(false)
+                console.log("error val",error.response);
+                showToastmsg('Failed to reload')
+            })
+            console.log("influencerdata",props?.route?.params?.userDetails?.influencer?.influencer_id);}
+        else if(userType=='explore')
+        {
+            axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
+                console.log("repsonse",response.data.data.influencerPosts);
+                setpostLoader(false)
+                if(response.data.data.influencerPosts){
+                    response.data.data.influencerPosts.filter((i)=>i.status=='complete').map((item,i)=>{
+                    swiperData.push(
+                        {
+                                    id:i+1,
+                                    video:item.video,
+                                    isVideo:true,
+                                    isImage:false,
+                                    image:''
+                                },
+                                JSON.parse(item.image).map((images,ind)=>({
+                                            id:ind+1,
+                                            video:'',
+                                            isVideo:false,
+                                            isImage:true,
+                                            image:images
+                                        }))[0]     
+                        );
+                    })
+                    setswiperData([...swiperData])
+                    setpostData(response.data.data.influencerPosts.filter((i)=>i.status=='complete'))
+                }
+            })
+            .catch((error)=>{
+                setpostLoader(false)
+                console.log("error val",error);
+                showToastmsg('Failed to reload')
+            })
+            console.log("exploredata",props?.route?.params?.userDetails?.explore?.explore_id);}
+    }
+    useEffect(()=>{
+        getReelsApi()
+            },[])
     function isImage() {
         var url=''
-        if(Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'){
+        if(Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'){
 url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`
 console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`);
         }
@@ -50,7 +138,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
         }
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
       }
-    // console.log("props value",Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]);
+    // console.log("props value",Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]);
     return (
         <View style={globatStyles.wrapper}>
             {
@@ -73,13 +161,13 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     <View style={styles.profileDetails}>
                         <View style={styles.profileIcon}>
                             <Image source={isImage?
-                            {uri:Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
+                            {uri:Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
                             :
                                 Images.avatar}  style={{width:50,height:'100%'}}/>
                         </View>
                         <View>
-                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name.length>10?props?.route?.params?.userDetails?.name.slice(0,10)+'...':props?.route?.params?.userDetails?.name}</Text>
-                            <Text style={styles.founder}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
+                            <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name?.length>10?props?.route?.params?.userDetails?.name?.slice(0,10)+'...':props?.route?.params?.userDetails?.name}</Text>
+                            <Text style={styles.founder}>{Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]}</Text>
                         </View>
                     </View>
                 </View>
@@ -133,7 +221,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                 {scale: scaleValue},
                 {translateX: offsetValue}
             ]}}>
-                <ImageBackground source={Images.productExploer} style={[styles.productDetailsBg, ]}>
+                {/* <ImageBackground source={Images.productExploer} style={[styles.productDetailsBg, ]}>
                     <CustomAppBar navigation={navigation} isMainscreen={true} isReel={false} headerRight={true} title='' openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer} />
                     <View style={styles.overlay}></View>
                     <View style={styles.iconGroup}>
@@ -182,7 +270,67 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                             </View>
                         ):null
                     }
-                </ImageBackground>
+                </ImageBackground> */}
+                {postLoader?
+            <View style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',width:'100%',backgroundColor:'#e5e5e5'}}>
+            <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
+            </View>
+            :
+                 postData.length>0?   <Swiper style={{backgroundColor:'black',borderRadius:showDrawer?Constants.borderRadius+50:0}} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
+            {postLoader?
+            <View style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',width:'100%'}}>
+            <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
+            </View>
+            :
+            postData.map((data,i)=>(<View style={styles.reel} key={i+1}>
+                <CustomAppBar navigation={navigation} isMainscreen={true} 
+                explore={userType=='explore'}
+                userDetails={props?.route?.params?.userDetails}
+                isReel={true} title={data.post_type} headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
+                <SwiperFlatList
+                    data={[data]}
+                    style={[styles.category,{borderRadius:showDrawer?Constants.borderRadius+50:0}]}
+                    renderItem={item=><RenderReeels item={item} userDetails={props?.route?.params?.userDetails} />}
+                    keyExtractor={item=>item?.id?.toString()} />
+            </View>))}
+            {/* <View style={styles.reel}>
+                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Fashion' headerRight={true} />
+                <SwiperFlatList
+                    data={fashionPosts}
+                    style={styles.category}
+                    renderItem={item=><RenderReeels item={item} />}
+                    keyExtractor={item=>item?.id?.toString()} />
+            </View>
+            <View style={styles.reel}>
+                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Life Style' headerRight={true} />
+                <SwiperFlatList
+                    data={lifestylePosts}
+                    style={styles.category}
+                    renderItem={item=><RenderReeels item={item} />}
+                    keyExtractor={item=>item?.id?.toString()} />
+            </View>
+            <View style={styles.reel}>
+                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Food' headerRight={true} />
+                <SwiperFlatList
+                    data={foodPosts}
+                    style={styles.category}
+                    renderItem={item=><RenderReeels item={item} />}
+                    keyExtractor={item=>item?.id?.toString()} />
+            </View> */}
+        </Swiper>:
+        
+        <View style={[styles.productDetailsBg,{backgroundColor:'#e5e5e5',borderRadius:showDrawer?Constants.borderRadius+50:0,} ]}>
+        <CustomAppBar navigation={navigation} isMainscreen={true} 
+                explore={userType=='explore'}
+                userDetails={props?.route?.params?.userDetails}
+                isReel={true} title='' headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
+                <View style={{display:'flex',justifyContent:'center',alignItems:"center",height:'100%',marginTop:-(Constants.padding+80)}}>
+                <Text style={[styles.menuName,{color:'black',fontSize:24}]}>No reels found</Text>
+                <Pressable onPress={getReelsApi}><Text style={[styles.menuName,{color:'blue',fontSize:18,textDecorationLine:'underline'}]}>Refresh</Text></Pressable>
+                </View>
+        </View>
+        
+        }
             </Animated.View>
         </View>
     )
@@ -192,7 +340,7 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
     return(
         <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(60, 255, 106, 0.47)':'transparent', padding: 14,}]} onPress={()=>{
             setActiveMenu(title)
-            navigation.navigate(url,{userDetails:props.route.params.userDetails})
+            navigation.navigate(url,{userDetails:props?.route?.params?.userDetails})
         }}>
             {
                 icon==='feather'?<Feather name={iconName} size={26} color={Constants.colors.whiteColor} />:null
@@ -265,7 +413,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 90,
         top: -15,
-        backgroundColor: '#BBFFDA',
+        backgroundColor: '#1B3F24',
         color: '#04751F',
         borderRadius: Constants.borderRadius,
         padding: 8,
@@ -372,6 +520,14 @@ const styles = StyleSheet.create({
         backgroundColor: Constants.colors.whiteColor,
         borderRadius: Constants.borderRadius,
         zIndex: 9999,
+    },
+    reel: {
+        flex: 1,
+    },
+    category: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
     },
 })
 

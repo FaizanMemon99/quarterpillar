@@ -10,14 +10,18 @@ import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Constants from '../../../shared/Constants'
 
-const RenderProducts = ({products})=>{
+const RenderProducts = ({products,userDetails})=>{
     var imageUrl=`${Constants.BASE_IMAGE_URL}${JSON.parse(products.item.product_image)[0]}`
     const navigation = useNavigation()
     const gotoProductDetails = ()=>{
         navigation.navigate('/product-details',{productDetails:products})
     }
+    // console.log("userddd",userDetails);
     return (
-        <View style={styles.wrapper}>
+        <View style={styles.wrapper} 
+        // onPress={()=>navigation.navigate("/product-preview",{userDetails:userDetails})}
+        >
+            
             <Image source={{uri:imageUrl}} style={{width: '20%', height: '90%',borderRadius:10}}/>
             <View>
                 <Text style={styles.productName}>{products.item.product_name}</Text>
@@ -58,7 +62,7 @@ const RenderProducts = ({products})=>{
                     <Text style={styles.value}>{products.item.minimum_qty}</Text>
                 </View>
             </View>
-        </View>
+            </View>
     )
 }
 const styles= StyleSheet.create({

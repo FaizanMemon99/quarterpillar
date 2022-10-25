@@ -33,7 +33,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
       }
     return (
         <View>
-            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Profile' userDetails={props?.route?.params?.userDetails} type={Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]} />
+            <CustomAppBar editable={true} navigation={navigation} isMainscreen={false} isReel={false} title='Profile' userDetails={props?.route?.params?.userDetails} type={Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]} />
             <Text style={styles.summaryDesc}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>

@@ -39,11 +39,12 @@ const StackNavigationInfluencer=(props)=>{
             >
                 <Stack.Screen name="/product" component={Product} initialParams={{userDetails: props?.route?.params?.userDetails}}/>
                 <Stack.Screen name="/category" component={Category} />
-                <Stack.Screen name="/open-camera" component={OpenCamera} />
+                <Stack.Screen name="/open-camera" component={OpenCamera} initialParams={{influencerData:props?.route?.params}}/>
                 <Stack.Screen name="/add-post" component={AddPost} />
                 <Stack.Screen name='/product-preview' component={ProductPreview} />
                 <Stack.Screen name='/product-description' component={ProductDetails} />
-                <Stack.Screen name='/cart' component={Cart} />
+                <Stack.Screen name='/influencer-stack-navigation' component={StackNavigationInfluencer}/>
+                {/* <Stack.Screen name='/cart' component={Cart} /> */}
                 <Stack.Screen name='/draft' component={Draft} />
                 <Stack.Screen name='/reviews' component={Review} />
                 <Stack.Screen name='/business-list' component={BusinessList} />

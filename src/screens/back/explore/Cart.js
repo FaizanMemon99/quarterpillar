@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -7,40 +7,102 @@ import {
     FlatList,
     ScrollView,
     Pressable,
+    ActivityIndicator,
 } from 'react-native'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import RenderCart from './RenderCart'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
+import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
-const Cart = ({navigation})=>{
-    const cartItems = [
-        {id: 1},
-        {id: 2},
-        {id: 3},
-        {id: 4},
-        {id: 5},
-    ]
+const Cart = (props)=>{
+    const navigation=useNavigation()
+    const [price,setprice]=useState()
+    const [totalPrice,setTotalPrice]=useState()
+    const [loader,setLoader]=useState(false)
+    const [discount,setdiscount]=useState()
+    const [cartItems,setCartItems] = useState([])
     const gotoSelectAddress = ()=>{
-        navigation.navigate('/goto-select-address')
+        navigation.navigate('/goto-select-address',{price:price,cartItems:cartItems,userDetails:props?.route?.params?.userDetails,discount:discount,totalPrice:totalPrice})
     }
+    const getCartData=(withoutLoader)=>{
+        if(!withoutLoader)
+        setLoader(true)
+        setprice(0)
+        setdiscount(0)
+        setTotalPrice(0)
+        axios.post(`${Constants.BASE_URL}explore/get-cart-item`,{
+            explore_id:props?.route?.params?.userDetails?.id
+        }).then((response)=>{
+            setLoader(false)
+            if(response.data.data.cart_item)
+            {
+                let tempcartItems=[]
+                let tempprice=0
+                let tempdiscount=0
+                let temptotalPrice=0
+                if(response.data.data.cart_item.length>0)
+                response.data.data.cart_item.map((item,index)=>{
+tempcartItems.push({id: index,data:item})
+tempprice=tempprice+parseFloat(parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100)))
+tempdiscount=tempdiscount+(parseFloat(item?.sales_price)-
+    (parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100))))
+    temptotalPrice=temptotalPrice+parseFloat(item?.sales_price)
+// setprice(parseFloat(price)+
+//     parseFloat(parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100)))
+// )
+
+                })
+                setCartItems(tempcartItems)
+                setprice(tempprice)
+                setdiscount(tempdiscount)
+                setTotalPrice(temptotalPrice)
+            }
+        })
+        .catch((error)=>{
+            setLoader(false)
+            console.log("error",error);
+        })
+    }
+    useEffect(()=>{
+        getCartData()
+    },[])
     return (
         <View style={styles.container}>
+            
             <StatusBar translucent={true} backgroundColor='transparent' />
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Cart' headerRight={false} />
             <ScrollView style={styles.wrapper}>
                 <Text style={styles.description}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>
-                <FlatList
+                {loader?
+            <ActivityIndicator/>
+            :
+                cartItems.length>0?
+                 <FlatList
                     data={cartItems}
                     style={{marginBottom: 10,}}
                     showsVerticalScrollIndicator={false}
-                    renderItem={item=><RenderCart item={item} />}
+                    renderItem={item=><RenderCart item={item} getCartData={getCartData} />}
                     keyExtractor={item=>item?.id?.toString()} />
+                :
+                <View>
+                    <Text style={[styles.description,{fontSize:20,textAlign:'center',marginTop:20}]}>
+                        Cart is empty
+                    </Text>
+                </View>
+                }
             </ScrollView> 
-            <Pressable onPress={gotoSelectAddress} style={[globatStyles.button, {marginTop: 10}]}><Text style={globatStyles.btnText}>Proceeds ( <FontAwesome name='rupee' /> 1250 )</Text></Pressable>
+            {!loader&&cartItems.length<=0?null:<Pressable onPress={gotoSelectAddress} style={[globatStyles.button, {marginTop: 10,marginBottom:10,marginLeft:5,width:Constants.width-10}]}>
+                {loader?
+                <ActivityIndicator color={'white'}/>
+                :
+                    <Text style={globatStyles.btnText}>Proceed ( <FontAwesome name='rupee' /> {price} )</Text>}
+                </Pressable>}
+        
         </View>
     )
 }

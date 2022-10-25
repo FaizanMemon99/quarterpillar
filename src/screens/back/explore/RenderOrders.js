@@ -10,32 +10,34 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const RenderOrders = ({item})=>{
+    console.log("image",item.item.img);
     return (
         <View style={styles.container}>
-            <Image source={Images.orderImg} />
+            <Image source={item.item.img?{uri:item.item.img}:Images.orderImg} style={{flex: 1,
+        resizeMode: 'cover'}}/>
             <View style={styles.productDetails}>
                 <View style={styles.productFirstRow}>
                     <Text style={styles.producname}>{item.item.name}</Text>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.priceicon}><FontAwesome name='rupee' /></Text>
-                        <Text style={styles.oldPrice}>1500</Text>
+                        <Text style={styles.oldPrice}>{item.item.actualPrice}</Text>
                         <View style={styles.strikethrough}></View>
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.priceicon}><FontAwesome name='rupee' /></Text>
-                        <Text style={styles.price}>1500</Text>
+                        <Text style={styles.price}>{item.item.actualPrice-item.item.discount}</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={[styles.priceicon, {color: Constants.colors.primaryColor}]}><FontAwesome name='rupee' /></Text>
-                        <Text style={[styles.price, {color: Constants.colors.primaryColor}]}>300 Off</Text>
+                        <Text style={[styles.price, {color: Constants.colors.primaryColor}]}>{item.item.discount} Off</Text>
                     </View>
                 </View>
                 <View style={styles.productSecondRow}>
                     <View style={{flexDirection: 'row', marginRight: 12, alignItems: 'center',}}>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 11,}}>Qty : </Text><Text>1</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 11,}}>Qty : </Text><Text>{item.item.qty}</Text>
                     </View>
                     <View style={{flexDirection: 'row', marginRight: 12, alignItems: 'center',}}>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 11,}}>Qty : </Text><Text>500ml</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 11,}}>Size : </Text><Text>{item.item.size}</Text>
                     </View>
                 </View>
                 <View style={styles.productSecondRow}>

@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
     StyleSheet,
     Image,
     Pressable,
-    FlatList,
-    TextInput,
+    // FlatList,
+    // TextInput,
+    
+    ActivityIndicator,
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import VideoPlayer from 'react-native-video-player'
@@ -18,8 +20,13 @@ import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
 import RenderReelsComment from './RenderReelsComment'
 
-const RenderReeels = ({ item }) => {
+import axios from 'axios'
+
+const RenderReeels = ({ item ,userDetails}) => {
+    
     const [like, setLike] = useState(false)
+    const [loader,setLoader]=useState(false)
+    const [videoVar,setvideoVar]=useState()
     const [showCommentPopup, setShowCommentPopup] = useState(false)
     const navigation = useNavigation()
     const comments = [
@@ -37,7 +44,7 @@ const RenderReeels = ({ item }) => {
         navigation.navigate('/follow')
     }
     const gotoProductDetails = () => {
-        navigation.navigate('/product-details')
+        navigation.navigate('/product-details',{productDetails:item.item,userDetails:userDetails})
     }
     const gotoDescription = () => {
         navigation.navigate('/product-description')
@@ -48,22 +55,53 @@ const RenderReeels = ({ item }) => {
     const gotoComments = ()=>{
         navigation.navigate('/reels-comments')
     }
-
+    // const gotoBuy=()=>{
+    //     navigation.navigate('/cart')
+    // }
+    useEffect(()=>{
+        setLoader(true)
+        setvideoVar(null)
+        console.log("video var",JSON.parse(item?.item?.video)[0]);
+        axios.get(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, { responseType:'stream' })
+        .then((response)=> {
+            setvideoVar({
+                "bitrate": 154604, "duration": 1, 
+                "fileName": JSON.parse(item?.item?.video)[0], 
+                "fileSize": response.headers["content-length"], "height": 320, "type": "video/mp4", 
+                "uri": `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, 
+                "width": 240
+                })
+            // setTimeout(() => {
+                setLoader(false)        
+            // }, 1000);    
+            
+    
+            // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
+        }).catch((err)=>{setLoader(false)})
+    },[])
     return (
         <>
-            <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999 }} onPress={gotoProductDetails}>
-                <View style={[globatStyles.overlay, { zIndex: 9, height: '103%', }]}></View>
-                <VideoPlayer
-                    video={{ uri: item.item.video }}
+        {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
+        <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/></View>:
+            <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
+            onPress={gotoProductDetails}
+            >
+
+                <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}></View>
+                {videoVar?<VideoPlayer
+                    video={videoVar}
                     autoplay
+                    repeat={true}
                     loop
                     disableSeek
                     resizeMode={'cover'}
+                    
                     customStyles={{
                         wrapper: {
                             width: '100%',
                             height: '100%',
                             paddingBottom: Constants.padding,
+                            
                         },
                         video: {
                             width: '100%',
@@ -78,29 +116,37 @@ const RenderReeels = ({ item }) => {
                         seekBarProgress: {
                             backgroundColor: 'transparent',
                         },
-                    }} />
+                    }} />:null}
                 <View style={styles.iconGroup}>
                     <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => setLike(!like)} />
                     <Text style={styles.iconText}>nnk</Text>
-                    <AntDesign name='message1' style={styles.icon} onPress={gotoComments} />
+                    <AntDesign name='message1' style={styles.icon} 
+                    // onPress={gotoComments} 
+                    />
                     <Text style={styles.iconText}>00n</Text>
-                    <Feather name='send' style={styles.icon} onPress={gotoReview} />
+                    <Feather name='send' style={styles.icon} 
+                    // onPress={gotoReview}
+                     />
                     <Text style={styles.iconText}>00n</Text>
-                    <Feather name='bookmark' style={styles.icon} onPress={gotoDescription} />
+                    <Feather name='bookmark' style={styles.icon} 
+                    // onPress={gotoDescription} 
+                    />
                 </View>
                 <View style={styles.productDetailsContainer}>
                     <View style={styles.imgContainer}>
                         <Image source={Images.avatar} style={{ marginRight: 20, }} />
-                        <Text style={styles.titlename}>Robert Phan</Text>
-                        <Pressable onPress={follow} style={globatStyles.followBtn}><Text style={globatStyles.followBtnText}>Follow</Text></Pressable>
+                        <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
+                        <Pressable 
+                        // onPress={follow}
+                         style={globatStyles.followBtn}><Text style={globatStyles.followBtnText}>Follow</Text></Pressable>
                     </View>
                     <Text style={styles.desc}>
-                        Lolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt Lolor...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
+                        {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                     </Text>
                     <Text style={styles.minsAgo}>10 minutes ago</Text>
-                    <Pressable style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
+                    <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
                 </View>
-            </Pressable>
+            </Pressable>}
         </>
     )
 }
@@ -152,6 +198,7 @@ const styles = StyleSheet.create({
         color: Constants.colors.whiteColor,
         fontSize: 25,
         marginRight: 12,
+        textTransform:'capitalize'
     },
     desc: {
         fontFamily: Constants.fontFamily,

@@ -26,9 +26,11 @@ const ProfileScreen=(props)=>{
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
-    console.log("props values",props?.route?.params?.userDetails);
     function isImage(url) {
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+      }
+      const createPost=()=>{
+        navigation.navigate('/add-product',{userDetails:props?.route?.params?.userDetails})
       }
       useEffect(()=>{
         setLoader(true)
@@ -37,12 +39,13 @@ const ProfileScreen=(props)=>{
         axios.get(props?.route?.params?.type?`${Constants.BASE_URL}business/get-product-details/${props?.route?.params?.userDetails?.business_id}`:`${Constants.BASE_URL}business/get-product-details/${props?.route?.params?.userDetails?.business?.business_id}`)
         .then((response)=>{
             setLoader(false)
+            let tempobj=[]
             if(response.data[0].user_product.length>0){
                 setBusinessImage(response.data[0].user_product)
                 response.data[0].user_product.map((item)=>{
-                    productImages.push(`${Constants.BASE_IMAGE_URL}${JSON.parse(item.product_image)[0]}`)
+                    tempobj.push(`${Constants.BASE_IMAGE_URL}${JSON.parse(item.product_image)[0]}`)
                 })
-                setproductImages([...productImages])
+                setproductImages(tempobj)
             }
         })
         .catch((error)=>{
@@ -50,13 +53,14 @@ const ProfileScreen=(props)=>{
             setBusinessImage([])
             setLoader(false)
         })
-      },[props])
-      useEffect(()=>{
-        console.log("images val",productImages.map((item)=>typeof(item)));
-      },[productImages])
+      },[props?.route?.params])
+
     return (
         <View style={{flex:1}}>
-        <CustomAppBar title={props?.route?.params?.type?'':'Hello!'} isInfluencer={props?.route?.params?.type?true:false} type={UserType} editable={props?.route?.params?.type?false:true} name={props?.route?.params?.type?props?.route?.params?.userDetails?.username:props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={false} isReel={false} openDrawer={openDrawer} userDetails={props?.route?.params?.userDetails} showDrawer={showDrawer}/>           
+        <CustomAppBar title={props?.route?.params?.type?'':'Hello!'} 
+        editable={!props?.route?.params?.type}
+        isInfluencer={props?.route?.params?.type} type={UserType} 
+        name={props?.route?.params?.type?props?.route?.params?.userDetails?.username:props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={false} isReel={false} openDrawer={openDrawer} userDetails={props?.route?.params?.userDetails} showDrawer={showDrawer}/>           
         <View style={styles.container}>
          <ScrollView style={{paddingBottom:10}}>
          <View style={styles.companyDetails}>
@@ -98,11 +102,13 @@ const ProfileScreen=(props)=>{
             //         })
             //        }
             //    </View>
-            <View style={[styles.profileSection,{paddingBottom:props?.route?.params?.type&&100}]}>
+            productImages.length>0?<View style={[styles.profileSection,{paddingBottom:props?.route?.params?.type&&100}]}>
                     {
                         productImages?productImages.map((img,i)=>(
                             <>
-                                {props?.route?.params?.type?<Pressable onPress={()=>navigation.navigate('/open-camera',{category:props?.route?.params?.userDetails?.catorige,productData:img})} style={{width:'50%'}}>
+                                {props?.route?.params?.type?<Pressable 
+                                onPress={()=>navigation.navigate('/open-camera',{userDetails:props?.route?.params?.userDetails,category:props?.route?.params?.userDetails?.catorige,productData:businessImage[i]})} 
+                                style={{width:'50%'}}>
                                 <Image source={{uri: img}} alt='Img' style={styles.profileBgImg} />
                                 </Pressable>:
                                 <Image source={{uri: img}} alt='Img' style={styles.profileBgImg} />
@@ -111,6 +117,13 @@ const ProfileScreen=(props)=>{
                             )
                         ):null
                     }
+                    </View>
+                    :
+                    <View style={{display:'flex',alignItems:'center'}}>
+                        <Text style={[styles.socialValue,{color:'#000'}]}>
+                            No post found
+                        </Text>
+                        {props?.route?.params?.type?null:<Pressable onPress={createPost}><Text style={[styles.menuName,{color:'blue',fontSize:14,textDecorationLine:'underline',paddingTop:10}]}>Create Post</Text></Pressable>}
                     </View>
                }
             </ScrollView>

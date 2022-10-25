@@ -12,10 +12,14 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { useNavigation } from '@react-navigation/native'
 
-const Coupons = ({navigation})=>{
-    const copyCode = (text)=>{
-        Clipboard.setString(text)
+const Coupons = (props)=>{
+    const navigation=useNavigation()
+    const copyCode = (text,discount)=>{
+        navigation.navigate('/payment-details',{price:props?.route?.params?.price-discount,selectedAddress:props?.route?.params?.selectedAddress,discount:props?.route?.params?.discount,totalPrice:props?.route?.params?.totalPrice
+        ,couponCodeValue:discount,couponCode:text
+        })
     }
     return (
         <View style={styles.container}>
@@ -27,11 +31,11 @@ const Coupons = ({navigation})=>{
                 </Text>
                 <View style={styles.couponConatiner}>
                     <View style={{flexDirection: 'row',}}>
-                        <Text style={styles.rupees}><FontAwesome name='rupee' size={25} /> 600 off</Text>
+                        <Text style={styles.rupees}><FontAwesome name='rupee' size={25} /> 1000 off</Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.code}>FESTIVENEW</Text>
+                        <Text style={styles.code}>DIWALI</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('Hello')}><Text style={styles.copy}>Copy Code</Text></Pressable>
+                    <Pressable onPress={()=>copyCode('1000 off',1000)}><Text style={styles.copy}>Apply Code</Text></Pressable>
                 </View>
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
                 <View style={styles.couponConatiner}>
@@ -40,16 +44,16 @@ const Coupons = ({navigation})=>{
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.code}>FESTIVENEW</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('Hello')}><Text style={styles.copy}>Copy Code</Text></Pressable>
+                    <Pressable onPress={()=>copyCode('600 off',600)}><Text style={styles.copy}>Apply Code</Text></Pressable>
                 </View>
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
                 <View style={styles.couponConatiner}>
                     <View style={{flexDirection: 'row',}}>
-                        <Text style={styles.rupees}><FontAwesome name='rupee' size={25} /> 600 off</Text>
+                        <Text style={styles.rupees}><FontAwesome name='rupee' size={25} /> 200 off</Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.code}>FESTIVENEW</Text>
+                        <Text style={styles.code}>NEWCOMER</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('Hello')}><Text style={styles.copy}>Copy Code</Text></Pressable>
+                    <Pressable onPress={()=>copyCode('200 off',200)}><Text style={styles.copy}>Apply Code</Text></Pressable>
                 </View>
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
             </ScrollView>

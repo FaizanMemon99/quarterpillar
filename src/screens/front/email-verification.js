@@ -22,6 +22,7 @@ import axios from 'axios'
 const EmailVerification=(props)=>{
     const navigation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
+    console.log("props response",props.route.params);
     const [email, setemail] = useState(props?.route?.params?.emailId?props?.route?.params?.emailId:'')
     const [isLoading, setIsLoading] = useState(false)
     const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;

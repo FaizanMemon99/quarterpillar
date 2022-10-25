@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { 
     View,
     Text,
@@ -12,20 +12,24 @@ import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import { useNavigation } from '@react-navigation/native'
 
 const CustomAppBar=(props)=>{
+    const navigation=useNavigation()
     const goBack = ()=>{
         props.navigation.goBack()
     }
     const gotoCart = ()=>{
-        props.navigation.navigate('/cart')
+        navigation.navigate('/cart',{userDetails:props?.userDetails})
     }
     const gotoCategory = ()=>{
-        props.navigation.navigate('/category')
+
+        navigation.navigate('/my-requests',{page:'ongoing',userDetails:props?.userDetails})
     }
     const gotoDraft = ()=>{
-        props.navigation.navigate('/draft')
+        props.navigation.navigate('/draft',{userDetails:props?.userDetails})
     }
+
     return (
         <View style={styles.wrapper}>
             {
@@ -33,7 +37,7 @@ const CustomAppBar=(props)=>{
                     <View style={[styles.logoContainer, props.title?({alignItems: 'center'}):null]}>
                         <Pressable onPress={()=>props.openDrawer()} style={{zIndex: 999}}>
                             {
-                                !props.showDrawer?<Image source={Images.hamburgerMenuIcon} />:<AntDesign name='close' size={26} />
+                                !props.showDrawer?<Image source={Images.hamburgerMenuIcon} style={{tintColor:props.isReel?'#FFF':'#000'}} />:<AntDesign name='close' style={{color:props.isReel?'#FFF':'#000'}} size={26} />
                             }
                             
                         </Pressable>
@@ -58,7 +62,7 @@ const CustomAppBar=(props)=>{
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
                         </View>
-                        {!props.isReel&&<Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
+                        {props.editable&&<Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
                             <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>}
                     </View>
                 )
@@ -66,9 +70,9 @@ const CustomAppBar=(props)=>{
             {
                 props.headerRight?(
                     <View style={{flexDirection: 'row',}}>
-                        <Feather name='search' style={styles.leftIocn} />
-                        <Feather name='shopping-cart' style={styles.leftIocn} onPress={gotoCart} />
-                        <Feather name='plus-circle' style={[styles.leftIocn, {zIndex: props.newPost?9999:9}]} onPress={()=>props.openPopup()} />
+                        <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} />
+                        <Feather name='shopping-cart' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} onPress={gotoCart} />
+                        {!props?.explore&&<Feather name='plus-circle' style={[styles.leftIocn, {color:props?.IconColor?props?.IconColor:'#fff',zIndex: props.newPost?9999:9}]} onPress={()=>props.openPopup()} />}
                         {
                             props.newPost?<View style={styles.addnewPost}>
                                 <Text style={styles.item} onPress={gotoCategory}>New Post</Text>

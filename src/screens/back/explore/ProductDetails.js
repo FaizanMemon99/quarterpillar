@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import {
     View,
@@ -5,6 +6,7 @@ import {
     StyleSheet,
     ScrollView,
     ImageBackground,
+    ActivityIndicator,
 } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
@@ -12,17 +14,25 @@ import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import globatStyles from '../../../shared/globatStyles'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import Feather from 'react-native-vector-icons/Feather'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 
-const ProductDetails= ({navigation})=>{
+const ProductDetails= (props)=>{
+    const navigation=useNavigation()
     const [qty, setQty] = useState(1)
     const [color, setColor] = useState('')
     const [size, setSize] = useState('')
+    const [like, setLike] = useState(false)
+    const [loader,setLoader]=useState(false)
     const decreaseQty = ()=>{
         if(qty>1){
             setQty(qty-1)
         }
     }
     const increaseQty = ()=>{
+        if(qty<props?.route?.params?.productDetails?.business_product?.qty)
         setQty(qty+1)
     }
     const getColor = (color)=>{
@@ -31,35 +41,85 @@ const ProductDetails= ({navigation})=>{
     const getSize = (size)=>{
         setSize(size)
     }
+    const gotoBuy=()=>{
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}explore/add-to-cart`,{
+            product_id:props?.route?.params?.productDetails?.product_id,
+            explore_id:props?.route?.params?.userDetails?.id
+        })
+        .then((response)=>{
+            setLoader(false)
+            if(response.data.response==200){
+                navigation.navigate('/cart',{userDetails:props?.route?.params?.userDetails})     
+            }
+        })
+        .catch((error)=>{
+            setLoader(false)
+            console.log("error",error);
+            showToastmsg('Error! Please try again')
+        })
+        // navigation.navigate('/cart',{productDetails:props?.route?.params?.productDetails})
+    }
+    console.log("product details",props?.route?.params?.productDetails);
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={Images.reelProduct}
+                source={
+                    JSON.parse(props?.route?.params?.productDetails?.image)[0]?
+                    {uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(props?.route?.params?.productDetails?.image)[0]}`}:    
+                    Images.reelProduct
+                }
                 style={styles.bgImg}>
-                <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} title='Activated Charcoal' headerRight={false} />
+                <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} title={props?.route?.params?.productDetails?.title} headerRight={false} />
+                <View style={styles.iconGroup}>
+                    <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => setLike(!like)} />
+                    <Text style={styles.iconText}>nnk</Text>
+                    <AntDesign name='message1' style={styles.icon} 
+                    // onPress={gotoComments} 
+                    />
+                    <Text style={styles.iconText}>00n</Text>
+                    <Feather name='send' style={styles.icon} 
+                    // onPress={gotoReview}
+                     />
+                    <Text style={styles.iconText}>00n</Text>
+                    <Feather name='bookmark' style={styles.icon} 
+                    // onPress={gotoDescription} 
+                    />
+                </View>
             </ImageBackground>
+           
             <ScrollView style={styles.bottomContainer}>
                 <View style={styles.header}>
                     <View style={styles.headerTop}>
-                        <Text style={styles.productname}>ERBOLOGY</Text>
+                        <Text style={styles.productname}>
+                            {props?.route?.params?.productDetails?.business_product?.product_name}
+                        </Text>
                         <View style={{flexDirection: 'row'}}>
                             <View style={{flexDirection: 'row'}}>
-                                <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily}}> 1500  </Text>
+                                <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily}}> {props?.route?.params?.productDetails?.business_product?.sales_price}  </Text>
                                 <View style={styles.strikethrough}></View>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <FontAwesome name='rupee' size={16} style={[styles.icons, {color: '#000000'}]} /><Text style={{fontWeight: '700', fontFamily: Constants.fontFamily}}> 1200  </Text>
+                                <FontAwesome name='rupee' size={16} style={[styles.icons, {color: '#000000'}]} /><Text style={{fontWeight: '700', fontFamily: Constants.fontFamily}}> {
+                                    parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100))
+                                }  </Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <FontAwesome name='rupee' size={16} style={[styles.icons, {color: Constants.colors.primaryColor}]} /><Text style={{ fontFamily: Constants.fontFamily,color: Constants.colors.primaryColor}}> 1200 off</Text>
+                                <FontAwesome name='rupee' size={16} style={[styles.icons, {color: Constants.colors.primaryColor}]} /><Text style={{ fontFamily: Constants.fontFamily,color: Constants.colors.primaryColor}}> 
+                                {parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price)-
+                                (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100)))}
+                                &nbsp;off</Text>
                             </View>
                         </View>
                     </View>
                     <View style={[styles.headerTop, {marginBottom: 0,}]}>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18,}}>Units 3</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18,}}>Units {props?.route?.params?.productDetails?.business_product?.qty}</Text>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={{fontFamily: Constants.fontFamily, fontSize: 18,}}>Availability: </Text>
+                            {parseInt(props?.route?.params?.productDetails?.business_product?.qty)>=parseInt(props?.route?.params?.productDetails?.business_product?.warning_qty)?
                             <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, color: Constants.colors.primaryColor}}>In Stock</Text>
+                            :
+                            <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, color: "red"}}>Out of Stock</Text>}
                         </View>
                     </View>
                 </View>
@@ -74,7 +134,17 @@ const ProductDetails= ({navigation})=>{
                 </View>
                 <View style={styles.buynow}>
                     <View style={[styles.buynowBtn, {marginTop: -16}]}>
-                        <Pressable style={[globatStyles.button, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={16} color={Constants.colors.whiteColor} /></Pressable>
+                        <Pressable onPress={gotoBuy} style={[globatStyles.button, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},]}>
+                            
+                            {loader?
+                            <View style={{display:'flex',alignItems:'center',width:'100%'}}>
+                            <ActivityIndicator color={Constants.colors.whiteColor}/>
+                            </View>
+                            :<>
+                            <Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={16} color={Constants.colors.whiteColor} />
+                            </>
+                            }
+                            </Pressable>
                     </View>
                     <View style={styles.increaseDecreasebtn}>
                         <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>-</Text></Pressable>
@@ -101,10 +171,12 @@ const ProductDetails= ({navigation})=>{
                         <Pressable onPress={()=>getSize('2xl')} style={[styles.variable, {backgroundColor: size==='2xl'?'#D1D1D1':'#FFF'}]}><Text style={styles.variableValue}>2XL</Text></Pressable>
                     </View>
                 </View>
-                <View style={{marginTop: 14}}>
+                <View style={{marginTop: 14,marginBottom:10}}>
                     <Text style={{fontFamily: Constants.fontFamily, fontSize: 18,}}>Description</Text>
                     <Text style={styles.productdescription}>
-                        Lolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt Lolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt Lolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        {
+                            props?.route?.params?.productDetails?.description
+                        }
                     </Text>
                 </View>
             </ScrollView>
@@ -115,6 +187,23 @@ const ProductDetails= ({navigation})=>{
 const styles = StyleSheet.create({
     container: {
         flex: 2,
+    },
+    iconGroup: {
+        position: 'absolute',
+        bottom: Constants.padding,
+        right: Constants.padding + 20,
+        zIndex: 99,
+    },
+    icon: {
+        marginTop: 25,
+        fontSize: 25,
+        color: Constants.colors.whiteColor,
+    },
+    iconText: {
+        fontFamily: Constants.fontFamily,
+        color: Constants.colors.whiteColor,
+        fontSize: 12,
+        marginTop: 6,
     },
     bgImg: {
         flex: 1,
@@ -133,6 +222,7 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
         fontSize: 20,
+        textTransform:'capitalize'
     },
     icons: {
         marginTop: 2,

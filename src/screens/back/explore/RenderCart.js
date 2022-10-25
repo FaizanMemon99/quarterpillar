@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     Pressable,
+    ActivityIndicator,
 } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
 import Images from '../../../assets/images/Images'
@@ -12,34 +13,69 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 
-const RenderCart = () => {
+const RenderCart = ({item,getCartData}) => {
     const [qty, setQty] = useState(1)
+    const [deleteLoader,setDeleteLoader]=useState(false)
+    console.log("item vals",item);
     const decreaseQty = ()=>{
         if(qty>1){
             setQty(qty-1)
+            // setprice(price-1200)
         }
     }
     const increaseQty = ()=>{
         setQty(qty+1)
+        // setprice(price+1200)
     }
     const sizes = ['S', 'M', 'XL', '2XL']
     const colors = ['RED', 'GREEN', 'BLUE', 'BLACK']
+    const deleteCartValue=()=>{
+        setDeleteLoader(item?.item?.data?.cart_id)
+        axios.post(`${Constants.BASE_URL}explore/remove-item-from-cart`,{
+            cart_id:item?.item?.data?.cart_id
+        }).then((response)=>
+        {
+            if(response.data.response==200){
+                showToastmsg('Cart updated successfully')
+                getCartData(true)
+            }
+        }).catch((error)=>{
+            console.log("error",error);
+            showToastmsg('Error! Please try again')
+        })
+    }
     return (
         <View style={styles.container}>
-            <Image source={Images.cartImg} style={styles.pimg} />
+            <Image source={JSON.parse(item?.item?.data?.product_image)[0]?
+                    {uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.data?.product_image)[0]}`}:
+                Images.cartImg} style={styles.pimg} />
             <View style={{marginLeft: 12, justifyContent: 'space-between' }}>
-                <Text style={styles.pname}>Statue of Boris</Text>
+                <View style={{display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
+                <Text style={styles.pname}>{item?.item?.data?.product_name}</Text>
+                {deleteLoader==item?.item?.data?.cart_id?
+                    <ActivityIndicator/>:
+                <Pressable onPress={deleteCartValue}>
+                <FontAwesome  name='trash' size={18} style={[styles.icons,{color:'red'}]} />
+                </Pressable>
+                }
+                </View>
                 <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 6,}}>
                     <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> 1500  </Text>
+                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {item?.item?.data?.sales_price}  </Text>
                         <View style={styles.strikethrough}></View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> 1200  </Text>
+                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
+                                    parseFloat(item?.item?.data?.sales_price) - (parseFloat(item?.item?.data?.sales_price) * (parseFloat(item?.item?.data?.dicount)/100))
+                                }  </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> 1200 off</Text>
+                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> {parseFloat(item?.item?.data?.sales_price)-
+                                (parseFloat(item?.item?.data?.sales_price) - (parseFloat(item?.item?.data?.sales_price) * (parseFloat(item?.item?.data?.dicount)/100)))}
+                                &nbsp;off</Text>
                     </View>
                 </View>
                 <View style={{flexDirection: 'row',}}>
@@ -98,6 +134,7 @@ const styles = StyleSheet.create({
     pname: {
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
+        textTransform:'capitalize'
     },
     dropDownBox: {
         padding: 0,
@@ -130,7 +167,9 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     pimg: {
-        height: 150,
+        flex: 1,
+        resizeMode: 'cover',
+        // height: 150,
     },
 })
 

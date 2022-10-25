@@ -57,9 +57,14 @@ const MyPillars = (props)=>{
         })
     }
     useEffect(()=>{
+        if(props?.route?.params?.page){
+            getData(props?.route?.params?.page)
+        }
+        else {
         getData(tabs)
+        }
         console.log("aaa",props?.route?.params?.userDetails);
-    },[])
+    },[props?.route?.params])
     const EmptyListMessage = ({item}) => {
         return (
           // Flat List Item

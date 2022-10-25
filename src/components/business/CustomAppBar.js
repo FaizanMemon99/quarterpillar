@@ -43,6 +43,7 @@ const CustomAppBar=(props)=>{
                     </View>
                     
                 ):(
+                    <View style={{display:'flex',flexDirection:'column'}}>
                     <View style={[styles.logoContainer,{display:'flex',width:'100%'}]}><View style={styles.titleBar}>
                         <View style={{display:'flex',alignItems:'center',flexDirection:'row'}}>
                         <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
@@ -50,6 +51,7 @@ const CustomAppBar=(props)=>{
                         {
                             props.subtitle?<Text style={styles.subtitle}>{props.subtitle}</Text>:null
                         }
+                        
                         {
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
@@ -59,7 +61,9 @@ const CustomAppBar=(props)=>{
                             <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
                             
                     </View>
-                    <Text style={[styles.companyName,{paddingLeft:'12%'}]}>{props.name}</Text>
+                    
+                    </View>
+                    {props.subName?<Text style={[styles.companyName,{paddingLeft:'12%'}]}>{props.subName}</Text>:null}
                     </View>
                 )
             }

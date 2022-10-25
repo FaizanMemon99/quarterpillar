@@ -25,6 +25,9 @@ const RenderMyRequest = ({pillars,tabs,getBussinessRequests})=>{
             if(response.data.response==200){
                 setLoader(false)
                 showToastmsg(`Collaboration ${status} successfully`)
+                if(status=='approve')
+                getBussinessRequests('ongoing')
+                else
                 getBussinessRequests(tabs)
             }
         }).catch((error)=>{
@@ -42,7 +45,10 @@ const RenderMyRequest = ({pillars,tabs,getBussinessRequests})=>{
         <View style={styles.cardHeading}>
             <Image source={{uri:`${Constants.BASE_IMAGE_URL}${pillars?.item?.business_profile_pic}`}} style={{width:'20%',height:'100%'}} />
             <View style={{alignItems: 'flex-start', marginLeft: 16, marginRight: 16,}}>
-                <Text style={styles.heading}>{pillars?.item?.username}</Text>
+                <Text style={styles.heading}>{
+                    pillars?.item?.username.length>10?pillars?.item?.username.slice(0,10)+'...':
+                    pillars?.item?.username
+                }</Text>
                 <Text style={styles.designation}>Business</Text>
             </View>
             <View style={styles.ongoingWrapper}>

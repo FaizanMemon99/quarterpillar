@@ -220,7 +220,7 @@ console.log("folder image",result.assets[0]);
             <ScrollView style={styles.container}>
          
                 <Text style={styles.normalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
-                <Text style={styles.heading}>Product images/videos</Text>
+                <Text style={styles.heading}>Product images</Text>
                 {
                     cameraImg?.length>0?(
                         <>

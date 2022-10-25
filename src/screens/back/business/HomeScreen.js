@@ -43,7 +43,7 @@ const HomeScreen=(props)=>{
     const closeDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
-    console.log("props value",props?.route?.params);
+    
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,

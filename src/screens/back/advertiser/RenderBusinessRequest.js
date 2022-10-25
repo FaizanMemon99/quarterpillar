@@ -29,7 +29,7 @@ const RenderBusinessRequest = ({item,userDetails}) => {
             setLoader(false)
             if(response.data.response==200){
                 showToastmsg('Request for collaboration sended to influencer')
-                navigation.navigate('/my-pillars',{userDetails:userDetails})
+                navigation.navigate('/my-pillars',{userDetails:userDetails,page:'pending'})
             }
             else {
                 showToastmsg('Cannot send request to influencer. Please try again later')
@@ -40,8 +40,6 @@ const RenderBusinessRequest = ({item,userDetails}) => {
             showToastmsg('Cannot send request to influencer. Please try again later')
         })
     }
-    console.log("values",item);
-    console.log("props val",userDetails);
     return (
         <View style={styles.container}>
             <View style={styles.headingLine}>

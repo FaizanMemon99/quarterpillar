@@ -8,6 +8,8 @@ import {
     Image,
     ScrollView,
     ActivityIndicator,
+    Platform,
+    PermissionsAndroid
 } from 'react-native'
 import Constants from '../../../shared/Constants'
 import globatStyles from '../../../shared/globatStyles'
@@ -21,7 +23,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { SafeAreaView } from 'react-native-safe-area-context'
 import showToastmsg from '../../../shared/showToastmsg'
 import axios from 'axios'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import {
+    launchCamera,
+    launchImageLibrary
+  } from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather'
 
 const InfluencerRegistration=(props)=>{
@@ -56,18 +61,95 @@ const InfluencerRegistration=(props)=>{
     const passwordPattern=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const UrlRegex=/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
     const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const openCamera = async ()=>{
-		try{
-			const result = await launchCamera()
-            console.log("images",result.assets[0])
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.CAMERA,
+              {
+                title: 'Camera Permission',
+                message: 'App needs camera permission',
+              },
+            );
+            // If CAMERA Permission is granted
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+          } catch (err) {
+            console.warn(err);
+            return false;
+          }
+        } else return true;
+      };
+     
+      const requestExternalWritePermission = async () => {
+        if (Platform.OS === 'android') {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title: 'External Storage Write Permission',
+                message: 'App needs write permission',
+              },
+            );
+            // If WRITE_EXTERNAL_STORAGE Permission is granted
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+          } catch (err) {
+            console.warn(err);
+            console.log('Write permission err', err);
+          }
+          return false;
+        } else return true;
+      };
+    // const openCamera = async ()=>{
+	// 	try{
+	// 		const result = await launchCamera()
+    //         console.log("images",result.assets[0])
 
-			setCameraImg(result.assets[0])
-            // setCameraImg([...cameraImg])
-		}
-        catch(err){
-			console.log("err")
-		}
-    }
+	// 		setCameraImg(result.assets[0])
+    //         // setCameraImg([...cameraImg])
+	// 	}
+    //     catch(err){
+	// 		console.log("err",err.response)
+	// 	}
+    // }
+    const openCamera = async () => {
+        setCameraImg(null)
+        let options = {
+          mediaType: 'photo',
+        //   maxWidth: 300,
+        //   maxHeight: 550,
+        //   quality: 1,
+        //   videoQuality: 'low',
+        //   durationLimit: 30, //Video max duration in seconds
+          saveToPhotos: false,
+        };
+        let isCameraPermitted = await requestCameraPermission();
+        let isStoragePermitted = await requestExternalWritePermission();
+        if (isCameraPermitted && isStoragePermitted) {
+          launchCamera(options, (response) => {
+            // console.log('Response = ', response);
+     
+            if (response.didCancel) {
+              console.log('User cancelled camera picker');
+              return;
+            } else if (response.errorCode == 'camera_unavailable') {
+              console.log('Camera not available on device');
+              return;
+            } else if (response.errorCode == 'permission') {
+              console.log('Permission not satisfied');
+              return;
+            } else if (response.errorCode == 'others') {
+              console.log(response.errorMessage);
+              return;
+            }
+            // if(type=='video'){
+              console.log("repsonse image",response);
+              setCameraImg(response.assets[0])
+            // }
+            // else
+            // {setCameraImg(response)};
+          });
+        }
+      };
     const choosePhotoFromLibrary = async ()=>{
 		try{
 			const result = await launchImageLibrary()
@@ -118,33 +200,34 @@ else if(emailId==''||emailId==null){
  else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(instagram))){
     showToastmsg('Please add valid instagram account link') 
  }
- else if(props.route.params.type=='Influencer'&&(facebook==''||facebook==null)){
-    showToastmsg('Please add facebook account link') 
- }
- else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(facebook))){
+//  else if(props.route.params.type=='Influencer'&&(facebook==''||facebook==null)){
+//     showToastmsg('Please add facebook account link') 
+//  }
+ else if(props.route.params.type=='Influencer'&&facebook&&(!UrlRegex.test(facebook))){
     showToastmsg('Please add valid facebook account link') 
  }
- else if(props.route.params.type=='Influencer'&&(youtube==''||youtube==null)){
-    showToastmsg('Please add youtube account link') 
- }
- else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(youtube))){
+//  else if(props.route.params.type=='Influencer'&&(youtube==''||youtube==null)){
+//     showToastmsg('Please add youtube account link') 
+//  }
+ else if(props.route.params.type=='Influencer'&&youtube&&(!UrlRegex.test(youtube))){
     showToastmsg('Please add valid youtube account link') 
  }
- else if(props.route.params.type=='Influencer'&&(twitter==''||twitter==null)){
-    showToastmsg('Please add twitter account link') 
- }
- else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(twitter))){
+//  else if(props.route.params.type=='Influencer'&&(twitter==''||twitter==null)){
+//     showToastmsg('Please add twitter account link') 
+//  }
+ else if(props.route.params.type=='Influencer'&&twitter&&(!UrlRegex.test(twitter))){
     showToastmsg('Please add valid twitter account link') 
  }
- else if(props.route.params.type=='Influencer'&&(tiktok==''||tiktok==null)){
-    showToastmsg('Please add tiktok account link') 
- }
- else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(tiktok))){
+//  else if(props.route.params.type=='Influencer'&&(tiktok==''||tiktok==null)){
+//     showToastmsg('Please add tiktok account link') 
+//  }
+ else if(props.route.params.type=='Influencer'&&tiktok&&(!UrlRegex.test(tiktok))){
     showToastmsg('Please add valid tiktok account link') 
- }else if(props.route.params.type=='Influencer'&&(pinterest==''||pinterest==null)){
-    showToastmsg('Please add pinterest account link') 
  }
- else if(props.route.params.type=='Influencer'&&(!UrlRegex.test(pinterest))){
+//  else if(props.route.params.type=='Influencer'&&(pinterest==''||pinterest==null)){
+//     showToastmsg('Please add pinterest account link') 
+//  }
+ else if(props.route.params.type=='Influencer'&&pinterest&&(!UrlRegex.test(pinterest))){
     showToastmsg('Please add valid pinterest account link') 
  }
  else if(username==''||username==null){
@@ -171,9 +254,9 @@ else if(cPassword==''||cPassword==null){
  else if(props.route.params.type=='Explorer'&&(address1==''||address1==null)){
     showToastmsg('Please add address 1')
  }
- else if(props.route.params.type=='Explorer'&&(address2==''||address2==null)){
-    showToastmsg('Please add address 2')
- }
+//  else if(props.route.params.type=='Explorer'&&(address2==''||address2==null)){
+//     showToastmsg('Please add address 2')
+//  }
  else if(props.route.params.type=='Explorer'&&(pincode==''||pincode==null)){
     showToastmsg('Please add pincode')
  }
@@ -232,6 +315,7 @@ const headers = {
 
                                 showToastmsg(res.data.msg)
                                 console.log("mobile otp value",res.data.data.otp)
+                                console.log("mobile data response",res.data.data)
                             }
                             else {
                                 setButtonLoader(false)
@@ -370,11 +454,11 @@ const headers = {
                     <TextInput placeholder='Address1' style={globatStyles.inputText} onChangeText={setaddress1} multiline={true}
                     numberOfLines={4}/>
                 </View>
-                <View style={{marginTop: 12,}}>
+                {/* <View style={{marginTop: 12,}}> */}
                     {/* <Fontisto name='map-marker-alt' style={styles.calenderIcon} size={32} color='#999999' /> */}
-                    <TextInput placeholder='Address2' style={globatStyles.inputText} onChangeText={setaddress2} multiline={true}
-                    numberOfLines={4}/>
-                </View>
+                    {/* <TextInput placeholder='Address2' style={globatStyles.inputText} onChangeText={setaddress2} multiline={true} */}
+                    {/* numberOfLines={4}/> */}
+                {/* </View> */}
                 <View style={{marginTop: 12,}}>
                     <Fontisto name='map-marker-alt' style={styles.calenderIcon} size={32} color='#999999' />
                     <TextInput placeholder='Pincode' style={globatStyles.inputText} onChangeText={setpincode}/>
@@ -399,7 +483,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setInstagram} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} value={instagram} placeholder='http://' onChangeText={(e)=>setInstagram(e.includes("http://")?e:`http://${e}`)} />
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 3, marginBottom: 10, marginLeft: 10, alignItems: 'center',}}>
@@ -410,7 +494,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setFacebook} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='http://' onChangeText={(e)=>setFacebook(e.includes("http://")?e:`http://${e}`)} value={facebook} />
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 3, marginLeft: 10, alignItems: 'center',}}>
@@ -421,7 +505,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setYoutube} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='http://' onChangeText={(e)=>setYoutube(e.includes("http://")?e:`http://${e}`)} value={youtube} />
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 3, marginBottom: 10,marginLeft: 10, alignItems: 'center',}}>
@@ -432,7 +516,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setTwitter} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='http://' onChangeText={(e)=>setTwitter(e.includes("http://")?e:`http://${e}`)} value={twitter} />
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 3, marginBottom: 10,marginLeft: 10, alignItems: 'center',}}>
@@ -443,7 +527,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setTiktok} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='http://' onChangeText={(e)=>setTiktok(e.includes("http://")?e:`http://${e}`)} value={tiktok} />
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 3, marginBottom: 10,marginLeft: 10, alignItems: 'center',}}>
@@ -454,7 +538,7 @@ const headers = {
                         
                     </View>
                     <View style={{flex: 2, marginTop: 14,}}>
-                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='Copy the link' onChangeText={setPinterest} />
+                        <TextInput style={[globatStyles.inputText, {height: 50,}]} placeholder='http://' onChangeText={(e)=>setPinterest(e.includes("http://")?e:`http://${e}`)} value={pinterest} />
                     </View>
                 </View>
                 </>}
@@ -539,6 +623,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         right: 10,
+        zIndex: 999,
+    },
+    linkPrefix: {
+        position: 'absolute',
+        top: 15,
+        left: 10,
         zIndex: 999,
     },
     cameraContainer: {

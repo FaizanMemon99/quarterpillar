@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -17,18 +17,35 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import globatStyles from '../../../shared/globatStyles'
 import Images from '../../../assets/images/Images'
+import { useNavigation } from '@react-navigation/native'
 
-const PaymentDetails = ({navigation})=>{
+const PaymentDetails = (props)=>{
+    const navigation=useNavigation()
     const [paymentOption, setPaymentOption] = useState('')
     const [saveCardDetails, setSaveCardDetails] = useState(true)
     const [upi, setUpi] = useState('')
     const [isCod, setIsCod] = useState('')
+    const [price,setprice]=useState()
+    const [couponCode,setcouponCode]=useState()
+    const [discount,setdiscount]=useState()
+    const [totalPrice,setTotalPrice]=useState()
+    const [couponCodeValue,setcouponCodeValue]=useState()
+    const [selectedAddress,setselectedAddress]=useState('')
     const gotoCoupon = ()=>{
-        navigation.navigate('/all-coupons')
+        
+        navigation.navigate('/all-coupons',{price:price,selectedAddress:props?.route?.params?.selectedAddress,discount:discount,totalPrice:totalPrice})
     }
     const gotoPaymentSuccess = ()=>{
         navigation.navigate('/payment-success')
     }
+    useEffect(()=>{
+        setprice(props?.route?.params?.price?props?.route?.params?.price:0)
+        setcouponCode(props?.route?.params?.couponCode?props?.route?.params?.couponCode:'')
+        setcouponCodeValue(props?.route?.params?.couponCodeValue?props?.route?.params?.couponCodeValue:0)
+        setdiscount(props?.route?.params?.discount?props?.route?.params?.discount:0)
+        setTotalPrice(props?.route?.params?.totalPrice?props?.route?.params?.totalPrice:0)
+        setselectedAddress(props?.route?.params?.selectedAddress?props?.route?.params?.selectedAddress:'')
+    },[props?.route?.params])
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor='transparent' />
@@ -37,32 +54,41 @@ const PaymentDetails = ({navigation})=>{
                 <Text style={styles.description}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>
-                <View style={styles.addressContainer}>
+                <View style={styles.addressContainer} >
                     <Text style={styles.addressHeading}>Selected Address</Text>
-                    <Text style={styles.address}>House 1, Blk 35 Mandalay Road # 13–37 ...</Text>
+                    <Text style={styles.address}>
+                        {selectedAddress}
+                    </Text>
                 </View>
                 <View style={styles.priceDetails}>
                     <Text style={styles.addressHeading}>Price Details</Text>
                     <View style={styles.row}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Total MRP</Text>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' /> 3000</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' /> {totalPrice}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Discount</Text>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}><FontAwesome name='rupee' /> 600</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}>{discount>0?'- ':''}<FontAwesome name='rupee' /> {discount}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Delivery Charges</Text>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}><FontAwesome name='rupee' /> 0</Text>
                     </View>
-                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor, marginBottom: 6,}]}></View>
+                   {couponCode? <View style={styles.row}>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Coupon Discount</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}> - <FontAwesome name='rupee' /> {couponCodeValue}</Text>
+                    </View>:null}
+                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor,height:2}]}></View>
                     <View style={[styles.row, {marginTop: 0,}]}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Total Amount to be Paid</Text>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}><FontAwesome name='rupee' /> 2400</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}><FontAwesome name='rupee' /> {price}</Text>
                     </View>
                 </View>
-                <Pressable style={globatStyles.btnAddAddress} onPress={gotoCoupon}><Text style={globatStyles.btnTextAddress}><FontAwesome name='plus' /> Coupon Code</Text></Pressable>
-                <View style={styles.paymentOptions}>
+                <Pressable style={[globatStyles.btnAddAddress,{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]} onPress={gotoCoupon}>
+                    <Text style={globatStyles.btnTextAddress}>{!couponCode&&<FontAwesome name='plus' />} {couponCode?`${couponCode} Applied`:'Coupon Code'}</Text>
+                {couponCode?<Pressable  onPress={()=>{setcouponCode(),setcouponCodeValue(0),setprice(price+couponCodeValue)}}><Text style={globatStyles.btnTextAddress}>x</Text></Pressable>:null}
+                </Pressable>
+                {/* <View style={styles.paymentOptions}>
                     <Text style={styles.addressHeading}>Payment Options</Text>
                     <Pressable style={styles.option} onPress={()=>setPaymentOption('card')}>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
@@ -185,8 +211,8 @@ const PaymentDetails = ({navigation})=>{
                             </View>
                         ):null
                     }
-                </View>
-                <Pressable onPress={gotoPaymentSuccess} style={[globatStyles.button, {marginTop: 0,marginBottom: Constants.margin,}]}><Text style={globatStyles.btnText}>Pay ( <FontAwesome name='rupee' /> 2400 )</Text></Pressable>
+                </View> */}
+                <Pressable onPress={gotoPaymentSuccess} style={[globatStyles.button, {marginTop: 0,marginBottom: Constants.margin+10,}]}><Text style={globatStyles.btnText}>Pay ( <FontAwesome name='rupee' /> {price} )</Text></Pressable>
             </ScrollView> 
         </View>
     )

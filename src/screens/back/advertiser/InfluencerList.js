@@ -29,7 +29,7 @@ const InfluencerList=(props)=>{
           <Text
             style={styles.emptyListStyle}
             >
-            No Data Found
+            No Influnecers Found
           </Text>
         );
       };
@@ -61,14 +61,14 @@ const InfluencerList=(props)=>{
     }
     useEffect(()=>{
         getInfluencerList()
-    },[])
+    },[props?.route?.params])
     // const sendBusinessRequest = ()=>{
     //     props.navigation.navigate('/influencer-request')
     // }
     return (
         <View style={globatStyles.wrapper}>
             <StatusBar translucent={true} backgroundColor='transparent' />
-            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} headerRight={false} title='Influencer List (10)' isCamera={true} />
+            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} headerRight={false} title={`Influencer List (${influencerData.length})`} isCamera={true} />
             <ScrollView style={styles.container}>
                 <Text style={styles.desc}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
@@ -80,8 +80,9 @@ const InfluencerList=(props)=>{
                 </View> */}
                 {loading?
                 <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
-                :<FlatList 
-                    data={influencerData} 
+                :
+                <FlatList 
+                    data={influencerData.filter((i)=>i.collabration_id==undefined)} 
                     renderItem={item=><RenderBusinessRequest userDetails={props?.route?.params?.userDetails} item={item}
                     keyExtractor={item=>item?.id?.tostring()} />}
                     ListEmptyComponent={EmptyListMessage}

@@ -167,11 +167,14 @@ const ProductsScreen=(props)=>{
 
     useEffect(() => {
 getProductsbyuserid()
-    }, [])
+    }, [props?.route?.params])
     return (
         <View style={{flex:1}}>
 
-            <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={true} isReel={false} />
+            <CustomAppBar
+            title='Hello!'
+            subName={props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={false} isReel={false} 
+            />
             {pageLoader?<Loading/>:
                 <><ScrollView style={styles.container}>
                 <SearchBar setsearchText={setsearchText} searchText={searchText}/>
@@ -194,10 +197,17 @@ getProductsbyuserid()
                     </Pressable>
                 </View> */}
                 <View style={{paddingTop:10}}>
-                    <FlatList 
+                    {userProdcuts.length>0?<FlatList 
                         data={userProdcuts}
-                        renderItem={item=><RenderProducts products={item} />}
+                        renderItem={item=><RenderProducts products={item} userDetails={props?.route?.params?.userDetails}/>}
                         keyExtractor={item=>item?.index}/>
+                    :
+                    <View style={{display:'flex',alignItems:'center',paddingTop:10}}>
+                    <Text style={[styles.actionMenuItem,{color:'#000'}]}>
+                            No product found
+                        </Text>
+                        </View>
+                    }
                 </View>
             </ScrollView>
             <Pressable style={styles.actionBtn} onPress={toggleActionMenu}>
