@@ -9,24 +9,46 @@ import {
 import Constants from '../../../shared/Constants'
 import Feather from 'react-native-vector-icons/Feather'
 import globatStyles from '../../../shared/globatStyles'
+import { useNavigation } from '@react-navigation/native'
 
-const PaymentSuccess = ({navigation})=>{
+const PaymentSuccess = (props)=>{
+    const navigation=useNavigation()
     const gotoProduct = ()=>{
         navigation.navigate('/product')
     }
+    const retryPayment=()=>{
+        navigation.navigate('/payment-details',{price:props?.route?.params?.price,
+            couponCode:props?.route?.params?.couponCode,
+            couponCodeValue:props?.route?.params?.couponCodeValue,
+            selectedAddress:props?.route?.params?.selectedAddress,
+            discount:props?.route?.params?.discount,
+            totalPrice:props?.route?.params?.totalPrice,
+            cartItems:props?.route?.params?.cartItems,
+            userDetails:props?.route?.params?.userDetails,
+            error:true
+        })
+    }
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor={Constants.colors.primaryColor} />
+        <View style={[styles.container,{backgroundColor:props?.route?.params?.error?'red':Constants.colors.primaryColor}]}>
+            <StatusBar backgroundColor={props?.route?.params?.error?'red':Constants.colors.primaryColor} />
             <View style={styles.middleContant}>
-                <View style={styles.circle}>
-                    <Feather name='check' size={35} color={Constants.colors.whiteColor} />
+                <View style={[styles.circle,{
+                    color:props?.route?.params?.error?'rgba(255,0,0,0.6)':'rgba(255,255,255,0.6)'
+                }]}>
+                    <Feather name={props?.route?.params?.error?
+                        'x'
+                        :'check'} size={35} color={Constants.colors.whiteColor} />
                 </View>
-                <Text style={styles.successHeading}>Payment successful</Text>
+                <Text style={styles.successHeading}>Payment {props?.route?.params?.error?'failed':'successful'}</Text>
                 <Text style={styles.successText}>
                     It Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut . It Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut . It Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>
-                <Pressable onPress={gotoProduct} style={[globatStyles.button, {backgroundColor: Constants.colors.whiteColor, marginTop: 40,}]}>
-                    <Text style={[globatStyles.btnText, { color: Constants.colors.primaryColor }]}>Explore More</Text>
+                <Pressable onPress={
+                    props?.route?.params?.error?retryPayment:
+                    gotoProduct} style={[globatStyles.button, {backgroundColor:Constants.colors.whiteColor, marginTop: 40,}]}>
+                    <Text style={[globatStyles.btnText, { color:props?.route?.params?.error?'red': Constants.colors.primaryColor}]}>{props?.route?.params?.error?
+                    'Retry payment'
+                    :'Explore More'}</Text>
                 </Pressable>
             </View>
         </View>

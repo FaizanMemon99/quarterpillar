@@ -33,6 +33,7 @@ const Cart = (props)=>{
         setprice(0)
         setdiscount(0)
         setTotalPrice(0)
+        console.log("cart id==>",props?.route?.params?.userDetails?.id);
         axios.post(`${Constants.BASE_URL}explore/get-cart-item`,{
             explore_id:props?.route?.params?.userDetails?.id
         }).then((response)=>{
@@ -46,10 +47,9 @@ const Cart = (props)=>{
                 if(response.data.data.cart_item.length>0)
                 response.data.data.cart_item.map((item,index)=>{
 tempcartItems.push({id: index,data:item})
-tempprice=tempprice+parseFloat(parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100)))
-tempdiscount=tempdiscount+(parseFloat(item?.sales_price)-
-    (parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100))))
-    temptotalPrice=temptotalPrice+parseFloat(item?.sales_price)
+tempprice=tempprice+parseFloat(item.total_amount)
+tempdiscount=tempdiscount+parseFloat(item.dis_amount)
+    temptotalPrice=temptotalPrice+parseFloat(item?.total_amount)
 // setprice(parseFloat(price)+
 //     parseFloat(parseFloat(item?.sales_price) - (parseFloat(item?.sales_price) * (parseFloat(item?.dicount)/100)))
 // )

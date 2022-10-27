@@ -5,6 +5,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;
+import android.content.Intent;
 
 public class MainActivity extends ReactActivity {
 
@@ -21,6 +22,11 @@ public class MainActivity extends ReactActivity {
     SplashScreen.show(this);
     super.onCreate(null);
   }
+
+  @Override
+public void onNewIntent(Intent intent) {
+  this.setIntent(intent);
+} 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
    * you can specify the rendered you wish to use (Fabric or the older renderer).

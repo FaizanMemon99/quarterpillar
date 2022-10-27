@@ -8,6 +8,7 @@ import {
     ScrollView,
     Pressable,
     TextInput,
+    ActivityIndicator,
 } from 'react-native'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Constants from '../../../shared/Constants'
@@ -18,7 +19,10 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import globatStyles from '../../../shared/globatStyles'
 import Images from '../../../assets/images/Images'
 import { useNavigation } from '@react-navigation/native'
-
+import {Platform, Button, NativeModules,NativeEventEmitter} from 'react-native';
+import EasebuzzCheckout from 'react-native-easebuzz-kit';
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 const PaymentDetails = (props)=>{
     const navigation=useNavigation()
     const [paymentOption, setPaymentOption] = useState('')
@@ -31,13 +35,81 @@ const PaymentDetails = (props)=>{
     const [totalPrice,setTotalPrice]=useState()
     const [couponCodeValue,setcouponCodeValue]=useState()
     const [selectedAddress,setselectedAddress]=useState('')
+    const [cartItems,setCartItems]=useState([])
+    const [loader,setLoader]=useState(false)
     const gotoCoupon = ()=>{
         
-        navigation.navigate('/all-coupons',{price:price,selectedAddress:props?.route?.params?.selectedAddress,discount:discount,totalPrice:totalPrice})
+        navigation.navigate('/all-coupons',{
+            cartItems:props?.route?.params?.cartItems,
+            price:price,selectedAddress:props?.route?.params?.selectedAddress,discount:discount,totalPrice:totalPrice,
+            userDetails:props?.route?.params?.userDetails
+        })
     }
+    
+    const callPaymentGateway = (accessKey) => {
+        var options = {
+          access_key: accessKey,
+          pay_mode: "test"
+          }
+          EasebuzzCheckout.open(options).then((data) => {
+            
+          //handle the payment success & failed response here
+          console.log("Payment Response:")
+          if(data.result.includes("payment_successfull"))
+{
+    for(let i=0;i<cartItems.length;i++){
+        axios.post(`${Constants.BASE_URL}explore/remove-item-from-cart`,{
+            "cart_id":cartItems[i].data.cart_id
+        }).then((response)=>{
+            setLoader(false)
+            navigation.navigate('/payment-success')
+        })
+        .catch((error)=>{
+            setLoader(false)
+            console.log("error==>",error.response);
+            showToastmsg('Payment failed, please try again')
+        })
+    }
+}
+        else 
+            {navigation.navigate('/payment-error',{price:price,
+                couponCode:couponCode,
+                couponCodeValue:couponCodeValue,
+                selectedAddress:props?.route?.params?.selectedAddress,
+                discount:discount,
+                totalPrice:totalPrice,
+                cartItems:props?.route?.params?.cartItems,
+                userDetails:props?.route?.params?.userDetails,
+                error:true
+            })
+            setLoader(false)
+        }
+          console.log(data);
+          }).catch((error) => {
+          //handle sdk failure issue here
+            console.log("SDK Error:")
+            setLoader(false)
+            console.log(error);
+            });
+          }
     const gotoPaymentSuccess = ()=>{
-        navigation.navigate('/payment-success')
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}explore/explore-order`,{
+            explore_id:props?.route?.params?.userDetails?.id
+        }).then((response)=>{
+            // setLoader(false)
+            if(response.data.response==200){
+                if(JSON.parse(response.data.data.payment).access_key)
+                callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
+                console.log("response==>",JSON.parse(response.data.data.payment).access_key);
+            }
+        }).catch((error)=>{
+            showToastmsg('Something went wrong. Please try again')
+            setLoader(false)
+        })
+        // navigation.navigate('/payment-success')
     }
+    
     useEffect(()=>{
         setprice(props?.route?.params?.price?props?.route?.params?.price:0)
         setcouponCode(props?.route?.params?.couponCode?props?.route?.params?.couponCode:'')
@@ -45,6 +117,8 @@ const PaymentDetails = (props)=>{
         setdiscount(props?.route?.params?.discount?props?.route?.params?.discount:0)
         setTotalPrice(props?.route?.params?.totalPrice?props?.route?.params?.totalPrice:0)
         setselectedAddress(props?.route?.params?.selectedAddress?props?.route?.params?.selectedAddress:'')
+        setCartItems(props?.route?.params?.cartItems)
+        console.log("cart items",props?.route?.params?.cartItems);
     },[props?.route?.params])
     return (
         <View style={styles.container}>
@@ -62,9 +136,21 @@ const PaymentDetails = (props)=>{
                 </View>
                 <View style={styles.priceDetails}>
                     <Text style={styles.addressHeading}>Price Details</Text>
+                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor}]}></View>
+                    {cartItems.length>0?
+                        cartItems.map(item=>(<View style={styles.row}>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,textTransform:'capitalize'}}>
+                            {item?.data?.product_details?.product_name}  <Text style={{textTransform:'lowercase'}}>x</Text>{item?.data?.qty}
+                        </Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' /> {item?.data?.total_amount}</Text>
+                    </View>))
+                    :
+                    null
+                    }
+                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor}]}></View>
                     <View style={styles.row}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Total MRP</Text>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' /> {totalPrice}</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' /> {totalPrice+discount}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Discount</Text>
@@ -78,7 +164,7 @@ const PaymentDetails = (props)=>{
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Coupon Discount</Text>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}> - <FontAwesome name='rupee' /> {couponCodeValue}</Text>
                     </View>:null}
-                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor,height:2}]}></View>
+                    <View style={[globatStyles.divider, { backgroundColor: Constants.colors.primaryColor}]}></View>
                     <View style={[styles.row, {marginTop: 0,}]}>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>Total Amount to be Paid</Text>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16, color: Constants.colors.primaryColor,}}><FontAwesome name='rupee' /> {price}</Text>
@@ -212,7 +298,12 @@ const PaymentDetails = (props)=>{
                         ):null
                     }
                 </View> */}
-                <Pressable onPress={gotoPaymentSuccess} style={[globatStyles.button, {marginTop: 0,marginBottom: Constants.margin+10,}]}><Text style={globatStyles.btnText}>Pay ( <FontAwesome name='rupee' /> {price} )</Text></Pressable>
+                <Pressable onPress={gotoPaymentSuccess} style={[globatStyles.button, {marginTop: 0,marginBottom: Constants.margin+10,}]}>
+                    {loader?
+                    <ActivityIndicator color={'#fff'}/>
+                    :
+                        <Text style={globatStyles.btnText}>Pay ( <FontAwesome name='rupee' /> {price} )</Text>}
+                    </Pressable>
             </ScrollView> 
         </View>
     )

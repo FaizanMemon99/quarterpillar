@@ -51,7 +51,13 @@ const SelectAddress = (props)=>{
         else {
                 selectAddress=address.filter((i)=>i.address_type=='Others')
         }
-        navigation.navigate('/payment-details',{price:props?.route?.params?.price,selectedAddress:`${selectAddress[0].address}, ${selectAddress[0].city} - ${selectAddress[0].zip_code}. ${selectAddress[0].state}. ${selectAddress[0].landmark}.`,discount:props?.route?.params?.discount,totalPrice:props?.route?.params?.totalPrice})
+        navigation.navigate('/payment-details',{price:props?.route?.params?.price,
+            selectedAddress:`${selectAddress[0].address}, ${selectAddress[0].city} - ${selectAddress[0].zip_code}. ${selectAddress[0].state}. ${selectAddress[0].landmark}.`,
+            discount:props?.route?.params?.discount,
+            totalPrice:props?.route?.params?.totalPrice,
+            cartItems:props?.route?.params?.cartItems,
+            userDetails:props?.route?.params?.userDetails
+        })
     }
     const getAddress=()=>{
         setLoader(true)

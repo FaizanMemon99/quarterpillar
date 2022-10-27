@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -17,8 +17,10 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 
 const RenderCart = ({item,getCartData}) => {
-    const [qty, setQty] = useState(1)
+    const [qty, setQty] = useState(item?.item?.data?.qty)
     const [deleteLoader,setDeleteLoader]=useState(false)
+    const [color,setColor]=useState(item?.item?.data?.color)
+    const [size,setSize]=useState(item?.item?.data?.size)
     console.log("item vals",item);
     const decreaseQty = ()=>{
         if(qty>1){
@@ -30,8 +32,8 @@ const RenderCart = ({item,getCartData}) => {
         setQty(qty+1)
         // setprice(price+1200)
     }
-    const sizes = ['S', 'M', 'XL', '2XL']
-    const colors = ['RED', 'GREEN', 'BLUE', 'BLACK']
+    const sizes = ['s', 'm', 'l', 'xl', '2xl']
+    const colors = ['red', 'green', 'blue', 'black']
     const deleteCartValue=()=>{
         setDeleteLoader(item?.item?.data?.cart_id)
         axios.post(`${Constants.BASE_URL}explore/remove-item-from-cart`,{
@@ -47,14 +49,19 @@ const RenderCart = ({item,getCartData}) => {
             showToastmsg('Error! Please try again')
         })
     }
+    useEffect(()=>{
+        setQty(item?.item?.data?.qty)
+        setSize(item?.item?.data?.size)
+        setColor(item?.item?.data?.color)
+    },[item])
     return (
         <View style={styles.container}>
-            <Image source={JSON.parse(item?.item?.data?.product_image)[0]?
-                    {uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.data?.product_image)[0]}`}:
+            <Image source={JSON.parse(item?.item?.data?.product_details?.product_image)[0]?
+                    {uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.data?.product_details?.product_image)[0]}`}:
                 Images.cartImg} style={styles.pimg} />
             <View style={{marginLeft: 12, justifyContent: 'space-between' }}>
                 <View style={{display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
-                <Text style={styles.pname}>{item?.item?.data?.product_name}</Text>
+                <Text style={styles.pname}>{item?.item?.data?.product_details?.product_name}</Text>
                 {deleteLoader==item?.item?.data?.cart_id?
                     <ActivityIndicator/>:
                 <Pressable onPress={deleteCartValue}>
@@ -64,17 +71,17 @@ const RenderCart = ({item,getCartData}) => {
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 6,}}>
                     <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {item?.item?.data?.sales_price}  </Text>
+                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount)}  </Text>
                         <View style={styles.strikethrough}></View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome name='rupee' size={16} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
-                                    parseFloat(item?.item?.data?.sales_price) - (parseFloat(item?.item?.data?.sales_price) * (parseFloat(item?.item?.data?.dicount)/100))
+                                    parseFloat(item?.item?.data?.total_amount)
                                 }  </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> {parseFloat(item?.item?.data?.sales_price)-
-                                (parseFloat(item?.item?.data?.sales_price) - (parseFloat(item?.item?.data?.sales_price) * (parseFloat(item?.item?.data?.dicount)/100)))}
+                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> 
+                        {parseFloat(item?.item?.data?.dis_amount)}
                                 &nbsp;off</Text>
                     </View>
                 </View>
@@ -86,9 +93,9 @@ const RenderCart = ({item,getCartData}) => {
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
                         renderDropdownIcon={()=><AntDesign name='down' />}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index)
-                    }} />
+                        onSelect={setSize}
+                        defaultValue={size}
+                        />
                     
                     <SelectDropdown
                         data={colors}
@@ -97,9 +104,9 @@ const RenderCart = ({item,getCartData}) => {
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
                         renderDropdownIcon={()=><AntDesign name='down' />}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index)
-                    }} />
+                        onSelect={setColor}
+                        defaultValue={color}
+                        />
                 </View>
                 <View style={styles.increaseDecreasebtn}>
                     <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>-</Text></Pressable>

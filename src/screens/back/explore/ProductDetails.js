@@ -42,10 +42,32 @@ const ProductDetails= (props)=>{
         setSize(size)
     }
     const gotoBuy=()=>{
+        if(!color||color===''){
+            showToastmsg('Please select color')
+        }
+        else if(!size||size==''){
+            showToastmsg('Please select size')
+        }
+        else{console.log("response==>",{
+            product_id:props?.route?.params?.productDetails?.product_id,
+            explore_id:props?.route?.params?.userDetails?.id,
+            "color":color,
+    "size":size,
+    "qty":qty,
+    "dis_amount":(parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price)-
+    (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100))))*qty,
+    "total_amount":(parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100)))*qty
+        });
         setLoader(true)
         axios.post(`${Constants.BASE_URL}explore/add-to-cart`,{
             product_id:props?.route?.params?.productDetails?.product_id,
-            explore_id:props?.route?.params?.userDetails?.id
+            explore_id:props?.route?.params?.userDetails?.id,
+            "color":color,
+    "size":size,
+    "qty":qty,
+    "dis_amount":(parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price)-
+    (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100))))*qty,
+    "total_amount":(parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100)))*qty
         })
         .then((response)=>{
             setLoader(false)
@@ -57,7 +79,7 @@ const ProductDetails= (props)=>{
             setLoader(false)
             console.log("error",error);
             showToastmsg('Error! Please try again')
-        })
+        })}
         // navigation.navigate('/cart',{productDetails:props?.route?.params?.productDetails})
     }
     console.log("product details",props?.route?.params?.productDetails);

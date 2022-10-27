@@ -126,6 +126,7 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/payment-details' component={PaymentDetails} />
                 <Stack.Screen name='/all-coupons' component={Coupons} />
                 <Stack.Screen name='/payment-success' component={PaymentSuccess} />
+                <Stack.Screen name='/payment-error' component={PaymentSuccess} />
                 <Stack.Screen name='/my-orders' component={MyOrders} />
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
