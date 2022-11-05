@@ -100,7 +100,10 @@ const AddAddress = (props)=>{
                 }).then((response)=>{
                     if(response.data.response==200){
                         setLoader(false)
-                        navigation.navigate('/goto-select-address',{price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
+                        navigation.navigate('/goto-select-address',{
+                            discount:props?.route?.params?.discount,
+                            totalPrice:props?.route?.params?.totalPrice,
+                            price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
                     }
                     else {
                         setLoader(false)
@@ -126,7 +129,9 @@ const AddAddress = (props)=>{
             }).then((response)=>{
                 if(response.data.response==200){
                     setLoader(false)
-                    navigation.navigate('/goto-select-address',{price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
+                    navigation.navigate('/goto-select-address',{
+                        discount:props?.route?.params?.discount,
+                        totalPrice:props?.route?.params?.totalPrice,price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
                 }
                 else {
                     setLoader(false)

@@ -42,7 +42,8 @@ const PaymentDetails = (props)=>{
         navigation.navigate('/all-coupons',{
             cartItems:props?.route?.params?.cartItems,
             price:price,selectedAddress:props?.route?.params?.selectedAddress,discount:discount,totalPrice:totalPrice,
-            userDetails:props?.route?.params?.userDetails
+            userDetails:props?.route?.params?.userDetails,
+            address_id:props?.route?.params?.address_id
         })
     }
     
@@ -80,7 +81,8 @@ const PaymentDetails = (props)=>{
                 totalPrice:totalPrice,
                 cartItems:props?.route?.params?.cartItems,
                 userDetails:props?.route?.params?.userDetails,
-                error:true
+                error:true,
+                address_id:props?.route?.params?.address_id
             })
             setLoader(false)
         }
@@ -94,17 +96,40 @@ const PaymentDetails = (props)=>{
           }
     const gotoPaymentSuccess = ()=>{
         setLoader(true)
-        axios.post(`${Constants.BASE_URL}explore/explore-order`,{
-            explore_id:props?.route?.params?.userDetails?.id
+        console.log("response body==>",{
+            "user_id": props?.route?.params?.userDetails?.id,
+            "user_type": props?.route?.params?.userDetails?.role_id,
+            "amount": price,
+            "address_id": props?.route?.params?.address_id
+        });
+        axios.post(`${Constants.BASE_URL}auth/easeBuzz-payment-access-token`,{
+            "user_id": props?.route?.params?.userDetails?.id,
+            "user_type": props?.route?.params?.userDetails?.role_id,
+            // user_type:1,
+            "amount": price,
+            "address_id": props?.route?.params?.address_id
         }).then((response)=>{
-            // setLoader(false)
-            if(response.data.response==200){
-                if(JSON.parse(response.data.data.payment).access_key)
-                callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
-                console.log("response==>",JSON.parse(response.data.data.payment).access_key);
+            setLoader(false)
+            if(response.data.error){
+                setLoader(false)
+                showToastmsg(response.data.msg)
             }
+            else {
+                // if(response.data.response==200){
+                if(JSON.parse(response.data.data.payment).access_key)
+               { callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
+                console.log("response==>",JSON.parse(response.data.data.payment).access_key);}
+            }
+            // }
+            console.log("response==>",response.data);
+            // if(response.data.response==200){
+            //     if(JSON.parse(response.data.data.payment).access_key)
+            //     callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
+            //     console.log("response==>",JSON.parse(response.data.data.payment).access_key);
+            // }
         }).catch((error)=>{
             showToastmsg('Something went wrong. Please try again')
+            console.log("error message=>",error.message);
             setLoader(false)
         })
         // navigation.navigate('/payment-success')

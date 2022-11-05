@@ -61,7 +61,7 @@ const RenderMyRequest = ({pillars,tabs,getBussinessRequests})=>{
             </Text>
         </View>
         <View style={styles.cardFooter}>
-            {tabs=='ongoing'?<Text style={styles.footerText}>{pillars?.item?.collabration_status=='ended'?'Ended':'Started'} on: 12/08/2021</Text>:null}
+            {tabs=='ongoing'?<Text style={styles.footerText}>{pillars?.item?.collabration_status=='ended'?'Ended':'Started'} on: {new Date(pillars?.item?.created_at).getDate()}/{new Date(pillars?.item?.created_at).getMonth()+1}/{new Date(pillars?.item?.created_at).getFullYear()}</Text>:null}
             {/* {tabs=='ongoing'?
             loader?
                 <ActivityIndicator size={30} color={'#FF0000'}/>:

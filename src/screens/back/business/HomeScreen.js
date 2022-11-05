@@ -156,6 +156,9 @@ const HomeScreen=(props)=>{
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'My Users', navigation, '/my-requests',props)
                     }
                     {
+                        setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
+                    }
+                    {
                         setMenuItem(setActiveMenu, activeMenu, 'oct', 'arrow-switch', 'Switch View As', navigation, '/about',props)
                     }
                     {

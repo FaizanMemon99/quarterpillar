@@ -86,7 +86,7 @@ tempdiscount=tempdiscount+parseFloat(item.dis_amount)
                     data={cartItems}
                     style={{marginBottom: 10,}}
                     showsVerticalScrollIndicator={false}
-                    renderItem={item=><RenderCart item={item} getCartData={getCartData} />}
+                    renderItem={item=><RenderCart item={item} getCartData={getCartData} price={price} setprice={setprice}/>}
                     keyExtractor={item=>item?.id?.toString()} />
                 :
                 <View>

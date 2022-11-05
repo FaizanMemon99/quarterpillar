@@ -178,6 +178,9 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {userType=='influencer'&&
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'comments-dollar', 'Share & Earn', navigation, '/share-and-earn',props)
                     }
+                    {userType!=='explore'?
+                        setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
+                    :null}
                     {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'fa', 'money', 'Earnings', navigation, '/earnings',props)
                     } */}

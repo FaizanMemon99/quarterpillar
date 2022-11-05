@@ -25,6 +25,7 @@ const SelectAddress = (props)=>{
         {
             navigation.navigate('/add-address',{
                 explore_address_id:data.id,
+                totalPrice:props?.route?.params?.totalPrice,
                 address_type:type,price:props?.route?.params?.price,
                 cartItems:props?.route?.params?.cartItems,
                 userDetails:props?.route?.params?.userDetails,
@@ -34,11 +35,15 @@ const SelectAddress = (props)=>{
                 pinCode:data.zip_code,
                 city:data.city,
                 state:data.state,
-                landmark:data.landmark
+                landmark:data.landmark,
+                discount:props?.route?.params?.discount,
+                userDetails:props?.route?.params?.userDetails
             })
         }
         else
-        navigation.navigate('/add-address',{address_type:type,price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
+        navigation.navigate('/add-address',{
+            discount:props?.route?.params?.discount,            
+            totalPrice:props?.route?.params?.totalPrice,address_type:type,price:props?.route?.params?.price,cartItems:props?.route?.params?.cartItems,userDetails:props?.route?.params?.userDetails})
     }
     const gotoPayment = ()=>{
         let selectAddress={}
@@ -56,7 +61,8 @@ const SelectAddress = (props)=>{
             discount:props?.route?.params?.discount,
             totalPrice:props?.route?.params?.totalPrice,
             cartItems:props?.route?.params?.cartItems,
-            userDetails:props?.route?.params?.userDetails
+            userDetails:props?.route?.params?.userDetails,
+            address_id:selectAddress[0].id
         })
     }
     const getAddress=()=>{
@@ -157,13 +163,13 @@ const SelectAddress = (props)=>{
                     <View style={{width:'20%',display:'flex',alignItems:'center'}}><FontAwesome name='map-pin'  size={22}/></View>
                     <View style={{width:'80%'}}>
                     <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={[styles.addressDetails,{fontWeight:selectedAddr===1?'800':'500'}]}>{item.address_type}</Text>
+                    <Text style={[styles.addressDetails,{fontWeight:selectedAddr===2?'800':'500'}]}>{item.address_type}</Text>
                     <Pressable onPress={()=>addAddress('Office',item)}>
                         <FontAwesome name='pencil' size={15} style={{marginRight:10}}/>
                         </Pressable>
                     </View>
-                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===0?'800':'normal'}]}>{item.address_name}</Text>
-                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===0?'800':'normal'}]}>{item.address}, {item.city} - {item.zip_code}, {item.state}</Text>
+                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===2?'800':'normal'}]}>{item.address_name}</Text>
+                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===2?'800':'normal'}]}>{item.address}, {item.city} - {item.zip_code}, {item.state}</Text>
                 </View>
                 </Pressable>
                 <View style={globatStyles.divider}></View>
@@ -181,11 +187,6 @@ const SelectAddress = (props)=>{
                 </>}
 </>
                 }
-                {/* <Pressable onPress={()=>setselectedAddr(1)}>
-                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===1?'800':'normal'}]}>House Two</Text>
-                <Text style={[styles.addressDetails,{fontWeight:selectedAddr===1?'800':'normal'}]}>Blk 35 Mandalay Road # 13–37 Mandalay Towers Singapore 308215</Text>
-                </Pressable>
-                <View style={globatStyles.divider}></View> */}
             </ScrollView>
             {!loader&&address.length<=0?null:
                 <Pressable onPress={gotoPayment} style={[globatStyles.button, {marginTop: 10,marginBottom:10,marginLeft:5,width:Constants.width-10}]}>

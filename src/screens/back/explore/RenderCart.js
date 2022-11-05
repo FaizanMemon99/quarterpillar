@@ -18,18 +18,70 @@ import showToastmsg from '../../../shared/showToastmsg'
 
 const RenderCart = ({item,getCartData}) => {
     const [qty, setQty] = useState(item?.item?.data?.qty)
+    const [apiLoader,setapiLoader]=useState(false)
     const [deleteLoader,setDeleteLoader]=useState(false)
     const [color,setColor]=useState(item?.item?.data?.color)
     const [size,setSize]=useState(item?.item?.data?.size)
-    console.log("item vals",item);
+    const [disAmount,setdiscountAmount]=useState(item?.item?.data?.dis_amount)
+    const [totalAmount,settotalAmount]=useState(item?.item?.data?.total_amount)
+    const discountAmount=parseFloat(item?.item?.data?.dis_amount)/parseInt(item?.item?.data?.qty)
+    const totalAmountval=parseFloat(item?.item?.data?.total_amount)/parseInt(item?.item?.data?.qty)
+    const updateCartApi=(tempcolor,tempsize,tempqty,tempdiscountAmt,temptotalAmt)=>{
+        setapiLoader(true)
+        console.log("response data=>",{
+            "cart_id":item?.item?.data?.cart_id,
+            "color":tempcolor,
+            "size":tempsize,
+            "qty":tempqty,
+            "dis_amount":tempdiscountAmt,
+            "total_amount":temptotalAmt
+        });
+        axios.post(`${Constants.BASE_URL}explore/update-cart-item`,{
+            "cart_id":item?.item?.data?.cart_id,
+            "color":tempcolor,
+            "size":tempsize,
+            "qty":tempqty,
+            "dis_amount":tempdiscountAmt,
+            "total_amount":temptotalAmt
+        })
+        .then((response)=>
+        {
+            setapiLoader(false)
+            console.log("response=>",response.data);
+            getCartData()
+        })
+        .catch((error)=>{
+            setapiLoader(false)
+            console.log("error=>",error);
+            showToastmsg("Error while updating cart. Please try again.")
+        })
+    }
     const decreaseQty = ()=>{
         if(qty>1){
-            setQty(qty-1)
+            let tempqty=parseInt(qty)
+            tempqty=tempqty-1
+            let tempdiscountAmt=parseFloat(disAmount)
+            tempdiscountAmt=tempdiscountAmt-discountAmount
+            let temptotalAmt=parseFloat(totalAmount)
+            temptotalAmt=temptotalAmt-totalAmountval
+            setQty(parseInt(qty)-1)
+            setdiscountAmount(parseFloat(disAmount)-discountAmount)
+            settotalAmount(parseFloat(totalAmountval)-totalAmount)
+            updateCartApi(color,size,tempqty,tempdiscountAmt,temptotalAmt)
             // setprice(price-1200)
         }
     }
     const increaseQty = ()=>{
-        setQty(qty+1)
+        let tempqty=parseInt(qty)
+        tempqty=tempqty+1
+        let tempdiscountAmt=parseFloat(disAmount)
+        tempdiscountAmt=tempdiscountAmt+discountAmount
+        let temptotalAmt=parseFloat(totalAmount)
+        temptotalAmt=temptotalAmt+totalAmountval
+        setQty(parseInt(qty)+1)
+        setdiscountAmount(parseFloat(disAmount)+discountAmount)
+        settotalAmount(parseFloat(totalAmountval)+totalAmount)
+        updateCartApi(color,size,tempqty,tempdiscountAmt,temptotalAmt)
         // setprice(price+1200)
     }
     const sizes = ['s', 'm', 'l', 'xl', '2xl']
@@ -53,6 +105,8 @@ const RenderCart = ({item,getCartData}) => {
         setQty(item?.item?.data?.qty)
         setSize(item?.item?.data?.size)
         setColor(item?.item?.data?.color)
+        setdiscountAmount(item?.item?.data?.dis_amount)
+        settotalAmount(item?.item?.data?.total_amount)
     },[item])
     return (
         <View style={styles.container}>
@@ -70,18 +124,18 @@ const RenderCart = ({item,getCartData}) => {
                 }
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 6,}}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount)}  </Text>
+                    <View style={{ flexDirection: 'row',marginRight:5 }}>
+                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {(parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}  </Text>
                         <View style={styles.strikethrough}></View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome name='rupee' size={16} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
-                                    parseFloat(item?.item?.data?.total_amount)
+                                    (parseFloat(item?.item?.data?.total_amount))/parseInt(item?.item?.data?.qty)
                                 }  </Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> 
-                        {parseFloat(item?.item?.data?.dis_amount)}
+                        {(parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}
                                 &nbsp;off</Text>
                     </View>
                 </View>
@@ -93,7 +147,9 @@ const RenderCart = ({item,getCartData}) => {
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
                         renderDropdownIcon={()=><AntDesign name='down' />}
-                        onSelect={setSize}
+                        onSelect={(e)=>{
+                            updateCartApi(color,e,qty,disAmount,totalAmount);
+                            setSize(e)}}
                         defaultValue={size}
                         />
                     
@@ -104,15 +160,29 @@ const RenderCart = ({item,getCartData}) => {
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
                         renderDropdownIcon={()=><AntDesign name='down' />}
-                        onSelect={setColor}
+                        onSelect={(e)=>{
+                            updateCartApi(e,size,qty,disAmount,totalAmount);
+                            setColor(e)}}
                         defaultValue={color}
                         />
                 </View>
                 <View style={styles.increaseDecreasebtn}>
-                    <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>-</Text></Pressable>
+                    <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>{apiLoader?<ActivityIndicator color={'white'}/>
+                        :'-'}</Text></Pressable>
                     <Text style={styles.qty}>{qty}</Text>
-                    <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>+</Text></Pressable>
+                    <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>
+                    {apiLoader?<ActivityIndicator color={'white'}/>
+                        :'+'}
+                        </Text></Pressable>
                 </View>
+                <View style={{ flexDirection: 'row',marginTop:6 }}>
+                            <Text>
+                                Total Amt :
+                            </Text>
+                        <FontAwesome name='rupee' size={16} style={[styles.icons, { paddingLeft:5,color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
+                                    (parseFloat(item?.item?.data?.total_amount))
+                                }  </Text>
+                    </View>
             </View>
         </View>
     )

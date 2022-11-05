@@ -8,17 +8,22 @@ import {
 import Constants from '../../../shared/Constants'
 import Feather from 'react-native-vector-icons/Feather'
 
-const RenderUserList = ({data})=>{
-    const [active, setActive] = useState(data.item.isActive)
-    const gotoEditUser = ()=>{
+const RenderUserList = ({data,privilagesData})=>{
+    const [active, setActive] = useState(data.item.is_active)
+    // const gotoEditUser = ()=>{
 
-    }
+    // }
+    
     return (
         <View style={styles.userList}>
-            <Feather name='edit-2' style={styles.editIcon} size={22} onPress={gotoEditUser} />
-            <Text style={styles.userName}>Harsha Bardhan</Text>
-            <Text style={[styles.userName, {marginLeft: Constants.margin}]}>Influencer</Text>
-            <Pressable style={[styles.codContainer, {marginStart: Constants.margin+16}]} onPress={()=>setActive(!active)}>
+            {/* <Feather name='edit-2' style={styles.editIcon} size={22} 
+            // onPress={gotoEditUser} 
+            /> */}
+            <Text style={[styles.userName,{width:'30%'}]}>{data.item.name}</Text>
+            <Text style={[styles.userName, {width:'50%'}]}>{
+                privilagesData.filter((i)=>i.privilages_id==JSON.parse(data.item.privilages)[0]).map(item=>item.privilages_name)
+            }</Text>
+            <Pressable style={[styles.codContainer, {width:'30%'}]} onPress={()=>setActive(!active)}>
                 <View style={active?styles.inStockOuter:styles.outOfStockOuter}>
                     <View style={active?styles.inStockInner:styles.outOfStockInner}></View>
                 </View>
@@ -37,6 +42,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     userName: {
+        textTransform:'capitalize',
         fontFamily: Constants.fontFamily,
         fontWeight: '800',
     },

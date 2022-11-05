@@ -25,6 +25,7 @@ const PaymentSuccess = (props)=>{
             totalPrice:props?.route?.params?.totalPrice,
             cartItems:props?.route?.params?.cartItems,
             userDetails:props?.route?.params?.userDetails,
+            address_id:props?.route?.params?.address_id,
             error:true
         })
     }

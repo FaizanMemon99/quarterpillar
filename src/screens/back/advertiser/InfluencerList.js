@@ -78,6 +78,7 @@ const InfluencerList=(props)=>{
                     <Text style={[styles.tab, {color: tabs==='ongoing'?Constants.colors.primaryColor:'#676767', textDecorationLine: tabs==='ongoing'?'underline':'none',}]} onPress={()=>setTab('ongoing')}>Ongoing</Text>
                     <Text style={[styles.tab, {color: tabs==='pending'?Constants.colors.primaryColor:'#676767', textDecorationLine: tabs==='pending'?'underline':'none',}]} onPress={()=>setTab('pending')}>Pending</Text>
                 </View> */}
+                {console.log("data==>",influencerData)}
                 {loading?
                 <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
                 :

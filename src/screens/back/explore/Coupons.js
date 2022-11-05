@@ -19,7 +19,8 @@ const Coupons = (props)=>{
     const copyCode = (text,discount)=>{
         navigation.navigate('/payment-details',{price:props?.route?.params?.price-discount,selectedAddress:props?.route?.params?.selectedAddress,discount:props?.route?.params?.discount,totalPrice:props?.route?.params?.totalPrice
         ,couponCodeValue:discount,couponCode:text,
-        cartItems:props?.route?.params?.cartItems
+        cartItems:props?.route?.params?.cartItems,
+        address_id:props?.route?.params?.address_id
         })
     }
     return (
@@ -36,10 +37,10 @@ const Coupons = (props)=>{
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.code}>DIWALI</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('1000 off',1000)}><Text style={[styles.copy,{color:props?.route?.params?.totalPrice<1200?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
+                    <Pressable onPress={()=>props?.route?.params?.price>=1200&&copyCode('1000 off',1000)}><Text style={[styles.copy,{color:props?.route?.params?.price<1200?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
                 </View>
-                {props?.route?.params?.totalPrice<1200?
-                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {1200-props?.route?.params?.totalPrice} more to unlock  </Text>
+                {props?.route?.params?.price<1200?
+                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {1200-props?.route?.params?.price} more to unlock  </Text>
                 :null
                 }
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
@@ -49,10 +50,10 @@ const Coupons = (props)=>{
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.code}>FESTIVENEW</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('600 off',600)}><Text style={[styles.copy,{color:props?.route?.params?.totalPrice<700?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
+                    <Pressable onPress={()=>props?.route?.params?.price>=700&&copyCode('600 off',600)}><Text style={[styles.copy,{color:props?.route?.params?.price<700?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
                 </View>
-                {props?.route?.params?.totalPrice<700?
-                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {700-props?.route?.params?.totalPrice} more to unlock  </Text>
+                {props?.route?.params?.price<700?
+                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {700-props?.route?.params?.price} more to unlock  </Text>
                 :null
                 }
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
@@ -62,10 +63,10 @@ const Coupons = (props)=>{
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.code}>NEWCOMER</Text>
                     </View>
-                    <Pressable onPress={()=>copyCode('200 off',200)}><Text style={[styles.copy,{color:props?.route?.params?.totalPrice<700?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
+                    <Pressable onPress={()=>props?.route?.params?.price>=200&&copyCode('200 off',200)}><Text style={[styles.copy,{color:props?.route?.params?.price<400?'#e5e5e5':Constants.colors.primaryColor}]}>Apply Code</Text></Pressable>
                 </View>
-                {props?.route?.params?.totalPrice<200?
-                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {200-props?.route?.params?.totalPrice} more to unlock  </Text>
+                {props?.route?.params?.price<200?
+                    <Text style={[styles.rupees,{fontSize:15}]}>Add items worth <FontAwesome name='rupee' size={12} /> {400-props?.route?.params?.price} more to unlock  </Text>
                 :null
                 }
                 <View style={[globatStyles.divider, {marginTop: 5, marginBottom: 5,}]}></View>
