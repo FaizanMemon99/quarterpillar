@@ -21,9 +21,10 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import VideoPlayer from 'react-native-video-player';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {RNPhotoEditor} from 'react-native-photo-editor';
+import { RNPhotoEditor } from 'react-native-photo-editor'
 import Feather from 'react-native-vector-icons/Feather';
 import showToastmsg from '../../../shared/showToastmsg';
+import RNFS from "react-native-fs"
 const AddPost = props => {
   const navigation = useNavigation();
   const [postImg, setPostImg] = useState([]);
@@ -40,6 +41,7 @@ const AddPost = props => {
   const [location, setLocation] = useState();
   const [description, setDescription] = useState();
   useEffect(()=>{
+    console.log("RNFS=>",RNFS.DocumentDirectoryPath);
     if(props?.route?.params?.draft)
     {
       if(props?.route?.params?.video)
@@ -92,30 +94,56 @@ const AddPost = props => {
       return false;
     } else return true;
   };
-  const editImg = async response => {
-    try {
-      const result = await RNPhotoEditor.Edit({path: response.assets[0].uri});
+  // const editImg = async response => {
+  //   try {
+  //     console.log("image response==>",response.assets[0]);
+  //     RNPhotoEditor.Edit({
+  //       path:(response.assets[0].uri).replace("file://",""),
+  //       hiddenControls: ["save"],
+  //       onDone: (res) => {
+  //           console.log('on done');
+  //           // self.setState({isRefresh: !this.state.isRefresh, imageHash: Date.now(), state: self.state});
+  //       },
+  //       onCancel: (res) => {
+  //           console.log('on cancel');
+  //           Alert.alert('', 'Edit Cancelled !')
+  //       }
+  //   });
+  //     // const result = await PhotoEditor.Edit({path:
+  //     //   // RNFS.DocumentDirectoryPath+
+  //     //   response.assets[0].uri,
+  //     //   onDone: (res) => {
+  //     //     console.log('on done');
+  //     //     // self.setState({isRefresh: !this.state.isRefresh, imageHash: Date.now(), state: self.state});
+  //     // },
+  //     // onCancel: (res) => {
+  //     //     console.log('on cancel');
+  //     //     // Alert.alert('', 'Edit Cancelled !')
+  //     // }
+  //     // })
+  //     // .Edit({path: response.assets[0].uri});
 
-      // setCameraImg(result)
-      setPostImg([
-        ...postImg,
-        {
-          assets: [
-            {
-              fileName: response.assets[0].fileName,
-              fileSize: response.assets[0].fileSize,
-              height: response.assets[0].height,
-              type: response.assets[0].type,
-              uri: result,
-              width: response.assets[0].width,
-            },
-          ],
-        },
-      ]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     // setCameraImg(result)
+  //     console.log("result=>",result);
+  //     // setPostImg([
+  //     //   ...postImg,
+  //     //   {
+  //     //     assets: [
+  //     //       {
+  //     //         fileName: response.assets[0].fileName,
+  //     //         fileSize: response.assets[0].fileSize,
+  //     //         height: response.assets[0].height,
+  //     //         type: response.assets[0].type,
+  //     //         uri: result,
+  //     //         width: response.assets[0].width,
+  //     //       },
+  //     //     ],
+  //     //   },
+  //     // ]);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   const captureImage = async () => {
     let options = {
       mediaType: 'photo',
@@ -145,8 +173,22 @@ const AddPost = props => {
           console.log(response.errorMessage);
           return;
         }
-
-        editImg(response);
+        setPostImg([
+                ...postImg,
+                {
+                  assets: [
+                    {
+                      fileName: response.assets[0].fileName,
+                      fileSize: response.assets[0].fileSize,
+                      height: response.assets[0].height,
+                      type: response.assets[0].type,
+                      uri: response.assets[0].uri,
+                      width: response.assets[0].width,
+                    },
+                  ],
+                },
+              ]);
+        // editImg(response);
       });
     }
   };
@@ -173,7 +215,22 @@ const AddPost = props => {
         console.log(response.errorMessage);
         return;
       }
-      editImg(response);
+      setPostImg([
+        ...postImg,
+        {
+          assets: [
+            {
+              fileName: response.assets[0].fileName,
+              fileSize: response.assets[0].fileSize,
+              height: response.assets[0].height,
+              type: response.assets[0].type,
+              uri: response.assets[0].uri,
+              width: response.assets[0].width,
+            },
+          ],
+        },
+      ]);
+      // editImg(response);
     });
   };
   const removeImg = i => {

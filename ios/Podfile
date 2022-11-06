@@ -41,6 +41,8 @@ target 'Test' do
 
   pod 'RNPhotoEditor', :path => '../node_modules/react-native-photo-editor'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'TestTests' do
     inherit! :complete
     # Pods for testing

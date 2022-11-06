@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "501271314210",
+    "project_id": "quarterpillars-faab7",
+    "storage_bucket": "quarterpillars-faab7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501271314210:android:1ba726a457d3ebdcb42f7b",
+        "android_client_info": {
+          "package_name": "com.quarterpillars"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501271314210-se8gatje0vnufu9k44j30603dl10brom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quarterpillars",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "501271314210-qpndcq07n3m1rv9cgoboh4tkpraa84eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaFBhh7XXbBoC9R9Ws4GglbJmevTf5vTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501271314210-qpndcq07n3m1rv9cgoboh4tkpraa84eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
