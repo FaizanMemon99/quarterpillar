@@ -39,6 +39,8 @@ target 'Test' do
 
   pod 'react-native-fast-video', :path => '../node_modules/react-native-fast-video'
 
+  pod 'RNPhotoEditor', :path => '../node_modules/react-native-photo-editor'
+
   target 'TestTests' do
     inherit! :complete
     # Pods for testing

@@ -17,7 +17,7 @@ import {
     launchCamera,
     launchImageLibrary
   } from 'react-native-image-picker';
-  import PhotoEditor from '@baronha/react-native-photo-editor'
+  import PhotoEditor from 'react-native-photo-editor'
 import VideoPlayer from 'react-native-video-player'
 
 const  OpenCamera=(props)=>{

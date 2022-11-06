@@ -21,7 +21,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import VideoPlayer from 'react-native-video-player';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import PhotoEditor from '@baronha/react-native-photo-editor';
+import {RNPhotoEditor} from 'react-native-photo-editor';
 import Feather from 'react-native-vector-icons/Feather';
 import showToastmsg from '../../../shared/showToastmsg';
 const AddPost = props => {
@@ -94,7 +94,7 @@ const AddPost = props => {
   };
   const editImg = async response => {
     try {
-      const result = await PhotoEditor.open({path: response.assets[0].uri});
+      const result = await RNPhotoEditor.Edit({path: response.assets[0].uri});
 
       // setCameraImg(result)
       setPostImg([

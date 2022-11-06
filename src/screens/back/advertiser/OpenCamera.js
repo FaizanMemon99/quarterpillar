@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 import { launchCamera } from 'react-native-image-picker'
-import PhotoEditor from '@baronha/react-native-photo-editor'
+import PhotoEditor from 'react-native-photo-editor'
 
 const  OpenCamera=(props)=>{
     const navigation = useNavigation()
