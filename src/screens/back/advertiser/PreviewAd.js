@@ -7,6 +7,7 @@ import {
     ScrollView,
     Pressable,
     Image,
+    ActivityIndicator,
 } from 'react-native'
 import CustomAppBar from '../../../components/advertiser/CustomAppBar'
 import { useNavigation } from '@react-navigation/native'
@@ -15,12 +16,68 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Slider from 'react-native-slider'
 import Images from '../../../assets/images/Images'
+import showToastmsg from '../../../shared/showToastmsg'
+import EasebuzzCheckout from 'react-native-easebuzz-kit';
+import axios from 'axios'
 
 const PreviewAd = (props) => {
     const navigation = useNavigation()
-
+const [loader,setLoader]=useState(false)
+const callPaymentGateway = (accessKey) => {
+    var options = {
+      access_key: accessKey,
+      pay_mode: "test"
+      }
+      EasebuzzCheckout.open(options).then((data) => {
+        if(data.result.includes("payment_successfull")){
+            setLoader(false)
+        navigation.navigate('/payment-success')
+        }
+        else {
+            navigation.navigate('/payment-error',{
+                userDetails:props?.route?.params?.userDetails,
+                error:true,
+            })
+        }
+      })
+    }
     const gotoAdPayment = () => {
-        navigation.navigate('/payment-details')
+        setLoader(true)
+        console.log("response body==>",{
+            "user_id": props?.route?.params?.userDetails?.id,
+            "user_type": props?.route?.params?.userDetails?.role_id,
+            "amount": "2400.00",
+        });
+        axios.post(`${Constants.BASE_URL}auth/easeBuzz-payment-access-token`,{
+            "user_id": props?.route?.params?.userDetails?.id,
+            // "user_type": props?.route?.params?.userDetails?.role_id,
+            user_type:1,
+            "amount": "2400.00",
+            "address_id": 12
+        }).then((response)=>{
+            setLoader(false)
+            if(response.data.error){
+                setLoader(false)
+                showToastmsg(response.data.msg)
+            }
+            else {
+                // if(response.data.response==200){
+                if(JSON.parse(response.data.data.payment).access_key)
+               { callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
+                console.log("response==>",JSON.parse(response.data.data.payment).access_key);}
+            }
+            // }
+            console.log("response==>",response.data);
+            // if(response.data.response==200){
+            //     if(JSON.parse(response.data.data.payment).access_key)
+            //     callPaymentGateway(JSON.parse(response.data.data.payment).access_key)
+            //     console.log("response==>",JSON.parse(response.data.data.payment).access_key);
+            // }
+        }).catch((error)=>{
+            showToastmsg('Something went wrong. Please try again')
+            console.log("error message=>",error.message);
+            setLoader(false)
+        })
     }
     return (
         <View style={globatStyles.wrapper}>
@@ -89,7 +146,12 @@ const PreviewAd = (props) => {
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}><FontAwesome name='rupee' size={16} /> 2400</Text>
                     </View>
                 </View>
-                <Pressable style={[globatStyles.button, {marginBottom: 50,}]} onPress={gotoAdPayment}><Text style={globatStyles.btnText}>Proceed to pay</Text></Pressable>
+                <Pressable style={[globatStyles.button, {marginBottom: 50,}]} onPress={gotoAdPayment}>
+                {loader?
+                    <ActivityIndicator color={'#fff'}/>
+                    :<Text style={globatStyles.btnText}>Proceed to pay</Text>}
+                    
+                    </Pressable>
             </ScrollView>
         </View>
     )

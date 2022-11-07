@@ -67,8 +67,8 @@ const SelectAddress = (props)=>{
     }
     const getAddress=()=>{
         setLoader(true)
-        axios.post(`${Constants.BASE_URL}explore/get-explore-address`,{
-            explore_id:props?.route?.params?.userDetails?.id
+        axios.post(`${Constants.BASE_URL}auth/get-user-address`,{
+            user_id:props?.route?.params?.userDetails?.id
         }).then((response)=>{
             setLoader(false)
             if(response.data.data.explore_address){

@@ -25,7 +25,7 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 const PaymentDetails = (props)=>{
     const navigation=useNavigation()
-    const [paymentOption, setPaymentOption] = useState('')
+    const [paymentOption, setPaymentOption] = useState('online')
     const [saveCardDetails, setSaveCardDetails] = useState(true)
     const [upi, setUpi] = useState('')
     const [isCod, setIsCod] = useState('')
@@ -58,22 +58,41 @@ const PaymentDetails = (props)=>{
           console.log("Payment Response:")
           if(data.result.includes("payment_successfull"))
 {
-    for(let i=0;i<cartItems.length;i++){
-        axios.post(`${Constants.BASE_URL}explore/remove-item-from-cart`,{
-            "cart_id":cartItems[i].data.cart_id
-        }).then((response)=>{
-            setLoader(false)
-            navigation.navigate('/payment-success')
+        console.log("object response",{
+            "user_id": props?.route?.params?.userDetails?.id,
+            "cart_ids": cartItems.map((item)=>item.data.cart_id),
+            "dis_amount": discount,
+            "total_amount": totalPrice,
+            "address_id": props?.route?.params?.address_id,
+            "transaction_type":data.payment_response.card_type,
+            "result": data.result
+        });
+        axios.post(`${Constants.BASE_URL}auth/user-oder-genrate`,{
+            "user_id": props?.route?.params?.userDetails?.id,
+        "cart_ids": cartItems.map((item)=>item.data.cart_id),
+        "dis_amount": discount,
+        "total_amount": totalPrice,
+        "address_id": props?.route?.params?.address_id,
+        "transaction_type":data.payment_response.card_type,
+        "result": data.result
+        })
+        .then((response)=>{
+            for(let i=0;i<cartItems.length;i++){
+            axios.post(`${Constants.BASE_URL}auth/remove-item-from-cart`,{
+        "cart_id":cartItems[i].data.cart_id
+    }).then((response)=>{
+        setLoader(false)
+        navigation.navigate('/payment-success')
+    })
+    .catch((error)=>{
+        setLoader(false)
+        console.log("error==>",error.response);
+        showToastmsg('Payment failed, please try again')
+    })
+}
         })
         .catch((error)=>{
-            setLoader(false)
-            console.log("error==>",error.response);
-            showToastmsg('Payment failed, please try again')
-        })
-    }
-}
-        else 
-            {navigation.navigate('/payment-error',{price:price,
+            navigation.navigate('/payment-error',{price:price,
                 couponCode:couponCode,
                 couponCodeValue:couponCodeValue,
                 selectedAddress:props?.route?.params?.selectedAddress,
@@ -85,6 +104,36 @@ const PaymentDetails = (props)=>{
                 address_id:props?.route?.params?.address_id
             })
             setLoader(false)
+            console.log("cod error=>",error);
+        })
+    
+}
+        else 
+            {
+                axios.post(`${Constants.BASE_URL}auth/user-oder-genrate`,{
+                    "user_id": props?.route?.params?.userDetails?.id,
+                "cart_ids": cartItems.map((item)=>item.data.cart_id),
+                "dis_amount": discount,
+                "total_amount": totalPrice,
+                "address_id": props?.route?.params?.address_id,
+                "transaction_type":data.payment_response.card_type,
+                "result": data.result
+                }).then((response)=>{
+                    navigation.navigate('/payment-error',{price:price,
+                        couponCode:couponCode,
+                        couponCodeValue:couponCodeValue,
+                        selectedAddress:props?.route?.params?.selectedAddress,
+                        discount:discount,
+                        totalPrice:totalPrice,
+                        cartItems:props?.route?.params?.cartItems,
+                        userDetails:props?.route?.params?.userDetails,
+                        error:true,
+                        address_id:props?.route?.params?.address_id
+                    })
+                    setLoader(false)
+                })
+                console.log("payment response",data);
+               
         }
           console.log(data);
           }).catch((error) => {
@@ -99,14 +148,15 @@ const PaymentDetails = (props)=>{
         console.log("response body==>",{
             "user_id": props?.route?.params?.userDetails?.id,
             "user_type": props?.route?.params?.userDetails?.role_id,
-            "amount": price,
+            "amount": parseFloat(price).toFixed(2),
             "address_id": props?.route?.params?.address_id
         });
-        axios.post(`${Constants.BASE_URL}auth/easeBuzz-payment-access-token`,{
+        if(paymentOption==="online")
+        {axios.post(`${Constants.BASE_URL}auth/easeBuzz-payment-access-token`,{
             "user_id": props?.route?.params?.userDetails?.id,
             "user_type": props?.route?.params?.userDetails?.role_id,
             // user_type:1,
-            "amount": price,
+            "amount": parseFloat(price).toFixed(2),
             "address_id": props?.route?.params?.address_id
         }).then((response)=>{
             setLoader(false)
@@ -131,7 +181,48 @@ const PaymentDetails = (props)=>{
             showToastmsg('Something went wrong. Please try again')
             console.log("error message=>",error.message);
             setLoader(false)
+        })}
+        else {
+            axios.post(`${Constants.BASE_URL}auth/user-oder-genrate`,{
+                "user_id": props?.route?.params?.userDetails?.id,
+            "cart_ids": cartItems.map((item)=>item.data.cart_id),
+            "dis_amount": discount,
+            "total_amount": totalPrice,
+            "address_id": props?.route?.params?.address_id,
+            "transaction_type": "cod",
+            "result": "pending"
+            })
+            .then((response)=>{
+                for(let i=0;i<cartItems.length;i++){
+                axios.post(`${Constants.BASE_URL}auth/remove-item-from-cart`,{
+            "cart_id":cartItems[i].data.cart_id
+        }).then((response)=>{
+            setLoader(false)
+            navigation.navigate('/payment-success')
         })
+        .catch((error)=>{
+            setLoader(false)
+            console.log("error==>",error.response);
+            showToastmsg('Payment failed, please try again')
+        })
+    }
+            })
+            .catch((error)=>{
+                navigation.navigate('/payment-error',{price:price,
+                    couponCode:couponCode,
+                    couponCodeValue:couponCodeValue,
+                    selectedAddress:props?.route?.params?.selectedAddress,
+                    discount:discount,
+                    totalPrice:totalPrice,
+                    cartItems:props?.route?.params?.cartItems,
+                    userDetails:props?.route?.params?.userDetails,
+                    error:true,
+                    address_id:props?.route?.params?.address_id
+                })
+                setLoader(false)
+                console.log("cod error=>",error);
+            })
+        }
         // navigation.navigate('/payment-success')
     }
     
@@ -199,6 +290,35 @@ const PaymentDetails = (props)=>{
                     <Text style={globatStyles.btnTextAddress}>{!couponCode&&<FontAwesome name='plus' />} {couponCode?`${couponCode} Applied`:'Coupon Code'}</Text>
                 {couponCode?<Pressable  onPress={()=>{setcouponCode(),setcouponCodeValue(0),setprice(price+couponCodeValue)}}><Text style={globatStyles.btnTextAddress}>x</Text></Pressable>:null}
                 </Pressable>
+                <View style={styles.paymentOptions}>
+                    <Text style={styles.addressHeading}>Payment Options</Text>
+                    <Pressable style={styles.option} onPress={()=>setPaymentOption('cod')}>
+                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                            <Image source={Images.creditCard} />
+                            <Text style={{marginLeft: 12, fontFamily: Constants.fontFamily}}>Cod</Text>
+                        </View>
+                        <View style={{flexDirection: 'row',marginTop: 6,}}>
+                                    {
+                                        paymentOption==="cod"?
+                                        <Ionicons name='checkbox-sharp' onPress={()=>setPaymentOption('online')} size={16} color={Constants.colors.primaryColor} />:
+                                        <Fontisto name='checkbox-passive' style={{marginLeft:-15}} onPress={()=>setPaymentOption('cod')} size={12} color={Constants.colors.primaryColor} />
+                                    }
+                                </View>
+                    </Pressable>
+                    <Pressable style={styles.option} onPress={()=>setPaymentOption('online')}>
+                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                        <Image source={Images.bankIcon} />
+                            <Text style={{marginLeft: 12, fontFamily: Constants.fontFamily}}>Online payment</Text>
+                        </View>
+                        <View style={{flexDirection: 'row',marginTop: 6,}}>
+                                    {
+                                        paymentOption==="online"?
+                                        <Ionicons name='checkbox-sharp' onPress={()=>setPaymentOption('cod')} size={16} color={Constants.colors.primaryColor} />:
+                                        <Fontisto name='checkbox-passive' style={{marginLeft:-15}} onPress={()=>setPaymentOption('online')} size={12} color={Constants.colors.primaryColor} />
+                                    }
+                                </View>
+                    </Pressable>
+                    </View>
                 {/* <View style={styles.paymentOptions}>
                     <Text style={styles.addressHeading}>Payment Options</Text>
                     <Pressable style={styles.option} onPress={()=>setPaymentOption('card')}>

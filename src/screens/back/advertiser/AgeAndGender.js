@@ -23,7 +23,7 @@ const AgeAndGender = (props) => {
     const [low, setLow] = useState(18)
     const [high, setHigh] = useState(80)
     const gotoCreateAudience = () => {
-        props.navigation.navigate('/create-audience')
+        props.navigation.navigate('/create-audience',{userDetails:props?.route?.params?.userDetails})
     }
     const renderThumb = useCallback(() => <View>
         <Fontisto name='radio-btn-active' size={26} color={Constants.colors.primaryColor} />

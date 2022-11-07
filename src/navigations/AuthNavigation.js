@@ -61,6 +61,7 @@ import PaymentDetails from '../screens/back/explore/PaymentDetails'
 import Coupons from '../screens/back/explore/Coupons'
 import PaymentSuccess from '../screens/back/explore/PaymentSuccess'
 import MyOrders from '../screens/back/explore/MyOrders'
+import ViewExploreProfile from '../screens/back/explore/ViewExporeProfile'
 
 const Stack = createNativeStackNavigator()
 
@@ -96,6 +97,7 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name="/forgot-password" component={ForgotPassword} />
                 <Stack.Screen name='/reset-password' component={ResetPassword} />
                 <Stack.Screen name='/change-password' component={ChangePassword} />
+                <Stack.Screen name="/view-explore-profile" component={ViewExploreProfile}/>
                 <Stack.Screen name='/exploer-registration' component={ExplorerSignup} />
                 <Stack.Screen name='/explore-otp' component={ExploreOtp} />
                 <Stack.Screen name='/signup-details' component={SignupDetails} initialParams={{authentication: props.authentication}} />

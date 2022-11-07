@@ -34,8 +34,8 @@ const Cart = (props)=>{
         setdiscount(0)
         setTotalPrice(0)
         console.log("cart id==>",props?.route?.params?.userDetails?.id);
-        axios.post(`${Constants.BASE_URL}explore/get-cart-item`,{
-            explore_id:props?.route?.params?.userDetails?.id
+        axios.post(`${Constants.BASE_URL}auth/get-cart-item`,{
+            user_id:props?.route?.params?.userDetails?.id
         }).then((response)=>{
             setLoader(false)
             if(response.data.data.cart_item)

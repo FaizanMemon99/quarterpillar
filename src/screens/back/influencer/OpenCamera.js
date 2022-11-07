@@ -25,10 +25,17 @@ const  OpenCamera=(props)=>{
     const [cameraImg, setCameraImg]= useState(null)
     const [video, setVideo]= useState(null)
     const gotoAddPost = ()=>{
-        navigation.navigate('/add-post', {video: video, category: props?.route?.params?.category,productData:props?.route?.params?.productData,
+      if(props?.route?.params?.userDetails?.role_id==3){
+        navigation.navigate('/add-post', {video: video, category: props?.route?.params?.category,
+          // productData:props?.route?.params?.productData,
+          userDetails:props?.route?.params?.userDetails,
+          // influencerData:props?.route?.params?.influencerData
+      })
+      }
+        else {navigation.navigate('/add-post', {video: video, category: props?.route?.params?.category,productData:props?.route?.params?.productData,
             userDetails:props?.route?.params?.userDetails,
             influencerData:props?.route?.params?.influencerData
-        })
+        })}
     }
     const requestCameraPermission = async () => {
         if (Platform.OS === 'android') {

@@ -36,7 +36,7 @@ const RenderCart = ({item,getCartData}) => {
             "dis_amount":tempdiscountAmt,
             "total_amount":temptotalAmt
         });
-        axios.post(`${Constants.BASE_URL}explore/update-cart-item`,{
+        axios.post(`${Constants.BASE_URL}auth/update-cart-item`,{
             "cart_id":item?.item?.data?.cart_id,
             "color":tempcolor,
             "size":tempsize,
@@ -88,15 +88,17 @@ const RenderCart = ({item,getCartData}) => {
     const colors = ['red', 'green', 'blue', 'black']
     const deleteCartValue=()=>{
         setDeleteLoader(item?.item?.data?.cart_id)
-        axios.post(`${Constants.BASE_URL}explore/remove-item-from-cart`,{
+        axios.post(`${Constants.BASE_URL}auth/remove-item-from-cart`,{
             cart_id:item?.item?.data?.cart_id
         }).then((response)=>
         {
             if(response.data.response==200){
+                setDeleteLoader(false)
                 showToastmsg('Cart updated successfully')
                 getCartData(true)
             }
         }).catch((error)=>{
+            setDeleteLoader(false)
             console.log("error",error);
             showToastmsg('Error! Please try again')
         })

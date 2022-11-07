@@ -22,7 +22,7 @@ const BudgetsAndDuration = (props) => {
     const navigation = useNavigation()
 
     const gotoAdPreview = () => {
-        navigation.navigate('/ad-details-preview')
+        navigation.navigate('/ad-details-preview',{userDetails:props?.route?.params?.userDetails})
     }
     return (
         <View style={globatStyles.wrapper}>

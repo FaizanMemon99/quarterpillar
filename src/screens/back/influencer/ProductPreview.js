@@ -24,7 +24,10 @@ const ProductPreview = (props)=>{
     const [loader,setLoader]=useState(false)
     const [draftLoader,setdraftLoader]=useState(false)
     const gotoProductDescription = (type)=>{
-        if(type=='draft')
+        if(props?.route?.params?.userDetails?.role_id==3){
+            navigation.navigate("/ad-details",{userDetails:props?.route?.params?.userDetails})
+        }
+        else{if(type=='draft')
         {setdraftLoader(true)}
         else {
             setLoader(true)
@@ -83,7 +86,7 @@ console.log("response",response);
         setdraftLoader(false)
         console.log("error message",error.response);
             showToastmsg('Cant save post, Please try again later')
-        });}
+        });}}
         // navigation.navigate('/product-description')
     }
     console.log("post details",props?.route?.params?.postDetails);
@@ -160,7 +163,10 @@ console.log("response",response);
                     </LinearGradient>
                     <View style={{flexDirection: 'row',}}>
                         <Pressable style={[globatStyles.btnOutline, {width: '46%'}]} onPress={()=>gotoProductDescription('draft')}>{draftLoader?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnOutlineText}>Save as draft</Text>}</Pressable>
-                        <Pressable style={[globatStyles.button, {width: '46%', marginLeft: '8%',}]} onPress={gotoProductDescription}>{loader?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>Post</Text>}</Pressable>
+                        <Pressable style={[globatStyles.button, {width: '46%', marginLeft: '8%',}]} onPress={gotoProductDescription}>{loader?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>{
+                        props?.route?.params?.userDetails?.role_id==3?
+                        "PROCEED"
+                        :"Post"}</Text>}</Pressable>
                     </View>
                 </View>
                 </View>

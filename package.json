@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@notifee/react-native": "^7.0.4",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-native-firebase/app": "^16.4.3",
@@ -37,6 +38,7 @@
     "react-native-gesture-handler": "^1.7.0",
     "react-native-image-crop-picker": "^0.38.0",
     "react-native-image-picker": "^4.10.0",
+    "react-native-in-app-notification": "^3.2.0",
     "react-native-instagram-reels": "^1.0.1",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-loading-placeholder": "^0.0.6",

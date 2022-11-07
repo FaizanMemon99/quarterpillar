@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Pressable,
     TextInput,
+    ActivityIndicator,
 } from 'react-native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
@@ -13,6 +14,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useNavigation } from '@react-navigation/native'
+// import { Badge } from 'react-native-elements'
 
 const CustomAppBar=(props)=>{
     const navigation=useNavigation()
@@ -23,7 +25,12 @@ const CustomAppBar=(props)=>{
         navigation.navigate('/cart',{userDetails:props?.userDetails})
     }
     const gotoCategory = ()=>{
-
+        if(props?.userDetails?.role_id==3){
+            navigation.navigate('/category', {
+                userDetails: props?.userDetails,
+              });
+        }
+        else 
         navigation.navigate('/my-requests',{page:'ongoing',userDetails:props?.userDetails})
     }
     const gotoDraft = ()=>{
@@ -71,11 +78,24 @@ const CustomAppBar=(props)=>{
                 props.headerRight?(
                     <View style={{flexDirection: 'row',}}>
                         <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} />
+                        {/* <View style={{position:'relative'}}> */}
                         <Feather name='shopping-cart' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} onPress={gotoCart} />
+                        {/* <View style={{position:'absolute',left:"90%",top:"-30%",backgroundColor:'white',zIndex:99999,width:20,height:20,borderRadius:20/2}}>
+                        <Text style={{color:'black',textAlign:'center'}}>
+                        {props.cartLoader?
+                            <ActivityIndicator color='black'/>:
+                            props.cartNumber
+                        }
+                       </Text>
+                            </View>
+                        </View> */}
+                        
                         {!props?.explore&&<Feather name='plus-circle' style={[styles.leftIocn, {color:props?.IconColor?props?.IconColor:'#fff',zIndex: props.newPost?9999:9}]} onPress={()=>props.openPopup()} />}
                         {
                             props.newPost?<View style={styles.addnewPost}>
-                                <Text style={styles.item} onPress={gotoCategory}>New Post</Text>
+                                <Text style={styles.item} onPress={gotoCategory}>{
+                                props?.userDetails?.role_id==3?'New Advertisement':
+                                'New Post'}</Text>
                                 <View style={styles.divider}></View>
                                 <Text style={styles.item} onPress={gotoDraft}>Draft</Text>
                             </View>:null
@@ -168,7 +188,7 @@ const styles = StyleSheet.create({
         backgroundColor: Constants.colors.whiteColor,
         right: 20,
         top: 40,
-        width: 150,
+        width: "100%",
         zIndex: 9999,
         borderTopLeftRadius: 12,
         borderBottomRightRadius: 12,

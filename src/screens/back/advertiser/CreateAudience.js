@@ -18,16 +18,16 @@ const  CreateAudience=(props)=>{
     
     const navigation = useNavigation()
     const gotoLocation = ()=>{
-        navigation.navigate('/location')
+        navigation.navigate('/location',{userDetails:props?.route?.params?.userDetails})
     }
     const gotoInterests = ()=>{
-        navigation.navigate('/interests')
+        navigation.navigate('/interests',{userDetails:props?.route?.params?.userDetails})
     }
     const gotoAgeAndGender = ()=>{
-        navigation.navigate('/age-and-gender')
+        navigation.navigate('/age-and-gender',{userDetails:props?.route?.params?.userDetails})
     }
     const gotoBudget = ()=>{
-        navigation.navigate('/budget-and-duration')
+        navigation.navigate('/budget-and-duration',{userDetails:props?.route?.params?.userDetails})
     }
     return (
         <View style={globatStyles.wrapper}>

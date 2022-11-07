@@ -77,7 +77,7 @@ const EditUser = (props)=>{
                 }).then((response)=>{
                     if(response.status==200){
                         setButtonLoader(false)
-                        navigation.navigate('/profile',{userDetails:response.data.data.user_details})
+                        navigation.navigate('/view-explore-profile',{userDetails:response.data.data.user_details})
                         showToastmsg('Profile updated successfully')
                     }
                     else {

@@ -77,5 +77,6 @@ const Images = {
     googleMap: require('./googlemap.png'),
     sliderThumb: require('./icons/slider-thumb.png'),
     emoji: require('./icons/imogis/love.png'),
+    switchIcon: require('./switch.png')
 }
 export default Images

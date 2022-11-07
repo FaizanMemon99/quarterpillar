@@ -23,7 +23,7 @@ const  AdDetails=(props)=>{
     const navigation = useNavigation()
 
     const gotoCreateAudience = ()=>{
-        navigation.navigate('/create-audience')
+        navigation.navigate('/create-audience',{userDetails:props?.route?.params?.userDetails})
     }
     return (
         <View style={globatStyles.wrapper}>

@@ -11,10 +11,12 @@ import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
+import { useNavigation } from '@react-navigation/native'
 
 const CustomAppBar=(props)=>{
+const navigation=useNavigation()
     const goBack = ()=>{
-        props.navigation.goBack()
+        navigation.goBack()
     }
     const gotoCart = ()=>{
         props.navigation.navigate('/cart')

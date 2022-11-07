@@ -11,11 +11,11 @@ import VideoPlayer from 'react-native-video-player'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 
-const  Category=()=>{
+const  Category=(props)=>{
     const navigation = useNavigation()
     const businessRegistration = (category)=>{
         
-        navigation.navigate('/open-camera', {'category': category})
+        navigation.navigate('/open-camera', {'category': category,userDetails:props?.route?.params?.userDetails})
 
     }
     return (
@@ -23,9 +23,10 @@ const  Category=()=>{
         <View style={styles.wrapper}>  
             <Pressable onPress={()=>businessRegistration('Travel')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/travel.mp4' }}
                     autoplay
                     loop
+                    repeat={true}
                     disableSeek
                     resizeMode={'cover'}
                     customStyles={{
@@ -53,9 +54,10 @@ const  Category=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Fashion')} style={styles.category}>
             <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/food.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/fashion.mp4' }}
                     autoplay
                     loop
+                    repeat={true}
                     disableSeek
                     resizeMode={'cover'}
                     customStyles={{
@@ -83,9 +85,11 @@ const  Category=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Life Style')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/videoFashion.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/lifestyle.mp4' }}
                     autoplay
                     loop
+                    repeat={true}
+
                     disableSeek
                     resizeMode={'cover'}
                     customStyles={{
@@ -113,10 +117,11 @@ const  Category=()=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Food')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'http://qp.flymingotech.in/public/videos/lifesty.mp4' }}
+                    video={{ uri: 'https://acapp.in/uploads/biztypes/food.mp4' }}
                     autoplay
                     loop
                     disableSeek
+                    repeat={true}
                     resizeMode={'cover'}
                     customStyles={{
                         wrapper: {

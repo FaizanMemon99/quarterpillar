@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import {
     Platform,
     StyleSheet,
-    PermissionsAndroid
+    PermissionsAndroid,
+    Alert
 } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import SplashScreen from 'react-native-splash-screen'
@@ -13,9 +14,12 @@ import DrawerNavigationExplore from './src/navigations/DrawerNavigationExploer'
 import Constants from './src/shared/Constants'
 import { Provider } from 'react-redux'
 import store from './src/shared/store'
+import messaging from "@react-native-firebase/messaging"
+import {requestUserPermission,NotificationListener} from "./src/pushNotificationUtils"
+import { InAppNotificationProvider } from 'react-native-in-app-notification';
+import PushNotification from 'react-native-push-notification'
 
 const App = () => {
-
     const [auth, setAuth] = useState('')
     const requestCameraPermission = async () => {
         if (Platform.OS === 'android') {
@@ -61,6 +65,20 @@ const App = () => {
       }
     useEffect(() => {
         PermissionFunction()
+        requestUserPermission()
+        NotificationListener()
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+        //   PushNotification.localNotification({
+        //     channelId:"my-channel",
+        //     channelName:"myChannel",
+        //     title:remoteMessage.notification.title,
+        //     message:remoteMessage.notification.body
+        // })
+          console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+        });
+        
+        
+        // return unsubscribe;
         SplashScreen.hide()
 
     }, [])
@@ -70,13 +88,16 @@ const App = () => {
         setAuth(type)
 
     }
+    
     return (
         <Provider store={store}>
+          <InAppNotificationProvider>
             <NavigationContainer style={styles.container}>
                 {auth === 'business' ? <DrawerNavigationBusiness /> :
                     auth === 'explore' ? <DrawerNavigationExplore /> :
                         <AuthNavigation authentication={(type) => authentication(type)} />}
             </NavigationContainer>
+            </InAppNotificationProvider>
         </Provider>
 
     )

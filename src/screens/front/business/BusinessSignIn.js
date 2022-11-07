@@ -17,6 +17,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import showToastmsg from '../../../shared/showToastmsg'
 import { apiCall } from '../../../service/service'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const BusinessSignIn=(props)=>{
     const navigation  = useNavigation()
@@ -33,13 +34,36 @@ const BusinessSignIn=(props)=>{
             }
            else{ const response = await apiCall('POST', 'auth/login', null, { data: LoginId, password: Password ,type:props?.route?.params?.login_type=='Influencer'?2:props?.route?.params?.login_type=='Explorer'?1:props?.route?.params?.login_type=='Business'?4:props?.route?.params?.login_type=='Advertiser'?3:5})
             if (response && response.error === false && response.data.token) {
-                setIsLoading(false)
+                
                 try {
+                    let fcmtoken=await AsyncStorage.getItem("fcmtoken");
+                    console.log("fcm token",fcmtoken);
                     if( response.data.login_success)
                     {
+                        await axios.post("https://testfcm.com/api/notify",
+                        {
+                            "postBody": {
+                                "notification": {
+                                    "title": `Welcome ${response.data.user?.name} !`,
+                                    "body": `You have logged in as ${props.route.params.login_type} successfully`,
+                                    "click_action": null,
+                                    "icon": null
+                                },
+                                "data": null,
+                                "to": fcmtoken
+                            },
+                            "serverKey": "AAAAdLYZPyI:APA91bFVhnrT3tUYJWS5aKMBM9ObqK4LBFIrhwS5CoHHKlnORXOIadVwpjE4QTXMKicbQTxifccSdphB2EF7Jw_jCkyjHciMHGlQ0zvufnNHtAifxqUgQ0Ww01XprMn8a2dVa4EKsNc8"
+                        }
+                        ).then((resp)=>{
+                            setIsLoading(false)
+                        })
+                        .catch((error)=>{
+                            setIsLoading(false)
+                        })
+                        showToastmsg("Login successfull")
                         if(props.route.params.login_type=='Business')
                         {navigation.navigate('/home',{"userDetails":response.data.user})}
-                        else if(props.route.params.login_type=='Influencer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
                         else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
                         else {
                             navigation.navigate('/advertiser-product',{userDetails:response.data.user})

@@ -27,6 +27,7 @@ import Swiper from 'react-native-swiper'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+
 const Product=(props)=>{
     const navigation=useNavigation()
     const [newPost, setNewPost] = useState(false)
@@ -36,6 +37,8 @@ const Product=(props)=>{
     const [activeMenu, setActiveMenu] = useState('')
     const [postLoader,setpostLoader]=useState(false)
     const [swiperData,setswiperData]=useState([])
+    // const [cartLoader,setcartLoader]=useState(false)
+    // const [cartNumber,setcartNumber]=useState(0)
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
     const travelPosts = [
@@ -121,9 +124,37 @@ const Product=(props)=>{
                 showToastmsg('Failed to reload')
             })
             console.log("exploredata",props?.route?.params?.userDetails?.explore?.explore_id);}
+            else if(userType=='advertiser')
+            {
+                axios.post(`${Constants.BASE_URL}advertiser/get-advertise`,{
+                    advertiser_id:props?.route?.params?.userDetails?.id
+                }).then((response)=>{
+                    console.log("repsonse",response.data.data.post_details);
+                    setpostLoader(false)
+                    if(response.data.data.post_details){
+                        setpostData(response.data.data.post_details.filter((i)=>i.status=='complete'))
+                    }
+                })
+                .catch((error)=>{
+                    setpostLoader(false)
+                    console.log("error val",error.response);
+                    showToastmsg('Failed to reload')
+                })
+                console.log("influencerdata",props?.route?.params?.userDetails);}
     }
     useEffect(()=>{
+        // axios.post(`${Constants.BASE_URL}auth/get-cart-item`,{
+        //     user_id:props?.route?.params?.userDetails?.id
+        // }).then((response)=>{
+        //     setcartLoader(false)
+        //     if(response.data.data.cart_item)
+        //     setcartNumber(response.data.data.cart_item.length)
+        // }).catch((error)=>{
+        //     setcartLoader(false)
+        //     setcartNumber(0)
+        // })
         getReelsApi()
+        // console.log("data=====>");
             },[])
     function isImage() {
         var url=''
@@ -161,7 +192,11 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     <View style={styles.profileDetails}>
                         <View style={styles.profileIcon}>
                             <Image source={isImage?
-                            {uri:Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
+                            {uri:Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:
+                            Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='advertiser'?
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`
+                            :
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
                             :
                                 Images.avatar}  style={{width:50,height:'100%'}}/>
                         </View>
@@ -171,6 +206,35 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                         </View>
                     </View>
                 </View>
+               {props?.route?.params?.userDetails?.role_id==3?
+ <ScrollView style={styles.drawerItemContainer}>
+ {
+     setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
+ }
+ {
+     setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list',props)
+ }
+ {
+     setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props)
+
+ }
+ {
+     setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
+ }
+ {
+     setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support',props)
+ }
+ {
+     setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about',props)
+ }
+ {/* {
+     setMenuItem(setActiveMenu, activeMenu, 'fa', 'bank', 'Bank Details', navigation, '/bank-details',props)
+ } */}
+ {/* {
+     setMenuItem(setActiveMenu, activeMenu, 'ant', 'redenvelopes', 'Drafts', navigation, '/all-drafts',props)
+ } */}
+</ScrollView>
+               :
                 <ScrollView style={styles.drawerItemContainer}>
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
@@ -194,8 +258,8 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {(userType=='influencer'||userType=='advertiser')&&
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'My Requests', navigation, '/my-requests',props)
                     }
-                    {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
+                    {userType=='explore'?
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/view-explore-profile',props):setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
@@ -212,7 +276,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'redenvelopes', 'Drafts', navigation, '/all-drafts',props)
                     } */}
-                </ScrollView>
+                </ScrollView>}
                 <Pressable
                onPress={()=>navigation.navigate('/')}
                 style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
@@ -289,7 +353,11 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                 <CustomAppBar navigation={navigation} isMainscreen={true} 
                 explore={userType=='explore'}
                 userDetails={props?.route?.params?.userDetails}
-                isReel={true} title={data.post_type} headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
+                isReel={true} 
+                title={data.post_type} 
+                // cartLoader={cartLoader}
+                // cartNumber={cartNumber}
+                headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
                 <SwiperFlatList
                     data={[data]}
                     style={[styles.category,{borderRadius:showDrawer?Constants.borderRadius+50:0}]}
@@ -328,7 +396,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                 userDetails={props?.route?.params?.userDetails}
                 isReel={true} title='' headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
                 <View style={{display:'flex',justifyContent:'center',alignItems:"center",height:'100%',marginTop:-(Constants.padding+80)}}>
-                <Text style={[styles.menuName,{color:'black',fontSize:24}]}>No reels found</Text>
+                <Text style={[styles.menuName,{color:'black',fontSize:24}]}>No {props?.route?.params?.userDetails?.role_id==3?'ad':'reels'} found</Text>
                 <Pressable onPress={getReelsApi}><Text style={[styles.menuName,{color:'blue',fontSize:18,textDecorationLine:'underline'}]}>Refresh</Text></Pressable>
                 </View>
         </View>
@@ -362,6 +430,9 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
             }
             {
                 icon==='fa'?<FontAwesome name={iconName} size={26} color={Constants.colors.whiteColor} />:null
+            }
+            {
+                icon==='image'?<Image source={Images.switchIcon} />:null
             }
             <Text style={[styles.menuName]}>{title}</Text>
         </Pressable>

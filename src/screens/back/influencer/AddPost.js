@@ -35,24 +35,28 @@ const AddPost = props => {
   const [products, setProducts] = useState(
     props?.route?.params?.userDetails.is_product == 'true' && 'products',
   );
+  const [productName,setProductName]=useState()
   const [services, setServicess] = useState(
     props?.route?.params?.userDetails.is_service == 'true' && 'services',
   );
   const [location, setLocation] = useState();
   const [description, setDescription] = useState();
   useEffect(()=>{
-    console.log("RNFS=>",RNFS.DocumentDirectoryPath);
+    // console.log("RNFS=>",RNFS.DocumentDirectoryPath);
     if(props?.route?.params?.draft)
     {
       if(props?.route?.params?.video)
     setPostVideo(props?.route?.params?.video)
     if(props?.route?.params?.images)
     setPostImg(props?.route?.params?.images)
-    setTitle(props?.route?.params?.productData?.title)
+    if(props?.route?.params?.userDetails?.role_id!==3)
+    {setTitle(props?.route?.params?.productData?.title)
     setBusinessTags(props?.route?.params?.productData?.tag)
     setLocation(props?.route?.params?.productData?.location)
     setDescription(props?.route?.params?.productData?.description)
     console.log("post data=>",props?.route?.params?.productData);
+  }
+    
       console.log("influencer==>",props?.route?.params?.userDetails);
   }
   },[props?.route?.params])
@@ -239,7 +243,99 @@ const AddPost = props => {
     setPostImg(img);
   };
   const gotoProductPreview = () => {
-    if (!title || title == '') {
+   if(props?.route?.params?.userDetails?.role_id==3)
+{
+  if (!title || title == '') {
+    showToastmsg('Please enter Ad title');
+  } else if (!businessTags || businessTags == '') {
+    showToastmsg('Please enter tags');
+  } else if (!productName || productName == '') {
+    showToastmsg('Please enter Product name');
+  } else if (!location || location == '') {
+    showToastmsg('Please enter location');
+  } else if (!description || description == '') {
+    showToastmsg('Please enter description');
+  }
+  else {
+    if(props?.route?.params?.draft)
+    {
+      var formdata = new FormData();
+      formdata.append('post_id', props?.route?.params?.productData?.id);
+      // formdata.append('business_id', props?.route?.params?.productData?.business_id);
+      // formdata.append('influencer_id', props?.route?.params?.influencerData?.userDetails?.id);
+      formdata.append('post_type', props.route.params.category);
+      formdata.append('tag', businessTags);
+      formdata.append('title', title);
+      for(let i=0;i<postImg.length;i++ ){    
+        formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
+      }
+      formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+      formdata.append('location', location);
+      formdata.append('likes', '0');
+      formdata.append('share', '0');
+      formdata.append(
+        'description',
+        description
+      );
+      navigation.navigate('/product-preview', {category: props.route.params.category,
+    postDetails:{
+        title:title,
+        postVideo:postVideo,
+        postImg:postImg,
+        tags:businessTags,
+        businessTags:props?.route?.params?.productData?.product_tags,
+        type:'Products',
+        description:description,
+        location:location,
+        productName:props?.route?.params?.productData?.product_name
+    },
+    influencerData:props?.route?.params?.influencerData,
+    formdata:formdata,
+    draft:true
+    })
+    }
+    else{
+      var formdata = new FormData();
+    formdata.append('product_id', props?.route?.params?.productData?.id);
+    formdata.append('business_id', props?.route?.params?.productData?.business_id);
+    formdata.append('influencer_id', props?.route?.params?.influencerData?.userDetails?.id);
+    formdata.append('post_type', props.route.params.category);
+    formdata.append('tag', businessTags);
+    formdata.append('title', title);
+    for(let i=0;i<postImg.length;i++ ){    
+      formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
+    }
+    formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+    formdata.append('location', location);
+    formdata.append('likes', '0');
+    formdata.append('share', '0');
+    formdata.append(
+      'description',
+      description
+    );
+    navigation.navigate('/product-preview', {category: props.route.params.category,
+  postDetails:{
+      title:title,
+      postVideo:postVideo,
+      postImg:postImg,
+      tags:businessTags,
+      businessTags:props?.route?.params?.productData?.product_tags,
+      type:'Products',
+      description:description,
+      location:location,
+      productName:props?.route?.params?.productData?.product_name
+  },
+  influencerData:props?.route?.params?.influencerData,
+  userDetails:props?.route?.params?.userDetails,
+  formdata:formdata
+  })
+}
+  //   axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
+  //   console.log("form data",formdata);
+  }
+}
+   else
+    { if (!title || title == '') {
       showToastmsg('Please enter post title');
     } else if (!businessTags || businessTags == '') {
       showToastmsg('Please enter tags');
@@ -324,7 +420,7 @@ const AddPost = props => {
   }
     //   axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
     //   console.log("form data",formdata);
-    }
+    }}
   };
 //   console.log('video', postVideo);
 //   console.log('product detrails', props?.route?.params?.productData);
@@ -396,7 +492,7 @@ const AddPost = props => {
               ))
             : null}
         </View>
-        <View style={{display: 'flex', flexDirection: 'row', width: '50%'}}>
+     {props?.route?.params?.userDetails?.role_id!==3?   <View style={{display: 'flex', flexDirection: 'row', width: '50%'}}>
           <Pressable style={styles.addMore} onPress={captureImage}>
             <Image source={Images.cameraIcon} />
             <Text style={styles.btnText}>
@@ -415,13 +511,14 @@ const AddPost = props => {
               {postImg.length > 0 ? 'Add More' : 'Add Image'}
             </Text>
           </Pressable>
-        </View>
+        </View>:null}
         <TextInput
           style={globatStyles.inputText}
           placeholder="Add Title"
           onChangeText={setTitle}
           value={title}
         />
+      {props?.route?.params?.userDetails?.role_id!==3?<View>
         <TextInput
           style={[globatStyles.inputText, {marginBottom: 2}]}
           placeholder="Tags"
@@ -431,6 +528,7 @@ const AddPost = props => {
         <Text style={styles.hints}>
           *add relevant tags to increase the reach
         </Text>
+        </View>:null}
         <TextInput
           style={[globatStyles.inputText, {marginBottom: 2}]}
           placeholder="Tag Business"
@@ -458,8 +556,9 @@ const AddPost = props => {
         <TextInput
           style={globatStyles.inputText}
           placeholder="Product Name"
-          editable={false}
-          value={props?.route?.params?.productData?.product_name}
+          editable={props?.route?.params?.userDetails?.role_id==3}
+          onChangeText={setProductName}
+          value={props?.route?.params?.userDetails?.role_id==3?productName:props?.route?.params?.productData?.product_name}
         />
         <View>
           <TextInput

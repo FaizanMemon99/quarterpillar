@@ -48,6 +48,9 @@ const ProductDetails= (props)=>{
         else if(!size||size==''){
             showToastmsg('Please select size')
         }
+        else if(!(parseInt(props?.route?.params?.productDetails?.business_product?.qty)>=parseInt(props?.route?.params?.productDetails?.business_product?.warning_qty))){
+            showToastmsg("Out of stock! You cannot buy this product now")
+        }
         else{console.log("response==>",{
             product_id:props?.route?.params?.productDetails?.product_id,
             explore_id:props?.route?.params?.userDetails?.id,
@@ -59,9 +62,9 @@ const ProductDetails= (props)=>{
     "total_amount":(parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) - (parseFloat(props?.route?.params?.productDetails?.business_product?.sales_price) * (parseFloat(props?.route?.params?.productDetails?.business_product?.dicount)/100)))*qty
         });
         setLoader(true)
-        axios.post(`${Constants.BASE_URL}explore/add-to-cart`,{
+        axios.post(`${Constants.BASE_URL}auth/add-to-cart`,{
             product_id:props?.route?.params?.productDetails?.product_id,
-            explore_id:props?.route?.params?.userDetails?.id,
+            user_id:props?.route?.params?.userDetails?.id,
             "color":color,
     "size":size,
     "qty":qty,

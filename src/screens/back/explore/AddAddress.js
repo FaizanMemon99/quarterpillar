@@ -87,9 +87,9 @@ const AddAddress = (props)=>{
         else {
             setLoader(true)
             if(props?.route?.params?.editable){
-                axios.post(`${Constants.BASE_URL}explore/update-explore-address`,
+                axios.post(`${Constants.BASE_URL}auth/update-user-address`,
                 {
-                    "explore_address_id": props?.route?.params?.explore_address_id,
+                    "user_address_id": props?.route?.params?.explore_address_id,
                     "address_name": locationName,
                     "address_type": locationType,
                     "zip_code": pinCode,
@@ -116,9 +116,9 @@ const AddAddress = (props)=>{
                         console.log("error",error);
                 })
             }
-            else{axios.post(`${Constants.BASE_URL}explore/add-explore-address`,
+            else{axios.post(`${Constants.BASE_URL}auth/add-user-address`,
             {
-                "explore_id": props?.route?.params?.userDetails?.id,
+                "user_id": props?.route?.params?.userDetails?.id,
                 "address_name": locationName,
                 "address_type": locationType,
                 "zip_code": pinCode,

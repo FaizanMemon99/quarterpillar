@@ -197,9 +197,9 @@ const Draft = props => {
           ) : (
             <View style={{display: 'flex', alignItems: 'center'}}>
               <Text style={[styles.socialValue, {color: '#000'}]}>
-                No post found
+                No draft post found
               </Text>
-              {props?.route?.params?.type ? null : (
+              {/* {props?.route?.params?.type ? null : (
                 <Pressable onPress={createPost}>
                   <Text
                     style={[
@@ -214,7 +214,7 @@ const Draft = props => {
                     Create Post
                   </Text>
                 </Pressable>
-              )}
+              )} */}
             </View>
           )}
         </ScrollView>

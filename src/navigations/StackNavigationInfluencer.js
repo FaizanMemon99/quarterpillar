@@ -25,6 +25,13 @@ import InvoiceHistory from '../screens/back/influencer/InvoiceHistory'
 import ForgotPassword from '../screens/back/influencer/ForgotPassword'
 import UpdatePassword from '../screens/back/influencer/UpdatePassword'
 import ChangePassword from '../screens/back/influencer/ChangePassword'
+import AdDetails from '../screens/back/advertiser/AdDetails'
+import CreateAudience from '../screens/back/advertiser/CreateAudience'
+import Locations from '../screens/back/advertiser/Locations'
+import AgeAndGender from '../screens/back/advertiser/AgeAndGender'
+import Interests from '../screens/back/advertiser/Interests'
+import BudgetsAndDuration from '../screens/back/advertiser/BudgetsAndDuration'
+import PreviewAd from '../screens/back/advertiser/PreviewAd'
 
 const Stack = createNativeStackNavigator()
 
@@ -41,6 +48,13 @@ const StackNavigationInfluencer=(props)=>{
                 <Stack.Screen name="/category" component={Category} />
                 <Stack.Screen name="/open-camera" component={OpenCamera} initialParams={{influencerData:props?.route?.params}}/>
                 <Stack.Screen name="/add-post" component={AddPost} />
+                <Stack.Screen name="/ad-details" component={AdDetails}/>
+                <Stack.Screen name='/create-audience' component={CreateAudience}/>
+                <Stack.Screen name="/location" component={Locations} />
+                <Stack.Screen name="/age-and-gender" component={AgeAndGender} />
+                <Stack.Screen name='/interests' component={Interests} />
+                <Stack.Screen name='/budget-and-duration' component={BudgetsAndDuration} />
+                <Stack.Screen name='/ad-details-preview' component={PreviewAd} />
                 <Stack.Screen name='/product-preview' component={ProductPreview} />
                 <Stack.Screen name='/product-description' component={ProductDetails} />
                 <Stack.Screen name='/influencer-stack-navigation' component={StackNavigationInfluencer}/>
