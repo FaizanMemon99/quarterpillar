@@ -45,9 +45,19 @@ export const NotificationListener=()=>{
     
     messaging().onMessage(async remoteMessage=>{
         console.log("notification on foreground state:",remoteMessage);
+        PushNotification.createChannel(
+            {
+              channelId: "specialid", // (required)
+              channelName: "Special messasge", // (required)
+              channelDescription: "Notification for special message", // (optional) default: undefined.
+              importance: 4, // (optional) default: 4. Int value of the Android notification importance
+              vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+            },
+            (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+          );
         PushNotification.localNotification({
-            channelId:"my-channel",
-            channelName:"myChannel",
+            channelId:"specialid",
+            channelName:"Special message",
             title:remoteMessage.notification.title,
             message:remoteMessage.notification.body
         })

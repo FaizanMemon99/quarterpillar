@@ -28,6 +28,9 @@ const BusinessSignIn=(props)=>{
     const signinverificatoin = async () => {
         setIsLoading(true)
         try {
+            let fcmtoken=await AsyncStorage.getItem("fcmtoken");
+            console.log("fcm token",fcmtoken);
+            
             if(LoginId==''||LoginId==null||Password==''||Password==null){
                 setIsLoading(false)
                 showToastmsg('Please enter login id and password')
@@ -36,8 +39,7 @@ const BusinessSignIn=(props)=>{
             if (response && response.error === false && response.data.token) {
                 
                 try {
-                    let fcmtoken=await AsyncStorage.getItem("fcmtoken");
-                    console.log("fcm token",fcmtoken);
+                   
                     if( response.data.login_success)
                     {
                         await axios.post("https://testfcm.com/api/notify",

@@ -76,11 +76,18 @@ console.log("error=>",error);
                  {loader?
             <ActivityIndicator size={'large'} />
             :
+            orderData.length>0?
                 <FlatList
                     data={orderData}
                     renderItem={item=><RenderOrders item={item} />}
                     style={{paddingBottom: 130,}}
                     keyExtractor={item=>item?.id?.toString()} />
+                    :
+                    <View style={{width:'100%',paddingTop:20,paddingBottom:10}}>
+                    <Text style={[styles.headingText,{fontSize:20,textAlign:'center'}]}>
+                        No orders found
+                    </Text>
+                </View>    
                  }
             </ScrollView>
         </View>
