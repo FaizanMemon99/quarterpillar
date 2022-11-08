@@ -153,13 +153,11 @@ const HomeScreen=(props)=>{
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'confluence', 'Influencer list', navigation, '/influencer-list',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'My Users', navigation, '/my-requests',props)
+                        setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props)
+
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
-                    }
-                    {
-                        setMenuItem(setActiveMenu, activeMenu, 'oct', 'arrow-switch', 'Switch View As', navigation, '/about',props)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
@@ -428,6 +426,9 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
             }
             {
                 icon==='fa'?<FontAwesome name={iconName} size={26} color={'black'} />:null
+            }
+              {
+                icon==='image'?<Image source={Images.switchIconBlack} />:null
             }
             <Text style={[styles.menuName]}>{title}</Text>
         </Pressable>

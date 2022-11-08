@@ -22,7 +22,7 @@ import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
 
-const RenderReeels = ({ item ,userDetails}) => {
+const RenderReeelsAdv = ({ item ,userDetails}) => {
     
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
@@ -58,17 +58,18 @@ const RenderReeels = ({ item ,userDetails}) => {
     // const gotoBuy=()=>{
     //     navigation.navigate('/cart')
     // }
+    
     useEffect(()=>{
         setLoader(true)
         setvideoVar(null)
-        // console.log("video var",JSON.parse(item?.item?.video)[0]);
-        axios.get(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, { responseType:'stream' })
+        console.log("video var",item?.item?.video);
+        axios.get(`${Constants.BASE_IMAGE_URL}${item?.item?.video}`, { responseType:'stream' })
         .then((response)=> {
             setvideoVar({
                 "bitrate": 154604, "duration": 1, 
-                "fileName": JSON.parse(item?.item?.video)[0], 
+                "fileName": item?.item?.video, 
                 "fileSize": response.headers["content-length"], "height": 320, "type": "video/mp4", 
-                "uri": `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, 
+                "uri": `${Constants.BASE_IMAGE_URL}${item?.item?.video}`, 
                 "width": 240
                 })
             // setTimeout(() => {
@@ -78,14 +79,14 @@ const RenderReeels = ({ item ,userDetails}) => {
     
             // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
         }).catch((err)=>{setLoader(false)})
-        console.log("hello gyus");
+        console.log("item==>",item?.item);
     },[])
     return (
         <>
         {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
         <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/></View>:
             <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
-            onPress={gotoProductDetails}
+            // onPress={gotoProductDetails}
             >
 
                 <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}></View>
@@ -135,17 +136,19 @@ const RenderReeels = ({ item ,userDetails}) => {
                 </View>
                 <View style={styles.productDetailsContainer}>
                     <View style={styles.imgContainer}>
-                        <Image source={Images.avatar} style={{ marginRight: 20, }} />
-                        <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
-                        <Pressable 
+                        {/* <Image source={Images.avatar} style={{ marginRight: 20, }} /> */}
+                        <Text style={styles.titlename}>{item?.item?.advertise_title?item?.item?.advertise_title:'faizaninfluencer'} ["Ad"]</Text>
+                        {/* <Pressable 
                         // onPress={follow}
-                         style={globatStyles.followBtn}><Text style={globatStyles.followBtnText}>Follow</Text></Pressable>
+                         style={globatStyles.followBtn}><Text style={globatStyles.followBtnText}>Follow</Text></Pressable> */}
                     </View>
                     <Text style={styles.desc}>
-                        {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
+                        {item?.item?.advertise_description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                     </Text>
-                    <Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
-                    <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
+                    <Text style={styles.minsAgo}>
+                        {console.log("created time",moment(new Date(item?.item?.created_at)).fromNow())}
+                        {moment(new Date(item?.item?.created_at)).fromNow()}</Text>
+                    {/* <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable> */}
                 </View>
             </Pressable>}
         </>
@@ -217,4 +220,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default RenderReeels
+export default RenderReeelsAdv

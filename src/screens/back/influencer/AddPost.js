@@ -296,34 +296,30 @@ const AddPost = props => {
     }
     else{
       var formdata = new FormData();
-    formdata.append('product_id', props?.route?.params?.productData?.id);
-    formdata.append('business_id', props?.route?.params?.productData?.business_id);
-    formdata.append('influencer_id', props?.route?.params?.influencerData?.userDetails?.id);
-    formdata.append('post_type', props.route.params.category);
-    formdata.append('tag', businessTags);
-    formdata.append('title', title);
-    for(let i=0;i<postImg.length;i++ ){    
-      formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
-    }
-    formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
-    formdata.append('location', location);
-    formdata.append('likes', '0');
-    formdata.append('share', '0');
+    formdata.append('advertiser_id', props?.route?.params?.userDetails?.id);
+    formdata.append('advertise_tag', businessTags);
+    formdata.append('advertise_title', title);
+    formdata.append('advertise_type', props.route.params.category);
     formdata.append(
-      'description',
+      'advertise_description',
       description
     );
+    formdata.append("advertise_name",productName)
+    // for(let i=0;i<postImg.length;i++ ){    
+    //   formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
+    // }
+    formdata.append('advertise_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+    formdata.append('advertise_location', location);
+    
     navigation.navigate('/product-preview', {category: props.route.params.category,
   postDetails:{
       title:title,
       postVideo:postVideo,
-      postImg:postImg,
       tags:businessTags,
-      businessTags:props?.route?.params?.productData?.product_tags,
       type:'Products',
       description:description,
       location:location,
-      productName:props?.route?.params?.productData?.product_name
+      productName:productName
   },
   influencerData:props?.route?.params?.influencerData,
   userDetails:props?.route?.params?.userDetails,

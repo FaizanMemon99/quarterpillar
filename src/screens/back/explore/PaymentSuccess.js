@@ -17,7 +17,32 @@ const PaymentSuccess = (props)=>{
         navigation.navigate('/product')
     }
     const retryPayment=()=>{
-        navigation.navigate('/payment-details',{price:props?.route?.params?.price,
+        if(props?.route?.params?.userDetails?.role_id==3){
+            navigation.navigate('/ad-details-preview',
+            {category: props.route.params.category,
+                postDetails:{
+                    title:props?.route?.params?.postDetails?.title,
+                    postVideo:props?.route?.params?.postDetails?.postVideo,
+                    tags:props?.route?.params?.postDetails?.tags,
+                    type:props?.route?.params?.postDetails?.type,
+                    description:props?.route?.params?.postDetails?.description,
+                    location:props?.route?.params?.postDetails?.location,
+                    productName:props?.route?.params?.postDetails?.productName
+                },
+                budget:props?.route?.params?.budget,
+                duration:props?.route?.params?.duration,
+                audienceName:props?.route?.params?.audienceName,
+                advertise_audience_gender:props?.route?.params?.advertise_audience_gender,
+                advertise_audience_age:props?.route?.params?.advertise_audience_age,
+                selectGoal:props?.route?.params?.selectGoal,
+                selectTargetAudience:props?.route?.params?.selectTargetAudience,
+                userDetails:props?.route?.params?.userDetails,
+                formdata:props?.route?.params?.formdata,
+                error:true
+                })
+        }
+
+else {        navigation.navigate('/payment-details',{price:props?.route?.params?.price,
             couponCode:props?.route?.params?.couponCode,
             couponCodeValue:props?.route?.params?.couponCodeValue,
             selectedAddress:props?.route?.params?.selectedAddress,
@@ -27,7 +52,7 @@ const PaymentSuccess = (props)=>{
             userDetails:props?.route?.params?.userDetails,
             address_id:props?.route?.params?.address_id,
             error:true
-        })
+        })}
     }
     return (
         <View style={[styles.container,{backgroundColor:props?.route?.params?.error?'red':Constants.colors.primaryColor}]}>

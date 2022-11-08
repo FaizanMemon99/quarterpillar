@@ -27,6 +27,7 @@ import Swiper from 'react-native-swiper'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import RenderReeelsAdv from '../explore/RenderReeelsAdv'
 
 const Product=(props)=>{
     const navigation=useNavigation()
@@ -126,13 +127,14 @@ const Product=(props)=>{
             console.log("exploredata",props?.route?.params?.userDetails?.explore?.explore_id);}
             else if(userType=='advertiser')
             {
+                console.log("advertiser data val+");
                 axios.post(`${Constants.BASE_URL}advertiser/get-advertise`,{
                     advertiser_id:props?.route?.params?.userDetails?.id
                 }).then((response)=>{
-                    console.log("repsonse",response.data.data.post_details);
+                    console.log("repsonse data=>",response.data);
                     setpostLoader(false)
                     if(response.data.data.post_details){
-                        setpostData(response.data.data.post_details.filter((i)=>i.status=='complete'))
+                        setpostData(response.data.data.post_details.filter((i)=>i.post_status=='complete'))
                     }
                 })
                 .catch((error)=>{
@@ -350,18 +352,22 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
             </View>
             :
             postData.map((data,i)=>(<View style={styles.reel} key={i+1}>
+                {console.log("maaped data=>",data.video)}
                 <CustomAppBar navigation={navigation} isMainscreen={true} 
                 explore={userType=='explore'}
                 userDetails={props?.route?.params?.userDetails}
                 isReel={true} 
-                title={data.post_type} 
+                title={userType=='advertiser'?data.advertise_type:
+                    data.post_type} 
                 // cartLoader={cartLoader}
                 // cartNumber={cartNumber}
                 headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
                 <SwiperFlatList
                     data={[data]}
                     style={[styles.category,{borderRadius:showDrawer?Constants.borderRadius+50:0}]}
-                    renderItem={item=><RenderReeels item={item} userDetails={props?.route?.params?.userDetails} />}
+                    renderItem={item=>(props?.route?.params?.userDetails?.role_id==3?
+                        <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails} />:
+                    <RenderReeels item={item} userDetails={props?.route?.params?.userDetails} />)}
                     keyExtractor={item=>item?.id?.toString()} />
             </View>))}
             {/* <View style={styles.reel}>

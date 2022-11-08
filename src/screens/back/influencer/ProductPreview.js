@@ -25,7 +25,19 @@ const ProductPreview = (props)=>{
     const [draftLoader,setdraftLoader]=useState(false)
     const gotoProductDescription = (type)=>{
         if(props?.route?.params?.userDetails?.role_id==3){
-            navigation.navigate("/ad-details",{userDetails:props?.route?.params?.userDetails})
+            navigation.navigate("/ad-details",{category: props.route.params.category,
+                postDetails:{
+                    title:props?.route?.params?.postDetails?.title,
+                    postVideo:props?.route?.params?.postDetails?.postVideo,
+                    tags:props?.route?.params?.postDetails?.tags,
+                    type:props?.route?.params?.postDetails?.type,
+                    description:props?.route?.params?.postDetails?.description,
+                    location:props?.route?.params?.postDetails?.location,
+                    productName:props?.route?.params?.postDetails?.productName
+                },
+                userDetails:props?.route?.params?.userDetails,
+                formdata:props?.route?.params?.formdata
+                })
         }
         else{if(type=='draft')
         {setdraftLoader(true)}
@@ -122,12 +134,12 @@ console.log("response",response);
                                 <View style={[globatStyles.overlay,{opacity:1,backfaceVisibility:'hidden',backgroundColor:'transparent'}]}>
                 <StatusBar translucent={true} backgroundColor='transparent' />
                 <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} headerRight={false} title={props?.route?.params?.postDetails?.title} subtitle={props?.route?.params?.userDetails?.business?.catorige} />
-                <View style={globatStyles.overlay}></View>
+                <View style={[globatStyles.overlay,{backgroundColor:"transparent"}]}></View>
                 <View style={styles.productDetailsContainer}>
                     <LinearGradient style={styles.productInfoContainer} colors={[ '#FFFFFF', '#A4A4B2']} start={{x:0, y:0}} end={{x: 1, y: 0}}>
                         <ScrollView>
                             <View style={{flexDirection: 'row', marginBottom: 20,}}>
-                                <Text style={styles.tags}>Tags</Text>
+                                <Text style={styles.tags}>{props?.route?.params?.userDetails?.role_id==3?"Tag Business":"Tags"} :</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                                     {props?.route?.params?.postDetails?.tags.split(",").map((item)=>
                                         (
@@ -138,24 +150,30 @@ console.log("response",response);
                                     }
                                 </View>
                             </View>
-                            <View style={{flexDirection: 'row', marginBottom: 20}}>
-                                <Text style={styles.tags}>Tags Business</Text>
+                            {props?.route?.params?.userDetails?.role_id==3?null:<View style={{flexDirection: 'row', marginBottom: 20}}>
+                                <Text style={styles.tags}>Tags Business :</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                                     <Text style={[styles.tags,{textTransform:'capitalize'}]}>{props?.route?.params?.postDetails?.businessTags}</Text>
                                 </View>
-                            </View>
+                            </View>}
                             <View style={{flexDirection: 'row', marginBottom: 20}}>
-                                <Text style={styles.tags}>Type</Text>
+                                <Text style={styles.tags}>Type :</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                                     <Text style={styles.tags}>{props?.route?.params?.postDetails?.type}</Text>
                                 </View>
                             </View>
                             <View style={{flexDirection: 'row', marginBottom: 20}}>
-                                <Text style={styles.tags}>Service name</Text>
+                                <Text style={styles.tags}>Service name :</Text>
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                                     <Text style={styles.tags}>{props?.route?.params?.postDetails?.productName}</Text>
                                 </View>
                             </View>
+                            {props?.route?.params?.userDetails?.role_id!==3?null:<View style={{flexDirection: 'row', marginBottom: 20}}>
+                                <Text style={styles.tags}>Location:</Text>
+                                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                                    <Text style={[styles.tags,{textTransform:'capitalize'}]}>{props?.route?.params?.postDetails?.location}</Text>
+                                </View>
+                            </View>}
                             <Text style={{fontFamily: Constants.fontFamily, fontSize: 16,}}>
                                 {props?.route?.params?.postDetails?.description}
                             </Text>

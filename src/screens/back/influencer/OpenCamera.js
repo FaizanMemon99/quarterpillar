@@ -82,9 +82,10 @@ const  OpenCamera=(props)=>{
           mediaType: 'video',
           maxWidth: 300,
           maxHeight: 550,
+          allowsEditing:true,
           quality: 1,
           videoQuality: 'low',
-          durationLimit: 30, //Video max duration in seconds
+          durationLimit: 10, //Video max duration in seconds
           saveToPhotos: false,
         };
         let isCameraPermitted = await requestCameraPermission();

@@ -24,7 +24,21 @@ const Locations = (props) => {
     const navigation = useNavigation()
 
     const gotoCreateAudience = () => {
-        navigation.navigate('/create-audience',{userDetails:props?.route?.params?.userDetails})
+        navigation.navigate('/create-audience',{category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            })
     }
     return (
         <View style={globatStyles.wrapper}>

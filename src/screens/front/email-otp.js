@@ -81,9 +81,32 @@ const EmailOtp = (props) => {
             axios.post(`${Constants.BASE_URL}auth/email-verify`,{
                 email:emailId,
                 otp:otp
-            }).then((response)=>{
-                setIsLoading(false)
+            }).then(async(response)=>{
+                
                 if(!response.data.error){
+                    let fcmtoken=await AsyncStorage.getItem("fcmtoken");
+                    console.log("fcm token",fcmtoken);
+                    showToastmsg("Registration successful")
+                    await axios.post("https://testfcm.com/api/notify",
+                    {
+                        "postBody": {
+                            "notification": {
+                                "title": `Registration successful`,
+                                "body": `You have registered in as ${props.route.params.userType} successfully`,
+                                "click_action": null,
+                                "icon": null
+                            },
+                            "data": null,
+                            "to": fcmtoken
+                        },
+                        "serverKey": "AAAAdLYZPyI:APA91bFVhnrT3tUYJWS5aKMBM9ObqK4LBFIrhwS5CoHHKlnORXOIadVwpjE4QTXMKicbQTxifccSdphB2EF7Jw_jCkyjHciMHGlQ0zvufnNHtAifxqUgQ0Ww01XprMn8a2dVa4EKsNc8"
+                    }
+                    ).then((resp)=>{
+                        setIsLoading(false)
+                    })
+                    .catch((error)=>{
+                        setIsLoading(false)
+                    })
                     navigation.navigate("/business-login",{
                         login_type:props?.route?.params?.userType
                     })

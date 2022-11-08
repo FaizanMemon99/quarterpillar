@@ -23,6 +23,7 @@
     "axios": "^0.27.2",
     "emoji-picker-react": "^3.6.0",
     "fbjs": "^3.0.4",
+    "moment": "^2.29.4",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-actions-sheet": "^0.7.2",

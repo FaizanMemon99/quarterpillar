@@ -22,7 +22,29 @@ const BudgetsAndDuration = (props) => {
     const navigation = useNavigation()
 
     const gotoAdPreview = () => {
-        navigation.navigate('/ad-details-preview',{userDetails:props?.route?.params?.userDetails})
+        // console.log("resss=>",`${duration} ${tabs==='daily'?'days': tabs==="weekly"?"weeks":"months"}`);
+        navigation.navigate('/ad-details-preview',
+        {category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            budget:budgets,
+            duration:`${duration} ${tabs==='daily'?'days': tabs}`,
+            audienceName:props?.route?.params?.audienceName,
+            advertise_audience_gender:props?.route?.params?.advertise_audience_gender,
+            advertise_audience_age:props?.route?.params?.advertise_audience_age,
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            }
+        )
     }
     return (
         <View style={globatStyles.wrapper}>
@@ -50,7 +72,7 @@ const BudgetsAndDuration = (props) => {
                     <Text style={{ fontFamily: Constants.fontFamily, fontSize: 22, }}>Budget</Text>
                     <Slider
                         value={budgets}
-                        step={10}
+                        step={1}
                         onValueChange={value => setBudgets(value)}
                         minimumValue={100}
                         maximumValue={100000}
@@ -59,7 +81,7 @@ const BudgetsAndDuration = (props) => {
                         thumbImage={require('../../../assets/images/icons/slider-thumb.png')}
                         thumbStyle={{ width: 20, height: 20, backgroundColor: 'transparent', }}
                     />
-                    <Text style={{fontFamily: Constants.fontFamily, alignSelf: 'center', fontSize:22,}}><FontAwesome name='rupee' size={24} /> {budgets} daily</Text>
+                    <Text style={{fontFamily: Constants.fontFamily, alignSelf: 'center', fontSize:22,}}><FontAwesome name='rupee' size={24} /> {budgets} {tabs}</Text>
                 </View>
                 <View style={{ padding: Constants.padding, }}>
                     <Text style={{ fontFamily: Constants.fontFamily, fontSize: 22, }}>Duration</Text>
@@ -70,7 +92,7 @@ const BudgetsAndDuration = (props) => {
                     </View>
                     <Slider
                         value={duration}
-                        step={10}
+                        step={1}
                         onValueChange={value => setDuration(value)}
                         minimumValue={1}
                         maximumValue={52}
@@ -79,7 +101,7 @@ const BudgetsAndDuration = (props) => {
                         thumbImage={require('../../../assets/images/icons/slider-thumb.png')}
                         thumbStyle={{ width: 20, height: 20, backgroundColor: 'transparent', }}
                     />
-                    <Text style={{fontFamily: Constants.fontFamily, alignSelf: 'center', fontSize:22,}}>{duration} {tabs==='daily'?'days': tabs}</Text>
+                    <Text style={{fontFamily: Constants.fontFamily, alignSelf: 'center', fontSize:22,}}>{duration} {tabs==='daily'?'days': tabs==="weekly"?"weeks":"months"}</Text>
                 </View>
                 <View style={[styles.container, { paddingTop: 0, }]}>
                     <Pressable style={globatStyles.button} onPress={gotoAdPreview}><Text style={globatStyles.btnText}>Preview</Text></Pressable>

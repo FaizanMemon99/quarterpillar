@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import RangeSlider from 'rn-range-slider'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import showToastmsg from '../../../shared/showToastmsg'
 
 const AgeAndGender = (props) => {
     const [allGender, setAllGender] = useState(true)
@@ -23,7 +24,44 @@ const AgeAndGender = (props) => {
     const [low, setLow] = useState(18)
     const [high, setHigh] = useState(80)
     const gotoCreateAudience = () => {
-        props.navigation.navigate('/create-audience',{userDetails:props?.route?.params?.userDetails})
+        if(allGender==false&&male==false&&female==false&&others==false){
+            showToastmsg("Please select atleast one gender")
+        }
+        else {
+            const tempgender=[]
+            if(allGender && !tempgender.includes("all")){
+                tempgender.push("all")
+            }
+            else {
+                if(male && !tempgender.includes("male")){
+                    tempgender.push("male")
+                }
+                if(female && !tempgender.includes("female")){
+                    tempgender.push("female")
+                }
+                if(others && !tempgender.includes("others")){
+                    tempgender.push("others")
+                }
+            }
+            props.navigation.navigate('/create-audience',{category: props.route.params.category,
+                postDetails:{
+                    title:props?.route?.params?.postDetails?.title,
+                    postVideo:props?.route?.params?.postDetails?.postVideo,
+                    tags:props?.route?.params?.postDetails?.tags,
+                    type:props?.route?.params?.postDetails?.type,
+                    description:props?.route?.params?.postDetails?.description,
+                    location:props?.route?.params?.postDetails?.location,
+                    productName:props?.route?.params?.postDetails?.productName
+                },
+                advertise_audience_gender:tempgender,
+                advertise_audience_age:`${low}-${high}`,
+                selectGoal:props?.route?.params?.selectGoal,
+                selectTargetAudience:props?.route?.params?.selectTargetAudience,
+                userDetails:props?.route?.params?.userDetails,
+                formdata:props?.route?.params?.formdata
+                })
+        }
+        
     }
     const renderThumb = useCallback(() => <View>
         <Fontisto name='radio-btn-active' size={26} color={Constants.colors.primaryColor} />
@@ -38,7 +76,7 @@ const AgeAndGender = (props) => {
         <Text></Text>
     </View>, []);
     const renderLabel = useCallback(value => <Text>{value} Yrs</Text>, []);
-    const renderNotch = useCallback(() => <></>, []);
+    const renderNotch = useCallback((value) => <></>, []);
     const handleValueChange = useCallback((low, high) => {
         setLow(low);
         setHigh(high);
@@ -59,25 +97,25 @@ const AgeAndGender = (props) => {
                 <Text style={{ fontFamily: Constants.fontFamily, fontSize: 22 }}>Select Gender</Text>
                 <View style={styles.checkboxContainer}>
                     {
-                        allGender ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => setAllGender(false)} /> : <MaterialCommunityIcons onPress={() => setAllGender(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
+                        allGender ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => {setAllGender(false),setMale(false),setFemale(false),setOthers(false)}} /> : <MaterialCommunityIcons onPress={() => {setAllGender(true),setMale(true),setFemale(true),setOthers(true)}} name='checkbox-blank-outline' style={styles.checkboxIcon} />
                     }
                     <Text style={styles.checkboxLabel}>All</Text>
                 </View>
                 <View style={styles.checkboxContainer}>
                     {
-                        male ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => setMale(false)} /> : <MaterialCommunityIcons onPress={() => setMale(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
+                        male ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => {setMale(false),setAllGender(false)}} /> : <MaterialCommunityIcons onPress={() => setMale(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
                     }
                     <Text style={styles.checkboxLabel}>Male</Text>
                 </View>
                 <View style={styles.checkboxContainer}>
                     {
-                        female ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => setFemale(false)} /> : <MaterialCommunityIcons onPress={() => setFemale(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
+                        female ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => {setFemale(false),setAllGender(false)}} /> : <MaterialCommunityIcons onPress={() => setFemale(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
                     }
                     <Text style={styles.checkboxLabel}>Female</Text>
                 </View>
                 <View style={styles.checkboxContainer}>
                     {
-                        others ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => setOthers(false)} /> : <MaterialCommunityIcons onPress={() => setOthers(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
+                        others ? <MaterialCommunityIcons name='checkbox-marked' style={styles.checkboxIcon} onPress={() => {setOthers(false),setAllGender(false)}} /> : <MaterialCommunityIcons onPress={() => setOthers(true)} name='checkbox-blank-outline' style={styles.checkboxIcon} />
                     }
                     <Text style={styles.checkboxLabel}>Others</Text>
                 </View>
@@ -87,7 +125,8 @@ const AgeAndGender = (props) => {
                     min={10}
                     max={80}
                     step={1}
-                    floatingLabel={true}
+                    
+                    floatingLabel={false}
                     renderThumb={renderThumb}
                     renderRail={renderRail}
                     renderRailSelected={renderRailSelected}

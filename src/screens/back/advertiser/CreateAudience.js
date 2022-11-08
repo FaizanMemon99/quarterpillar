@@ -13,21 +13,92 @@ import { useNavigation } from '@react-navigation/native'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import showToastmsg from '../../../shared/showToastmsg'
 
 const  CreateAudience=(props)=>{
-    
+    const [audienceName,setAudienceName]=useState()
     const navigation = useNavigation()
     const gotoLocation = ()=>{
-        navigation.navigate('/location',{userDetails:props?.route?.params?.userDetails})
+        navigation.navigate('/location',
+        {category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            advertise_audience_gender:props?.route?.params?.advertise_audience_gender,
+            advertise_audience_age:props?.route?.params?.advertise_audience_age,
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            }
+        )
     }
     const gotoInterests = ()=>{
-        navigation.navigate('/interests',{userDetails:props?.route?.params?.userDetails})
+        navigation.navigate('/interests', {category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            advertise_audience_gender:props?.route?.params?.advertise_audience_gender,
+            advertise_audience_age:props?.route?.params?.advertise_audience_age,
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            })
     }
     const gotoAgeAndGender = ()=>{
-        navigation.navigate('/age-and-gender',{userDetails:props?.route?.params?.userDetails})
+        navigation.navigate('/age-and-gender',{category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            advertise_audience_gender:props?.route?.params?.advertise_audience_gender,
+            advertise_audience_age:props?.route?.params?.advertise_audience_age,
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            })
     }
     const gotoBudget = ()=>{
-        navigation.navigate('/budget-and-duration',{userDetails:props?.route?.params?.userDetails})
+        if(!audienceName||audienceName==""){
+            showToastmsg("Please add audience name")
+        }
+        else{navigation.navigate('/budget-and-duration', {category: props.route.params.category,
+            postDetails:{
+                title:props?.route?.params?.postDetails?.title,
+                postVideo:props?.route?.params?.postDetails?.postVideo,
+                tags:props?.route?.params?.postDetails?.tags,
+                type:props?.route?.params?.postDetails?.type,
+                description:props?.route?.params?.postDetails?.description,
+                location:props?.route?.params?.postDetails?.location,
+                productName:props?.route?.params?.postDetails?.productName
+            },
+            audienceName:audienceName,
+            advertise_audience_gender:props?.route?.params?.advertise_audience_gender?props?.route?.params?.advertise_audience_gender:"All",
+            advertise_audience_age:props?.route?.params?.advertise_audience_age?props?.route?.params?.advertise_audience_age:"10-80",
+            selectGoal:props?.route?.params?.selectGoal,
+            selectTargetAudience:props?.route?.params?.selectTargetAudience,
+            userDetails:props?.route?.params?.userDetails,
+            formdata:props?.route?.params?.formdata
+            })}
     }
     return (
         <View style={globatStyles.wrapper}>
@@ -44,7 +115,9 @@ const  CreateAudience=(props)=>{
                     </View>
                     <FontAwesome name='users' style={styles.userIcon} />
                 </View>
-                <TextInput style={globatStyles.inputText} placeholder='Audience Name' />
+                <TextInput style={globatStyles.inputText}
+                onChangeText={setAudienceName}
+                placeholder='Audience Name' />
                 <Pressable style={styles.boxContainer} onPress={gotoLocation}>
                     <Text style={{fontFamily: Constants.fontFamily, fontSize: 24,}}>Locations</Text>
                     <FontAwesome name='angle-right' style={styles.userIcon} />
@@ -56,7 +129,9 @@ const  CreateAudience=(props)=>{
                 <Pressable style={styles.boxContainer} onPress={gotoAgeAndGender}>
                     <View>
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 20,}}>Age & Gender</Text>
-                        <Text style={{fontWeight: '700', fontSize: 20,}}>All | 18 - 80 yr</Text>
+                        <Text style={{fontWeight: '700', fontSize: 20,textTransform:'capitalize'}}>{
+                            props?.route?.params?.advertise_audience_gender?props?.route?.params?.advertise_audience_gender:"All"
+                        } | {props?.route?.params?.advertise_audience_age?props?.route?.params?.advertise_audience_age:"10-80"} yr</Text>
                     </View>
                     <FontAwesome name='angle-right' style={styles.userIcon} />
                 </Pressable>
