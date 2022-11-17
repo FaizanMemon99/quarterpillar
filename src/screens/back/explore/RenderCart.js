@@ -117,7 +117,7 @@ const RenderCart = ({item,getCartData}) => {
                 Images.cartImg} style={styles.pimg} />
             <View style={{marginLeft: 12, justifyContent: 'space-between' }}>
                 <View style={{display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
-                <Text style={styles.pname}>{item?.item?.data?.product_details?.product_name}</Text>
+                <Text style={[styles.pname,{fontSize:17}]}>{item?.item?.data?.product_details?.product_name}</Text>
                 {deleteLoader==item?.item?.data?.cart_id?
                     <ActivityIndicator/>:
                 <Pressable onPress={deleteCartValue}>
@@ -125,18 +125,18 @@ const RenderCart = ({item,getCartData}) => {
                 </Pressable>
                 }
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 6,}}>
-                    <View style={{ flexDirection: 'row',marginRight:5 }}>
-                        <FontAwesome name='rupee' size={16} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily }}> {(parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}  </Text>
+                <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 10,alignItems:"center"}}>
+                    <View style={{ flexDirection: 'row',marginRight:5,alignItems:"center" }}>
+                        <FontAwesome name='rupee' size={17} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily ,fontSize:17}}> {(parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}  </Text>
                         <View style={styles.strikethrough}></View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
+                    <View style={{ flexDirection: 'row' ,alignItems:"center"}}>
+                        <FontAwesome name='rupee' size={17} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily,fontSize:17 }}> {
                                     (parseFloat(item?.item?.data?.total_amount))/parseInt(item?.item?.data?.qty)
                                 }  </Text>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor }}> 
+                    <View style={{ flexDirection: 'row',alignItems:'center' }}>
+                        <FontAwesome name='rupee' size={17} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor,fontSize:17 }}> 
                         {(parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}
                                 &nbsp;off</Text>
                     </View>
@@ -169,19 +169,19 @@ const RenderCart = ({item,getCartData}) => {
                         />
                 </View>
                 <View style={styles.increaseDecreasebtn}>
-                    <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>{apiLoader?<ActivityIndicator color={'white'}/>
+                    <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 30,marginTop:-5, color: Constants.colors.whiteColor}}>{apiLoader?<ActivityIndicator color={'white'}/>
                         :'-'}</Text></Pressable>
                     <Text style={styles.qty}>{qty}</Text>
-                    <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>
+                    <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 30,marginTop:-5, color: Constants.colors.whiteColor}}>
                     {apiLoader?<ActivityIndicator color={'white'}/>
-                        :'+'}
+                        :"+"}
                         </Text></Pressable>
                 </View>
-                <View style={{ flexDirection: 'row',marginTop:6 }}>
-                            <Text>
+                <View style={{ flexDirection: 'row',marginTop:6,alignItems:"center" }}>
+                            <Text style={{fontSize:18}}>
                                 Total Amt :
                             </Text>
-                        <FontAwesome name='rupee' size={16} style={[styles.icons, { paddingLeft:5,color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily }}> {
+                        <FontAwesome name='rupee' size={18} style={[styles.icons, { paddingLeft:5,color: '#000000' }]} /><Text style={{ fontSize:18,fontWeight: '700', fontFamily: Constants.fontFamily }}> {
                                     (parseFloat(item?.item?.data?.total_amount))
                                 }  </Text>
                     </View>
@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
     pname: {
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
-        textTransform:'capitalize'
+        textTransform:'capitalize',
+        fontSize:16
     },
     dropDownBox: {
         padding: 0,
@@ -227,14 +228,15 @@ const styles = StyleSheet.create({
     },
     increaseDecreasebtn: {
         flexDirection: 'row',
+        alignItems:"center",
         flex: 1.6,
-        marginTop: 18,
+        marginTop: 10,
     },
     increDecreBtn:{
-        width: 40,
-        height: 40,
+        width: 30,
+        height: 30,
         backgroundColor: '#999999',
-        borderRadius: 4,
+        borderRadius: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },

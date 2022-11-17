@@ -22,7 +22,7 @@ const AddAddress = (props)=>{
     const navigation=useNavigation()
     const [cities,setcities] = useState(['Kolkata', 'Delhi', 'Mumbai', 'Bengaluru'])
     const [states,setstates] = useState(['Uttar Pradesh', 'Maddhya Pradesh', 'Keral', 'West Bengal'])
-    const [locationType,setLocationType]=useState()
+    // const [locationType,setLocationType]=useState()
     const [locationName,setlocationName]=useState()
     const [addressLine,setAddressLine]=useState()
     const [pinCode,setPinCode]=useState()
@@ -30,7 +30,7 @@ const AddAddress = (props)=>{
     const [state,setState]=useState()
     const [Landmark,setLandMark]=useState()
     const [zipcodeLoader,setzipcodeLoader]=useState(false)
-    const locationTypes = ['Home','Office','Others']
+    // const locationTypes = ['Home','Office','Others']
     const [loader,setLoader]=useState(false)
     const validateZipCode=(code)=>{
         if(code&&code.length==6){setzipcodeLoader(true)
@@ -66,9 +66,9 @@ const AddAddress = (props)=>{
         if(!locationName||locationName==''){
         showToastmsg('Please add location name')    
         }
-        else if(!locationType||locationType==''){
-            showToastmsg('Please select location type')    
-            }
+        // else if(!locationType||locationType==''){
+        //     showToastmsg('Please select location type')    
+        //     }
         else if(!pinCode||pinCode==''){
                 showToastmsg('Please add pincode')    
             }
@@ -86,12 +86,22 @@ const AddAddress = (props)=>{
             }
         else {
             setLoader(true)
+            console.log("address datra=>", {
+                "user_id": props?.route?.params?.userDetails?.id,
+                "address_name": locationName,
+                "address_type": "others",
+                "zip_code": pinCode,
+                "city": city,
+                "state": state,
+                "address": addressLine,
+                "landmark": Landmark
+            });
             if(props?.route?.params?.editable){
                 axios.post(`${Constants.BASE_URL}auth/update-user-address`,
                 {
                     "user_address_id": props?.route?.params?.explore_address_id,
                     "address_name": locationName,
-                    "address_type": locationType,
+                    "address_type": "others",
                     "zip_code": pinCode,
                     "city": city,
                     "state": state,
@@ -120,7 +130,7 @@ const AddAddress = (props)=>{
             {
                 "user_id": props?.route?.params?.userDetails?.id,
                 "address_name": locationName,
-                "address_type": locationType,
+                "address_type": "others",
                 "zip_code": pinCode,
                 "city": city,
                 "state": state,
@@ -147,7 +157,7 @@ const AddAddress = (props)=>{
         // navigation.navigate('/add-address')
     }
     useEffect(()=>{
-        setLocationType(props?.route?.params?.address_type)
+        // setLocationType(props?.route?.params?.address_type)
         if(props?.route?.params?.editable){
             setlocationName(props?.route?.params?.locationName)
             setAddressLine(props?.route?.params?.addressLine)
@@ -176,8 +186,9 @@ const AddAddress = (props)=>{
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>
                 <View style={{marginTop: 12, paddingBottom: 30,}}>
-                    <TextInput style={globatStyles.inputText} placeholder='Name or Tag the Location' value={locationName} onChangeText={setlocationName} />
-                    <SelectDropdown
+                    <TextInput style={globatStyles.inputText} placeholder='Address Label' value={locationName} onChangeText={setlocationName} />
+                    <TextInput style={globatStyles.inputText} placeholder='Address Line' value={addressLine} onChangeText={setAddressLine}/>
+                    {/* <SelectDropdown
                         data={locationTypes}
                         defaultButtonText='Select Location Type'
                         buttonStyle={globatStyles.dropDownBox}
@@ -187,7 +198,7 @@ const AddAddress = (props)=>{
                         disabled
                         defaultValue={locationType} />
                     
-                    
+                     */}
                    <View style={{flex: 1, width: '100%', justifyContent: 'center',position:"relative"}}>
                    <TextInput style={globatStyles.inputText} keyboardType='numeric' placeholder='PIN Code' 
                    value={pinCode}
@@ -217,7 +228,7 @@ const AddAddress = (props)=>{
                         onSelect={setCity} 
                         defaultValue={city}
                         />
-                        <TextInput style={globatStyles.inputText} placeholder='Address Line' value={addressLine} onChangeText={setAddressLine}/>
+                        
                     <TextInput style={globatStyles.inputText} value={Landmark}  placeholder='Landmark' onChangeText={setLandMark} />
                     <Pressable onPress={gotoAddress} style={globatStyles.button}>
                         {loader?

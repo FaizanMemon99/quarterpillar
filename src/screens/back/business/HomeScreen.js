@@ -134,8 +134,9 @@ const HomeScreen=(props)=>{
                     <View style={styles.profileDetails}>
                     <Pressable onPress={openDrawer} style={{zIndex: 999,paddingTop:10}}><AntDesign name='close' size={26} style={{paddingRight:10}}/></Pressable>
                         <View style={styles.profileIcon}>
-                            <Image source={isImage(props?.route?.params?.userDetails?.business.avatar)?
-                            {uri:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.avatar}`}
+                            {console.log("props image=>",props?.route?.params?.userDetails?.business)}
+                            <Image source={isImage(props?.route?.params?.userDetails?.business.business_profile_pic)?
+                            {uri:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`}
                             :
                                 Images.avatar}  style={{width:60,height:'100%'}}/>
                         </View>

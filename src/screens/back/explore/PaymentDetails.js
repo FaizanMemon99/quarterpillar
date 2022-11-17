@@ -82,7 +82,7 @@ const PaymentDetails = (props)=>{
         "cart_id":cartItems[i].data.cart_id
     }).then((response)=>{
         setLoader(false)
-        navigation.navigate('/payment-success')
+        navigation.navigate('/payment-success',{amount:totalPrice})
     })
     .catch((error)=>{
         setLoader(false)
@@ -198,7 +198,7 @@ const PaymentDetails = (props)=>{
             "cart_id":cartItems[i].data.cart_id
         }).then((response)=>{
             setLoader(false)
-            navigation.navigate('/payment-success')
+            navigation.navigate('/payment-success',{amount:totalPrice})
         })
         .catch((error)=>{
             setLoader(false)

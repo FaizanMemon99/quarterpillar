@@ -78,6 +78,7 @@ const Images = {
     sliderThumb: require('./icons/slider-thumb.png'),
     emoji: require('./icons/imogis/love.png'),
     switchIcon: require('./switch.png'),
-    switchIconBlack: require('./switchblack.png')
+    switchIconBlack: require('./switchblack.png'),
+    PlusIcon: require('./PlusIcon.png')
 }
 export default Images

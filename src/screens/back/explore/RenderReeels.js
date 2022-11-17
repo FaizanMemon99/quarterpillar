@@ -96,7 +96,6 @@ const RenderReeels = ({ item ,userDetails}) => {
                     loop
                     disableSeek
                     resizeMode={'cover'}
-                    
                     customStyles={{
                         wrapper: {
                             width: '100%',
@@ -135,6 +134,7 @@ const RenderReeels = ({ item ,userDetails}) => {
                 </View>
                 <View style={styles.productDetailsContainer}>
                     <View style={styles.imgContainer}>
+                        
                         <Image source={Images.avatar} style={{ marginRight: 20, }} />
                         <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
                         <Pressable 

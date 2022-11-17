@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
     Text,
@@ -10,6 +10,8 @@ import Constants from '../../../shared/Constants'
 import Feather from 'react-native-vector-icons/Feather'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const PaymentSuccess = (props)=>{
     const navigation=useNavigation()
@@ -54,6 +56,37 @@ else {        navigation.navigate('/payment-details',{price:props?.route?.params
             error:true
         })}
     }
+
+    const sendMessage=async()=>{
+        let fcmtoken=await AsyncStorage.getItem("fcmtoken");
+        await axios.post("https://testfcm.com/api/notify",
+        {
+            "postBody": {
+                "notification": {
+                    "title": `Order placed successful`,
+                    "body": `Your order for amount ${props?.route?.params?.amount} has been placed successfully`,
+                    "click_action": null,
+                    "icon": null
+                },
+                "data": null,
+                "to": fcmtoken
+            },
+            "serverKey": "AAAAdLYZPyI:APA91bFVhnrT3tUYJWS5aKMBM9ObqK4LBFIrhwS5CoHHKlnORXOIadVwpjE4QTXMKicbQTxifccSdphB2EF7Jw_jCkyjHciMHGlQ0zvufnNHtAifxqUgQ0Ww01XprMn8a2dVa4EKsNc8"
+        }
+        ).then((resp)=>{
+            // setIsLoading(false)
+        })
+        .catch((error)=>{
+            // setIsLoading(false)
+        })
+    }
+useEffect(()=>{
+    console.log("props amiunt",props?.route?.params);
+if(props?.route?.params?.amount){
+    sendMessage()
+}
+},[props.route.params])
+
     return (
         <View style={[styles.container,{backgroundColor:props?.route?.params?.error?'red':Constants.colors.primaryColor}]}>
             <StatusBar backgroundColor={props?.route?.params?.error?'red':Constants.colors.primaryColor} />
@@ -63,7 +96,7 @@ else {        navigation.navigate('/payment-details',{price:props?.route?.params
                 }]}>
                     <Feather name={props?.route?.params?.error?
                         'x'
-                        :'check'} size={35} color={Constants.colors.whiteColor} />
+                        :'check'} size={60} color={Constants.colors.whiteColor} />
                 </View>
                 <Text style={styles.successHeading}>Payment {props?.route?.params?.error?'failed':'successful'}</Text>
                 <Text style={styles.successText}>
@@ -93,7 +126,7 @@ const styles = StyleSheet.create({
         padding: Constants.padding,
     },
     circle:{
-        padding: 35,
+        padding: 20,
         backgroundColor: 'rgba(255,255,255,0.6)',
         borderRadius: 100,
     },

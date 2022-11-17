@@ -76,22 +76,7 @@ const Product=(props)=>{
     const userType=Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]
     const getReelsApi=()=>{
         setpostLoader(true)
-        if(userType=='influencer')
-        {
-            axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
-                console.log("repsonse",response.data.data.influencerPosts);
-                setpostLoader(false)
-                if(response.data.data.influencerPosts){
-                    setpostData(response.data.data.influencerPosts.filter((i)=>i.status=='complete'&&i.influencer_id==props?.route?.params?.userDetails?.influencer?.influencer_id))
-                }
-            })
-            .catch((error)=>{
-                setpostLoader(false)
-                console.log("error val",error.response);
-                showToastmsg('Failed to reload')
-            })
-            console.log("influencerdata",props?.route?.params?.userDetails?.influencer?.influencer_id);}
-        else if(userType=='explore')
+        if(userType=='explore'||userType=='influencer')
         {
             axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
                 console.log("repsonse",response.data.data.influencerPosts);

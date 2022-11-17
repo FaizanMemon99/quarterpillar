@@ -172,9 +172,9 @@ const ProductDetails= (props)=>{
                             </Pressable>
                     </View>
                     <View style={styles.increaseDecreasebtn}>
-                        <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>-</Text></Pressable>
+                        <Pressable style={styles.increDecreBtn} onPress={decreaseQty}><Text style={{fontSize: 30, color: Constants.colors.whiteColor}}>-</Text></Pressable>
                         <Text style={styles.qty}>{qty}</Text>
-                        <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 20, color: Constants.colors.whiteColor}}>+</Text></Pressable>
+                        <Pressable style={styles.increDecreBtn} onPress={increaseQty}><Text style={{fontSize: 30, color: Constants.colors.whiteColor}}>+</Text></Pressable>
                     </View>
                 </View>
                 <View style={{marginTop: 14}}>
