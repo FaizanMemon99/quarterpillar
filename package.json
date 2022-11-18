@@ -44,6 +44,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-loading-placeholder": "^0.0.6",
     "react-native-loading-spinner-overlay": "^3.0.1",
+    "react-native-modal": "^13.0.1",
     "react-native-otp-textinput": "^0.0.9",
     "react-native-photo-editor": "^1.0.13",
     "react-native-popup-dialog": "^0.18.3",

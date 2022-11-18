@@ -37,6 +37,9 @@ const RenderReeels = ({ item ,userDetails}) => {
         {id: 5},
         {id: 6},
     ]
+    const gotoStoriespage =() => {
+        navigation.navigate('/StoriesPage')
+    }
     const gotoMore = () => {
 
     }
@@ -85,7 +88,7 @@ const RenderReeels = ({ item ,userDetails}) => {
         {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
         <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/></View>:
             <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
-            onPress={gotoProductDetails}
+            onPress={gotoProductDetails} onLongPress={gotoStoriespage}
             >
 
                 <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}></View>

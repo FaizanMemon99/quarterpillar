@@ -25,6 +25,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
@@ -39,6 +40,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://jitpack.io" }
          exclusiveContent {
            // We get React Native's Android binaries exclusively through npm,
            // from a local Maven repo inside node_modules/react-native/.

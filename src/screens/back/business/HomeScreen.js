@@ -7,7 +7,9 @@ import {
     StyleSheet,
     FlatList,
     Animated,
-    StatusBar
+    StatusBar,
+    Modal,
+    ActivityIndicator
 } from 'react-native'
 import SearchBar from '../../../components/business/SearchBar'
 import LinearGradient from 'react-native-linear-gradient'
@@ -27,6 +29,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
@@ -35,14 +39,19 @@ const HomeScreen=(props)=>{
     const [activeMenu, setActiveMenu] = useState('')
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
+    const [modalVisible, setModalVisible] = useState(false)
+    const [loader, setLoader] = useState(false)
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
         console.log("open drawer : ",showDrawer);
 
     }
+    
     const closeDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
+
+    
     
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
@@ -111,8 +120,39 @@ const HomeScreen=(props)=>{
     useEffect(()=>{
         setActiveMenu('')
     },[props])
+
+    
+    const switchAcBtn = () => {
+        // console.log("Switch Button Working Of Accounts")
+        // console.log({
+        //     user_id:props?.route?.params?.userDetails?.id,
+        //     user_type:props?.route?.params?.userDetails?.role_id
+        // })
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}auth/switch-user`,
+        //body start->
+        { 
+            user_id:props?.route?.params?.userDetails?.id,
+            user_type:props?.route?.params?.userDetails?.role_id
+        })
+        .then ((response)=>{
+            setLoader(false)
+            if(!response.data.error){
+                navigation.navigate('/influencer-stack-navigation',{userDetails:props?.route?.params?.userDetails})
+                console.log("reponse=>",response.data.error)
+            }
+            else {
+                showToastmsg("Something went wrong. Please try again.")    
+            }
+        })
+        .catch ((error)=>{
+            setLoader(false)
+            console.log("error=>",error);
+            showToastmsg("Something went wrong. Please try again.")
+        })
+    }
     return (
-        <View style={globatStyles.wrapper}>
+        <View style={[globatStyles.wrapper,{backgroundColor:"rgba(0, 38, 17, 0.64)"}]}>
              {
                 Animated.timing(scaleValue, {
                     toValue: showDrawer?1:1,
@@ -146,6 +186,7 @@ const HomeScreen=(props)=>{
                         </View>
                     </View>
                 </View>
+                
                 <ScrollView style={styles.drawerItemContainer}>
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'layout', 'My Pillars', navigation, '/my-pillars',props)
@@ -159,6 +200,9 @@ const HomeScreen=(props)=>{
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
+                    }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props,setModalVisible,modalVisible,setShowDrawer)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
@@ -261,7 +305,7 @@ const HomeScreen=(props)=>{
                                     <View style={{...styles.progressBarFront, width: '30%'}}></View>
                                     <Text>5.86%</Text>
                                 </View>
-                                <Text style={styles.cityName}>Mubmai</Text>
+                                <Text style={styles.cityName}>Mumbai</Text>
                                 <View style={styles.progressBar}>
                                     <View style={styles.progressBarBg}></View>
                                     <View style={{...styles.progressBarFront, width: '20%'}}></View>
@@ -360,39 +404,62 @@ const HomeScreen=(props)=>{
                     />
                 </View>
                 
-            </ScrollView>
-            {
-                showSwitchAcountModal?<View style={styles.switchContainer}>
-                    <View style={globatStyles.overlay}></View>
-                    <View style={styles.switchAccountContainer}>
-                        <View style={styles.switchHeading}>
-                            <Text style={styles.heading}>Switch View As</Text>
-                            <AntDesign name='close' size={20} color='#000000' onPress={()=>setShowSwitchAcountModal(false)} />
-                        </View>
+                <View >
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+          setShowDrawer(true)
+        }}
+      >
+        
+        <View style={[styles.centeredView, 
+            // {backgroundColor:"rgba(0, 38, 17, 0.64)"}
+            ]}>
+          <View style={styles.modalView}>
+          <View style={styles.switchViewText}>
+                            <Text style={{fontSize : 20, fontWeight : 'bold', paddingRight : 120}}>Switch View As</Text>
+                            </View>
+          <View style={styles.modalconatiner}>
+                            <View style={{display: "flex", justifyContent : 'flex-end', flexDirection : 'row' , width : '100%' , paddingTop : 20 }}>
+                            <AntDesign name='close' size={23} color='#000000' onPress={()=>{setModalVisible(!modalVisible);setShowDrawer(true)}} />
+                            </View>
+                       </View>
                         <Text style={styles.switchText}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                         </Text>
                         <View style={styles.accountContainer}>
-                            <View style={styles.account}>
+                            <View style={[styles.account,styles.modalCard1]}>
                                 <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
                                 <View>
-                                    <Text style={styles.accountName}>Robert Phan</Text>
-                                    <Text style={styles.accountType}>Account Type</Text>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
+                                    <Text style={styles.accountType}>Business Account</Text>
                                 </View>
                             </View>
-                            <View>
-                                <Image source={Images.switchAc} style={styles.switchAc} />
-                            </View>
-                            <View style={[styles.account, {backgroundColor: Constants.colors.inputBgColor,}]}>
+                            <Pressable onPress={switchAcBtn}>
+                                {loader?
+                                <ActivityIndicator style={styles.switchAc}/>
+                                :
+                                <Image source={Images.switchAc} style={styles.switchAc}/>}
+                                </Pressable>
+                            <View style={[styles.account,styles.modalCard2]}>
                                 <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
                                 <View>
-                                    <Text style={styles.accountName}>Robert_Phan123</Text>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
                                     <Text style={styles.accountType}>Advertiser Account</Text>
                                 </View>
-                            </View>
+                          </View>
                         </View>
-                    </View>
-                </View>:null
+                </View>
+          </View>
+      </Modal>
+      </View>
+            </ScrollView>
+            {
+                
             }
                <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer} activeTab='home'
                 propValue={props?.route?.params?.userDetails}
@@ -404,11 +471,19 @@ const HomeScreen=(props)=>{
     )
 }
 
-const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props,setModalVisible,modalVisible,setShowDrawer)=>{
+    
+   const modalFunction=()=>{
+    setModalVisible(!modalVisible)
+    setShowDrawer(false)
+   }
     return(
         <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(0, 169, 40, 0.1);':'transparent', padding: 14}]} onPress={()=>{
             setActiveMenu(title)
-            navigation.navigate(url,{userDetails:props.route.params.userDetails})
+            title==="Switch View As"?
+            modalFunction()
+            :            navigation.navigate(url,{userDetails:props.route.params.userDetails})
+            // title=="switch-view-as"?setShowSwitchAcountModal(true):null
         }}>
             {
                 icon==='feather'?<Feather name={iconName} size={26} color={'black'} />:null
@@ -428,8 +503,8 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
             {
                 icon==='fa'?<FontAwesome name={iconName} size={26} color={'black'} />:null
             }
-              {
-                icon==='image'?<Image source={Images.switchIconBlack} />:null
+            {
+                icon==='image'?<Image source={Images.switchBlack} />:null
             }
             <Text style={[styles.menuName]}>{title}</Text>
         </Pressable>
@@ -499,6 +574,7 @@ const styles = StyleSheet.create({
     container: {
         padding: Constants.padding,
         // paddingBottom: 100,
+        
     },
     totalRevenue: {
         backgroundColor: Constants.colors.whiteColor,
@@ -716,6 +792,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    modalconatiner : {
+       position : 'absolute',
+       alignItems : 'flex-start',
+       justifyContent :  'space-between',
+       flexDirection : 'row',
+    },
     switchAccountContainer: {
         backgroundColor: Constants.colors.whiteColor,
         padding: Constants.padding,
@@ -743,7 +825,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: Constants.borderRadius,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     accountName: {
         fontFamily: Constants.fontFamily,
@@ -762,5 +844,65 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // marginTop: 22,
+        
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        // borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      },
+      modalheading: {
+        top : -150,
+      },
+      modalCard1 : {
+        backgroundColor : 'white',
+        elevation : 5,
+        borderRadius : 15,
+      },
+      modalCard2 : {
+        backgroundColor : '#F8F8F8',
+        elevation : 5,
+        borderRadius :15
+      },
+      switchViewText : {
+        top : 7,
+        fontWeight : 'bold',
+        fontFamily : 'Avenir',
+      }
 })
 export default HomeScreen

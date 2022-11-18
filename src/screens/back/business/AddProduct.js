@@ -23,6 +23,8 @@ import showToastmsg from '../../../shared/showToastmsg'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
+import PhotoEditor from 'react-native-photo-editor'
+import RNFS from 'react-native-fs'
 
 const AddProduct=(props)=>{
     const navigation=useNavigation()
@@ -60,9 +62,32 @@ const AddProduct=(props)=>{
 		try{
 			const result = await launchCamera()
             console.log("images",result.assets[0])
+            const filePath = result.assets[0].uri
+            const newFilePath = RNFS.ExternalDirectoryPath + "/" + result.assets[0].fileName
+            RNFS.moveFile(filePath,newFilePath)
+            .then(() => {
+                console.log('IMAGE MOVED',filePath,'--to--',newFilePath)
+            })
+            .catch((e) =>{
+                console.log(e)
+            } )
+         
+          const resultValue=PhotoEditor.Edit({
+                path:  newFilePath
+                
+            })
 
-			cameraImg.push(result.assets[0])
-            setCameraImg([...cameraImg])
+            console.log("result imgge=>",resultValue);
+
+            RNFS.stat(newFilePath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+        .then((resultval) => {
+    console.log('GOT RESULT', resultval);
+    setCameraImg([...cameraImg,{ uri: resultval.originalFilepath, name: result.assets[0].fileName, type:result.assets[0].type }])
+    console.log("data val=>",{ uri: resultval.originalFilepath, name: result.assets[0].fileName, type:result.assets[0].type }) // used to preview image on UI
+    // stat the first file
+    // return Promise.all([RNFS.stat(result.assets[0].path), result.assets[0].path]);
+         })
+            
 		}
         catch(err){
 			console.log("err")
@@ -204,7 +229,7 @@ const AddProduct=(props)=>{
     const choosePhotoFromLibrary = async ()=>{
 		try{
 			const result = await launchImageLibrary()
-console.log("folder image",result.assets[0]);
+            console.log("folder image",result.assets[0]);
 			cameraImg.push(result.assets[0])
             setCameraImg([...cameraImg])
 		}

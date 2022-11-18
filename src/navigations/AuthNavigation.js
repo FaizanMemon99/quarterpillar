@@ -16,6 +16,7 @@ import ExploreOtp from '../screens/front/explore/ExploreOtp'
 import SignupDetails from '../screens/front/explore/SignupDetails'
 import Signin from '../screens/front/explore/Signin'
 import Reels from '../screens/back/explore/Reels'
+
 import InfluencerSignup from '../screens/front/influence/InfluencerSignup'
 import InfluencerOtp from '../screens/front/influence/InfluencerOtp'
 import InfluencerDob from '../screens/front/influence/InfluenerDob'
@@ -62,6 +63,7 @@ import Coupons from '../screens/back/explore/Coupons'
 import PaymentSuccess from '../screens/back/explore/PaymentSuccess'
 import MyOrders from '../screens/back/explore/MyOrders'
 import ViewExploreProfile from '../screens/back/explore/ViewExporeProfile'
+import StoriesPage from '../screens/back/explore/StoriesPage'
 
 const Stack = createNativeStackNavigator()
 
@@ -103,6 +105,7 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/signup-details' component={SignupDetails} initialParams={{authentication: props.authentication}} />
                 <Stack.Screen name='/goto-signin' component={Signin} initialParams={{authentication: props.authentication}} />
                 <Stack.Screen name='/reels' component={Reels} />
+                <Stack.Screen name='/StoriesPage' component={StoriesPage} />
                 <Stack.Screen name='/infliencer-signup' component={InfluencerSignup} />
                 <Stack.Screen name='/influencer-otp' component={InfluencerOtp} />
                 <Stack.Screen name='/dob' component={InfluencerDob} />
