@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
     View,
     Text,
@@ -42,6 +42,10 @@ const BusinessSignIn=(props)=>{
                    
                     if( response.data.login_success)
                     {
+                        await axios.post(`${Constants.BASE_URL}auth/device-token`,{
+                            user_id:response?.data?.user?.id,
+                            device_token:fcmtoken
+                        })
                         await axios.post("https://testfcm.com/api/notify",
                         {
                             "postBody": {
@@ -63,6 +67,8 @@ const BusinessSignIn=(props)=>{
                             setIsLoading(false)
                         })
                         showToastmsg("Login successfull")
+                        await AsyncStorage.setItem("userDetails",JSON.stringify(response.data.user));
+                        await AsyncStorage.setItem("userType",JSON.stringify(props.route.params.login_type));
                         if(props.route.params.login_type=='Business')
                         {navigation.navigate('/home',{"userDetails":response.data.user})}
                         else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
@@ -70,7 +76,9 @@ const BusinessSignIn=(props)=>{
                         else {
                             navigation.navigate('/advertiser-product',{userDetails:response.data.user})
                         }
-                    await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: 'businesss', userDetails: response.data.user }))}
+                        
+                    // await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: props?.route?.params?.login_type, userDetails: response.data.user }))
+                }
                     else {
                         setIsLoading(false)
                         showToastmsg('Login cred. or password is invalid')
@@ -102,6 +110,14 @@ const BusinessSignIn=(props)=>{
         }
 
     }
+    useEffect(()=>{
+        // console.log("hello");
+        if(props?.route?.params?.userName)
+        setLoginId(props?.route?.params?.userName)
+        else 
+        setLoginId('')
+        setPassword('')
+    },[props])
     return (
         <View style={styles.background}>
             <VideoPlayer
@@ -139,9 +155,9 @@ const BusinessSignIn=(props)=>{
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter Mobile Number/Email Id/Username</Text>
                 <View style={styles.phoneNumberContainer}>
-                    <TextInput style={styles.textInput} placeholder='Login Credentials' onChangeText={setLoginId} autoFocus/>
+                    <TextInput value={LoginId} style={styles.textInput} placeholder='Login Credentials' onChangeText={setLoginId} autoFocus/>
                     <View style={{flex: 1, width: '100%', alignItems: 'center',}}>
-                        <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={!showPass} onChangeText={setPassword}/>
+                        <TextInput value={Password} style={styles.textInput} placeholder='Password' secureTextEntry={!showPass} onChangeText={setPassword}/>
                         <FontAwesome name={showPass?'eye-slash':'eye'} style={styles.eyeIcon} onPress={()=>setShowPass(!showPass)} />
                     </View>
                     <Text style={styles.forgotPassLink} onPress={gotoForgotPass}>Forgot Password</Text>

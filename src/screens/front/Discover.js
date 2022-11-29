@@ -17,20 +17,43 @@ import endPoints from '../../shared/endPoints'
 import Loading from '../../components/Loading'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Video from 'react-native-video'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Discover = () => {
-
+    const navigation = useNavigation()
     const [users, setUsers] = useState([])
     const getAllUsers = async () => {
         const users = await apiCall('GET', endPoints.USER_TYPES, '', '')
         setUsers(users)
     }
     var url="https://acapp.in/uploads/biz1.mp4"
-    useEffect(()=>{
+
+    const redirectFn=()=>{
+        if(props.route.params.login_type=='Business')
+                        {navigation.navigate('/home',{"userDetails":response.data.user})}
+                        else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else {
+                            navigation.navigate('/advertiser-product',{userDetails:response.data.user})
+                        }
+    }
+    useEffect(async()=>{
         getAllUsers()
+        
+        if(await AsyncStorage.getItem("userDetails"))
+        {
+          console.log("res data=>",await AsyncStorage.getItem("userType"));
+          if(JSON.parse(await AsyncStorage.getItem("userType"))=='Business')
+                        {navigation.navigate('/home',{"userDetails":JSON.parse(await AsyncStorage.getItem("userDetails"))})}
+                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Influencer'||JSON.parse(await AsyncStorage.getItem("userType"))=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})}
+                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})}
+                        else {
+                            navigation.navigate('/advertiser-product',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})
+                        }
+          console.log("data=>",await AsyncStorage.getItem("userDetails"))
+        }
          },[])
-    const navigation = useNavigation()
+    
     // const gotoExploer = () => {
     //     navigation.navigate('/exploer-registration')
     // }

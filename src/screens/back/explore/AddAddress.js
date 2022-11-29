@@ -135,7 +135,8 @@ const AddAddress = (props)=>{
                 "city": city,
                 "state": state,
                 "address": addressLine,
-                "landmark": Landmark
+                "landmark": Landmark,
+                "countrie":"india"
             }).then((response)=>{
                 if(response.data.response==200){
                     setLoader(false)

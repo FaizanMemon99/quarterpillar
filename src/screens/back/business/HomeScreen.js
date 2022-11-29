@@ -7,12 +7,14 @@ import {
     StyleSheet,
     FlatList,
     Animated,
-    StatusBar
+    StatusBar,
+    Dimensions,
+    Modal,
+    ActivityIndicator
 } from 'react-native'
 import SearchBar from '../../../components/business/SearchBar'
 import LinearGradient from 'react-native-linear-gradient'
-import { LineChart } from 'react-native-chart-kit'
-import { DonutChart } from 'react-native-circular-chart'
+import { LineChart, ProgressChart } from 'react-native-chart-kit'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import Images from '../../../assets/images/Images'
@@ -27,14 +29,30 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
+import Toast from 'react-native-simple-toast'
+import PieChart from 'react-native-pie-chart';
+import axios from 'axios'
+import DashBoardLoader from './DashBoardLoader'
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
     const navigation = useNavigation()
     const [showDrawer, setShowDrawer] = useState(false)
     const [activeMenu, setActiveMenu] = useState('')
+    const [loader,setLoader]=useState(false)
+    const [dashBoardData,setdashBoardData]=useState()
+    const [maleData,setmaleData]=useState([])
+    const [femaleData,setfemaleData]=useState([])
+    const [maleValue,setmaleValue]=useState(0)
+    const [femaleValue,setfemaleValue]=useState(0)
+    const [modalLoader,setmodalLoader]=useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
     const offsetValue = useRef(new Animated.Value(0)).current
+    const screenWidth = Dimensions.get("window").width;
     const scaleValue = useRef(new Animated.Value(1)).current
+    const showToastmsg = ( msg)=>{
+        Toast.show(msg, Toast.LONG)
+    }
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
         console.log("open drawer : ",showDrawer);
@@ -43,7 +61,44 @@ const HomeScreen=(props)=>{
     const closeDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
-    
+    const allSum=(dataval)=>{
+        let sum = 0;
+
+for (const key in dataval) {
+  sum += dataval[key];
+}
+return sum
+    }
+    const switchAcBtn = () => {
+        // console.log("Switch Button Working Of Accounts")
+        // console.log({
+        //     user_id:props?.route?.params?.userDetails?.id,
+        //     user_type:props?.route?.params?.userDetails?.role_id
+        // })
+        setmodalLoader(true)
+        axios.post(`${Constants.BASE_URL}auth/switch-user`,
+        //body start->
+        { 
+            user_id:props?.route?.params?.userDetails?.id,
+            user_type:props?.route?.params?.userDetails?.role_id
+        })
+        .then ((response)=>{
+            setmodalLoader(false)
+
+            if(!response.data.error){
+                navigation.navigate('/business-login',{login_type:"Advertiser",userName:props?.route?.params?.userDetails?.name})
+                                console.log("reponse=>",response.data.error)
+            }
+            else {
+                showToastmsg("Something went wrong. Please try again.")    
+            }
+        })
+        .catch ((error)=>{
+            setmodalLoader(false)
+            console.log("error=>",error);
+            showToastmsg("Something went wrong. Please try again.")
+        })
+    }
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,
@@ -61,12 +116,12 @@ const HomeScreen=(props)=>{
         labels: ["15-25", "26-35", "36-45", "46-55", "56-65", "65+"],
         datasets: [
             {
-                data: [20, 45, 28, 80, 99, 43],
+                data: maleData?maleData:[],
                 color: (opacity = 1) => `#00A928`, // optional
                 strokeWidth: 2 // optional
             },
             {
-                data: [10, 25, 35, 26, 34, 15],
+                data: femaleData?femaleData:[],
                 color: (opacity = 1) => `#70CF87`, // optional
                 strokeWidth: 2 // optional
             }
@@ -108,21 +163,64 @@ const HomeScreen=(props)=>{
     function isImage(url) {
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
     }
+    const getDashBoardData=()=>{
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}business/get-dashboard-details`,{
+            user_id:props?.route?.params?.userDetails?.id
+        })
+        .then((response)=>{
+            
+            let tempdata=response?.data?.data?.dashboardDetails
+            if(Array.isArray(response?.data?.data?.dashboardDetails?.cities)){
+                tempdata.cities={}
+            }
+            if(Array.isArray(response?.data?.data?.dashboardDetails?.country)){
+                tempdata.country={}
+            }
+            setmaleData(Object.values(tempdata.agerange))
+            setmaleValue(parseInt(tempdata?.gender["male"]))
+            setfemaleValue(parseInt(tempdata?.gender["female"]))
+            setfemaleData(Object.values(tempdata.agerange))
+            setdashBoardData(tempdata);
+            console.log("rssss=>",tempdata);
+            setTimeout(() => {
+                setLoader(false)                
+            }, 1000);
+        })
+        .catch((error)=>{
+            setLoader(false)
+            console.log("error->",error);
+            showToastmsg("Something went wrong")
+        })
+    }
     useEffect(()=>{
         setActiveMenu('')
+        console.log("user details",props?.route?.params?.userDetails?.role_id);
+        console.log("user details",props?.route?.params?.userDetails?.id);
+        getDashBoardData()
     },[props])
+    const EmptyListMessage = ({item}) => {
+        return (
+          // Flat List Item
+          <Text
+            style={styles.emptyListStyle}
+            >
+            No Data Found
+          </Text>
+        );
+      };
     return (
         <View style={globatStyles.wrapper}>
              {
-                Animated.timing(scaleValue, {
-                    toValue: showDrawer?1:1,
+                Animated?.timing(scaleValue, {
+                    toValue: 1,
                     duration: 300,
                     useNativeDriver: false,
                 }).start()
             }
             {
-                Animated.timing(offsetValue, {
-                    toValue: showDrawer?0:0,
+                Animated?.timing(offsetValue, {
+                    toValue: 0,
                     duration: 300,
                     useNativeDriver: false,
                 }).start()
@@ -154,8 +252,7 @@ const HomeScreen=(props)=>{
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'confluence', 'Influencer list', navigation, '/influencer-list',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props)
-
+                        setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props,setModalVisible,modalVisible,setShowDrawer)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
@@ -180,71 +277,90 @@ const HomeScreen=(props)=>{
                 </Pressable>
             </View>}
             <Animated.View style={{opacity:showDrawer?0.3:1,position: 'absolute',zIndex:1, top: 0, right: 0, bottom: 0, left: 0,backgroundColor: '#E5E5E5', transform: [
-                {scale: scaleValue},
-                {translateX: offsetValue}
+                {scale: scaleValue?scaleValue:0},
+                {translateX: offsetValue?offsetValue:0}
             ]}}>
                 {/* <View> */}
      <CustomAppBar name={props?.route?.params?.userDetails?.name} navigation={props.navigation} isMainscreen={true} isReel={false} openDrawer={openDrawer} showDrawer={showDrawer}/>
             <ScrollView style={styles.container}>
-                <SearchBar />
+                {/* <SearchBar /> */}
                 <View style={styles.totalRevenue}>
-                    <View>
+                   {loader?<DashBoardLoader height={50}/>: <><View>
                         <Text style={styles.totalRTevinueText}>Total Revenue</Text>
                         <LinearGradient colors={['rgba(1, 170, 41, 0.09)', 'rgba(196, 196, 196, 0) 102.22%)']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.gradientBg}>
                             <Image source={Images.lineGraphIcon} />
                         </LinearGradient>
                     </View>
                     <View>
-                        <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> 12,001</Text>
+                        <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?parseFloat(parseFloat(dashBoardData?.revenue).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={styles.percentage}>
                             <AntDesign name='arrowup' size={22} color={Constants.colors.primaryColor} />
-                            <Text style={styles.numberInPercentage}>5.86%</Text>
+                            <Text style={styles.numberInPercentage}>{dashBoardData?.revenue?"5.86":"0.00"}%</Text>
                         </View>
                     </View>
+                    </>
+                    }
                 </View>
                 <View style={styles.impression}>
+                    {loader?
                     <View style={styles.impressionBox}>
+                    <DashBoardLoader height={100}/>
+                        </View>
+                    :
+                        <View style={styles.impressionBox}>
                         <Text style={styles.impressionText}>Impressions</Text>
-                        <Text style={styles.impressionValue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> 12,001</Text>
+                        
+                        <Text style={styles.impressionValue}>
+                            {/* <FontAwesome size={18} name='rupee' style={styles.rupeeIcon} />  */}
+                            {dashBoardData?.impresion?parseFloat(parseFloat(dashBoardData?.impresion).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
                             <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
-                            <Text style={styles.impressionInPercentage}>8.6%</Text>
+                            <Text style={styles.impressionInPercentage}>{dashBoardData?.impresion?"8.6":"0.00"}%</Text>
                         </View>
-                    </View>
+                    </View>}
+                   {loader?
                     <View style={styles.impressionBox}>
-                        <Text style={styles.impressionText}>Conversions</Text>
-                        <Text style={styles.impressionValue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> 12,001</Text>
-                        <View style={{flexDirection: 'row', marginTop: 12,}}>
-                            <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
-                            <Text style={styles.impressionInPercentage}>5.86%</Text>
+                    <DashBoardLoader height={100}/>
                         </View>
-                    </View>
-                </View>
-                <View style={styles.orderSalesReturn}>
-                    <View style={styles.orderSlaseBox}>
+                    : <View style={styles.impressionBox}>
                         <Text style={styles.impressionText}>Orders</Text>
-                        <Text style={styles.salesValue}>101</Text>
+                        <Text style={styles.impressionValue}>{dashBoardData?.oders?parseFloat(parseFloat(dashBoardData?.oders).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
                             <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
-                            <Text style={styles.impressionInPercentage}>8.6%</Text>
+                            <Text style={styles.impressionInPercentage}>{dashBoardData?.oders?"8.6":"0.00"}%</Text>
                         </View>
-                    </View>
-                    <View style={styles.orderSlaseBox}>
+                    </View>}
+                </View>
+                <View style={styles.impression}>
+                    {loader?
+                    <View style={styles.impressionBox}>
+                    <DashBoardLoader height={100}/>
+                        </View>
+                    :
+                        <View style={styles.impressionBox}>
                         <Text style={styles.impressionText}>Sales</Text>
-                        <Text style={styles.salesValue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> 12,001</Text>
+                        
+                        <Text style={styles.impressionValue}>
+                            {/* <FontAwesome size={18} name='rupee' style={styles.rupeeIcon} />  */}
+                            {dashBoardData?.sales?parseFloat(parseFloat(dashBoardData?.sales).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
                             <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
-                            <Text style={styles.impressionInPercentage}>5.86%</Text>
+                            <Text style={styles.impressionInPercentage}>{dashBoardData?.sales?"5.86":"0.00"}%</Text>
                         </View>
-                    </View>
-                    <View style={styles.orderSlaseBox}>
+                    </View>}
+                   {loader?
+                    <View style={styles.impressionBox}>
+                    <DashBoardLoader height={100}/>
+                        </View>
+                    : <View style={styles.impressionBox}>
                         <Text style={styles.impressionText}>Returns</Text>
-                        <Text style={styles.salesValue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> 12,001</Text>
+                        <Text style={styles.impressionValue}>{dashBoardData?.returns?parseFloat(parseFloat(dashBoardData?.returns).toFixed(2)).toLocaleString():"0.00"}
+                        </Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
                             <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
-                            <Text style={styles.impressionInPercentage}>5.86%</Text>
+                            <Text style={styles.impressionInPercentage}>{dashBoardData?.oders?"5.86":"0.00"}%</Text>
                         </View>
-                    </View>
+                    </View>}
                 </View>
                 
                 <View style={styles.countryWise}>
@@ -253,50 +369,90 @@ const HomeScreen=(props)=>{
                         <Pressable onPress={()=>setTabs('country')} style={{...styles.tabs, backgroundColor: tabs==='country'?Constants.whiteColor:'rgba(229, 235, 237, 0.38)',}}><Text style={{...styles.tabText, fontWeight: tabs==='country'?'800':'400',}}>Countries</Text></Pressable>
                     </View>
                     {
-                        tabs==='city'?(
-                            <View style={styles.tabContent}>
-                                <Text style={styles.cityName}>Pune</Text>
-                                <View style={styles.progressBar}>
-                                    <View style={styles.progressBarBg}></View>
-                                    <View style={{...styles.progressBarFront, width: '30%'}}></View>
-                                    <Text>5.86%</Text>
-                                </View>
-                                <Text style={styles.cityName}>Mubmai</Text>
-                                <View style={styles.progressBar}>
-                                    <View style={styles.progressBarBg}></View>
-                                    <View style={{...styles.progressBarFront, width: '20%'}}></View>
-                                    <Text>4.32%</Text>
-                                </View>
-                                <Text style={styles.cityName}>Delhi</Text>
-                                <View style={styles.progressBar}>
-                                    <View style={styles.progressBarBg}></View>
-                                    <View style={{...styles.progressBarFront, width: '0%'}}></View>
-                                    <Text>4.32%</Text>
-                                </View>
-                                <Text style={styles.cityName}>Banglore</Text>
-                                <View style={styles.progressBar}>
-                                    <View style={styles.progressBarBg}></View>
-                                    <View style={{...styles.progressBarFront, width: '0%'}}></View>
-                                    <Text>4.32%</Text>
-                                </View>
-                                <Image source={Images.indiaMap} style={{alignSelf: 'center',}} />
-                            </View>
-                        ):(
-                            <View style={styles.tabContent}>
-                                <View style={globatStyles.noData}>
-                                    <AntDesign name='delete' size={36} color='#F1F1F1' />
-                                    <Text>No Data Found</Text>
-                                </View>
-                            </View>
-                        )
-                    }
+    loader?
+    <DashBoardLoader height={250}/>
+    :
+    tabs==='city'?
+    dashBoardData?.cities&&
+    Object.keys(dashBoardData?.cities)?.length!=0?
+    (<View style={styles.tabContent}>
+                                            {/* {console.log("aaaa+.",Object.keys(dashBoardData?.cities))} */}
+            {
+                Object.keys(dashBoardData?.cities)?.map((item)=>
+                <>
+                    <Text style={styles.cityName}>{item?item:"-"}</Text>
+            <View style={styles.progressBar}>
+                <View style={styles.progressBarBg}></View>
+                <View style={{...styles.progressBarFront, width: 
+                `${((dashBoardData?.cities[item]*100)/
+                allSum((dashBoardData?.cities)))}%`
+                }}></View>
+                <Text>{dashBoardData?.cities[item]?parseFloat((dashBoardData?.cities[item]*100)/
+                allSum((dashBoardData?.cities))
+                ).toFixed(2):"0.0"}%</Text>
+            </View>
+            </>
+                
+                )
+            }
+            <Image source={Images.indiaMap} style={{alignSelf: 'center',}} />
+        </View>)
+    :
+       ( <View style={styles.tabContent}>
+            <View style={globatStyles.noData}>
+                <AntDesign name='delete' size={36} color='#F1F1F1' />
+                <Text>No Data Found</Text>
+            </View>
+        </View>)
+    :(
+        Object.keys(dashBoardData?.country)?.length!=0?
+        (<View style={styles.tabContent}>
+                {
+                    Object.keys(dashBoardData?.country)?.map((item)=>
+                    <>
+                        <Text style={styles.cityName}>{item?item:"-"}</Text>
+                <View style={styles.progressBar}>
+                    <View style={styles.progressBarBg}></View>
+                    <View style={{...styles.progressBarFront, width: 
+                    `${((dashBoardData?.country[item]*100)/
+                    allSum((dashBoardData?.country)))}%`
+                    }}></View>
+                    <Text>{dashBoardData?.country[item]?parseFloat((dashBoardData?.country[item]*100)/
+                    allSum((dashBoardData?.country))
+                    ).toFixed(2):"0.0"}%</Text>
+                </View>
+                </>
+                    
+                    )
+                }
+                {/* {console.log("aaaa+.",Object.keys(dashBoardData?.country))} */}
+                {/* <Image source={Images.indiaMap} style={{alignSelf: 'center',}} /> */}
+            </View>)
+        :
+            (<View style={styles.tabContent}>
+                <View style={globatStyles.noData}>
+                    <AntDesign name='delete' size={36} color='#F1F1F1' />
+                    <Text>No Data Found</Text>
+                </View>
+            </View>)
+    )
+}
                 </View>
                 
+                {loader?
                 <View style={styles.ageAndGender}>
+                                        <Text style={styles.ageAndGenderHeading}>Age Range & Gender</Text>
+
+                    <DashBoardLoader/>
+                </View>
+                :
+                    
+                    <View style={styles.ageAndGender}>
                     <Text style={styles.ageAndGenderHeading}>Age Range & Gender</Text>
-                    <LineChart
+                    {maleData.length>0||femaleData.length>0?<LineChart
                         data={data}
                         width={Constants.width}
+                        fromZero={true}
                         height={220}
                         chartConfig={chartConfig}
                         yAxisSuffix='%'
@@ -307,40 +463,53 @@ const HomeScreen=(props)=>{
                         style={{
                             marginLeft: -26,
                         }}
-                    />
+                    />:
+                    <View style={styles.tabContent}>
+            <View style={[globatStyles.noData,
+                // {minHeight:50}
+                ]}>
+                <AntDesign name='delete' size={26} color='#F1F1F1' />
+                <Text>No Data Found</Text>
+            </View>
+        </View>
+                    }
                     <View style={styles.circularChartContainer}>
                         <View>
                             <View style={styles.circularBarLabel}>
                                 <View style={styles.graphColorMale}></View>
                                 <Text style={styles.label}>Men</Text>
-                                <Text styles={styles.value}>68%</Text>
+                                <Text styles={styles.value}>
+                                    
+                                {isNaN(parseFloat((maleValue*100)/
+                allSum((dashBoardData?.gender))).toFixed(2))?"0.0":parseFloat((maleValue*100)/
+                allSum((dashBoardData?.gender))).toFixed(2)}%
+                                </Text>
                             </View>
                             <View style={styles.circularBarLabel}>
                                 <View style={styles.graphColorFemale}></View>
                                 <Text style={styles.label}>Women</Text>
-                                <Text styles={styles.value}>32%</Text>
+                                <Text styles={styles.value}>{isNaN(parseFloat((femaleValue*100)/
+                allSum((dashBoardData?.gender))).toFixed(2))?"0.0":parseFloat((femaleValue*100)/
+                allSum((dashBoardData?.gender))).toFixed(2)}%</Text>
                             </View>
                         </View>
-                        <DonutChart
-                            data={[{name: 'Male', value: 68, color: '#00A928'},{name: 'Female', value: 32, color: '#70CF87'}]}
-                            strokeWidth={10}
-                            radius={28}
-                            containerWidth={120}
-                            containerHeight={90}
-                            type="butt"
-                            startAngle={0}
-                            endAngle={360}
-                            labelWrapperStyle={{width: 200}}
-                            labelTitleStyle={{
-                                display: 'none',
-                            }}
-                            labelValueStyle={{
-                                display: 'none'
-                            }}
-                            animationType="slide"/>
+                        {maleValue>0||femaleValue>0?
+                            <PieChart
+            widthAndHeight={100}
+            series={[maleValue,femaleValue]}
+            doughnut={true}
+            sliceColor={["#00A928","#70CF87"]}
+            coverFill={'#FFF'}
+          />:
+          <View style={styles.tabContent}>
+            <View style={[globatStyles.noData,{minHeight:50}]}>
+                <AntDesign name='delete' size={26} color='#F1F1F1' />
+                <Text>No Data Found</Text>
+            </View>
+        </View>
+          }
                     </View>
-                </View>
-                
+                </View>}
                 <View style={styles.recentOrderContainer}>
                     <View style={styles.orderHeading}>
                         <Text style={styles.heading}>Recent Orders</Text>
@@ -348,18 +517,21 @@ const HomeScreen=(props)=>{
                     </View>
                     <View style={styles.tableContainer}>
                         <Text style={styles.orderTableHeading}>Image</Text>
-                        <Text style={styles.orderTableHeading}>Product Name</Text>
+                        <Text style={[styles.orderTableHeading,{flex:4}]}>Product Name</Text>
                         <Text style={styles.orderTableHeading}>Quantity</Text>
                         <Text style={styles.orderTableHeading}>Buyers</Text>
                     </View>
                     <View style={styles.divider}></View>
-                    <FlatList
-                        data={orders}
+                   {loader?
+                   <DashBoardLoader/>
+                   : <FlatList
+                        data={dashBoardData?.recent_order}
                         keyExtractor={item=>item?.id?.toString()}
+                        ListEmptyComponent={EmptyListMessage}
                         renderItem={(item)=><RenderRecentOrders order={item} />}
-                    />
+                    />}
                 </View>
-                
+               
             </ScrollView>
             {
                 showSwitchAcountModal?<View style={styles.switchContainer}>
@@ -399,15 +571,72 @@ const HomeScreen=(props)=>{
                 />
                 
         </Animated.View>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+        //   Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+          setShowDrawer(true)
+        }}
+      >
+        
+        <View style={[styles.centeredView, 
+            // {backgroundColor:"rgba(0, 38, 17, 0.64)"}
+            ]}>
+          <View style={styles.modalView}>
+          <View style={styles.switchViewText}>
+                            <Text style={{fontSize : 20, fontWeight : 'bold', paddingRight : 120}}>Switch View As</Text>
+                            </View>
+          <View style={styles.modalconatiner}>
+                            <View style={{display: "flex", justifyContent : 'flex-end', flexDirection : 'row' , width : '100%' , paddingTop : 20 }}>
+                            <AntDesign name='close' size={23} color='#000000' onPress={()=>{setModalVisible(!modalVisible);setShowDrawer(true)}} />
+                            </View>
+                       </View>
+                        <Text style={styles.switchText}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                        </Text>
+                        <View style={styles.accountContainer}>
+                            <View style={[styles.account,styles.modalCard1]}>
+                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                                <View>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
+                                    <Text style={styles.accountType}>Business Account</Text>
+                                </View>
+                            </View>
+                            <Pressable onPress={switchAcBtn}>
+                                {modalLoader?
+                                <ActivityIndicator style={styles.switchAc}/>
+                                :
+                                <Image source={Images.switchAc} style={styles.switchAc}/>}
+                                </Pressable>
+                            <View style={[styles.account,styles.modalCard2]}>
+                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                                <View>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
+                                    <Text style={styles.accountType}>Advertiser Account</Text>
+                                </View>
+                          </View>
+                        </View>
+                </View>
+          </View>
+      </Modal>
         {/* </View> */}
         </View>
     )
 }
 
-const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props,setModalVisible,modalVisible,setShowDrawer)=>{
+    const modalFunction=()=>{
+        setModalVisible(!modalVisible)
+        setShowDrawer(false)
+       }
     return(
         <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(0, 169, 40, 0.1);':'transparent', padding: 14}]} onPress={()=>{
             setActiveMenu(title)
+            title==="Switch View As"?
+            modalFunction():
             navigation.navigate(url,{userDetails:props.route.params.userDetails})
         }}>
             {
@@ -429,7 +658,7 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
                 icon==='fa'?<FontAwesome name={iconName} size={26} color={'black'} />:null
             }
               {
-                icon==='image'?<Image source={Images.switchIconBlack} />:null
+                icon==='image'?<Image source={Images.switchBlack} />:null
             }
             <Text style={[styles.menuName]}>{title}</Text>
         </Pressable>
@@ -504,7 +733,7 @@ const styles = StyleSheet.create({
         backgroundColor: Constants.colors.whiteColor,
         padding: Constants.padding,
         borderRadius: 20,
-        marginTop: 50,
+        // marginTop: 50,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -698,6 +927,7 @@ const styles = StyleSheet.create({
     },
     orderTableHeading: {
         fontFamily: Constants.fontFamily,
+        flex:3
     },
     divider: {
         width: '100%',
@@ -762,5 +992,78 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // marginTop: 22,
+        
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        // borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      },
+      modalheading: {
+        top : -150,
+      },
+      modalCard1 : {
+        backgroundColor : 'white',
+        elevation : 5,
+        borderRadius : 15,
+      },
+      modalCard2 : {
+        backgroundColor : '#F8F8F8',
+        elevation : 5,
+        borderRadius :15
+      },
+      switchViewText : {
+        top : 7,
+        fontWeight : 'bold',
+        fontFamily : 'Avenir',
+      },
+      modalconatiner : {
+        position : 'absolute',
+        alignItems : 'flex-start',
+        justifyContent :  'space-between',
+        flexDirection : 'row',
+     },
+     emptyListStyle: {
+        padding: 10,
+        fontSize: 15,
+        marginTop:10,
+        textAlign: 'center',
+        fontWeight:'700'
+      },
 })
 export default HomeScreen

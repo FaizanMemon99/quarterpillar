@@ -43,6 +43,8 @@ target 'Test' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
+
   target 'TestTests' do
     inherit! :complete
     # Pods for testing

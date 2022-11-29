@@ -143,7 +143,7 @@ const RenderCart = ({item,getCartData}) => {
                 </View>
                 <View style={{flexDirection: 'row',}}>
                     <SelectDropdown
-                        data={sizes}
+                        data={sizes.map((item)=>item?.toUpperCase())}
                         defaultButtonText='XL'
                         buttonStyle={styles.dropDownBox}
                         buttonTextStyle={globatStyles.dropdownTextStyle}
@@ -156,7 +156,7 @@ const RenderCart = ({item,getCartData}) => {
                         />
                     
                     <SelectDropdown
-                        data={colors}
+                        data={colors.map((item)=>item?.toUpperCase())}
                         defaultButtonText='RED'
                         buttonStyle={styles.dropDownBox}
                         buttonTextStyle={globatStyles.dropdownTextStyle}

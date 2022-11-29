@@ -85,7 +85,6 @@ const ProductDetails= (props)=>{
         })}
         // navigation.navigate('/cart',{productDetails:props?.route?.params?.productDetails})
     }
-    console.log("product details",props?.route?.params?.productDetails);
     return (
         <View style={styles.container}>
             <ImageBackground
@@ -97,16 +96,26 @@ const ProductDetails= (props)=>{
                 style={styles.bgImg}>
                 <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} title={props?.route?.params?.productDetails?.title} headerRight={false} />
                 <View style={styles.iconGroup}>
-                    <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => setLike(!like)} />
-                    <Text style={styles.iconText}>nnk</Text>
-                    <AntDesign name='message1' style={styles.icon} 
-                    // onPress={gotoComments} 
+                {props?.route?.params?.isLiked?
+                    <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} 
+                    // onPress={props?.route?.params?.removeLikeFn} 
                     />
-                    <Text style={styles.iconText}>00n</Text>
+:null
+                    }
+                    {!props?.route?.params?.isLiked?
+                    <AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} 
+                    // onPress={props?.route?.params?.addLikeFn} 
+                    />
+                    :null}
+                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{props?.route?.params?.LikeCount?props?.route?.params?.LikeCount:0}</Text>
+                    <AntDesign name='message1' style={styles.icon} 
+                    onPress={props?.route?.params?.gotoComments} 
+                    />
+                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{props?.route?.params?.commentCount?props?.route?.params?.commentCount:0}</Text>
                     <Feather name='send' style={styles.icon} 
-                    // onPress={gotoReview}
+                    onPress={props?.route?.params?.onShare}
                      />
-                    <Text style={styles.iconText}>00n</Text>
+                    {/* <Text style={styles.iconText}>00n</Text> */}
                     <Feather name='bookmark' style={styles.icon} 
                     // onPress={gotoDescription} 
                     />

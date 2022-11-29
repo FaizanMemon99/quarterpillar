@@ -18,6 +18,7 @@ import messaging from "@react-native-firebase/messaging"
 import {requestUserPermission,NotificationListener} from "./src/pushNotificationUtils"
 import { InAppNotificationProvider } from 'react-native-in-app-notification';
 import PushNotification from 'react-native-push-notification'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const App = () => {
     const [auth, setAuth] = useState('')
@@ -63,7 +64,12 @@ const App = () => {
         await requestCameraPermission()
         await requestExternalWritePermission()
       }
-    useEffect(() => {
+      const getUserDetails=async()=>{
+        let fcmtoken=AsyncStorage.getItem("userDetails");
+        // const userdetails=await AsyncStorage.getItem("userDetails")  
+        return fcmtoken
+      }
+    useEffect(async() => {
         PermissionFunction()
         requestUserPermission()
         NotificationListener()
@@ -90,7 +96,6 @@ const App = () => {
         
         // return unsubscribe;
         SplashScreen.hide()
-
     }, [])
 
     const authentication = (type) => {

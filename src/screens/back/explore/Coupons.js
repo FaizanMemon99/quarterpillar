@@ -17,10 +17,14 @@ import { useNavigation } from '@react-navigation/native'
 const Coupons = (props)=>{
     const navigation=useNavigation()
     const copyCode = (text,discount)=>{
-        navigation.navigate('/payment-details',{price:props?.route?.params?.price-discount,selectedAddress:props?.route?.params?.selectedAddress,discount:props?.route?.params?.discount,totalPrice:props?.route?.params?.totalPrice
+        navigation.navigate('/payment-details',{price:props?.route?.params?.price-discount,
+            selectedAddress:props?.route?.params?.selectedAddress,
+            discount:props?.route?.params?.discount,
+            totalPrice:props?.route?.params?.totalPrice
         ,couponCodeValue:discount,couponCode:text,
         cartItems:props?.route?.params?.cartItems,
-        address_id:props?.route?.params?.address_id
+        address_id:props?.route?.params?.address_id,
+        userDetails:props?.route?.params?.userDetails
         })
     }
     return (

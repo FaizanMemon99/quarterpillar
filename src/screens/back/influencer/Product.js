@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     Text,
-    ImageBackground,
+    Modal,
     Image,
     StyleSheet,
     StatusBar,
@@ -11,6 +11,7 @@ import {
     ScrollView,
     ActivityIndicator,
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
 import Constants from '../../../shared/Constants'
@@ -36,12 +37,18 @@ const Product=(props)=>{
     const [showRateus, setShowRateus] = useState(true)
     const [postData,setpostData]=useState([])
     const [activeMenu, setActiveMenu] = useState('')
+    const [modalVisible, setModalVisible] = useState(false)
     const [postLoader,setpostLoader]=useState(false)
     const [swiperData,setswiperData]=useState([])
+    const [likeData,setlikeData]=useState([])
+    const [commentData,setcommentsData]=useState([])
+    const [modalLoader,setmodalLoader]=useState(false)
+
     // const [cartLoader,setcartLoader]=useState(false)
     // const [cartNumber,setcartNumber]=useState(0)
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
+    
     const travelPosts = [
         {id:1, video: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4'},
         {id:2, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
@@ -74,12 +81,69 @@ const Product=(props)=>{
         setShowDrawer(!showDrawer)
     }
     const userType=Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]
+    const switchAcBtn = () => {
+        // console.log("Switch Button Working Of Accounts")
+        // console.log({
+        //     user_id:props?.route?.params?.userDetails?.id,
+        //     user_type:props?.route?.params?.userDetails?.role_id
+        // })
+        setmodalLoader(true)
+        axios.post(`${Constants.BASE_URL}auth/switch-user`,
+        //body start->
+        { 
+            user_id:props?.route?.params?.userDetails?.id,
+            user_type:props?.route?.params?.userDetails?.role_id
+        })
+        .then ((response)=>{
+            setmodalLoader(false)
+            console.log("repsonse data=>",response.data);
+            if(!response.data.error){
+                navigation.navigate('/business-login',{login_type:userType=="influencer"?"explore":userType=="explore"?"influencer":"business",userName:props?.route?.params?.userDetails?.name})
+                                console.log("reponse=>",response.data.error)
+            }
+            else {
+                showToastmsg("Something went wrong. Please try again.")    
+            }
+        })
+        .catch ((error)=>{
+            setmodalLoader(false)
+            console.log("error=>",error);
+            showToastmsg("Something went wrong. Please try again.")
+        })
+    }
+    const getLikeData=()=>{
+        axios.post(`${Constants.BASE_URL}post/read-like`)
+        .then((response)=>{
+            setlikeData(response.data)
+        })
+        .catch((error)=>{
+            setpostLoader(false)
+            console.log("error val=>",error);
+        })
+    }
+    const getAllComments=()=>{
+        // setLoader(true)
+        axios.post(`${Constants.BASE_URL}post/read-comment`)
+        .then((response)=>{
+            // setLoader(false)
+            if(response.data.length>0){
+                setcommentsData(response.data)
+            }
+            // console.log("repsonse=>",response.data);
+        })
+        .catch((error)=>{
+            // setLoader(false)
+            showToastmsg("Something went wrong.")
+            console.log("errro=>",error);
+        })
+    }
     const getReelsApi=()=>{
         setpostLoader(true)
         if(userType=='explore'||userType=='influencer')
         {
             axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
-                console.log("repsonse",response.data.data.influencerPosts);
+            getLikeData()
+            getAllComments()
                 setpostLoader(false)
                 if(response.data.data.influencerPosts){
                     response.data.data.influencerPosts.filter((i)=>i.status=='complete').map((item,i)=>{
@@ -106,17 +170,15 @@ const Product=(props)=>{
             })
             .catch((error)=>{
                 setpostLoader(false)
-                console.log("error val",error);
+                console.log("error val abc",error);
                 showToastmsg('Failed to reload')
             })
-            console.log("exploredata",props?.route?.params?.userDetails?.explore?.explore_id);}
+        }
             else if(userType=='advertiser')
             {
-                console.log("advertiser data val+");
                 axios.post(`${Constants.BASE_URL}advertiser/get-advertise`,{
                     advertiser_id:props?.route?.params?.userDetails?.id
                 }).then((response)=>{
-                    console.log("repsonse data=>",response.data);
                     setpostLoader(false)
                     if(response.data.data.post_details){
                         setpostData(response.data.data.post_details.filter((i)=>i.post_status=='complete'))
@@ -124,10 +186,10 @@ const Product=(props)=>{
                 })
                 .catch((error)=>{
                     setpostLoader(false)
-                    console.log("error val",error.response);
+                    console.log("error val==>",error.response);
                     showToastmsg('Failed to reload')
                 })
-                console.log("influencerdata",props?.route?.params?.userDetails);}
+            }
     }
     useEffect(()=>{
         // axios.post(`${Constants.BASE_URL}auth/get-cart-item`,{
@@ -147,12 +209,10 @@ const Product=(props)=>{
         var url=''
         if(Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'){
 url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`
-console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`);
         }
         else
         {
             url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`
-        console.log('images111',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`);
         }
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
       }
@@ -245,6 +305,9 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     {(userType=='influencer'||userType=='advertiser')&&
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'My Requests', navigation, '/my-requests',props)
                     }
+                    {
+                        setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props,setModalVisible,modalVisible,setShowDrawer)
+                    }
                     {userType=='explore'?
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/view-explore-profile',props):setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
                     }
@@ -265,7 +328,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     } */}
                 </ScrollView>}
                 <Pressable
-               onPress={()=>navigation.navigate('/')}
+               onPress={()=>{navigation.navigate('/'),console.log("logout fn"),AsyncStorage.clear()}}
                 style={{flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%',}}>
                     <AntDesign name='logout' size={22} color={Constants.colors.whiteColor} />
                     <Text style={{color: Constants.colors.whiteColor, fontFamily: Constants.fontFamily, fontWeight: '700', fontSize: 18, marginLeft: 12,}}>Logout</Text>
@@ -337,7 +400,6 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
             </View>
             :
             postData.map((data,i)=>(<View style={styles.reel} key={i+1}>
-                {console.log("maaped data=>",data.video)}
                 <CustomAppBar navigation={navigation} isMainscreen={true} 
                 explore={userType=='explore'}
                 userDetails={props?.route?.params?.userDetails}
@@ -352,7 +414,11 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                     style={[styles.category,{borderRadius:showDrawer?Constants.borderRadius+50:0}]}
                     renderItem={item=>(props?.route?.params?.userDetails?.role_id==3?
                         <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails} />:
-                    <RenderReeels item={item} userDetails={props?.route?.params?.userDetails} />)}
+                    <RenderReeels item={item} userDetails={props?.route?.params?.userDetails} 
+                    likeData={likeData}
+                        getLikeData={getLikeData}
+                        commentData={commentData}
+                    />)}
                     keyExtractor={item=>item?.id?.toString()} />
             </View>))}
             {/* <View style={styles.reel}>
@@ -394,15 +460,74 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
         
         }
             </Animated.View>
+            <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+        //   Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+          setShowDrawer(true)
+        }}
+      >
+        
+        <View style={[styles.centeredView, 
+            // {backgroundColor:"rgba(0, 38, 17, 0.64)"}
+            ]}>
+          <View style={styles.modalView}>
+          <View style={styles.switchViewText}>
+                            <Text style={{fontSize : 20, fontWeight : 'bold', paddingRight : 120}}>Switch View As</Text>
+                            </View>
+                            <Text style={styles.switchText}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                        </Text>
+          <View style={styles.modalconatiner}>
+                            <View style={{display: "flex", justifyContent : 'flex-end', flexDirection : 'row' , width : '100%' , paddingTop : 20 }}>
+                            <AntDesign name='close' size={23} color='#000000' onPress={()=>{setModalVisible(!modalVisible);setShowDrawer(true)}} />
+                            </View>
+                       </View>
+                        <View style={styles.accountContainer}>
+                            <View style={[styles.account,styles.modalCard1]}>
+                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                                <View>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
+                                    <Text style={[styles.accountType,{textTransform:'capitalize'}]}>{userType} Account</Text>
+                                </View>
+                            </View>
+                            <Pressable onPress={switchAcBtn}>
+                                {modalLoader?
+                                <ActivityIndicator style={styles.switchAc}/>
+                                :
+                                <Image source={Images.switchAc} style={styles.switchAc}/>}
+                                </Pressable>
+                            <View style={[styles.account,styles.modalCard2]}>
+                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                                <View>
+                                    <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
+                                    <Text style={styles.accountType}>{userType=="influencer"?"Explore":
+                                    userType=='explore'?"Influencer":"Advertiser"
+                                    } Account</Text>
+                                </View>
+                          </View>
+                        </View>
+                </View>
+          </View>
+      </Modal>
         </View>
     )
 }
 
-const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props)=>{
+const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation, url,props,setModalVisible,modalVisible,setShowDrawer)=>{
+    const modalFunction=()=>{
+        setModalVisible(!modalVisible)
+        setShowDrawer(false)
+       }
     return(
-        <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(60, 255, 106, 0.47)':'transparent', padding: 14,}]} onPress={()=>{
+        <Pressable style={[styles.drawerItem, {backgroundColor: activeMenu===title?'rgba(0, 169, 40, 0.1);':'transparent', padding: 14}]} onPress={()=>{
             setActiveMenu(title)
-            navigation.navigate(url,{userDetails:props?.route?.params?.userDetails})
+            title==="Switch View As"?
+            modalFunction():
+            navigation.navigate(url,{userDetails:props.route.params.userDetails})
         }}>
             {
                 icon==='feather'?<Feather name={iconName} size={26} color={Constants.colors.whiteColor} />:null
@@ -422,7 +547,7 @@ const setMenuItem=(setActiveMenu, activeMenu, icon, iconName, title, navigation,
             {
                 icon==='fa'?<FontAwesome name={iconName} size={26} color={Constants.colors.whiteColor} />:null
             }
-            {
+              {
                 icon==='image'?<Image source={Images.switchIcon} />:null
             }
             <Text style={[styles.menuName]}>{title}</Text>
@@ -593,6 +718,101 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         bottom: 0,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // marginTop: 22,
+        
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        // borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      },
+      modalheading: {
+        top : -150,
+      },
+      modalCard1 : {
+        backgroundColor : 'white',
+        elevation : 5,
+        borderRadius : 15,
+      },
+      modalCard2 : {
+        backgroundColor : '#F8F8F8',
+        elevation : 5,
+        borderRadius :15
+      },
+      switchViewText : {
+        top : 7,
+        fontWeight : 'bold',
+        fontFamily : 'Avenir',
+      },
+      modalconatiner : {
+        position : 'absolute',
+        alignItems : 'flex-start',
+        justifyContent :  'space-between',
+        flexDirection : 'row',
+     },
+     switchText: {
+        fontFamily: Constants.fontFamily,
+        marginTop: Constants.margin,
+        marginBottom: Constants.margin,
+    },
+    account: {
+        backgroundColor: Constants.colors.whiteColor,
+        padding: 10,
+        borderRadius: Constants.borderRadius,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    accountName: {
+        fontFamily: Constants.fontFamily,
+        fontSize: 20,
+        fontWeight: '800',
+    },
+    accountType: {
+        fontFamily: Constants.fontFamily,
+        color: '#A4A4B2',
+        fontSize: 18,
+    },
+    switchAc: {
+        alignSelf: 'center',
+        width: 20,
+        height: 20,
+        marginTop: 20,
+        marginBottom: 20,
     },
 })
 

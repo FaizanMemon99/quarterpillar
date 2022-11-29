@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -6,6 +6,7 @@ import {
     Image,
     Pressable,
     ScrollView,
+    ActivityIndicator,
 } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Constants from '../../../shared/Constants'
@@ -14,9 +15,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
 import Images from '../../../assets/images/Images'
 import LinearGradient from 'react-native-linear-gradient'
+import axios from 'axios'
+import showToastmsg from '../../../shared/showToastmsg'
 
 const Dashboard = (props)=>{
-    const [tabs,setTabs] = useState('w')
+    const [tabs,setTabs] = useState('d')
+    const [loader,setLoader]=useState(false)
+    const [dashBoardData,setdashBoardData]=useState()
     const goBack = ()=>{
         props.navigation.goBack()
     }
@@ -33,10 +38,10 @@ const Dashboard = (props)=>{
         useShadowColorFromDataset: false // optional
     }
     const daileyData = {
-        labels: ["1", "2", "3", "4", "5", "6","7","8","9","10", "11", "12"],
+        labels: ["Mon", "Tue", "Thrus", "Wed", "Fri", "Sat", "Sun"],
         datasets: [
             {
-                data: [120, 700, 200, 800, 250, 620, 230, 700, 550, 1200, 100, 1100],
+                data: [120, 700, 200, 800, 250, 620, 230],
                 color: (opacity = 1) => `#00A928`, // optional
                 strokeWidth: 2 // optional
             },
@@ -53,19 +58,46 @@ const Dashboard = (props)=>{
         ],
     }
     const weeklyData = {
-        labels: ["Mon", "Tue", "Thrus", "Wed", "Fri", "Sat", "Sun"],
+        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
         datasets: [
             {
-                data: [1200, 1600, 1100, 1700, 2200, 1400, 1550],
+                data: [1200, 1600, 1100, 1700],
                 color: (opacity = 1) => `#00A928`, // optional
                 strokeWidth: 2 // optional
             },
         ],
     }
+    const getDashBoardData=()=>{
+        setLoader(true)
+        axios.post(`${Constants.BASE_URL}influencer/dashboard`,
+            {
+                "user_id":props?.route?.params?.userDetails?.id
+            }
+        )
+        .then((response)=>{
+            console.log("response data=>",response.data);
+            setdashBoardData(response.data)
+            setLoader(false)
+        })
+        .catch((error)=>{
+            console.log("error=>",error);
+            showToastmsg("Something went wrong")
+            setLoader(false)
+        })
+    }
+    useEffect(()=>{
+        getDashBoardData()
+    },[props])
     return (
         <View style={StyleSheet.wrapper}>
             <CustomAppBar navigation={props.navigation} isMainscreen={false} isReel={false} title='Dashboard' />
             <ScrollView>
+               {loader?
+               <ActivityIndicator
+               size={35}
+               color={Constants.primaryColor}
+               />
+               :
                 <View style={styles.container}>
                     <Text style={styles.normalText}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
@@ -180,7 +212,7 @@ const Dashboard = (props)=>{
                             <Text style={{fontSize: 18, color: Constants.colors.primaryColor}}><AntDesign name='arrowup' size={20} />5.86%</Text>
                         </View>
                     </View>
-                </View>
+                </View>}
             </ScrollView>
         </View>
     )

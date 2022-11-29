@@ -146,7 +146,6 @@ const RenderReeelsAdv = ({ item ,userDetails}) => {
                         {item?.item?.advertise_description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                     </Text>
                     <Text style={styles.minsAgo}>
-                        {console.log("created time",moment(new Date(item?.item?.created_at)).fromNow())}
                         {moment(new Date(item?.item?.created_at)).fromNow()}</Text>
                     {/* <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable> */}
                 </View>

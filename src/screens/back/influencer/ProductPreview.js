@@ -101,7 +101,6 @@ console.log("response",response);
         });}}
         // navigation.navigate('/product-description')
     }
-    console.log("post details",props?.route?.params?.postDetails);
     return (
         <View style={globatStyles.wrapper}>
            <VideoPlayer

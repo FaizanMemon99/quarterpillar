@@ -79,6 +79,7 @@ const Images = {
     emoji: require('./icons/imogis/love.png'),
     switchIcon: require('./switch.png'),
     switchIconBlack: require('./switchblack.png'),
-    PlusIcon: require('./PlusIcon.png')
+    PlusIcon: require('./PlusIcon.png'),
+    switchBlack: require('./switchBlack.png'),
 }
 export default Images

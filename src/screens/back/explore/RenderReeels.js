@@ -5,10 +5,9 @@ import {
     StyleSheet,
     Image,
     Pressable,
-    // FlatList,
-    // TextInput,
-    
+    Modal,
     ActivityIndicator,
+    Share,
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import VideoPlayer from 'react-native-video-player'
@@ -21,13 +20,19 @@ import { useNavigation } from '@react-navigation/native'
 import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
+import StoriesPage from './StoriesPage'
 
-const RenderReeels = ({ item ,userDetails}) => {
+const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
     
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
     const [videoVar,setvideoVar]=useState()
+    const [LikeCount,setLikeCount]=useState(0)
+    const [commentCount,setCommentCount]=useState(0)
     const [showCommentPopup, setShowCommentPopup] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);
+    const [doubleTapCounter,setdoubleTapCounter]=useState(0)
+    const [follows,setfollows]=useState(false)
     const navigation = useNavigation()
     const comments = [
         {id: 1},
@@ -41,10 +46,19 @@ const RenderReeels = ({ item ,userDetails}) => {
 
     }
     const follow = () => {
-        navigation.navigate('/follow')
+        setTimeout(() => {
+            setfollows(!follows)            
+        }, 500);
     }
     const gotoProductDetails = () => {
-        navigation.navigate('/product-details',{productDetails:item.item,userDetails:userDetails})
+        navigation.navigate('/product-details',{productDetails:item.item,userDetails:userDetails,
+        LikeCount:LikeCount,
+        commentCount:commentCount,
+        isLiked:like,
+        gotoComments:gotoComments,onShare:onShare,
+        removeLikeFn:removeLikeFn,
+        addLikeFn:addLikeFn
+        })
     }
     const gotoDescription = () => {
         navigation.navigate('/product-description')
@@ -53,8 +67,67 @@ const RenderReeels = ({ item ,userDetails}) => {
         navigation.navigate('/explore-review')
     }
     const gotoComments = ()=>{
-        navigation.navigate('/reels-comments')
+        navigation.navigate('/reels-comments',{userDetails:userDetails,postDetails:item?.item})
     }
+    const onShare = async () => {
+        try {
+            console.log("post data=>",item?.item);
+          const result = await Share.share({
+            message:
+              "Hi, check this awesome "+item?.item?.title +" post "+`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`
+              +JSON.parse(item?.item?.image).map((daata,ind)=>(
+                `, ${Constants.BASE_IMAGE_URL+daata} ${ind!=(JSON.parse(item?.item?.image)-1)?', ':null}`
+              ))
+            //   +", "+JSON.parse(item?.item?.image).map((imageData,index)=>`${Constants.BASE_IMAGE_URL}${imageData}`+index==JSON.parse(item?.item?.image).length-1?"":", "),
+            //   ,url:"http://google.com",
+              ,title:"Post Share"
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      };
+    const addLikeFn=()=>{
+        axios.post(`${Constants.BASE_URL}post/add-like`,{
+            user_id:userDetails?.id,
+            post_id:item?.item?.id
+        }).then((response)=>{
+            setLike(true)
+                setLikeCount(LikeCount+1)
+            
+            getLikeData()
+        })
+        
+        // setLike(!like)
+    }
+    const removeLikeFn=async()=>{
+        if(likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id).length>0){
+       await axios.post(`${Constants.BASE_URL}post/${likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id)[0].id}/delete-like`,{
+            user_id:userDetails?.id,
+            post_id:item?.item?.id
+        }).then(async(response)=>{
+             getLikeData()
+            setLike(false)
+            if(LikeCount>0){
+                setLikeCount(LikeCount-1)
+            }
+        })
+        }
+        
+        // setLike(false)
+    }
+    const gotoStoriespage = () => {
+        // navigation.navigate('/StoriesPage')
+        setModalVisible(!modalVisible);
+    };
     // const gotoBuy=()=>{
     //     navigation.navigate('/cart')
     // }
@@ -78,16 +151,39 @@ const RenderReeels = ({ item ,userDetails}) => {
     
             // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
         }).catch((err)=>{setLoader(false)})
-        console.log("hello gyus");
     },[])
+    useEffect(()=>{
+        setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
+        setCommentCount(commentData.filter((i)=>i.post_id==item?.item?.id).length)
+        if(likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id).length>0){
+            // console.log("user data");
+            setLike(true)
+        }
+        else {
+            setLike(false);
+        }
+    },[likeData,commentData])
+    const handleClick = (e) => {
+        switch (e.detail) {
+          case 1:
+            console.log("click");
+            break;
+          case 2:
+            console.log("double click");
+            break;
+          case 3:
+            console.log("triple click");
+            break;
+        }
+      };
     return (
         <>
         {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
         <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/></View>:
             <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
-            onPress={gotoProductDetails}
+            onLongPress={gotoStoriespage}
+            onPress={handleClick}
             >
-
                 <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}></View>
                 {videoVar?<VideoPlayer
                     video={videoVar}
@@ -118,18 +214,25 @@ const RenderReeels = ({ item ,userDetails}) => {
                         },
                     }} />:null}
                 <View style={styles.iconGroup}>
-                    <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => setLike(!like)} />
-                    <Text style={styles.iconText}>nnk</Text>
+                    {like?
+                    <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} onPress={() => removeLikeFn()} />
+:null
+                    }
+                    {!like?
+                    <AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} onPress={() => addLikeFn()} />
+                    :null}
+                    {/* <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => addLikeFn()} /> */}
+                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{LikeCount?LikeCount:0}</Text>
                     <AntDesign name='message1' style={styles.icon} 
-                    // onPress={gotoComments} 
+                    onPress={gotoComments} 
                     />
-                    <Text style={styles.iconText}>00n</Text>
+                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{commentCount?commentCount:0}</Text>
                     <Feather name='send' style={styles.icon} 
-                    // onPress={gotoReview}
+                    onPress={onShare}
                      />
-                    <Text style={styles.iconText}>00n</Text>
+                    {/* <Text style={styles.iconText}>00n</Text> */}
                     <Feather name='bookmark' style={styles.icon} 
-                    // onPress={gotoDescription} 
+                    onPress={gotoDescription} 
                     />
                 </View>
                 <View style={styles.productDetailsContainer}>
@@ -138,8 +241,12 @@ const RenderReeels = ({ item ,userDetails}) => {
                         <Image source={Images.avatar} style={{ marginRight: 20, }} />
                         <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
                         <Pressable 
-                        // onPress={follow}
-                         style={globatStyles.followBtn}><Text style={globatStyles.followBtnText}>Follow</Text></Pressable>
+                        onPress={follow}
+                         style={globatStyles.followBtn}><Text style={[globatStyles.followBtnText,{paddingRight:10,fontSize:10,color:follows?"green":"white",alignItems:"center"}]}>{
+                         follows?"Following":
+                         "Follow"}
+                         {followLoader?<ActivityIndicator size={10} color={"#fff"}/>:""}
+                         </Text></Pressable>
                     </View>
                     <Text style={styles.desc}>
                         {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
@@ -147,6 +254,19 @@ const RenderReeels = ({ item ,userDetails}) => {
                     <Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
                     <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
                 </View>
+                <Modal
+                        animationType="slide"
+                        // transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            //   Alert.alert("Modal has been closed.");
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <StoriesPage
+                            images={item?.item?.image}
+                            gotoStoriespage={gotoStoriespage}
+                        />
+                    </Modal>
             </Pressable>}
         </>
     )
