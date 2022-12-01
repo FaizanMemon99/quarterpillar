@@ -2,6 +2,7 @@ import { StyleSheet, Text, View,Image, Pressable, Touchable } from 'react-native
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Images from '../../../assets/images/Images';
 
 const GuideScreen = () => {
 
@@ -18,7 +19,7 @@ const GuideScreen = () => {
         <View style={{marginTop:30, right:2,}}>
         <Image
         style={styles.icon}
-        source={require('/home/flymingo/quarterpillars/src/assets/images/holdpress.png')}
+        source={Images.holdpress}
         />
         <Text style={styles.press}> {'\n'}        See stories </Text>
         <Text style={styles.pressdesciption}>Long press to see stories </Text>
@@ -30,7 +31,7 @@ const GuideScreen = () => {
         <View style={{marginTop:40, right:2,}}>
         <Image
         style={styles.icon}
-        source={require('/home/flymingo/quarterpillars/src/assets/images/swapdown.png')}
+        source={Images.swapdown}
         />
         <Text style={styles.press}> {'\n'}         Go back </Text>
         <Text style={styles.pressdesciption}> Swapdown to go Back </Text>
@@ -41,7 +42,7 @@ const GuideScreen = () => {
         <View style={{marginTop:40, right:2,}}>
         <Image
         style={styles.icon}
-        source={require('/home/flymingo/quarterpillars/src/assets/images/leftright_.png')}
+        source={Images.leftright_}
         />
         <Text style={styles.press}> {'\n'}Move between screen</Text>
         <Text style={styles.pressdesciption}>     click left  or right</Text>

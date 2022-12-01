@@ -81,5 +81,8 @@ const Images = {
     switchIconBlack: require('./switchblack.png'),
     PlusIcon: require('./PlusIcon.png'),
     switchBlack: require('./switchBlack.png'),
+    holdpress : require('./holdpress.png'),
+    swapdown : require('./swapdown.png'),
+    leftright_: require('./leftright_.png'),
 }
 export default Images
