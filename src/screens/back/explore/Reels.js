@@ -9,6 +9,7 @@ import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Swiper from 'react-native-swiper'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import RenderReeels from './RenderReeels'
+import { FlashList } from "@shopify/flash-list";
 
 const Reels=({navigation})=>{
     const travelPosts = [
@@ -39,35 +40,41 @@ const Reels=({navigation})=>{
         <Swiper style={styles.wrapper} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Travel' headerRight={true} />
-                <SwiperFlatList
+
+                <FlashList
                     data={travelPosts}
-                    style={styles.category}
+                    style={styles.category} 
                     renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
-            </View>
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
+                </View>
+
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Fashion' headerRight={true} />
-                <SwiperFlatList
+                <FlashList
                     data={fashionPosts}
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </View>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Life Style' headerRight={true} />
-                <SwiperFlatList
+                <FlashList
                     data={lifestylePosts}
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </View>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Food' headerRight={true} />
-                <SwiperFlatList
+                <FlashList
                     data={foodPosts}
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()}
+                    estimatedItemSize={200}/>
             </View>
         </Swiper>
     )

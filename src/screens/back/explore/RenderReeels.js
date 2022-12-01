@@ -27,6 +27,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
+    const [followLoader, setfollowLoader] = useState(false)
     const [videoVar,setvideoVar]=useState()
     const [LikeCount,setLikeCount]=useState(0)
     const [commentCount,setCommentCount]=useState(0)
@@ -35,7 +36,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     const [doubleTapCounter,setdoubleTapCounter]=useState(0)
     const [follows,setfollows]=useState(false)
     const navigation = useNavigation()
-    const [followLoader,setfollowLoader] = useState(false)
+    // const [followLoader,setfollowLoader] = useState(false)
     const comments = [
         {id: 1},
         {id: 2},
