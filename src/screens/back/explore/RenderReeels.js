@@ -21,6 +21,7 @@ import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
 import StoriesPage from './StoriesPage'
+import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth , responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
     
@@ -34,6 +35,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     const [doubleTapCounter,setdoubleTapCounter]=useState(0)
     const [follows,setfollows]=useState(false)
     const navigation = useNavigation()
+    const [followLoader,setfollowLoader] = useState(false)
     const comments = [
         {id: 1},
         {id: 2},
@@ -46,7 +48,9 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
 
     }
     const follow = () => {
+        setfollowLoader(true)
         setTimeout(() => {
+            setfollowLoader(false)
             setfollows(!follows)            
         }, 500);
     }
@@ -237,12 +241,13 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                 </View>
                 <View style={styles.productDetailsContainer}>
                     <View style={styles.imgContainer}>
-                        
+                    <View style={{height:responsiveHeight(2),width:responsiveWidth(17),bottom:18,right:10}}>
                         <Image source={Images.avatar} style={{ marginRight: 20, }} />
+                        </View>
                         <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
                         <Pressable 
                         onPress={follow}
-                         style={globatStyles.followBtn}><Text style={[globatStyles.followBtnText,{paddingRight:10,fontSize:10,color:follows?"green":"white",alignItems:"center"}]}>{
+                         style={globatStyles.followBtn}><Text style={[globatStyles.followBtnText,{fontSize:responsiveFontSize(1.2)}]}>{
                          follows?"Following":
                          "Follow"}
                          {followLoader?<ActivityIndicator size={10} color={"#fff"}/>:""}
@@ -252,7 +257,18 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                         {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                     </Text>
                     <Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
-                    <Pressable onPress={gotoProductDetails} style={[globatStyles.button, { marginTop: 8, flexDirection: 'row', justifyContent: 'space-between', }]}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
+                    <Pressable onPress={gotoProductDetails} style={{
+                                backgroundColor: Constants.colors.primaryColor,
+                                padding: 14,
+                                width: responsiveWidth(83),
+                                borderRadius: responsiveWidth(3),
+                                marginBottom: responsiveHeight(1),
+                                
+                                 marginTop: responsiveHeight(1),
+                                 flexDirection: 'row',
+                                 justifyContent: 'space-between',
+                                
+                                }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
                 </View>
                 <Modal
                         animationType="slide"
@@ -288,7 +304,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 25,
-        fontSize: 25,
+        fontSize: responsiveFontSize(3.5),
         color: Constants.colors.whiteColor,
     },
     iconText: {
@@ -299,32 +315,36 @@ const styles = StyleSheet.create({
     },
     productDetailsContainer: {
         padding: Constants.padding,
-        paddingBottom: 2,
+        // marginTop : responsiveHeight(4),
+        // paddingBottom: 2,
         opacity: 0.9,
         position: 'absolute',
         width: '92%',
         bottom: 0,
         left: '3%',
         zIndex: 99,
+        marginBottom:responsiveHeight(-2),
         borderTopLeftRadius: Constants.borderRadius,
         borderTopRightRadius: Constants.borderRadius,
     },
     imgContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent:"center"
     },
     titlename: {
         fontFamily: Constants.fontFamily,
         fontWeight: '800',
         color: Constants.colors.whiteColor,
-        fontSize: 25,
-        marginRight: 12,
-        textTransform:'capitalize'
+        fontSize: responsiveFontSize(2.3),
+        marginRight: 15,
+        textTransform: 'capitalize',
     },
     desc: {
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
         marginTop: 14,
+        marginLeft : responsiveWidth(2)
     },
     moreBtn: {
         color: '#F1F1F1',
@@ -334,6 +354,9 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
+        marginLeft : responsiveWidth(2)
+
+
     },
 })
 

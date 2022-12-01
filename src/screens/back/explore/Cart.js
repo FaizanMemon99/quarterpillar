@@ -16,6 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
+import { responsiveWidth } from 'react-native-responsive-dimensions'
 
 const Cart = (props)=>{
     const navigation=useNavigation()

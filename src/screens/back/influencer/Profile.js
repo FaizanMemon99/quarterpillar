@@ -63,7 +63,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                <View style={styles.divider}></View>
                <View style={styles.profileSection}>
                     <View style={styles.profileBgImg} >
-                        <Image source={Images.profileOne} />
+                        <Image source={Images.profileOne} style={styles.ImgContainer}/>
                         <View style={styles.comments}>
                             <AntDesign name='hearto' size={22} color={Constants.colors.whiteColor} />
                             <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 16,}}>62k</Text>
@@ -72,7 +72,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                         </View>
                     </View>
                     <View style={styles.profileBgImg}>
-                        <Image source={Images.profileTwo} />
+                        <Image source={Images.profileTwo} style={styles.ImgContainer}/>
                         <View style={styles.comments}>
                             <AntDesign name='hearto' size={22} color={Constants.colors.whiteColor} />
                             <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 16,}}>62k</Text>
@@ -81,7 +81,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                         </View>
                     </View>
                     <View style={styles.profileBgImg}>
-                        <Image source={Images.profileThree} />
+                        <Image source={Images.profileThree} style={styles.ImgContainer} />
                         <View style={styles.comments}>
                             <AntDesign name='hearto' size={22} color={Constants.colors.whiteColor} />
                             <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 16,}}>62k</Text>
@@ -90,7 +90,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                         </View>
                     </View>
                     <View style={styles.profileBgImg}>
-                        <Image source={Images.profileFour} />
+                        <Image source={Images.profileFour} style={styles.ImgContainer}/>
                         <View style={styles.comments}>
                             <AntDesign name='hearto' size={22} color={Constants.colors.whiteColor} />
                             <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 16,}}>62k</Text>
@@ -113,6 +113,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    ImgContainer: {
+        width : '98%',
+        height : '100%',
+ 
+     },
     companyLogo: {
         padding: Constants.padding+12,
         backgroundColor: Constants.colors.whiteColor,
@@ -186,6 +191,7 @@ const styles = StyleSheet.create({
         width: '50%',
         height: 252,
         resizeMode: 'cover',
+        marginBottom : 4,
     },
     comments: {
         flexDirection: 'row',

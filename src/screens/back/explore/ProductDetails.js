@@ -18,6 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import { responsiveFontSize } from 'react-native-responsive-dimensions'
 
 const ProductDetails= (props)=>{
     const navigation=useNavigation()
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 25,
-        fontSize: 25,
+        fontSize: responsiveFontSize(3.2),
         color: Constants.colors.whiteColor,
     },
     iconText: {

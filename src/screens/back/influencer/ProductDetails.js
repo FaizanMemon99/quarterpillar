@@ -14,6 +14,7 @@ import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import globatStyles from '../../../shared/globatStyles'
+import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
 
 const ProductDetails= ({navigation})=>{
     const [qty, setQty] = useState(1)
@@ -39,8 +40,9 @@ const ProductDetails= ({navigation})=>{
     }
     return (
         <View style={styles.container}>
+            <View style={{height:responsiveHeight(50)}}>
             <ImageBackground
-                source={Images.reelProduct}
+                source={Images.reelProduct} 
                 style={styles.bgImg}>
                 <CustomAppBar navigation={navigation} isMainscreen={false} isReel={true} title='Activated Charcoal' headerRight={false} />
                 <View style={styles.iconGroup}>
@@ -53,6 +55,7 @@ const ProductDetails= ({navigation})=>{
                     <Feather name='bookmark' style={styles.icon} />
                 </View>
             </ImageBackground>
+            </View>
             <ScrollView style={styles.bottomContainer}>
                 <View style={styles.header}>
                     <View style={styles.headerTop}>
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 15,
-        fontSize: 25,
+        fontSize: responsiveFontSize(3.2),
         color: Constants.colors.whiteColor,
     },
     iconText: {
