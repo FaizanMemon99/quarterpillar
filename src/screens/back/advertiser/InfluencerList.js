@@ -17,6 +17,7 @@ import  SearchBar from '../../../components/explore/SearchBar'
 import RenderBusinessList from './RenderBusinessList'
 import RenderBusinessRequest from './RenderBusinessRequest'
 import axios from 'axios'
+import { FlashList } from '@shopify/flash-list'
 
 const InfluencerList=(props)=>{
     const [influencerData,setinfluencerData]=useState([])
@@ -82,11 +83,12 @@ const InfluencerList=(props)=>{
                 {loading?
                 <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
                 :
-                <FlatList 
+                <FlashList 
                     data={influencerData.filter((i)=>i.collabration_id==undefined)} 
                     renderItem={item=><RenderBusinessRequest userDetails={props?.route?.params?.userDetails} item={item}
                     keyExtractor={item=>item?.id?.tostring()} />}
                     ListEmptyComponent={EmptyListMessage}
+                    estimatedItemSize={200}
                     />}
                 {/* <Pressable onPress={sendBusinessRequest} style={[globatStyles.button, {marginBottom: 20,}]}>
                     <Text style={globatStyles.btnText}>Send Request</Text>

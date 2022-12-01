@@ -21,7 +21,7 @@ import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
 import StoriesPage from './StoriesPage'
-import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth , responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { responsiveFontSize, responsiveHeight , responsiveWidth  } from 'react-native-responsive-dimensions'
 
 const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
     
@@ -136,6 +136,14 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     // const gotoBuy=()=>{
     //     navigation.navigate('/cart')
     // }
+// navigate to guide screen 
+    useEffect(()=>{
+        setTimeout(() => {
+            navigation.navigate('/GuideScreen')
+        }, 20000);
+
+    },[])
+// 
     useEffect(()=>{
         setLoader(true)
         setvideoVar(null)
@@ -195,6 +203,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                     autoplay
                     repeat={true}
                     loop
+                    muted
                     disableSeek
                     resizeMode={'cover'}
                     customStyles={{
@@ -202,7 +211,6 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                             width: '100%',
                             height: '100%',
                             paddingBottom: Constants.padding,
-                            
                         },
                         video: {
                             width: '100%',
@@ -221,7 +229,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                 <View style={styles.iconGroup}>
                     {like?
                     <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} onPress={() => removeLikeFn()} />
-:null
+                    :null
                     }
                     {!like?
                     <AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} onPress={() => addLikeFn()} />
@@ -246,6 +254,8 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                         <Image source={Images.avatar} style={{ marginRight: 20, }} />
                         </View>
                         <Text style={styles.titlename}>{item?.item?.influencer_name?item?.item?.influencer_name:'faizaninfluencer'}</Text>
+                        
+
                         <Pressable 
                         onPress={follow}
                          style={globatStyles.followBtn}><Text style={[globatStyles.followBtnText,{fontSize:responsiveFontSize(1.2)}]}>{
@@ -297,7 +307,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 999,
     },
-    iconGroup: {
+    iconGroup: {    
         position: 'absolute',
         bottom: Constants.padding + 200,
         right: Constants.padding + 20,

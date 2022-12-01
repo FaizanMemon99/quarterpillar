@@ -101,7 +101,7 @@ const ProductDetails= (props)=>{
                     <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} 
                     // onPress={props?.route?.params?.removeLikeFn} 
                     />
-:null
+                    :null
                     }
                     {!props?.route?.params?.isLiked?
                     <AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} 

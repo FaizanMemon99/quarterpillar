@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading'
 import axios from 'axios'
 import { useEffect } from 'react'
 import showToastmsg from '../../../shared/showToastmsg'
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const ProductsScreen=(props)=>{
     const [tabs, setTabs] = useState('travel')
@@ -212,7 +213,7 @@ getProductsbyuserid()
             </ScrollView>
             <Pressable style={styles.actionBtn} onPress={toggleActionMenu}>
                 <View style={styles.actionBtnInner}>
-                    <Feather name='plus' size={28} color='#007635' />
+                    <Feather name='plus' size={25} color='#007635' />
                 </View>
             </Pressable>
             </>}
@@ -261,8 +262,8 @@ const styles = StyleSheet.create({
     },
     actionBtn: {
         position: 'absolute',
-        top: Constants.height-120,
-        right: 25,
+        top: responsiveHeight(80),
+        right: responsiveWidth(6),
         borderRadius: 40,
         backgroundColor: '#007635',
         padding: 16,

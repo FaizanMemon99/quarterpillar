@@ -33,6 +33,7 @@ import Toast from 'react-native-simple-toast'
 import PieChart from 'react-native-pie-chart';
 import axios from 'axios'
 import DashBoardLoader from './DashBoardLoader'
+import { responsiveFontSize } from 'react-native-responsive-dimensions'
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
@@ -292,9 +293,9 @@ return sum
                         </LinearGradient>
                     </View>
                     <View>
-                        <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?parseFloat(parseFloat(dashBoardData?.revenue).toFixed(2)).toLocaleString():"0.00"}</Text>
+                        <Text style={styles.totalRevinue}><FontAwesome size={responsiveFontSize(2.5)} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?parseFloat(parseFloat(dashBoardData?.revenue).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={styles.percentage}>
-                            <AntDesign name='arrowup' size={22} color={Constants.colors.primaryColor} />
+                            <AntDesign name='arrowup' size={responsiveFontSize(2.8)} color={Constants.colors.primaryColor} />
                             <Text style={styles.numberInPercentage}>{dashBoardData?.revenue?"5.86":"0.00"}%</Text>
                         </View>
                     </View>
@@ -344,7 +345,7 @@ return sum
                             {/* <FontAwesome size={18} name='rupee' style={styles.rupeeIcon} />  */}
                             {dashBoardData?.sales?parseFloat(parseFloat(dashBoardData?.sales).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
-                            <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
+                            <AntDesign name='arrowup'size={18}color={Constants.colors.primaryColor} />
                             <Text style={styles.impressionInPercentage}>{dashBoardData?.sales?"5.86":"0.00"}%</Text>
                         </View>
                     </View>}
@@ -740,7 +741,7 @@ const styles = StyleSheet.create({
     },
     totalRTevinueText: {
         fontFamily: Constants.fontFamily,
-        fontSize: 24,
+        fontSize: responsiveFontSize(3.2),
         fontWeight: '400',
     },
     gradientBg: {
@@ -758,7 +759,7 @@ const styles = StyleSheet.create({
     },
     numberInPercentage: {
         fontFamily: Constants.fontFamily,
-        fontSize: 20,
+        fontSize: responsiveFontSize(2.5),
         color: Constants.colors.primaryColor,
         fontWeight: '400',
     },
@@ -777,12 +778,12 @@ const styles = StyleSheet.create({
     },
     impressionText: {
         fontFamily: Constants.fontFamily,
-        fontSize: 20,
+        fontSize: responsiveFontSize(2.8),
         fontWeight: '400',
     },
     impressionValue: {
         fontWeight: '800',
-        fontSize: 22,
+        fontSize: responsiveFontSize(3),
         fontFamily: Constants.fontFamily,
     },
     impressionInPercentage: {
@@ -825,7 +826,7 @@ const styles = StyleSheet.create({
     },
     tabText: {
         fontFamily: Constants.fontFamily,
-        fontSize: 19,
+        fontSize: responsiveFontSize(2.5),
     },
     tabContent: {
         padding: Constants.padding,
@@ -859,7 +860,7 @@ const styles = StyleSheet.create({
     },
     ageAndGenderHeading: {
         fontFamily: Constants.fontFamily,
-        fontSize: 18,
+        fontSize: responsiveFontSize(2.4),
         fontWeight: '700',
         marginBottom: Constants.margin,
     },

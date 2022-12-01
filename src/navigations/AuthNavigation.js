@@ -63,6 +63,7 @@ import PaymentSuccess from '../screens/back/explore/PaymentSuccess'
 import MyOrders from '../screens/back/explore/MyOrders'
 import ViewExploreProfile from '../screens/back/explore/ViewExporeProfile'
 import ReelsComments from '../screens/back/explore/ReelsComments'
+import GuideScreen from '../screens/back/explore/GuideScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -132,6 +133,8 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/payment-success' component={PaymentSuccess} />
                 <Stack.Screen name='/payment-error' component={PaymentSuccess} />
                 <Stack.Screen name='/my-orders' component={MyOrders} />
+
+                <Stack.Screen name='/GuideScreen' component={GuideScreen } />
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

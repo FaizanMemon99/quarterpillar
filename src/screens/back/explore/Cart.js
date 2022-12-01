@@ -16,8 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import { responsiveWidth } from 'react-native-responsive-dimensions'
-
+import { FlashList } from '@shopify/flash-list'
 const Cart = (props)=>{
     const navigation=useNavigation()
     const [price,setprice]=useState()
@@ -83,12 +82,13 @@ tempdiscount=tempdiscount+parseFloat(item.dis_amount)
             <ActivityIndicator/>
             :
                 cartItems.length>0?
-                 <FlatList
+                 <FlashList
                     data={cartItems}
                     style={{marginBottom: 10,}}
                     showsVerticalScrollIndicator={false}
                     renderItem={item=><RenderCart item={item} getCartData={getCartData} price={price} setprice={setprice}/>}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
                 :
                 <View>
                     <Text style={[styles.description,{fontSize:20,textAlign:'center',marginTop:20}]}>

@@ -16,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import { useNavigation } from '@react-navigation/native'
+import { responsiveFontSize } from 'react-native-responsive-dimensions'
 
 const RenderBusinessRequest = ({item,userDetails}) => {
     const [loader,setLoader]=useState(false)
@@ -51,7 +52,7 @@ const RenderBusinessRequest = ({item,userDetails}) => {
                                 height: item?.item?.avatar&&48,}}/>
                     </View>
                     <View>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, fontWeight: '700',textTransform:'capitalize'}}>{item?.item?.username}</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: responsiveFontSize(2), fontWeight: '700',textTransform:'capitalize'}}>{item?.item?.username}</Text>
                         <Text style={{fontFamily: Constants.fontFamily, color: '#A4A4B2'}}>Influencer</Text>
                     </View>
                 </View>

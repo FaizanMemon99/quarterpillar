@@ -21,6 +21,7 @@ import { useNavigation } from '@react-navigation/native'
 import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
+import { responsiveFontSize } from 'react-native-responsive-dimensions'
 
 const RenderReeelsAdv = ({ item ,userDetails}) => {
     
@@ -170,13 +171,13 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 25,
-        fontSize: 25,
+        fontSize: responsiveFontSize(3.2),
         color: Constants.colors.whiteColor,
     },
     iconText: {
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
-        fontSize: 12,
+        fontSize: responsiveFontSize(1.5),
         marginTop: 6,
     },
     productDetailsContainer: {

@@ -108,7 +108,7 @@ const Product=(props)=>{
                         <AntDesign name='message1' style={styles.icon} />
                         <Text style={styles.iconText}>00n</Text>
                         <Feather name='send' style={styles.icon} />
-                        <Text style={styles.iconText}>00n</Text>
+                        {/* <Text style={styles.iconText}>00n</Text> */}
                     </View>
                     <View style={styles.productDetailsContainer}>
                         <View style={styles.imgContainer}>
