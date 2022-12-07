@@ -8,6 +8,9 @@ import {
     Modal,
     ActivityIndicator,
     Share,
+    ScrollView,
+    RefreshControl,
+    
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import VideoPlayer from 'react-native-video-player'
@@ -22,9 +25,10 @@ import moment from 'moment/moment'
 import axios from 'axios'
 import StoriesPage from './StoriesPage'
 import { responsiveFontSize, responsiveHeight , responsiveWidth  } from 'react-native-responsive-dimensions'
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
-    
+    const [refresh,setrefresh] = useState(false)
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
     const [followLoader, setfollowLoader] = useState(false)
@@ -189,15 +193,25 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
             break;
         }
       };
+      const Refershpull =()=>{
+        get()
+      }
     return (
         <>
         {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
         <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/></View>:
-            <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
+              <ScrollView refreshControl={<RefreshControl
+                refreshing={refresh}
+                onRefresh={()=>Refershpull()}
+            />}>
+           <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
             onLongPress={gotoStoriespage}
             onPress={handleClick}
-            >
-                <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}></View>
+            >   
+                
+                <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}>
+                
+                </View>
                 {videoVar?<VideoPlayer
                     video={videoVar}
                     autoplay
@@ -225,7 +239,9 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                         seekBarProgress: {
                             backgroundColor: 'transparent',
                         },
+                        
                     }} />:null}
+                   
                 <View style={styles.iconGroup}>
                     {like?
                     <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} onPress={() => removeLikeFn()} />
@@ -281,6 +297,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                                 
                                 }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
                 </View>
+                
                 <Modal
                         animationType="slide"
                         // transparent={true}
@@ -294,7 +311,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                             gotoStoriespage={gotoStoriespage}
                         />
                     </Modal>
-            </Pressable>}
+            </Pressable></ScrollView>}
         </>
     )
 }

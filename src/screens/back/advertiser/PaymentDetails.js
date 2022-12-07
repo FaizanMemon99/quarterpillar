@@ -35,7 +35,7 @@ const PaymentDetails = ({navigation})=>{
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Payment' headerRight={false} />
             <ScrollView style={styles.wrapper}>
                 <Text style={styles.description}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
                 </Text>
                 <View style={styles.boxContainer}>
                     <Text style={{fontFamily: Constants.fontFamily, fontSize: 22, marginBottom: 12,}}>Post Details</Text>

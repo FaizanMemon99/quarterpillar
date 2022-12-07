@@ -12,6 +12,7 @@ import CustomAppBar from '../../../components/admin/CustomAppBar'
 import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import RenderReview from './RenderReview'
+import { FlashList } from '@shopify/flash-list'
 
 const AppRattings=({navigation})=>{
     const reviews = [
@@ -43,10 +44,11 @@ const AppRattings=({navigation})=>{
                     <Pressable style={styles.tages}><Text style={styles.tagsText}>Detailed</Text></Pressable>
                     <Pressable style={styles.tages}><Text style={styles.tagsText}>Images</Text></Pressable>
                 </View>
-                <FlatList
+                <FlashList
                     data={reviews}
                     renderItem={item=><RenderReview item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </ScrollView>
         </View>
     )

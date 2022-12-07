@@ -21,7 +21,7 @@ import { useNavigation } from '@react-navigation/native'
 import RenderReelsComment from './RenderReelsComment'
 import moment from 'moment/moment'
 import axios from 'axios'
-import { responsiveFontSize } from 'react-native-responsive-dimensions'
+import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
 
 const RenderReeelsAdv = ({ item ,userDetails}) => {
     
@@ -200,23 +200,24 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontWeight: '800',
         color: Constants.colors.whiteColor,
-        fontSize: 25,
+        fontSize: responsiveFontSize(3.3),
         marginRight: 12,
         textTransform:'capitalize'
     },
     desc: {
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
-        marginTop: 14,
+        marginTop: responsiveHeight(1)
     },
     moreBtn: {
         color: '#F1F1F1',
         fontFamily: Constants.fontFamily,
     },
     minsAgo: {
-        fontSize: 13,
+        fontSize: responsiveFontSize(1.7),
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
+        marginBottom: responsiveHeight(3.2),
     },
 })
 

@@ -19,6 +19,7 @@ import Images from '../../../assets/images/Images'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import { FlashList } from '@shopify/flash-list'
 
 const ReelsComments = (props) => {
     const navigation=useNavigation()
@@ -98,13 +99,14 @@ const ReelsComments = (props) => {
         <ActivityIndicator color={Constants.colors.primaryColor} size={35}/>
         :
         <>
-        <FlatList
+        <FlashList
                 showsVerticalScrollIndicator={false}
                 data={commentsData}
                 style={{ marginBottom: 40, }}
                 renderItem={item => <RenderComments item={item} userDetails={props?.route?.params?.userDetails}
                 commentLikeData={commentLikeData}
                 getAllLikes={getAllLikes}
+                estimatedItemSize={200}
                 />}
                 keyExtractor={item => item?.id?.toString()} 
                 ListEmptyComponent={<View style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:50}}>

@@ -13,6 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import RenderEarnings from './RenderEarnings'
 import CustomAppBar from '../../../components/influencer/CustomAppBar'
+import { FlashList } from '@shopify/flash-list'
 
 const Earnings = (props)=>{
     const [tabs,setTabs] = useState('w')
@@ -155,10 +156,11 @@ const Earnings = (props)=>{
                         <Pressable onPress={()=>setReturnTab('s')}><Text style={[styles.tabTextProduct, {color: returnTab==='s'?Constants.colors.primaryColor:'#000000', textDecorationLine: returnTab==='s'?'underline':'none'}]}>Services</Text></Pressable>
                     </View>
                     <View style={{marginBottom: 80}}>
-                        <FlatList
+                        <FlashList
                             data={returnTab==='p'?products:services}
                             renderItem={item=><RenderEarnings producys={item} />}
-                            keyExtractor={item=>item?.id?.toString()} />
+                            keyExtractor={item=>item?.id?.toString()} 
+                            estimatedItemSize={200}/>
                     </View>
                 </View>
             </ScrollView>

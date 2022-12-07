@@ -20,6 +20,7 @@ import RenderComplaints from './RenderComplaints'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
+import { FlashList } from '@shopify/flash-list'
 
 const HomeScreen = (props) => {
     const navigation = useNavigation()
@@ -160,10 +161,11 @@ const HomeScreen = (props) => {
                         <Text style={{fontFamily: Constants.fontFamily, fontSize: 18,}}>New Complaints (42)</Text>
                         <Text onPress={gotoAllComplaints} styles={{fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor,textDecorationLine: 'underline'}}>View All</Text>
                     </View>
-                    <FlatList
+                    <FlashList
                         data={complaints}
                         renderItem={item=><RenderComplaints item={item} />}
-                        keyExtractor={item=>item?.id?.toString()} />
+                        keyExtractor={item=>item?.id?.toString()} 
+                        estimatedItemSize={200}/>
                 </ScrollView>
                 <CustomTabNavigationAdmin navigation={navigation} showDrawer={showDrawer}  activeTab='home' />
             </Animated.View>

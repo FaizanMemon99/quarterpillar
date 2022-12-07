@@ -160,15 +160,16 @@ const  OpenCamera=(props)=>{
                     autoplay
                     repeat={true}
                     resizeMode={'cover'}
+                    
                     customStyles={{
-                        wrapper: {
+                        wrapper:{
                             width: Constants.width,
                             height: Constants.height,
                             paddingBottom: Constants.padding,
                         },
                         video: {
                             width: Constants.width,
-                            height: Constants.height+25,
+                            height: "100%",
                         },
                         controls: {
                             display: 'none',
@@ -189,7 +190,7 @@ const  OpenCamera=(props)=>{
                 <View style={{padding: Constants.padding}}>
                     <Pressable onPress={gotoAddPost} style={[globatStyles.button, {marginBottom: 20,}]}
                     disabled={!video}
-                    ><Text style={globatStyles.btnText}>Continue</Text></Pressable>
+                    ><Text style={[globatStyles.btnText,]}>Continue</Text></Pressable>
                 </View>
             </View>
         </View>
@@ -199,7 +200,7 @@ const  OpenCamera=(props)=>{
 const styles = StyleSheet.create({
     cameraImg: {
         width: Constants.width,
-        height: 350,
+        height: "100%",
     },
     imgContainer: {
         flex: 1,

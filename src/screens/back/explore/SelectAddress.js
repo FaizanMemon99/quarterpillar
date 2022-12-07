@@ -6,7 +6,7 @@ import {
     StatusBar,
     ScrollView,
     Pressable,
-    ActivityIndicator,Image
+    ActivityIndicator,Image, RefreshControl
 } from 'react-native'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Constants from '../../../shared/Constants'
@@ -22,6 +22,7 @@ const SelectAddress = (props)=>{
     const [loader,setLoader] = useState(false)
     const [deleteLoader,setdeleteLoader]=useState(false)
     const [address,setAddress] = useState([])
+    const [refresh, setrefresh] = useState(false)
     const navigation=useNavigation()
     const addAddress = (data)=>{
         if(data)
@@ -108,7 +109,10 @@ const SelectAddress = (props)=>{
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor='transparent' />
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Select Address' headerRight={false} />
-            <ScrollView style={styles.wrapper}>
+            <ScrollView style={styles.wrapper} refreshControl={<RefreshControl
+                refreshing={refresh}
+                onRefresh={() => getAddress()}
+            />}>
                 <Text style={styles.description}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>

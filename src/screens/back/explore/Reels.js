@@ -3,15 +3,19 @@ import {
     View,
     Text,
     StyleSheet,
-    Pressable
+    Pressable,
+    RefreshControl
 } from 'react-native'
 import CustomAppBar from '../../../components/explore/CustomAppBar'
 import Swiper from 'react-native-swiper'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import RenderReeels from './RenderReeels'
 import { FlashList } from "@shopify/flash-list";
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Reels=({navigation})=>{
+    const [refresh, setrefresh] = useState(false)
+
     const travelPosts = [
         {id:1, video: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4'},
         {id:2, video: 'http://qp.flymingotech.in/public/videos/inf.mp4'},
@@ -36,7 +40,9 @@ const Reels=({navigation})=>{
         {id:15, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
         {id:16, video: 'http://qp.flymingotech.in/public/videos/business.mp4'}
     ]
+   
     return (
+    
         <Swiper style={styles.wrapper} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Travel' headerRight={true} />
@@ -46,7 +52,8 @@ const Reels=({navigation})=>{
                     style={styles.category} 
                     renderItem={item=><RenderReeels item={item} />}
                     keyExtractor={item=>item?.id?.toString()} 
-                    estimatedItemSize={200}/>
+                    estimatedItemSize={200}
+                     />
                 </View>
 
             <View style={styles.reel}>
@@ -56,7 +63,8 @@ const Reels=({navigation})=>{
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
                     keyExtractor={item=>item?.id?.toString()} 
-                    estimatedItemSize={200}/>
+                    estimatedItemSize={200}
+                    />
             </View>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Life Style' headerRight={true} />
@@ -65,7 +73,8 @@ const Reels=({navigation})=>{
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
                     keyExtractor={item=>item?.id?.toString()} 
-                    estimatedItemSize={200}/>
+                    estimatedItemSize={200}
+                    />
             </View>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Food' headerRight={true} />
@@ -74,9 +83,11 @@ const Reels=({navigation})=>{
                     style={styles.category}
                     renderItem={item=><RenderReeels item={item} />}
                     keyExtractor={item=>item?.id?.toString()}
-                    estimatedItemSize={200}/>
+                    estimatedItemSize={200}
+                    />
             </View>
         </Swiper>
+        
     )
 }
 

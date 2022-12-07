@@ -1,3 +1,4 @@
+import { FlashList } from '@shopify/flash-list'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {
@@ -106,13 +107,13 @@ const MyPillars = (props)=>{
                     {loader?
                     <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
                     :
-                        <FlatList
+                        <FlashList
                         style={{marginBottom: 80,marginTop:10}}
                         data={tabs=='ongoing'?pillarsData:pillarsEndedData}
                         renderItem={item=><RenderMyPillar pillars={item}  getData={getData} tabs={tabs}/>}
                         keyExtractor={item=>item?.id?.toString()}
                         ListEmptyComponent={EmptyListMessage}
-                        />}
+                        estimatedItemSize={200}/>}
                 </View>
             </ScrollView>
         </View>

@@ -18,6 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import { FlashList } from '@shopify/flash-list'
 
 const UserManagement=(props)=>{
     const navigation=useNavigation()
@@ -161,10 +162,11 @@ const UserManagement=(props)=>{
                     <Text style={[styles.headingText, {width:'50%',textAlign:'left'}]}>Role</Text>
                     <Text style={[styles.headingText, {width:'30%'}]}>Status</Text>
                 </View>
-                <FlatList
+                <FlashList
                     data={users}
                     renderItem={item=><RenderUserList data={item} privilagesData={privilagesData}/>}
-                    keyExtractor={item=>item?.id?.toString()}/>
+                    keyExtractor={item=>item?.id?.toString()}
+                    estimatedItemSize={200}/>
                     </>
                 :
                 <View style={{width:'100%',paddingTop:20,paddingBottom:10}}>

@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
+import { FlashList } from '@shopify/flash-list'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {
@@ -36,6 +37,7 @@ const MyRequest = (props)=>{
         axios.get(`${Constants.BASE_URL}influencer/get-req-influencer-collabration/${props?.route?.params?.userDetails?.influencer?.influencer_id}`)
         .then((response)=>{
             setLoader(false)
+
             if(response.data.response==200){
                 console.log("response",response.data.data.Business);
                 if(type=='pending')
@@ -135,13 +137,13 @@ const MyRequest = (props)=>{
                     {loader?
                     <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
                     :
-                        <FlatList
+                        <FlashList
                         style={{marginBottom: 80,marginTop:10}}
                         data={tabs=='pending'?influencerRequestdata:influencerApprovedata}
                         renderItem={item=><RenderMyRequest pillars={item} tabs={tabs} getBussinessRequests={getBussinessRequests}/>}
                         keyExtractor={item=>item?.id?.toString()}
                         ListEmptyComponent={EmptyListMessage}
-
+                        estimatedItemSize={200}
                         />}
                 </View>
             </ScrollView>

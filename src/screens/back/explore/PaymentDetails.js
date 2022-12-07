@@ -33,7 +33,7 @@ const PaymentDetails = (props)=>{
     const [couponCode,setcouponCode]=useState()
     const [discount,setdiscount]=useState()
     const [totalPrice,setTotalPrice]=useState()
-    const [couponCodeValue,setcouponCodeValue]=useState()
+    const [couponCodeValue,setcouponCodeValue]=useState() 
     const [selectedAddress,setselectedAddress]=useState('')
     const [cartItems,setCartItems]=useState([])
     const [loader,setLoader]=useState(false)
@@ -45,6 +45,7 @@ const PaymentDetails = (props)=>{
             userDetails:props?.route?.params?.userDetails,
             address_id:props?.route?.params?.address_id
         })
+        
     }
     
     const callPaymentGateway = (accessKey) => {
@@ -57,7 +58,7 @@ const PaymentDetails = (props)=>{
           //handle the payment success & failed response here
           console.log("Payment Response:")
           if(data.result.includes("payment_successfull"))
-{
+ {
         console.log("object response",{
             "user_id": props?.route?.params?.userDetails?.id,
             "cart_ids": cartItems.map((item)=>item.data.cart_id),
@@ -209,7 +210,7 @@ const PaymentDetails = (props)=>{
             })
             .catch((error)=>{
                 navigation.navigate('/payment-error',{price:price,
-                    couponCode:couponCode,
+                    couponCode:couponCode, 
                     couponCodeValue:couponCodeValue,
                     selectedAddress:props?.route?.params?.selectedAddress,
                     discount:discount,
@@ -238,7 +239,7 @@ const PaymentDetails = (props)=>{
     },[props?.route?.params])
     return (
         <View style={styles.container}>
-            <StatusBar translucent={true} backgroundColor='transparent' />
+            <StatusBar translucent={true} backgroundColor='transparent'  />
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Payment' headerRight={false} />
             <ScrollView style={styles.wrapper}>
                 <Text style={styles.description}>

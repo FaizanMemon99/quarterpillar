@@ -33,7 +33,11 @@ import Toast from 'react-native-simple-toast'
 import PieChart from 'react-native-pie-chart';
 import axios from 'axios'
 import DashBoardLoader from './DashBoardLoader'
-import { responsiveFontSize } from 'react-native-responsive-dimensions'
+import { FlashList } from '@shopify/flash-list'
+import ReactDatamaps from "react-india-states-map";
+import {inMill} from '@react-jvectormap/spain'
+
+
 const HomeScreen=(props)=>{
     const [tabs, setTabs] = useState('city')
     const [showSwitchAcountModal, setShowSwitchAcountModal] = useState(props.route.params?props.route.params.switchAccount: false)
@@ -164,7 +168,7 @@ return sum
     function isImage(url) {
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
     }
-    const getDashBoardData=()=>{
+    const getDashBoardData=()=>{ 
         setLoader(true)
         axios.post(`${Constants.BASE_URL}business/get-dashboard-details`,{
             user_id:props?.route?.params?.userDetails?.id
@@ -239,7 +243,7 @@ return sum
                             :
                                 Images.avatar}  style={{width:60,height:'100%'}}/>
                         </View>
-                        <View>
+                        <View> 
                             <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name.length>20?props?.route?.params?.userDetails?.name.slice(0,20)+'...':props?.route?.params?.userDetails?.name}</Text>
                             <Text style={styles.founder}>{Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]}</Text>
                         </View>
@@ -293,9 +297,9 @@ return sum
                         </LinearGradient>
                     </View>
                     <View>
-                        <Text style={styles.totalRevinue}><FontAwesome size={responsiveFontSize(2.5)} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?parseFloat(parseFloat(dashBoardData?.revenue).toFixed(2)).toLocaleString():"0.00"}</Text>
+                        <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?parseFloat(parseFloat(dashBoardData?.revenue).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={styles.percentage}>
-                            <AntDesign name='arrowup' size={responsiveFontSize(2.8)} color={Constants.colors.primaryColor} />
+                            <AntDesign name='arrowup' size={22} color={Constants.colors.primaryColor} />
                             <Text style={styles.numberInPercentage}>{dashBoardData?.revenue?"5.86":"0.00"}%</Text>
                         </View>
                     </View>
@@ -345,7 +349,7 @@ return sum
                             {/* <FontAwesome size={18} name='rupee' style={styles.rupeeIcon} />  */}
                             {dashBoardData?.sales?parseFloat(parseFloat(dashBoardData?.sales).toFixed(2)).toLocaleString():"0.00"}</Text>
                         <View style={{flexDirection: 'row', marginTop: 12,}}>
-                            <AntDesign name='arrowup'size={18}color={Constants.colors.primaryColor} />
+                            <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
                             <Text style={styles.impressionInPercentage}>{dashBoardData?.sales?"5.86":"0.00"}%</Text>
                         </View>
                     </View>}
@@ -383,12 +387,13 @@ return sum
                 <>
                     <Text style={styles.cityName}>{item?item:"-"}</Text>
             <View style={styles.progressBar}>
+                <View style={{flex:5}}>
                 <View style={styles.progressBarBg}></View>
                 <View style={{...styles.progressBarFront, width: 
                 `${((dashBoardData?.cities[item]*100)/
                 allSum((dashBoardData?.cities)))}%`
-                }}></View>
-                <Text>{dashBoardData?.cities[item]?parseFloat((dashBoardData?.cities[item]*100)/
+                }}></View></View>
+                <Text style={{flex:1}}>{dashBoardData?.cities[item]?parseFloat((dashBoardData?.cities[item]*100)/
                 allSum((dashBoardData?.cities))
                 ).toFixed(2):"0.0"}%</Text>
             </View>
@@ -396,7 +401,11 @@ return sum
                 
                 )
             }
-            <Image source={Images.indiaMap} style={{alignSelf: 'center',}} />
+
+
+
+         {/* <VectorMap map={inMill}  /> */}
+            {/* <Image source={Images.indiaMap} style={{alignSelf: 'center',}} /> */}
         </View>)
     :
        ( <View style={styles.tabContent}>
@@ -424,7 +433,7 @@ return sum
                 </View>
                 </>
                     
-                    )
+                 )
                 }
                 {/* {console.log("aaaa+.",Object.keys(dashBoardData?.country))} */}
                 {/* <Image source={Images.indiaMap} style={{alignSelf: 'center',}} /> */}
@@ -525,11 +534,12 @@ return sum
                     <View style={styles.divider}></View>
                    {loader?
                    <DashBoardLoader/>
-                   : <FlatList
+                   : <FlashList
                         data={dashBoardData?.recent_order}
                         keyExtractor={item=>item?.id?.toString()}
                         ListEmptyComponent={EmptyListMessage}
-                        renderItem={(item)=><RenderRecentOrders order={item} />}
+                        renderItem={(item)=><RenderRecentOrders order={item} 
+                        estimatedItemSize={200}/>}
                     />}
                 </View>
                
@@ -741,7 +751,7 @@ const styles = StyleSheet.create({
     },
     totalRTevinueText: {
         fontFamily: Constants.fontFamily,
-        fontSize: responsiveFontSize(3.2),
+        fontSize: 24,
         fontWeight: '400',
     },
     gradientBg: {
@@ -759,7 +769,7 @@ const styles = StyleSheet.create({
     },
     numberInPercentage: {
         fontFamily: Constants.fontFamily,
-        fontSize: responsiveFontSize(2.5),
+        fontSize: 20,
         color: Constants.colors.primaryColor,
         fontWeight: '400',
     },
@@ -778,12 +788,12 @@ const styles = StyleSheet.create({
     },
     impressionText: {
         fontFamily: Constants.fontFamily,
-        fontSize: responsiveFontSize(2.8),
+        fontSize: 20,
         fontWeight: '400',
     },
     impressionValue: {
         fontWeight: '800',
-        fontSize: responsiveFontSize(3),
+        fontSize: 22,
         fontFamily: Constants.fontFamily,
     },
     impressionInPercentage: {
@@ -826,7 +836,7 @@ const styles = StyleSheet.create({
     },
     tabText: {
         fontFamily: Constants.fontFamily,
-        fontSize: responsiveFontSize(2.5),
+        fontSize: 19,
     },
     tabContent: {
         padding: Constants.padding,
@@ -860,7 +870,7 @@ const styles = StyleSheet.create({
     },
     ageAndGenderHeading: {
         fontFamily: Constants.fontFamily,
-        fontSize: responsiveFontSize(2.4),
+        fontSize: 18,
         fontWeight: '700',
         marginBottom: Constants.margin,
     },

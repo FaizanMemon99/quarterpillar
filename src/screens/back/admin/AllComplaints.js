@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 import RenderComplaints from './RenderComplaints'
+import { FlashList } from '@shopify/flash-list'
 
 const AllCompaints = (props) => {
     const navigation = useNavigation()
@@ -42,10 +43,11 @@ const AllCompaints = (props) => {
             <StatusBar translucent={true} backgroundColor='transparent' />
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} headerRight={false} title='All Compaints' />
             <ScrollView>
-                <FlatList
+                <FlashList
                     data={complaints}
                     renderItem={item=><RenderComplaints item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </ScrollView>
         </View>
     )

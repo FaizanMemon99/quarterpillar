@@ -20,7 +20,8 @@ import Loading from '../../../components/Loading'
 import axios from 'axios'
 import { useEffect } from 'react'
 import showToastmsg from '../../../shared/showToastmsg'
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { responsiveFontSize, responsiveHeight, responsiveScreenHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+// import { FlashList } from '@shopify/flash-list'
 
 const ProductsScreen=(props)=>{
     const [tabs, setTabs] = useState('travel')
@@ -198,10 +199,11 @@ getProductsbyuserid()
                     </Pressable>
                 </View> */}
                 <View style={{paddingTop:10}}>
-                    {userProdcuts.length>0?<FlatList 
+                    {userProdcuts.length>0?<FlatList
                         data={userProdcuts}
                         renderItem={item=><RenderProducts products={item} userDetails={props?.route?.params?.userDetails}/>}
-                        keyExtractor={item=>item?.index}/>
+                        keyExtractor={item=>item?.index}
+                        />
                     :
                     <View style={{display:'flex',alignItems:'center',paddingTop:10}}>
                     <Text style={[styles.actionMenuItem,{color:'#000'}]}>
@@ -213,7 +215,7 @@ getProductsbyuserid()
             </ScrollView>
             <Pressable style={styles.actionBtn} onPress={toggleActionMenu}>
                 <View style={styles.actionBtnInner}>
-                    <Feather name='plus' size={25} color='#007635' />
+                    <Feather name='plus' size={ responsiveFontSize(3) } color='#007635' />
                 </View>
             </Pressable>
             </>}
@@ -262,13 +264,16 @@ const styles = StyleSheet.create({
     },
     actionBtn: {
         position: 'absolute',
-        top: responsiveHeight(80),
+        // top: responsiveHeight(80),
         right: responsiveWidth(6),
         borderRadius: 40,
         backgroundColor: '#007635',
         padding: 16,
         elevation: 10,
         zIndex: 999,
+        marginTop: responsiveScreenHeight(78),
+        marginBottom: responsiveScreenHeight(10),
+        // marginBottom:,
     },
     actionBtnInner: {
         backgroundColor: Constants.colors.whiteColor,

@@ -39,7 +39,7 @@ const  Draft=(props)=>{
         navigation.navigate('/product-preview', {category: 'Travel'})
     }
     return (
-        <View style={globatStyles.wrapper}>
+        <View style={globatStyles.wrapper}> 
             <StatusBar translucent={true} backgroundColor='transparent' />
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} headerRight={false} title='Post' subtitle='Travel' isCamera={true} isDraft={true} />
             <ScrollView style={styles.container}>

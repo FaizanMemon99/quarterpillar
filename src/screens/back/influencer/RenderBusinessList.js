@@ -12,6 +12,7 @@ import Constants from '../../../shared/Constants'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const RenderBusinessList = () => {
     
@@ -23,7 +24,7 @@ const RenderBusinessList = () => {
                         <Image source={Images.nike} />
                     </View>
                     <View>
-                        <Text style={{fontFamily: Constants.fontFamily, fontSize: 18, fontWeight: '700',}}>Robert Phan</Text>
+                        <Text style={{fontFamily: Constants.fontFamily, fontSize: responsiveFontSize(2.2), fontWeight: '700',}}>Robert Phan</Text>
                         <Text style={{fontFamily: Constants.fontFamily, color: '#A4A4B2'}}>Fashion</Text>
                     </View>
                 </View>
@@ -61,8 +62,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     barndIcon: {
-        width: 48,
-        height: 48,
+        width: responsiveWidth(15),
+        height: responsiveHeight(7),
         backgroundColor: '#000000',
         borderRadius: 15,
         alignItems: 'center',

@@ -13,6 +13,7 @@ import Constants from '../../../shared/Constants'
 import RenderCart from './RenderCart'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import globatStyles from '../../../shared/globatStyles'
+import { FlashList } from '@shopify/flash-list'
 
 const Cart = ({navigation})=>{
     const cartItems = [
@@ -33,12 +34,13 @@ const Cart = ({navigation})=>{
                 <Text style={styles.description}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                 </Text>
-                <FlatList
+                <FlashList
                     data={cartItems}
                     style={{marginBottom: 10,}}
                     showsVerticalScrollIndicator={false}
                     renderItem={item=><RenderCart item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </ScrollView> 
             <Pressable onPress={gotoSelectAddress} style={[globatStyles.button, {marginTop: 10}]}><Text style={globatStyles.btnText}>Proceeds ( <FontAwesome name='rupee' /> 1250 )</Text></Pressable>
         </View>

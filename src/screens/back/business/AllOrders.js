@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import Loading from '../../../components/Loading'
+import { FlashList } from '@shopify/flash-list'
 
 
 const AllOrders = (props)=>{
@@ -96,12 +97,13 @@ const AllOrders = (props)=>{
                    {loader?
                    <Loading/>
                    :
-                    <FlatList
+                    <FlashList
                         style={{marginBottom: 80,flex:1}}
                         data={data}
                         renderItem={item=><RenderOrders pillars={item} />}
                         ListEmptyComponent={EmptyListMessage}
-                        keyExtractor={(item,index)=>index?.toString()}/>}
+                        keyExtractor={(item,index)=>index?.toString()}
+                        estimatedItemSize={200}/>}
                 </View>
             </ScrollView>
             </SafeAreaView>

@@ -13,6 +13,7 @@ import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
 import  SearchBar from '../../../components/explore/SearchBar'
 import RenderBusinessRequest from './RenderBusinessRequest'
+import { FlashList } from '@shopify/flash-list'
 
 const BusinessRequest=(props)=>{
     const navigation = useNavigation()
@@ -44,10 +45,11 @@ const BusinessRequest=(props)=>{
                     <Text style={[styles.tab, {color: tabs==='ongoing'?Constants.colors.primaryColor:'#676767', textDecorationLine: tabs==='ongoing'?'underline':'none',}]} onPress={()=>setTab('ongoing')}>Ongoing</Text>
                     <Text style={[styles.tab, {color: tabs==='pending'?Constants.colors.primaryColor:'#676767', textDecorationLine: tabs==='pending'?'underline':'none',}]} onPress={()=>setTab('pending')}>Pending</Text>
                 </View> */}
-                <FlatList 
+                <FlashList 
                     data={tabs==='ongoing'?ongoing:pending} 
                     renderItem={item=><RenderBusinessRequest item={item}
-                    keyExtractor={item=>item?.id?.tostring()} />}/>
+                    keyExtractor={item=>item?.id?.tostring()} 
+                    estimatedItemSize={200}/>}/>
             </ScrollView>
         </View>
     )

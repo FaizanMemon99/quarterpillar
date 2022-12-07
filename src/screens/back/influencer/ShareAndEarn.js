@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RenderShareAndEarn from './RenderShareAndEarn'
 import RenderShareAndEarnShared from './RenderShareAndEarnShared'
+import { FlashList } from '@shopify/flash-list'
 
 const ShareAndEarn = ({ navigation }) => {
     const [tabs, setTabs] = useState('latest')
@@ -52,10 +53,11 @@ const ShareAndEarn = ({ navigation }) => {
                     <Pressable onPress={()=>setTabs('latest')}><Text style={[styles.tabTextProduct, {color: tabs==='latest'?Constants.colors.primaryColor:'#000000', textDecorationLine: tabs==='latest'?'underline':'none'}]}>Latest</Text></Pressable>
                     <Pressable onPress={()=>setTabs('shared')}><Text style={[styles.tabTextProduct, {color: tabs==='shared'?Constants.colors.primaryColor:'#000000', textDecorationLine: tabs==='shared'?'underline':'none'}]}>Shared</Text></Pressable>
                 </View>
-                <FlatList
+                <FlashList
                     data={tabs==='latest'?latest:shared}
                     renderItem={item =>tabs==='latest'?<RenderShareAndEarn item={item} successMsg={successMsg} />:<RenderShareAndEarnShared item={item} />}
-                    keyExtractor={item => item?.id?.toString()} />
+                    keyExtractor={item => item?.id?.toString()}
+                    estimatedItemSize={200} />
             </ScrollView>
         </View>
     )

@@ -1,3 +1,4 @@
+import { FlashList } from '@shopify/flash-list'
 import React, { useState } from 'react'
 import {
     View,
@@ -31,11 +32,12 @@ const Follow = ({navigation})=>{
                     <Pressable onPress={()=>setTabs('users')}><Text style={[styles.tabs,tabs==='users'?styles.activeTab:null]}>Users</Text></Pressable>
                     <Pressable onPress={()=>setTabs('posts')}><Text style={[styles.tabs,tabs==='posts'?styles.activeTab:null]}>Posts</Text></Pressable>
                 </View>
-                <FlatList
+                <FlashList
                     data={tabs==='users'?follow:posts}
                     showsVerticalScrollIndicator={false}
                     renderItem={item=><RenderFollow item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
+                    keyExtractor={item=>item?.id?.toString()} 
+                    estimatedItemSize={200}/>
             </View>
         </View>
     )
