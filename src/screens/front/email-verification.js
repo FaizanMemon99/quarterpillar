@@ -18,7 +18,7 @@ import showToastmsg from '../../shared/showToastmsg'
 import { apiCall } from '../../service/service'
 import endPoints from '../../shared/endPoints'
 import axios from 'axios'
-
+import Videos from '../../assets/staticVideos/Videos'
 const EmailVerification=(props)=>{
     const navigation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
@@ -92,7 +92,10 @@ const EmailVerification=(props)=>{
     return (
         <View style={styles.background}>
             <VideoPlayer
-                 video={{ uri: props?.route?.params?.userType==="Business"?"https://acapp.in/uploads/biz1.mp4":props?.route?.params?.userType==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":props?.route?.params?.userType==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
+                  video={props?.route?.params?.userType==="Business"?Videos.businessVideo
+                  :props?.route?.params?.userType==="Influencer"?
+                  Videos.influencerVideo:props?.route?.params?.userType==="Explorer"?
+                  Videos.exploreVideo:Videos.advertiserVideo}
                  autoplay
                  loop
                  disableSeek

@@ -18,7 +18,7 @@ import Loading from '../../components/Loading'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Video from 'react-native-video'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import Videos from '../../assets/staticVideos/Videos'
 const Discover = () => {
     const navigation = useNavigation()
     const [users, setUsers] = useState([])
@@ -26,7 +26,6 @@ const Discover = () => {
         const users = await apiCall('GET', endPoints.USER_TYPES, '', '')
         setUsers(users)
     }
-    var url="https://acapp.in/uploads/biz1.mp4"
 
     const redirectFn=()=>{
         if(props.route.params.login_type=='Business')
@@ -78,7 +77,13 @@ const Discover = () => {
                     user.role_name !== 'Admin' ? (
                         <Pressable style={{ marginBottom: Constants.margin, }} onPress={()=>gotoLogin(user.role_name)} key={user.id}>
                             <VideoPlayer
-                                video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
+                            thumbnail={Images.PlusIcon}
+                            onVideoBuffer={(e)=>console.log("buffering",e)}
+                                video={user.role_name==="Business"?Videos.businessVideo
+                                :user.role_name==="Influencer"?
+                                Videos.influencerVideo:user.role_name==="Explorer"?
+                                Videos.exploreVideo:Videos.advertiserVideo}
+                                // video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
                                 autoplay
                                 repeat={true}
                                 muted

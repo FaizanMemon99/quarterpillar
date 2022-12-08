@@ -18,7 +18,7 @@ import showToastmsg from '../../../shared/showToastmsg'
 import { apiCall } from '../../../service/service'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-
+import Videos from '../../../assets/staticVideos/Videos'
 const BusinessSignIn=(props)=>{
     const navigation  = useNavigation()
     const [showPass, setShowPass] = useState(false)
@@ -118,10 +118,14 @@ const BusinessSignIn=(props)=>{
         setLoginId('')
         setPassword('')
     },[props])
+    
     return (
         <View style={styles.background}>
             <VideoPlayer
-                 video={{ uri: props.route.params.login_type==="Business"?"https://acapp.in/uploads/biz1.mp4":props.route.params.login_type==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":props.route.params.login_type==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
+                  video={props?.route?.params?.login_type==="Business"?Videos.businessVideo
+                  :props?.route?.params?.login_type==="Influencer"?
+                  Videos.influencerVideo:props?.route?.params?.login_type==="Explorer"?
+                  Videos.exploreVideo:Videos.advertiserVideo}
                  autoplay
                  repeat={true}
                  resizeMode={'cover'}
@@ -179,7 +183,7 @@ const BusinessSignIn=(props)=>{
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        height: Constants.width,
+        height: Constants.height,
         alignItems: 'center',
         justifyContent: 'center',
     },
