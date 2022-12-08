@@ -14,7 +14,7 @@ const DashBoardLoader = (props) => {
         <View style={styles.container}>
             <PlaceholderContainer
                 animatedComponent={<Gradient />}
-                duration={1000} 
+                // duration={1000} 
                 delay={1000}
             >
                 <Placeholder style={[styles.placeholder, { width: '100%', height: props?.height?props?.height:200 }]} />

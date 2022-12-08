@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import VideoPlayer from 'react-native-video-player'
 import globatStyles from '../../../shared/globatStyles'
 import Constants from '../../../shared/Constants'
+import Videos from '../../../assets/staticVideos/Videos'
 
 const  Category=(props)=>{
     const navigation = useNavigation()
@@ -23,7 +24,7 @@ const  Category=(props)=>{
         <View style={styles.wrapper}>  
             <Pressable onPress={()=>businessRegistration('Travel')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'https://acapp.in/uploads/biztypes/travel.mp4' }}
+                    video={Videos.travel}
                     autoplay
                     loop
                     repeat={true}
@@ -54,7 +55,7 @@ const  Category=(props)=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Fashion')} style={styles.category}>
             <VideoPlayer
-                    video={{ uri: 'https://acapp.in/uploads/biztypes/fashion.mp4' }}
+                    video={Videos.fashion}
                     autoplay
                     loop
                     repeat={true}
@@ -85,7 +86,7 @@ const  Category=(props)=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Life Style')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'https://acapp.in/uploads/biztypes/lifestyle.mp4' }}
+                    video={Videos.lifestyle}
                     autoplay
                     loop
                     repeat={true}
@@ -117,7 +118,7 @@ const  Category=(props)=>{
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Food')} style={styles.category}>
                 <VideoPlayer
-                    video={{ uri: 'https://acapp.in/uploads/biztypes/food.mp4' }}
+                    video={Videos.food}
                     autoplay
                     loop
                     disableSeek

@@ -13,7 +13,7 @@ import {
     
 } from 'react-native'
 import Images from '../../../assets/images/Images'
-import VideoPlayer from 'react-native-video-player'
+// import VideoPlayer from 'react-native-video-player'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
@@ -26,12 +26,15 @@ import axios from 'axios'
 import StoriesPage from './StoriesPage'
 import { responsiveFontSize, responsiveHeight , responsiveWidth  } from 'react-native-responsive-dimensions'
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import Video from 'react-native-video'
+import DashBoardLoader from '../business/DashBoardLoader'
 
 const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
     const [refresh,setrefresh] = useState(false)
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
     const [followLoader, setfollowLoader] = useState(false)
+    const [VideoLoader,setVideoLoader]=useState(false)
     const [videoVar,setvideoVar]=useState()
     const [LikeCount,setLikeCount]=useState(0)
     const [commentCount,setCommentCount]=useState(0)
@@ -141,33 +144,35 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     //     navigation.navigate('/cart')
     // }
 // navigate to guide screen 
-    useEffect(()=>{
-        setTimeout(() => {
-            navigation.navigate('/GuideScreen')
-        }, 20000);
+    // useEffect(()=>{
+    //     setTimeout(() => {
+    //         navigation.navigate('/GuideScreen')
+    //     }, 20000);
 
-    },[])
+    // },[])
 // 
     useEffect(()=>{
-        setLoader(true)
-        setvideoVar(null)
-        // console.log("video var",JSON.parse(item?.item?.video)[0]);
-        axios.get(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, { responseType:'stream' })
-        .then((response)=> {
-            setvideoVar({
-                "bitrate": 154604, "duration": 1, 
-                "fileName": JSON.parse(item?.item?.video)[0], 
-                "fileSize": response.headers["content-length"], "height": 320, "type": "video/mp4", 
-                "uri": `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, 
-                "width": 240
-                })
-            // setTimeout(() => {
-                setLoader(false)        
-            // }, 1000);    
+        setVideoLoader(true)
+        // console.log(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`);
+        // setLoader(true)
+        // setvideoVar(null)
+        // // console.log("video var",JSON.parse(item?.item?.video)[0]);
+        // axios.get(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, { responseType:'stream' })
+        // .then((response)=> {
+        //     setvideoVar({
+        //         "bitrate": 154604, "duration": 1, 
+        //         "fileName": JSON.parse(item?.item?.video)[0], 
+        //         "fileSize": response.headers["content-length"], "height": 320, "type": "video/mp4", 
+        //         "uri": `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, 
+        //         "width": 240
+        //         })
+        //     // setTimeout(() => {
+        //         setLoader(false)        
+        //     // }, 1000);    
             
     
-            // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
-        }).catch((err)=>{setLoader(false)})
+        //     // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
+        // }).catch((err)=>{setLoader(false)})
     },[])
     useEffect(()=>{
         setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
@@ -212,14 +217,24 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                 <View style={[globatStyles.overlay, { zIndex: 9, height: '103%',backgroundColor:'transparent' }]}>
                 
                 </View>
-                {videoVar?<VideoPlayer
-                    video={videoVar}
+                {VideoLoader?
+                    <DashBoardLoader height={Constants.height}/>:null
+                    }
+                <Video
+                    source={{uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`}}
+                    onLoad={(e)=>console.log("onload",e)}
+                    onBandwidthUpdate={()=>console.log("bandwidht")}
+                    onBuffer={()=>console.log("buffering...")}
+                    onReadyForDisplay={(e)=>console.log("ready display",e)}
                     autoplay
                     repeat={true}
                     loop
                     muted
                     disableSeek
+                    onVideoBuffer={(e)=>console.log("bueeee",e)}
                     resizeMode={'cover'}
+                    fullscreen
+                    style={{width:"100%",height:"100%"}}
                     customStyles={{
                         wrapper: {
                             width: '100%',
@@ -240,7 +255,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                             backgroundColor: 'transparent',
                         },
                         
-                    }} />:null}
+                    }} />
                    
                 <View style={styles.iconGroup}>
                     {like?
@@ -351,7 +366,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: '3%',
         zIndex: 99,
-        marginBottom:responsiveHeight(-2),
+        marginBottom:responsiveHeight(-1),
         borderTopLeftRadius: Constants.borderRadius,
         borderTopRightRadius: Constants.borderRadius,
     },

@@ -3,14 +3,18 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Images from '../../../assets/images/Images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GuideScreen = () => {
 
   const navigation = useNavigation();
-
+  const clickfn=async()=>{
+    await AsyncStorage.setItem("gesture","true")
+    navigation.goBack()
+  }
   return (
       
-      <Pressable style={styles.container} onPress={()=>{navigation.goBack()}} >
+      <Pressable style={styles.container} onPress={clickfn} >
       <View style={{marginTop:180}}>
       <Text style={styles.text}>      Watching  stories </Text>
       <Text style={styles.textunder}>     You can use the gesture to {'\n'}                control play </Text>

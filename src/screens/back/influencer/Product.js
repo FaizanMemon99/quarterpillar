@@ -191,7 +191,12 @@ const Product=(props)=>{
                 })
             }
     }
-    useEffect(()=>{
+    useEffect(async()=>{
+        const data=await AsyncStorage.getItem("gesture")
+        console.log("data=>",data);
+        if(!data){
+            navigation.navigate('/GuideScreen')
+        }
         // axios.post(`${Constants.BASE_URL}auth/get-cart-item`,{
         //     user_id:props?.route?.params?.userDetails?.id
         // }).then((response)=>{
