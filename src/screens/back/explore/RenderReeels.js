@@ -10,7 +10,8 @@ import {
     Share,
     ScrollView,
     RefreshControl,
-    
+    Touchable,
+
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 // import VideoPlayer from 'react-native-video-player'
@@ -31,8 +32,20 @@ import DashBoardLoader from '../business/DashBoardLoader'
 
 const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setbadgeCount}) => {
     const [refresh,setrefresh] = useState(false)
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import BottomSheetBehavior from 'reanimated-bottom-sheet'
+import RBSheet from "react-native-raw-bottom-sheet";
+import { useRef } from 'react'
+import ReelsComments from './ReelsComments'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import RenderComments from './RenderComments'
+import ProductDetails from './ProductDetails'
+
+const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData,props }) => {
+    const [refresh, setrefresh] = useState(false)
     const [like, setLike] = useState(false)
-    const [loader,setLoader]=useState(false)
+    const [loader, setLoader] = useState(false)
     const [followLoader, setfollowLoader] = useState(false)
     const [VideoLoader,setVideoLoader]=useState(false)
     const [videoVar,setvideoVar]=useState()
@@ -41,18 +54,21 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
     const [shareCount,setshareCount]=useState(0)
     const [showCommentPopup, setShowCommentPopup] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
-    const [doubleTapCounter,setdoubleTapCounter]=useState(0)
-    const [follows,setfollows]=useState(false)
+    const [doubleTapCounter, setdoubleTapCounter] = useState(0)
+    const [follows, setfollows] = useState(false)
+    const [commentLikeData,setcommentLikeData]=useState([])
+    const [name,setname]=useState('')
     const navigation = useNavigation()
     // const [followLoader,setfollowLoader] = useState(false)
     const comments = [
-        {id: 1},
-        {id: 2},
-        {id: 3},
-        {id: 4},
-        {id: 5},
-        {id: 6},
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+        { id: 6 },
     ]
+    const refRBSheet = useRef();
     const gotoMore = () => {
 
     }
@@ -60,7 +76,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
         setfollowLoader(true)
         setTimeout(() => {
             setfollowLoader(false)
-            setfollows(!follows)            
+            setfollows(!follows)
         }, 500);
     }
     const gotoProductDetails = () => {
@@ -80,8 +96,8 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
     const gotoReview = () => {
         navigation.navigate('/explore-review')
     }
-    const gotoComments = ()=>{
-        navigation.navigate('/reels-comments',{userDetails:userDetails,postDetails:item?.item})
+    const gotoComments = () => {
+        navigation.navigate('/reels-comments', { userDetails: userDetails, postDetails: item?.item })
     }
     const shareFn=()=>{
         axios.post(`${Constants.BASE_URL}post/share-post`,{
@@ -112,24 +128,21 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
             } else {
                 shareFn()
             }
-          } else if (result.action === Share.dismissedAction) {
-            // dismissed
-          }
         } catch (error) {
-          alert(error.message);
+            alert(error.message);
         }
-      };
-    const addLikeFn=()=>{
-        axios.post(`${Constants.BASE_URL}post/add-like`,{
-            user_id:userDetails?.id,
-            post_id:item?.item?.id
-        }).then((response)=>{
+    };
+    const addLikeFn = () => {
+        axios.post(`${Constants.BASE_URL}post/add-like`, {
+            user_id: userDetails?.id,
+            post_id: item?.item?.id
+        }).then((response) => {
             setLike(true)
-                setLikeCount(LikeCount+1)
-            
+            setLikeCount(LikeCount + 1)
+
             getLikeData()
         })
-        
+
         // setLike(!like)
     }
     
@@ -146,7 +159,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
             }
         })
         }
-        
+
         // setLike(false)
     }
     const gotoStoriespage = () => {
@@ -211,23 +224,24 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setba
         else {
             setLike(false);
         }
-    },[likeData,commentData])
+    }, [likeData, commentData])
     const handleClick = (e) => {
         switch (e.detail) {
-          case 1:
-            console.log("click");
-            break;
-          case 2:
-            console.log("double click");
-            break;
-          case 3:
-            console.log("triple click");
-            break;
+            case 1:
+                console.log("click");
+                break;
+            case 2:
+                console.log("double click");
+                break;
+            case 3:
+                console.log("triple click");
+                break;
         }
-      };
-      const Refershpull =()=>{
+    };
+    const Refershpull = () => {
         get()
-      }
+    }
+
     return (
         <>
         {loader?<View style={{display:'flex',width:Constants.width,height:Constants.height,justifyContent:'center',alignItems:'center'}}>
@@ -373,7 +387,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 999,
     },
-    iconGroup: {    
+    iconGroup: {
         position: 'absolute',
         bottom: Constants.padding + 200,
         right: Constants.padding + 20,
@@ -400,14 +414,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: '3%',
         zIndex: 99,
-        marginBottom:responsiveHeight(-1),
+        marginBottom: responsiveHeight(-2),
         borderTopLeftRadius: Constants.borderRadius,
         borderTopRightRadius: Constants.borderRadius,
     },
     imgContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:"center"
+        justifyContent: "center"
     },
     titlename: {
         fontFamily: Constants.fontFamily,
@@ -421,7 +435,7 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
         marginTop: 14,
-        marginLeft : responsiveWidth(2)
+        marginLeft: responsiveWidth(2)
     },
     moreBtn: {
         color: '#F1F1F1',
@@ -431,10 +445,10 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
-        marginLeft : responsiveWidth(2)
+        marginLeft: responsiveWidth(2)
 
 
     },
 })
 
-export default RenderReeels
+export default RenderReeels 

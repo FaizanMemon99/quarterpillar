@@ -582,6 +582,7 @@ return sum
                 />
                 
         </Animated.View>
+
         <Modal
         animationType="slide"
         transparent={true}
@@ -606,7 +607,7 @@ return sum
                             </View>
                        </View>
                         <Text style={styles.switchText}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
                         </Text>
                         <View style={styles.accountContainer}>
                             <View style={[styles.account,styles.modalCard1]}>

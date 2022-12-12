@@ -9,15 +9,15 @@ import Constants from '../../../shared/Constants';
 const {width}= Dimensions.get("screen");
 const height =  width * 100/60;
 
-
+ 
 const StoriesPage = ({images,gotoStoriespage,}) => {
   
   const [index,setIndex]=useState(0);
-  const [Images,setImages]=useState([])
-  
- useEffect(()=>{
-    if(images&&JSON.parse(images).length>0){
-        JSON.parse(images).map((imag,ind)=>{
+  const [Images,setImages]=useState([]) 
+                                                                                                                                                
+ useEffect(()=>{                                                             
+    if(images&&JSON.parse(images).length>0){                                           
+        JSON.parse(images).map((imag,ind)=>{                                            
             Images.push({
                 id:ind,
                 images:`${Constants.BASE_IMAGE_URL}${imag}`,
@@ -97,7 +97,7 @@ return (
        style={{color:"white", zIndex:1  ,position:"absolute",left:150,marginTop:20,}} />
       </View>
     
-     <View>
+      <View>
       
 <ScrollView 
         horizontal 

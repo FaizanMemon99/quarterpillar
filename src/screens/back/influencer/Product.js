@@ -503,7 +503,7 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                             <Text style={{fontSize : 20, fontWeight : 'bold', paddingRight : 120}}>Switch View As</Text>
                             </View>
                             <Text style={styles.switchText}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
                         </Text>
           <View style={styles.modalconatiner}>
                             <View style={{display: "flex", justifyContent : 'flex-end', flexDirection : 'row' , width : '100%' , paddingTop : 20 }}>
