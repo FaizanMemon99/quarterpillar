@@ -64,6 +64,8 @@ import MyOrders from '../screens/back/explore/MyOrders'
 import ViewExploreProfile from '../screens/back/explore/ViewExporeProfile'
 import ReelsComments from '../screens/back/explore/ReelsComments'
 import GuideScreen from '../screens/back/explore/GuideScreen'
+import BusinessProfileView from '../screens/back/business/BusinessProfileView'
+import InfluencerProfileView from '../screens/back/business/influencerProfileView'
 
 const Stack = createNativeStackNavigator()
 
@@ -74,10 +76,15 @@ const AuthNavigation=(props)=>{
             <StatusBar backgroundColor="transparent" translucent={true} />
             <Stack.Navigator screenOptions={{
                 headerShown: false,
-            }}> 
+            }}
+            initialRouteName={props?.initialroute}
+            > 
                 <Stack.Screen name="/" component={Discover} />
+                <Stack.Screen name='/businessView' component={BusinessProfileView}/>
+                <Stack.Screen name='/influencerView' component={InfluencerProfileView}/>
                 <Stack.Screen name="/home" component={HomeScreen} initialParams={{authentication: props.authentication}}/>
                 <Stack.Screen name='/my-requests' component={MyRequest} />
+                <Stack.Screen name='/H3Ed' component={MyRequest} />
                 <Stack.Screen name='/my-pillars' component={MyPillars} />
                 <Stack.Screen name='/influencer-list' component={InfluencerList} />
                 <Stack.Screen name='/influencer-request' component={BusinessRequest} />

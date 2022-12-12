@@ -92,7 +92,7 @@ const Cart = (props) => {
                             showsVerticalScrollIndicator={false}
                             renderItem={item => <RenderCart item={item} getCartData={getCartData} price={price} setprice={setprice} />}
                             keyExtractor={item => item?.id?.toString()}
-                            estimatedItemSize={200} />
+                            />
                         :
                         <View>
                             <Text style={[styles.description, { fontSize: 20, textAlign: 'center', marginTop: 20 }]}>
@@ -105,7 +105,7 @@ const Cart = (props) => {
                 {loader ?
                     <ActivityIndicator color={'white'} />
                     :
-                    <Text style={globatStyles.btnText}>Proceed ( <FontAwesome name='rupee' /> {price} )</Text>}
+                    <Text style={globatStyles.btnText}>Proceed ( <FontAwesome name='rupee' /> {price.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} )</Text>}
             </Pressable>}
 
         </View>

@@ -6,6 +6,7 @@ import {
     ScrollView,
     StyleSheet,
     Pressable,
+    BackHandler,
 } from 'react-native'
 import VideoPlayer from 'react-native-video-player'
 import { useNavigation } from '@react-navigation/native'
@@ -19,11 +20,29 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Video from 'react-native-video'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Videos from '../../assets/staticVideos/Videos'
-const Discover = () => {
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import axios from 'axios'
+
+const Discover = (props) => {
     const navigation = useNavigation()
     const [users, setUsers] = useState([])
     const getAllUsers = async () => {
+        setUsers([])
         const users = await apiCall('GET', endPoints.USER_TYPES, '', '')
+        if(await AsyncStorage.getItem("userDetails"))
+        {
+          console.log("res data=>",await AsyncStorage.getItem("userType"));
+          if(JSON.parse(await AsyncStorage.getItem("userType"))=='Business')
+                        {navigation.navigate('/home',{"userDetails":JSON.parse(await AsyncStorage.getItem("userDetails"))})}
+                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Influencer'||JSON.parse(await AsyncStorage.getItem("userType"))=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails")),userType:JSON.parse(await AsyncStorage.getItem("userType"))})}
+                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails")),userType:JSON.parse(await AsyncStorage.getItem("userType"))})}
+                        else {
+                            navigation.navigate('/advertiser-product',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})
+                        }
+                        setUsers(users)
+          console.log("data=>",await AsyncStorage.getItem("userDetails"))
+        }
+        else
         setUsers(users)
     }
 
@@ -36,22 +55,46 @@ const Discover = () => {
                             navigation.navigate('/advertiser-product',{userDetails:response.data.user})
                         }
     }
-    useEffect(async()=>{
+    const handleDynamicLink = link => {
+        console.log("link=>",link.url);
+        // Handle dynamic link inside your own application
+        if (link.url.includes("business")) {
+            navigation.navigate("/businessView",{userId:link.url.split('business/')[1]})
+          }
+          else if (link.url.includes("influencer")) {
+            navigation.navigate("/influencerView",{userId:link.url.split('influencer/')[1]})
+          }
+          else {
+
+          }
+      };
+    useEffect(() => {
+        const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+        // When the component is unmounted, remove the listener
+        return () => unsubscribe();
+      }, []);
+     
+useEffect(()=>{
+    if(props?.route?.params?.comeBack){
         getAllUsers()
-        
-        if(await AsyncStorage.getItem("userDetails"))
-        {
-          console.log("res data=>",await AsyncStorage.getItem("userType"));
-          if(JSON.parse(await AsyncStorage.getItem("userType"))=='Business')
-                        {navigation.navigate('/home',{"userDetails":JSON.parse(await AsyncStorage.getItem("userDetails"))})}
-                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Influencer'||JSON.parse(await AsyncStorage.getItem("userType"))=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})}
-                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})}
-                        else {
-                            navigation.navigate('/advertiser-product',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})
-                        }
-          console.log("data=>",await AsyncStorage.getItem("userDetails"))
-        }
-         },[])
+    }
+    dynamicLinks()
+    .getInitialLink()
+    .then(link => {
+      console.log("link url=>",link);
+      if (link.url.includes("business")) {
+        navigation.navigate("/businessView",{userId:link.url.split('business/')[1]})
+      }
+      else if (link.url.includes("influencer")) {
+        navigation.navigate("/influencerView",{userId:link.url.split('influencer/')[1]})
+      }
+      else
+      getAllUsers()
+    }).catch((error)=>{
+        getAllUsers()
+    })
+},[props])
+
     
     // const gotoExploer = () => {
     //     navigation.navigate('/exploer-registration')
@@ -73,7 +116,7 @@ const Discover = () => {
         <ScrollView >
             <Text style={styles.header}>Discover</Text>
             {
-                users.users && users.users.length > 0 ? users.users.map(user =>
+                users?.users && users?.users?.length > 0 ? users?.users?.map(user =>
                     user.role_name !== 'Admin' ? (
                         <Pressable style={{ marginBottom: Constants.margin, }} onPress={()=>gotoLogin(user.role_name)} key={user.id}>
                             <VideoPlayer

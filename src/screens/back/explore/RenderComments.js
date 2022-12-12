@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     Pressable,
+    ActivityIndicator,
 } from 'react-native'
 import Images from '../../../assets/images/Images'
 import Constants from '../../../shared/Constants'
@@ -12,7 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import moment from 'moment'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
-const RenderComments = ({item,userDetails,commentLikeData,getAllLikes})=>{
+const RenderComments = ({item,userDetails,commentLikeData,getAllLikes,deleteComment,commentLoader})=>{
     // console.log("item=>",item?.item);
     const [like,setLike]=useState(false)
     const addLikeFn=()=>{
@@ -49,6 +50,7 @@ const RenderComments = ({item,userDetails,commentLikeData,getAllLikes})=>{
     }
    
     useEffect(()=>{
+        console.log("item=>",item?.item);
         // getAllLikes()
         if(commentLikeData.filter((i)=>i.comment_id==item?.item?.id&&i.user_id==userDetails?.id).length>0){
             setLike(true)
@@ -74,21 +76,32 @@ const RenderComments = ({item,userDetails,commentLikeData,getAllLikes})=>{
         </View>
         <View style={{flex:1,flexDirection:"row",justifyContent:"space-between",paddingTop:10}}>
         <Text style={{fontFamily: Constants.fontFamily, fontSize: 12,}}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
+        <View style={{flexDirection:"row",alignItems:"center"}}>
         {like?
                     <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} 
-                    size={20}
+                    size={15}
                     onPress={() => removeLikeFn()}
                      />
 :null
                     }
                     {!like?
                     <AntDesign name={ 'hearto'} 
-                    size={20}
+                    size={15}
                     // style={[styles.icon, { color:  '#FFF' }]}
                      onPress={() => addLikeFn()}
                       />
                     :null}
-        {/* <AntDesign name='hearto' size={20} style={{}} /> */}
+        {item?.item?.user_id===userDetails?.id?
+          <View style={{paddingLeft:10}}>
+          {commentLoader?
+          <ActivityIndicator size={15}/>
+          :
+          <AntDesign
+          onPress={()=>deleteComment(item?.item?.id)}
+          name='delete' size={15} color={'red'}  />
+          }
+          </View>  :null}
+        </View>
         </View>
             </View>
             </View>

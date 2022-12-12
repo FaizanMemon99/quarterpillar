@@ -30,7 +30,7 @@ const ReelsComments = (props) => {
     const [comment, setComment] = useState('')
     const [finalComment, setFinalComment] = useState('')
     const [commentLikeData,setcommentLikeData]=useState([])
-
+    const [commentLoader,setcommentLoader]=useState(false)
     const [commentText,setcommentText]=useState()
     const [SendLoader,setSendLoader]=useState(false)
     const comments = [
@@ -52,6 +52,20 @@ const ReelsComments = (props) => {
         })
         .catch((error)=>{
             setSendLoader(false)
+            showToastmsg("Something went wrong. Please try again")
+            console.log("error=>",error);
+        })
+        
+    }
+    const deleteComment = (id) => {
+        setcommentLoader(true)
+        axios.post(`${Constants.BASE_URL}post/${id}/delete-comment`)
+        .then((response)=>{
+            setcommentLoader(false)
+            getAllComments()
+        })
+        .catch((error)=>{
+            setcommentLoader(false)
             showToastmsg("Something went wrong. Please try again")
             console.log("error=>",error);
         })
@@ -99,14 +113,19 @@ const ReelsComments = (props) => {
         <ActivityIndicator color={Constants.colors.primaryColor} size={35}/>
         :
         <>
-        <FlashList
-                showsVerticalScrollIndicator={false}
-                data={commentsData}
-                style={{ marginBottom: 40, }}
+        <FlatList
+                // showsVerticalScrollIndicator={false}
+                data={commentsData?.sort(function(a, b) {
+                    return b.id - a.id;
+                })}
+                style={{marginBottom:50}}
                 renderItem={item => <RenderComments item={item} userDetails={props?.route?.params?.userDetails}
+                deleteComment={deleteComment}
+                commentLoader={commentLoader}
+                setcommentLoader={setcommentLoader}
                 commentLikeData={commentLikeData}
                 getAllLikes={getAllLikes}
-                estimatedItemSize={200}
+                // estimatedItemSize={200}
                 />}
                 keyExtractor={item => item?.id?.toString()} 
                 ListEmptyComponent={<View style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:50}}>

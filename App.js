@@ -20,7 +20,7 @@ import { InAppNotificationProvider } from 'react-native-in-app-notification';
 import PushNotification from 'react-native-push-notification'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const App = () => {
+const App = (props) => {
     const [auth, setAuth] = useState('')
     const requestCameraPermission = async () => {
         if (Platform.OS === 'android') {
@@ -69,7 +69,7 @@ const App = () => {
         // const userdetails=await AsyncStorage.getItem("userDetails")  
         return fcmtoken
       }
-    useEffect(async() => {
+    useEffect(() => {
         PermissionFunction()
         requestUserPermission()
         NotificationListener()
@@ -96,6 +96,7 @@ const App = () => {
         
         // return unsubscribe;
         SplashScreen.hide()
+      
     }, [])
 
     const authentication = (type) => {
@@ -110,7 +111,8 @@ const App = () => {
             <NavigationContainer style={styles.container}>
                 {auth === 'business' ? <DrawerNavigationBusiness /> :
                     auth === 'explore' ? <DrawerNavigationExplore /> :
-                        <AuthNavigation authentication={(type) => authentication(type)} />}
+                        <AuthNavigation authentication={(type) => authentication(type)} 
+                        />}
             </NavigationContainer>
             </InAppNotificationProvider>
         </Provider>

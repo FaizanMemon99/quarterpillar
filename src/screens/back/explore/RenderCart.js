@@ -24,8 +24,8 @@ const RenderCart = ({item,getCartData}) => {
     const [size,setSize]=useState(item?.item?.data?.size)
     const [disAmount,setdiscountAmount]=useState(item?.item?.data?.dis_amount)
     const [totalAmount,settotalAmount]=useState(item?.item?.data?.total_amount)
-    const discountAmount=parseFloat(item?.item?.data?.dis_amount)/parseInt(item?.item?.data?.qty)
-    const totalAmountval=parseFloat(item?.item?.data?.total_amount)/parseInt(item?.item?.data?.qty)
+    const discountAmount=parseInt(item?.item?.data?.dis_amount)/parseInt(item?.item?.data?.qty)
+    const totalAmountval=parseInt(item?.item?.data?.total_amount)/parseInt(item?.item?.data?.qty)
     const updateCartApi=(tempcolor,tempsize,tempqty,tempdiscountAmt,temptotalAmt)=>{
         setapiLoader(true)
         console.log("response data=>",{
@@ -60,13 +60,13 @@ const RenderCart = ({item,getCartData}) => {
         if(qty>1){
             let tempqty=parseInt(qty)
             tempqty=tempqty-1
-            let tempdiscountAmt=parseFloat(disAmount)
+            let tempdiscountAmt=parseInt(disAmount)
             tempdiscountAmt=tempdiscountAmt-discountAmount
-            let temptotalAmt=parseFloat(totalAmount)
+            let temptotalAmt=parseInt(totalAmount)
             temptotalAmt=temptotalAmt-totalAmountval
             setQty(parseInt(qty)-1)
-            setdiscountAmount(parseFloat(disAmount)-discountAmount)
-            settotalAmount(parseFloat(totalAmountval)-totalAmount)
+            setdiscountAmount(parseInt(disAmount)-discountAmount)
+            settotalAmount(parseInt(totalAmountval)-totalAmount)
             updateCartApi(color,size,tempqty,tempdiscountAmt,temptotalAmt)
             // setprice(price-1200)
         }
@@ -74,13 +74,13 @@ const RenderCart = ({item,getCartData}) => {
     const increaseQty = ()=>{
         let tempqty=parseInt(qty)
         tempqty=tempqty+1
-        let tempdiscountAmt=parseFloat(disAmount)
+        let tempdiscountAmt=parseInt(disAmount)
         tempdiscountAmt=tempdiscountAmt+discountAmount
-        let temptotalAmt=parseFloat(totalAmount)
+        let temptotalAmt=parseInt(totalAmount)
         temptotalAmt=temptotalAmt+totalAmountval
         setQty(parseInt(qty)+1)
-        setdiscountAmount(parseFloat(disAmount)+discountAmount)
-        settotalAmount(parseFloat(totalAmountval)+totalAmount)
+        setdiscountAmount(parseInt(disAmount)+discountAmount)
+        settotalAmount(parseInt(totalAmountval)+totalAmount)
         updateCartApi(color,size,tempqty,tempdiscountAmt,temptotalAmt)
         // setprice(price+1200)
     }
@@ -127,17 +127,17 @@ const RenderCart = ({item,getCartData}) => {
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 6, marginBottom: 10,alignItems:"center"}}>
                     <View style={{ flexDirection: 'row',marginRight:5,alignItems:"center" }}>
-                        <FontAwesome name='rupee' size={17} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily ,fontSize:17}}> {(parseFloat(item?.item?.data?.total_amount)+parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}  </Text>
+                        <FontAwesome name='rupee' size={17} style={styles.icons} /><Text style={{ color: '#979797', fontWeight: '700', fontFamily: Constants.fontFamily ,fontSize:17}}> {((parseInt(item?.item?.data?.total_amount)+parseInt(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)).toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}  </Text>
                         <View style={styles.strikethrough}></View>
                     </View>
                     <View style={{ flexDirection: 'row' ,alignItems:"center"}}>
                         <FontAwesome name='rupee' size={17} style={[styles.icons, { color: '#000000' }]} /><Text style={{ fontWeight: '700', fontFamily: Constants.fontFamily,fontSize:17 }}> {
-                                    (parseFloat(item?.item?.data?.total_amount))/parseInt(item?.item?.data?.qty)
+                                    ((parseInt(item?.item?.data?.total_amount))/parseInt(item?.item?.data?.qty)).toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }  </Text>
                     </View>
                     <View style={{ flexDirection: 'row',alignItems:'center' }}>
                         <FontAwesome name='rupee' size={17} style={[styles.icons, { color: Constants.colors.primaryColor }]} /><Text style={{ fontFamily: Constants.fontFamily, color: Constants.colors.primaryColor,fontSize:17 }}> 
-                        {(parseFloat(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)}
+                        {((parseInt(item?.item?.data?.dis_amount))/parseInt(item?.item?.data?.qty)).toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 &nbsp;off</Text>
                     </View>
                 </View>
@@ -182,7 +182,7 @@ const RenderCart = ({item,getCartData}) => {
                                 Total Amt :
                             </Text>
                         <FontAwesome name='rupee' size={18} style={[styles.icons, { paddingLeft:5,color: '#000000' }]} /><Text style={{ fontSize:18,fontWeight: '700', fontFamily: Constants.fontFamily }}> {
-                                    (parseFloat(item?.item?.data?.total_amount))
+                                    (parseInt(item?.item?.data?.total_amount)).toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }  </Text>
                     </View>
             </View>

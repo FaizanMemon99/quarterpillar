@@ -35,7 +35,10 @@ const BusinessSignIn=(props)=>{
                 setIsLoading(false)
                 showToastmsg('Please enter login id and password')
             }
-           else{ const response = await apiCall('POST', 'auth/login', null, { data: LoginId, password: Password ,type:props?.route?.params?.login_type=='Influencer'?2:props?.route?.params?.login_type=='Explorer'?1:props?.route?.params?.login_type=='Business'?4:props?.route?.params?.login_type=='Advertiser'?3:5})
+           else{
+            console.log("lgin name",props?.route?.params?.login_type);
+            console.log("login data=>",{ data: LoginId, password: Password ,type:props?.route?.params?.login_type=='Influencer'?2:props?.route?.params?.login_type=='Explorer'?1:props?.route?.params?.login_type=='Business'?4:props?.route?.params?.login_type=='Advertiser'?3:5});
+            const response = await apiCall('POST', 'auth/login', null, { data: LoginId, password: Password ,type:props?.route?.params?.login_type=='Influencer'?2:props?.route?.params?.login_type=='Explorer'?1:props?.route?.params?.login_type=='Business'?4:props?.route?.params?.login_type=='Advertiser'?3:5})
             if (response && response.error === false && response.data.token) {
                 
                 try {
@@ -71,8 +74,8 @@ const BusinessSignIn=(props)=>{
                         await AsyncStorage.setItem("userType",JSON.stringify(props.route.params.login_type));
                         if(props.route.params.login_type=='Business')
                         {navigation.navigate('/home',{"userDetails":response.data.user})}
-                        else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
-                        else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
+                        else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user,userType:props?.route?.params?.login_type})}
+                        else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user,userType:props?.route?.params?.login_type})}
                         else {
                             navigation.navigate('/advertiser-product',{userDetails:response.data.user})
                         }

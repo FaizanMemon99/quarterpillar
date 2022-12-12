@@ -97,13 +97,14 @@ const AllOrders = (props)=>{
                    {loader?
                    <Loading/>
                    :
-                    <FlashList
+                    <FlatList
                         style={{marginBottom: 80,flex:1}}
                         data={data}
                         renderItem={item=><RenderOrders pillars={item} />}
                         ListEmptyComponent={EmptyListMessage}
                         keyExtractor={(item,index)=>index?.toString()}
-                        estimatedItemSize={200}/>}
+                        // estimatedItemSize={200}
+                        />}
                 </View>
             </ScrollView>
             </SafeAreaView>

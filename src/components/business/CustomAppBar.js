@@ -6,17 +6,47 @@ import {
     StyleSheet,
     Pressable,
     SafeAreaView,
-    StatusBar,
+    StatusBar,Share
 } from 'react-native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import axios from 'axios'
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 const CustomAppBar=(props)=>{
     const goBack = ()=>{
+        if(props?.backRoute){
+            props?.navigation.navigate(props?.backRoute,{comeBack:true})
+        }
+        else
         props.navigation.goBack() 
     }
+    const dynamicLinkGenerator=async()=>{
+        const link = await dynamicLinks().buildLink({
+            link: `https://quarterpillars.com/business/${props?.userDetails?.id}`,
+            // ios: {
+            //   bundleId: <bundle_id>,
+            //   appStoreId: <appstore_id>,
+            // },
+            android: {
+              packageName: "com.quarterpillars",
+            },
+            domainUriPrefix: 'https://quarterpillars123.page.link',
+          });
+          console.log("link->",link);
+             await Share.share({
+                message:
+                  "Hi, please check my profile:- "+link
+                //   +", "+JSON.parse(item?.item?.image).map((imageData,index)=>`${Constants.BASE_IMAGE_URL}${imageData}`+index==JSON.parse(item?.item?.image).length-1?"":", "),
+                //   ,url:"http://google.com",
+                  ,title:"Profile share"
+              });
+            
+               
+      }
     return (
         <SafeAreaView>
         <View style={styles.wrapper}>
@@ -56,9 +86,16 @@ const CustomAppBar=(props)=>{
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
                         </View>
+                        <View style={{flexDirection:"row"}}>
                         {props.editable?
+                            
                             <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
                             <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
+                            {props?.shareble?<Pressable 
+                            style={{paddingLeft:10}}
+                            onPress={dynamicLinkGenerator}>
+                            <FontAwesome5Icon name='share' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
+                            </View>
                             
                     </View>
                     

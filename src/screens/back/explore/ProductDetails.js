@@ -108,15 +108,15 @@ const ProductDetails= (props)=>{
                     // onPress={props?.route?.params?.addLikeFn} 
                     />
                     :null}
-                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{props?.route?.params?.LikeCount?props?.route?.params?.LikeCount:0}</Text>
+                    <Text style={[styles.iconText,{textAlign:"center"}]}>{props?.route?.params?.LikeCount?props?.route?.params?.LikeCount:0}</Text>
                     <AntDesign name='message1' style={styles.icon} 
                     onPress={props?.route?.params?.gotoComments} 
                     />
-                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{props?.route?.params?.commentCount?props?.route?.params?.commentCount:0}</Text>
+                    <Text style={[styles.iconText,{textAlign:"center"}]}>{props?.route?.params?.commentCount?props?.route?.params?.commentCount:0}</Text>
                     <Feather name='send' style={styles.icon} 
                     onPress={props?.route?.params?.onShare}
                      />
-                    {/* <Text style={styles.iconText}>00n</Text> */}
+                    <Text style={[styles.iconText,{textAlign:"center"}]}>{props?.route?.params?.shareCount?props?.route?.params?.shareCount:0}</Text>
                     <Feather name='bookmark' style={styles.icon} 
                     // onPress={gotoDescription} 
                     />

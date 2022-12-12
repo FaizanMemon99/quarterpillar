@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
+import { FlashList } from '@shopify/flash-list'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {
@@ -14,12 +15,13 @@ import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAdmin'
 import Constants from '../../../shared/Constants'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const ProfileScreen=(props)=>{
     const [showDrawer, setShowDrawer] = useState(false)
     const [loader,setLoader]=useState(false)
-    const [businessImage,setBusinessImage]=useState([])
-    const [productImages,setproductImages]=useState([])
+    const [userData,setuserData]=useState()
     const navigation=useNavigation()
     
     const UserType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
@@ -34,23 +36,15 @@ const ProfileScreen=(props)=>{
       }
       useEffect(()=>{
         setLoader(true)
-        setBusinessImage([])
-        setproductImages([])
-        axios.get(props?.route?.params?.type?`${Constants.BASE_URL}business/get-product-details/${props?.route?.params?.userDetails?.business_id}`:`${Constants.BASE_URL}business/get-product-details/${props?.route?.params?.userDetails?.business?.business_id}`)
+       
+        axios.get(`${Constants.BASE_URL}business/get-my-business-profile/${props?.route?.params?.userDetails?.id}`)
         .then((response)=>{
             setLoader(false)
-            let tempobj=[]
-            if(response.data[0].user_product.length>0){
-                setBusinessImage(response.data[0].user_product)
-                response.data[0].user_product.map((item)=>{
-                    tempobj.push(`${Constants.BASE_IMAGE_URL}${JSON.parse(item.product_image)[0]}`)
-                })
-                setproductImages(tempobj)
-            }
+            setuserData(response.data.data.business);
+            console.log("reponse=>",response.data.data.business);
         })
         .catch((error)=>{
             console.log("get img error",error.response)
-            setBusinessImage([])
             setLoader(false)
         })
       },[props?.route?.params])
@@ -59,10 +53,11 @@ const ProfileScreen=(props)=>{
         <View style={{flex:1}}>
         <CustomAppBar title={props?.route?.params?.type?'':'Hello!'} 
         editable={!props?.route?.params?.type}
+        shareble={true}
         isInfluencer={props?.route?.params?.type} type={UserType} 
         name={props?.route?.params?.type?props?.route?.params?.userDetails?.username:props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={false} isReel={false} openDrawer={openDrawer} userDetails={props?.route?.params?.userDetails} showDrawer={showDrawer}/>           
         <View style={styles.container}>
-         <ScrollView style={{paddingBottom:10}}>
+         <ScrollView style={{marginBottom:200}}>
          <View style={styles.companyDetails}>
          <Image source={isImage(props?.route?.params?.type?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business_profile_pic}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`)?
                             {uri:props?.route?.params?.type?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business_profile_pic}`:`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`}:Images.profileIcon} style={styles.companyLogo} />
@@ -73,59 +68,64 @@ const ProfileScreen=(props)=>{
                </View>
                <View style={styles.socialDetails}>
                     <View style={styles.socialContainer}>
-                        <Text style={styles.socialValue}>250</Text>
+                        <Text style={styles.socialValue}>{userData?.products?userData?.products.length:0}</Text>
                         <Text style={styles.socialActivity}>Posts</Text>
                     </View>
                     <View style={styles.socialContainer}>
-                        <Text style={styles.socialValue}>98</Text>
+                        <Text style={styles.socialValue}>{userData?.following?userData?.following:0}</Text>
                         <Text style={styles.socialActivity}>Following</Text>
                     </View>
                     <View style={{...styles.socialContainer, borderRightWidth: 0,}}>
-                        <Text style={styles.socialValue}>1.2M</Text>
+                        <Text style={styles.socialValue}>{userData?.followers?userData?.followers:0}</Text>
                         <Text style={styles.socialActivity}>Follower</Text>
                     </View>
                </View>
                <View style={styles.divider}></View>
                {loader?
-               <ActivityIndicator/>
-               :
-            //     <View style={styles.profileSection}>
-            //        {
-            //         productImages.map((item,i)=>{
-            //             <View key={i+1}>
-            //             <Image source={{uri:item}} 
-            //             style={styles.profileBgImg} />
-            //             </View>
-            //             // :
-            //             // <Image source={Images.profileOne} 
-            //             // style={styles.profileBgImg} />
-            //         })
-            //        }
-            //    </View>
-            productImages.length>0?<View style={[styles.profileSection,{paddingBottom:props?.route?.params?.type&&100}]}>
-                    {
-                        productImages?productImages.map((img,i)=>(
-                            <>
-                                {props?.route?.params?.type?<Pressable 
-                                onPress={()=>navigation.navigate('/open-camera',{userDetails:props?.route?.params?.userDetails,category:props?.route?.params?.userDetails?.catorige,productData:businessImage[i]})} 
-                                style={{width:'50%'}}>
-                                <Image source={{uri: img}} alt='Img' style={styles.profileBgImg} />
-                                </Pressable>:
-                                <Image source={{uri: img}} alt='Img' style={styles.profileBgImg} />
-                            }
-                            </>
-                            )
-                        ):null
-                    }
-                    </View>
-                    :
-                    <View style={{display:'flex',alignItems:'center'}}>
-                        <Text style={[styles.socialValue,{color:'#000'}]}>
-                            No post found
-                        </Text>
-                        {props?.route?.params?.type?null:<Pressable onPress={createPost}><Text style={[styles.menuName,{color:'blue',fontSize:14,textDecorationLine:'underline',paddingTop:10}]}>Create Post</Text></Pressable>}
-                    </View>
-               }
+    <ActivityIndicator size={30}/>
+    :<>
+    <View style={styles.profileSection}>
+         {userData?.products?.length>0?
+         <FlashList
+         data={userData?.products}
+         keyExtractor={(item,index)=>index?.toString()}
+         numColumns={2}
+         estimatedItemSize={2}
+         renderItem={item=>(
+             <View style={styles.profileBgImg} >
+             <Image
+             source={{uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.product_image)[0]}`}}
+             style={{width:"100%",height:"100%"}}
+             />
+             {/* {console.log("item=>",item?.item)} */}
+                 <Image source={Images.profileOne} style={{width:'100%',height:"100%"}}/>
+                 <View style={styles.comments}>
+                     <AntDesign name='dropbox' size={15} color={Constants.colors.whiteColor} style={{fontWeight:"900"}}/>
+                     <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 10,
+                     fontSize:15,fontWeight:"800"
+                     }}>
+                         {item?.item?.qty?item?.item?.qty:0}
+                     </Text>
+                     <FontAwesome name='rupee' size={15} color={Constants.colors.whiteColor} style={{fontWeight:"900"}} />
+                     <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8,
+                     fontSize:15,fontWeight:"800"
+                     }}>{item?.item?.sales_price?item?.item?.sales_price?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ","):0}</Text>
+                 </View>
+                 
+             </View>
+         )}
+         />
+         :
+         <View style={{display:'flex',alignItems:'center',width:"100%"}}>
+         <Text style={[styles.socialValue,{color:'#000'}]}>
+             No post found
+         </Text>
+         {props?.route?.params?.type?null:<Pressable onPress={createPost}><Text style={[styles.menuName,{color:'blue',fontSize:14,textDecorationLine:'underline',paddingTop:10}]}>Create Post</Text></Pressable>}
+     </View>
+
+         }
+    </View>
+    </>}
             </ScrollView>
            
         </View>
@@ -217,12 +217,21 @@ const styles = StyleSheet.create({
     profileSection: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingBottom:200
+        // paddingBottom:200
     },
     profileBgImg: {
         width: '100%',
-        height: 280,
+        height: 252,
         resizeMode: 'cover',
+    },
+    comments: {
+        flexDirection: 'row',
+        alignItems:"center",
+        width:"100%",
+        justifyContent:'center',
+        position: 'absolute',
+        top: 20,
+        // left: 30,
     },
 })
 

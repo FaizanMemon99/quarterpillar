@@ -29,7 +29,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Video from 'react-native-video'
 import DashBoardLoader from '../business/DashBoardLoader'
 
-const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => {
+const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData,setbadgeCount}) => {
     const [refresh,setrefresh] = useState(false)
     const [like, setLike] = useState(false)
     const [loader,setLoader]=useState(false)
@@ -38,6 +38,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     const [videoVar,setvideoVar]=useState()
     const [LikeCount,setLikeCount]=useState(0)
     const [commentCount,setCommentCount]=useState(0)
+    const [shareCount,setshareCount]=useState(0)
     const [showCommentPopup, setShowCommentPopup] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
     const [doubleTapCounter,setdoubleTapCounter]=useState(0)
@@ -67,6 +68,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
         LikeCount:LikeCount,
         commentCount:commentCount,
         isLiked:like,
+        shareCount:shareCount,
         gotoComments:gotoComments,onShare:onShare,
         removeLikeFn:removeLikeFn,
         addLikeFn:addLikeFn
@@ -81,9 +83,19 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
     const gotoComments = ()=>{
         navigation.navigate('/reels-comments',{userDetails:userDetails,postDetails:item?.item})
     }
+    const shareFn=()=>{
+        axios.post(`${Constants.BASE_URL}post/share-post`,{
+            post_id:item?.item?.id
+        }).then((response)=>{
+                setshareCount(shareCount+1)
+        })
+        
+        // setLike(!like)
+    }
     const onShare = async () => {
         try {
             console.log("post data=>",item?.item);
+            
           const result = await Share.share({
             message:
               "Hi, check this awesome "+item?.item?.title +" post "+`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`
@@ -98,7 +110,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
             if (result.activityType) {
               // shared with activity type of result.activityType
             } else {
-              // shared
+                shareFn()
             }
           } else if (result.action === Share.dismissedAction) {
             // dismissed
@@ -120,6 +132,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
         
         // setLike(!like)
     }
+    
     const removeLikeFn=async()=>{
         if(likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id).length>0){
        await axios.post(`${Constants.BASE_URL}post/${likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id)[0].id}/delete-like`,{
@@ -153,6 +166,19 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
 // 
     useEffect(()=>{
         setVideoLoader(true)
+        axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
+            user_id: userDetails?.id
+        }).then((response) => {
+            if(response.data.data.cart_item&&response.data.data.cart_item.length>0){
+                setbadgeCount(response.data.data.cart_item.length)
+                console.log("count",response.data.data.cart_item.length);
+            }
+        })
+        .catch((error)=>{
+            setbadgeCount(0)
+        })
+        setLikeCount(item?.item?.likes)
+        setshareCount(item?.item?.share)
         // console.log(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`);
         // setLoader(true)
         // setvideoVar(null)
@@ -174,8 +200,9 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
         //     // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
         // }).catch((err)=>{setLoader(false)})
     },[])
+   
     useEffect(()=>{
-        setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
+        // setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
         setCommentCount(commentData.filter((i)=>i.post_id==item?.item?.id).length)
         if(likeData.filter((i)=>i.user_id==userDetails?.id&&i.post_id==item?.item?.id).length>0){
             // console.log("user data");
@@ -220,18 +247,45 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                 {VideoLoader?
                     <DashBoardLoader height={Constants.height}/>:null
                     }
+<View style={styles.iconGroup}>
+{like?
+<AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} onPress={() => removeLikeFn()} />
+:null
+}
+{!like?
+<AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} onPress={() => addLikeFn()} />
+:null}
+<Text style={[styles.iconText,{
+textAlign:"center",
+fontWeight:"900"
+    }]}>{LikeCount?LikeCount:0}</Text>
+    <AntDesign name='message1' style={styles.icon} 
+onPress={gotoComments} 
+/>
+<Text style={[styles.iconText,{
+textAlign:"center",
+fontWeight:"900"
+    }]}>{commentCount?commentCount:0}</Text>
+    <Feather name='send' style={styles.icon} 
+onPress={onShare}
+ />
+ <Text style={[styles.iconText,{textAlign:"center"}]}>{shareCount}</Text>
+ <Feather name='bookmark' style={styles.icon} 
+onPress={gotoDescription} 
+/>
+</View>
                 <Video
                     source={{uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`}}
-                    onLoad={(e)=>console.log("onload",e)}
-                    onBandwidthUpdate={()=>console.log("bandwidht")}
-                    onBuffer={()=>console.log("buffering...")}
-                    onReadyForDisplay={(e)=>console.log("ready display",e)}
+                    // onLoad={(e)=>console.log("onload",e)}
+                    // onBandwidthUpdate={()=>console.log("bandwidht")}
+                    // onBuffer={()=>console.log("buffering...")}
+                    // onReadyForDisplay={(e)=>console.log("ready display",e)}
                     autoplay
                     repeat={true}
                     loop
                     muted
                     disableSeek
-                    onVideoBuffer={(e)=>console.log("bueeee",e)}
+                    // onVideoBuffer={(e)=>console.log("bueeee",e)}
                     resizeMode={'cover'}
                     fullscreen
                     style={{width:"100%",height:"100%"}}
@@ -257,28 +311,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                         
                     }} />
                    
-                <View style={styles.iconGroup}>
-                    {like?
-                    <AntDesign name={'heart'} style={[styles.icon, { color:'#f54295' }]} onPress={() => removeLikeFn()} />
-                    :null
-                    }
-                    {!like?
-                    <AntDesign name={ 'hearto'} style={[styles.icon, { color:  '#FFF' }]} onPress={() => addLikeFn()} />
-                    :null}
-                    {/* <AntDesign name={like ? 'heart' : 'hearto'} style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]} onPress={() => addLikeFn()} /> */}
-                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{LikeCount?LikeCount:0}</Text>
-                    <AntDesign name='message1' style={styles.icon} 
-                    onPress={gotoComments} 
-                    />
-                    <Text style={[styles.iconText,{position:"relative",left:"40%"}]}>{commentCount?commentCount:0}</Text>
-                    <Feather name='send' style={styles.icon} 
-                    onPress={onShare}
-                     />
-                    {/* <Text style={styles.iconText}>00n</Text> */}
-                    <Feather name='bookmark' style={styles.icon} 
-                    onPress={gotoDescription} 
-                    />
-                </View>
+
                 <View style={styles.productDetailsContainer}>
                     <View style={styles.imgContainer}>
                     <View style={{height:responsiveHeight(2),width:responsiveWidth(17),bottom:18,right:10}}>
@@ -299,7 +332,8 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                         {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                     </Text>
                     <Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
-                    <Pressable onPress={gotoProductDetails} style={{
+                    {item?.item?.influencer_id===userDetails?.id?null:
+                        <Pressable onPress={gotoProductDetails} style={{
                                 backgroundColor: Constants.colors.primaryColor,
                                 padding: 14,
                                 width: responsiveWidth(83),
@@ -310,7 +344,7 @@ const RenderReeels = ({ item ,userDetails,likeData,commentData,getLikeData}) => 
                                  flexDirection: 'row',
                                  justifyContent: 'space-between',
                                 
-                                }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>
+                                }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>}
                 </View>
                 
                 <Modal

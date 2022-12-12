@@ -43,8 +43,8 @@ const Product=(props)=>{
     const [likeData,setlikeData]=useState([])
     const [commentData,setcommentsData]=useState([])
     const [modalLoader,setmodalLoader]=useState(false)
-
-    // const [cartLoader,setcartLoader]=useState(false)
+    const [badgeCount,setbadgeCount]=useState(0)
+    const [cartLoader,setcartLoader]=useState(false)
     // const [cartNumber,setcartNumber]=useState(0)
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
@@ -80,7 +80,8 @@ const Product=(props)=>{
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
     }
-    const userType=Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]
+    // console.log("user type=>",props?.route?.params?.props?.route?.params?.userType);
+    // const props?.route?.params?.userType=props?.route?.params?.props?.route?.params?.userType
     const switchAcBtn = () => {
         // console.log("Switch Button Working Of Accounts")
         // console.log({
@@ -96,9 +97,10 @@ const Product=(props)=>{
         })
         .then ((response)=>{
             setmodalLoader(false)
+            AsyncStorage.clear()
             console.log("repsonse data=>",response.data);
             if(!response.data.error){
-                navigation.navigate('/business-login',{login_type:userType=="influencer"?"explore":userType=="explore"?"influencer":"business",userName:props?.route?.params?.userDetails?.name})
+                navigation.navigate('/business-login',{login_type:props?.route?.params?.userType=="influencer"?"Explorer":props?.route?.params?.userType=="explore"?"Influencer":"Business",userName:props?.route?.params?.userDetails?.name})
                                 console.log("reponse=>",response.data.error)
             }
             else {
@@ -137,11 +139,22 @@ const Product=(props)=>{
             console.log("errro=>",error);
         })
     }
-    const getReelsApi=()=>{
+    const getReelsApi=async()=>{
         setpostLoader(true)
-        if(userType=='explore'||userType=='influencer')
+        if(props?.route?.params?.userType=='explore'||props?.route?.params?.userType=='influencer')
         {
-            axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
+            console.log("this data");
+            await axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
+                user_id: props?.userDetails?.id
+            }).then((response) => {
+              if(response.data.data.cart_item&&response.data.data.cart_item.length>0){
+                setbadgeCount(response.data.data.cart_item.length);
+              }  
+            })
+            .catch((error)=>{
+                setbadgeCount(0)
+            })
+            await axios.get(`${Constants.BASE_URL}influencer/get-all-influencer-post`).then((response)=>{
             getLikeData()
             getAllComments()
                 setpostLoader(false)
@@ -174,7 +187,8 @@ const Product=(props)=>{
                 showToastmsg('Failed to reload')
             })
         }
-            else if(userType=='advertiser')
+        
+            else if(props?.route?.params?.userType=='advertiser')
             {
                 axios.post(`${Constants.BASE_URL}advertiser/get-advertise`,{
                     advertiser_id:props?.route?.params?.userDetails?.id
@@ -192,9 +206,8 @@ const Product=(props)=>{
             }
     }
     useEffect(async()=>{
-        const data=await AsyncStorage.getItem("gesture")
-        console.log("data=>",data);
-        if(!data){
+        
+        if(!await AsyncStorage.getItem("gesture")){
             navigation.navigate('/GuideScreen')
         }
         // axios.post(`${Constants.BASE_URL}auth/get-cart-item`,{
@@ -212,7 +225,7 @@ const Product=(props)=>{
             },[])
     function isImage() {
         var url=''
-        if(Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'){
+        if(props?.route?.params?.userType=='influencer'){
 url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`
         }
         else
@@ -221,7 +234,7 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
         }
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
       }
-    // console.log("props value",Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]);
+    // console.log("props value",props?.route?.params?.userType);
     return (
         <View style={globatStyles.wrapper}>
             {
@@ -244,8 +257,8 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                     <View style={styles.profileDetails}>
                         <View style={styles.profileIcon}>
                             <Image source={isImage?
-                            {uri:Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:
-                            Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]=='advertiser'?
+                            {uri:props?.route?.params?.userType=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:
+                            props?.route?.params?.userType=='advertiser'?
                             `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`
                             :
                             `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
@@ -254,7 +267,7 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                         </View>
                         <View>
                             <Text style={styles.preofileName}>{props?.route?.params?.userDetails?.name?.length>10?props?.route?.params?.userDetails?.name?.slice(0,10)+'...':props?.route?.params?.userDetails?.name}</Text>
-                            <Text style={styles.founder}>{Object.keys(props?.route?.params?.userDetails)[Object.keys(props?.route?.params?.userDetails).length-1]}</Text>
+                            <Text style={styles.founder}>{props?.route?.params?.userType}</Text>
                         </View>
                     </View>
                 </View>
@@ -266,10 +279,10 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
  {
      setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'Business List', navigation, '/business-list',props)
  }
- {
-     setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props)
+ {/* {
+     setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props,setModalVisible,modalVisible,setShowDrawer)
 
- }
+ } */}
  {
      setMenuItem(setActiveMenu, activeMenu,'ant', 'setting', 'Settings', navigation, '/settings',props)
  }
@@ -291,29 +304,29 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'bell', 'Notification', navigation, '/notification',props)
                     }
-                    {userType=='influencer'&&
+                    {props?.route?.params?.userType=='influencer'&&
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'comments-dollar', 'Share & Earn', navigation, '/share-and-earn',props)
                     }
-                    {userType!=='explore'?
+                    {props?.route?.params?.userType!=='explore'?
                         setMenuItem(setActiveMenu, activeMenu, 'fa5', 'users', 'User Management', navigation, '/user-management',props)
                     :null}
                     {/* {
                         setMenuItem(setActiveMenu, activeMenu, 'fa', 'money', 'Earnings', navigation, '/earnings',props)
                     } */}
                     
-                    {userType=='influencer'&&
+                    {props?.route?.params?.userType=='influencer'&&
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'dashboard', 'Dashboard', navigation, '/dashboard',props)
                     }
-                    {(userType=='influencer'||userType=='explore')&&
+                    {(props?.route?.params?.userType=='influencer'||props?.route?.params?.userType=='explore')&&
                         setMenuItem(setActiveMenu, activeMenu, 'en', 'box', 'My Orders', navigation, '/my-orders',props)
                     }
-                    {(userType=='influencer'||userType=='advertiser')&&
+                    {(props?.route?.params?.userType=='influencer'||props?.route?.params?.userType=='advertiser')&&
                         setMenuItem(setActiveMenu, activeMenu, 'feather', 'gift', 'My Requests', navigation, '/my-requests',props)
                     }
                     {
                         setMenuItem(setActiveMenu, activeMenu, 'image', 'arrow-switch', 'Switch View As', navigation, '/about',props,setModalVisible,modalVisible,setShowDrawer)
                     }
-                    {userType=='explore'?
+                    {props?.route?.params?.userType=='explore'?
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/view-explore-profile',props):setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/profile',props)
                     }
                     {
@@ -406,10 +419,12 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
             :
             postData.map((data,i)=>(<View style={styles.reel} key={i+1}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} 
-                explore={userType=='explore'}
+                explore={props?.route?.params?.userType=='explore'}
                 userDetails={props?.route?.params?.userDetails}
                 isReel={true} 
-                title={userType=='advertiser'?data.advertise_type:
+                badgeCount={badgeCount}
+                setbadgeCount={setbadgeCount}
+                title={props?.route?.params?.userType=='advertiser'?data.advertise_type:
                     data.post_type} 
                 // cartLoader={cartLoader}
                 // cartNumber={cartNumber}
@@ -418,9 +433,11 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                     data={[data]}
                     style={[styles.category,{borderRadius:showDrawer?Constants.borderRadius+50:0}]}
                     renderItem={item=>(props?.route?.params?.userDetails?.role_id==3?
-                        <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails} />:
+                        <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails} 
+                        />:
                     <RenderReeels item={item} userDetails={props?.route?.params?.userDetails} 
                     likeData={likeData}
+                    setbadgeCount={setbadgeCount}
                         getLikeData={getLikeData}
                         commentData={commentData}
                     />)}
@@ -454,8 +471,10 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
         
         <View style={[styles.productDetailsBg,{backgroundColor:'#e5e5e5',borderRadius:showDrawer?Constants.borderRadius+50:0,} ]}>
         <CustomAppBar navigation={navigation} isMainscreen={true} 
-                explore={userType=='explore'}
+                explore={props?.route?.params?.userType=='explore'}
                 userDetails={props?.route?.params?.userDetails}
+                badgeCount={badgeCount}
+                setbadgeCount={setbadgeCount}
                 isReel={true} title='' headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}/>
                 <View style={{display:'flex',justifyContent:'center',alignItems:"center",height:'100%',marginTop:-(Constants.padding+80)}}>
                 <Text style={[styles.menuName,{color:'black',fontSize:24}]}>No {props?.route?.params?.userDetails?.role_id==3?'ad':'reels'} found</Text>
@@ -493,10 +512,19 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                        </View>
                         <View style={styles.accountContainer}>
                             <View style={[styles.account,styles.modalCard1]}>
-                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                                <Image source={isImage?
+                            {uri:props?.route?.params?.userType=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:
+                            props?.route?.params?.userType=='advertiser'?
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`
+                            :
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
+                            :
+                                Images.avatar} 
+                                style={{marginRight: 20,width:50,height:'100%'}}
+                                 alt='Img'/>
                                 <View>
                                     <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
-                                    <Text style={[styles.accountType,{textTransform:'capitalize'}]}>{userType} Account</Text>
+                                    <Text style={[styles.accountType,{textTransform:'capitalize'}]}>{props?.route?.params?.userType} Account</Text>
                                 </View>
                             </View>
                             <Pressable onPress={switchAcBtn}>
@@ -506,12 +534,20 @@ url=`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?
                                 <Image source={Images.switchAc} style={styles.switchAc}/>}
                                 </Pressable>
                             <View style={[styles.account,styles.modalCard2]}>
-                                <Image source={Images.avatar} style={{marginRight: 20,}} alt='Img'/>
+                            <Image source={isImage?
+                            {uri:props?.route?.params?.userType=='influencer'?`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.influencer?.avatar}`:
+                            props?.route?.params?.userType=='advertiser'?
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.advertiser?.avatar}`
+                            :
+                            `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`}
+                            :
+                                Images.avatar} 
+                                style={{marginRight: 20,width:50,height:'100%'}}
+                                 alt='Img'/>
                                 <View>
                                     <Text style={styles.accountName}>{props?.route?.params?.userDetails?.name}</Text>
-                                    <Text style={styles.accountType}>{userType=="influencer"?"Explore":
-                                    userType=='explore'?"Influencer":"Advertiser"
-                                    } Account</Text>
+                                    <Text style={styles.accountType}>{props?.route?.params?.userType=="influencer"?"Explore":
+                                    props?.route?.params?.userType=='explore'?"Influencer":props?.route?.params?.userType=='business'?"Advertiser":"Business"                                    } Account</Text>
                                 </View>
                           </View>
                         </View>

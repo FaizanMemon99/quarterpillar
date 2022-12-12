@@ -44,7 +44,7 @@ const StackNavigationInfluencer=(props)=>{
                 headerShown: false,
             }}
             >
-                <Stack.Screen name="/product" component={Product} initialParams={{userDetails: props?.route?.params?.userDetails}}/>
+                <Stack.Screen name="/product" component={Product} initialParams={{userDetails: props?.route?.params?.userDetails,userType:props?.route?.params?.userType?.toLowerCase()=="explorer"?"explore":props?.route?.params?.userType?.toLowerCase()}}/>
                 <Stack.Screen name="/category" component={Category} />
                 <Stack.Screen name="/open-camera" component={OpenCamera} initialParams={{influencerData:props?.route?.params}}/>
                 <Stack.Screen name="/add-post" component={AddPost} />

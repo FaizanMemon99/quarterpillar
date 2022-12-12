@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     View,
     Text,
@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Pressable,
     TextInput,
-    ActivityIndicator,
+    Share,
 } from 'react-native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
@@ -14,12 +14,43 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 // import { Badge } from 'react-native-elements'
 
-const CustomAppBar=(props)=>{
+const  CustomAppBar=(props)=>{
+    // const [badgeCount,setbadgeCount]=useState(0)
     const navigation=useNavigation()
-    const goBack = ()=>{
-        props.navigation.goBack()
+    const dynamicLinkGenerator=async()=>{
+        const link = await dynamicLinks().buildLink({
+            link: `https://quarterpillars.com/influencer/${props?.userDetails?.id}`,
+            // ios: {
+            //   bundleId: <bundle_id>,
+            //   appStoreId: <appstore_id>,
+            // },
+            android: {
+              packageName: "com.quarterpillars",
+            },
+            domainUriPrefix: 'https://quarterpillars123.page.link',
+          });
+          console.log("link->",link);
+             await Share.share({
+                message:
+                  "Hi, please check my profile:- "+link
+                //   +", "+JSON.parse(item?.item?.image).map((imageData,index)=>`${Constants.BASE_IMAGE_URL}${imageData}`+index==JSON.parse(item?.item?.image).length-1?"":", "),
+                //   ,url:"http://google.com",
+                  ,title:"Profile share"
+              });
+            
+               
+      }
+      const goBack = ()=>{
+        if(props?.backRoute){
+            props?.navigation.navigate(props?.backRoute,{comeBack:true})
+        }
+        else
+        props.navigation.goBack() 
     }
     const gotoCart = ()=>{
         navigation.navigate('/cart',{userDetails:props?.userDetails})
@@ -36,7 +67,19 @@ const CustomAppBar=(props)=>{
     const gotoDraft = ()=>{
         props.navigation.navigate('/draft',{userDetails:props?.userDetails})
     }
-
+    useEffect(()=>{
+        axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
+            user_id: props?.userDetails?.id
+        }).then((response) => {
+            if(response.data.data.cart_item&&response.data.data.cart_item.length>0){
+                setbadgeCount(response.data.data.cart_item.length)
+                console.log("counteff",response.data.data.cart_item.length)
+            }
+        })
+        .catch((error)=>{
+            setbadgeCount(0)
+        })
+    },[props])
     return (
         <View style={styles.wrapper}>
             {
@@ -69,17 +112,29 @@ const CustomAppBar=(props)=>{
                             props.isDraft?<Text style={styles.draft}>Draft</Text>:null
                         }
                         </View>
-                        {props.editable&&<Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
-                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>}
+                        <View style={{flexDirection:"row"}}>
+                        {props.editable?
+                            
+                            <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
+                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
+                            {props?.shareble?<Pressable 
+                            style={{paddingLeft:10}}
+                            onPress={dynamicLinkGenerator}>
+                            <FontAwesome5Icon name='share' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
+                            </View>
                     </View>
                 )
             }
             {
                 props.headerRight?(
                     <View style={{flexDirection: 'row',}}>
-                        <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} />
-                        {/* <View style={{position:'relative'}}> */}
+                        {/* <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} /> */}
+                        <View style={{position:'relative'}}>
                         <Feather name='shopping-cart' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} onPress={gotoCart} />
+                        <Text style={[styles.badgeCount,{fontSize:10}]}>
+                            {props?.badgeCount?props?.badgeCount:0}
+                        </Text>
+                        </View>
                         {/* <View style={{position:'absolute',left:"90%",top:"-30%",backgroundColor:'white',zIndex:99999,width:20,height:20,borderRadius:20/2}}>
                         <Text style={{color:'black',textAlign:'center'}}>
                         {props.cartLoader?
@@ -224,5 +279,20 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         borderRadius: 5,
     },
+    badgeCount:{
+        position:'absolute',
+  top:-5,
+  right:-10,
+  width:15,
+  height:15,
+  borderRadius:15,
+  textAlign: 'center',
+  backgroundColor: 'red',
+  color:"#fff",
+  fontSize:10,
+  fontWeight:"800",
+//   display:"flex",
+  zIndex:99999
+    }
 })
 export default CustomAppBar

@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native'
 const CustomAppBar=(props)=>{
 const navigation=useNavigation()
     const goBack = ()=>{
+       
         navigation.goBack()
     }
     const gotoCart = ()=>{
@@ -67,7 +68,7 @@ const navigation=useNavigation()
 const styles = StyleSheet.create({
     wrapper: {
         padding: Constants.padding,
-        paddingTop: Constants.padding+20,
+        // paddingTop: Constants.padding+20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
 
     },
     titleBar: {
-        marginTop: 16,
+        // marginTop: 16,
         flexDirection: 'row',
         alignItems: 'center',
         zIndex: 99,

@@ -14,7 +14,7 @@ const Loading = () => {
         <View style={styles.container}>
             <PlaceholderContainer
                 animatedComponent={<Gradient />}
-                duration={1000}
+                // duration={1000}
                 delay={1000}
             >
                 <Placeholder style={[styles.placeholder, { width: '100%', height: 200 }]} />

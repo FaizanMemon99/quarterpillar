@@ -22,7 +22,7 @@ const ViewExploreProfile = (props)=>{
     const [gender,setGender] = useState('male')
     const [showDrawer, setShowDrawer] = useState(false)
     const [username,setusername]=useState()
-   
+    const [followingCount,setfollowingCount]=useState(0)
     const UserType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)
@@ -38,21 +38,21 @@ const ViewExploreProfile = (props)=>{
         setImageLoader(true)
         axios.get(`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.explore?.avatar}`, { responseType:"stream" })
         .then(async (response)=> {
-            await axios.post(`${Constants.BASE_URL}auth/user-oder-history`,{
-                user_id:props?.route?.params?.userDetails?.id
-            }).then(async(res)=>{
+            axios.get(`${Constants.BASE_URL}explore/get-explore-profile/${props?.route?.params?.userDetails?.id}`)
+            .then(async(res)=>{
                 setImageLoader(false)
                 if(res.data){
-                    setorderCount(res.data.length)
+                    setorderCount(res.data.data.explore.orders)
+                    setfollowingCount(res.data.data.explore.following)
                 }
             })
             .catch((error)=>{
+                console.log("error data",error);
                 setImageLoader(false)
             })
             setCameraImg({"fileName":props?.route?.params?.userDetails?.explore?.avatar.split('/')[props?.route?.params?.userDetails?.explore?.avatar.split('/').length-1], "fileSize": response.headers['content-length'], "height": 177, "type": response.headers['content-type'], "uri": Constants.BASE_IMAGE_URL+props?.route?.params?.userDetails?.explore?.avatar, "width": 285})
         }).catch((err)=>{setImageLoader(false)});
 const datas=props?.route?.params?.userDetails
-
 
     setusername(datas?.name)
     // let [day, month, year] = datas?.explore?.dob.split('/');
@@ -155,7 +155,7 @@ const datas=props?.route?.params?.userDetails
                     </View>
                     <View style={styles.boxstyle}>
                         <Text style={styles.boxTextStyle}>
-                            Following   <Text style={{fontWeight:"700"}}>7463</Text>
+                            Following   <Text style={{fontWeight:"700"}}>{followingCount}</Text>
                         </Text>
                     </View>
                 </View>
