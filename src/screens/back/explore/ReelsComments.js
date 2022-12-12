@@ -21,7 +21,7 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import { FlashList } from '@shopify/flash-list'
 
-const ReelsComments = (props) => {
+const ReelsComments = ({userDetails,postDetails}) => {
     const navigation=useNavigation()
     const [loader,setLoader]=useState(false)
     const [commentsData,setcommentsData]=useState([])
@@ -41,8 +41,8 @@ const ReelsComments = (props) => {
     const addComment = () => {
         setSendLoader(true)
         axios.post(`${Constants.BASE_URL}post/add-comment`,{
-            "user_id": props?.route?.params?.userDetails?.id,
-            "post_id":props?.route?.params?.postDetails?.id,
+            "user_id": userDetails?.id,
+            "post_id": postDetails?.id,
             "comment_text":commentText
         })
         .then((response)=>{
@@ -81,7 +81,7 @@ const ReelsComments = (props) => {
         .then((response)=>{
             setLoader(false)
             if(response.data.length>0){
-                setcommentsData(response.data.filter((i)=>i.post_id==props?.route?.params?.postDetails?.id))
+                setcommentsData(response.data.filter((i)=>i.post_id==postDetails?.id))
             }
         })
         .catch((error)=>{
@@ -102,10 +102,11 @@ const ReelsComments = (props) => {
     useEffect(()=>{
         getAllComments()
      getAllLikes()   
-    },[props])
+    },[postDetails])
     return (
-        
+       
             <View style={{ flex: 1, }}>
+                
             <StatusBar translucent={true} backgroundColor='transparent' />
             <CustomAppBar title='Comments' navigation={navigation} />
             {/* <> */}
@@ -113,16 +114,11 @@ const ReelsComments = (props) => {
         <ActivityIndicator color={Constants.colors.primaryColor} size={35}/>
         :
         <>
-        <FlatList
-                // showsVerticalScrollIndicator={false}
-                data={commentsData?.sort(function(a, b) {
-                    return b.id - a.id;
-                })}
-                style={{marginBottom:50}}
-                renderItem={item => <RenderComments item={item} userDetails={props?.route?.params?.userDetails}
-                deleteComment={deleteComment}
-                commentLoader={commentLoader}
-                setcommentLoader={setcommentLoader}
+        <FlashList
+                showsVerticalScrollIndicator={false}
+                data={commentsData}
+                style={{ marginBottom: 40, }}
+                renderItem={item => <RenderComments item={item} userDetails={userDetails}
                 commentLikeData={commentLikeData}
                 getAllLikes={getAllLikes}
                 // estimatedItemSize={200}

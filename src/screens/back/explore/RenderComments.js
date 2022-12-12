@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     Text,
@@ -15,50 +15,58 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 const RenderComments = ({item,userDetails,commentLikeData,getAllLikes,deleteComment,commentLoader})=>{
     // console.log("item=>",item?.item);
-    const [like,setLike]=useState(false)
-    const addLikeFn=()=>{
-        axios.post(`${Constants.BASE_URL}post/add-comment-lk`,{
-            user_id:userDetails?.id,
-            comment_id:item?.item?.id
-        }).then((response)=>{
+    const [like, setLike] = useState(false)
+    const refRBSheet = useRef();
+    const [showreply, setshowreply] = useState(true);
+    const [replydata, setReplydata] = useState([]);
+
+    const additem = () => {
+        setReplydata([...replydata])
+    }
+
+    const addLikeFn = () => {
+        axios.post(`${Constants.BASE_URL}post/add-comment-lk`, {
+            user_id: userDetails?.id,
+            comment_id: item?.item?.id
+        }).then((response) => {
             setLike(true)
-                // setLikeCount(LikeCount+1)
-            
-                getAllLikes()
+            // setLikeCount(LikeCount+1)
+
+            getAllLikes()
         })
-        .catch((error)=>{
-            showToastmsg("Something went wrong.Please try again")
-        })
-        
+            .catch((error) => {
+                showToastmsg("Something went wrong.Please try again")
+            })
+
         // setLike(!like)
     }
-    const removeLikeFn=async()=>{
-        
-        if(like){
-       await axios.post(`${Constants.BASE_URL}post/${commentLikeData.filter((i)=>i.comment_id==item?.item?.id&&i.user_id==userDetails?.id)[0].id}/delete-comment-lk`).then(async(response)=>{
-            getAllLikes()
-            setLike(false)
-            // if(LikeCount>0){
-            //     setLikeCount(LikeCount-1)
-            // }
-        }).catch((error)=>{
-            showToastmsg("Something went wrong.Please try again")
-        })
+    const removeLikeFn = async () => {
+
+        if (like) {
+            await axios.post(`${Constants.BASE_URL}post/${commentLikeData.filter((i) => i.comment_id == item?.item?.id && i.user_id == userDetails?.id)[0].id}/delete-comment-lk`).then(async (response) => {
+                getAllLikes()
+                setLike(false)
+                // if(LikeCount>0){
+                //     setLikeCount(LikeCount-1)
+                // }
+            }).catch((error) => {
+                showToastmsg("Something went wrong.Please try again")
+            })
         }
-        
+
         // setLike(false)
     }
    
     useEffect(()=>{
         console.log("item=>",item?.item);
         // getAllLikes()
-        if(commentLikeData.filter((i)=>i.comment_id==item?.item?.id&&i.user_id==userDetails?.id).length>0){
+        if (commentLikeData.filter((i) => i.comment_id == item?.item?.id && i.user_id == userDetails?.id).length > 0) {
             setLike(true)
         }
         else {
             setLike(false)
         }
-    },[commentLikeData])
+    }, [commentLikeData])
     return (
         <View style={styles.container}>
            <View style={{flex:1,flexDirection:"row"}}>
@@ -116,10 +124,15 @@ const styles = StyleSheet.create({
         padding: Constants.padding,
         backgroundColor: Constants.colors.whiteColor,
     },
-    commenters:{
+    commenters: {
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
     },
+    replyinput: {
+
+        width: '70%',
+
+    }
 })
 
 export default RenderComments

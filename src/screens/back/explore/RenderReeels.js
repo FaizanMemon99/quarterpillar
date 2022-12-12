@@ -42,7 +42,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import RenderComments from './RenderComments'
 import ProductDetails from './ProductDetails'
 
-const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData,props }) => {
+const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, }) => {
     const [refresh, setrefresh] = useState(false)
     const [like, setLike] = useState(false)
     const [loader, setLoader] = useState(false)
@@ -128,7 +128,8 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData,pr
             } else {
                 shareFn()
             }
-        } catch (error) {
+        
+        } } catch(error) {
             alert(error.message);
         }
     };
