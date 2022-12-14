@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/flymingotech/Android/quarterpillars-beba1f73b299d2834b46276003153a26b2a496ab/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-watch-v21/values-watch-v21.xml",
+            "map": [
+                {
+                    "source": "/home/flymingotech/.gradle/caches/transforms-3/43ec0b0b32f637fb964f988b9499640b/transformed/appcompat-1.3.0/res/values-watch-v21/values-watch-v21.xml",
+                    "from": {
+                        "startLines": "2,6,10",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,271,499",
+                        "endLines": "5,9,13",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "266,494,724"
+                    }
+                }
+            ]
+        }
+    ]
+}
