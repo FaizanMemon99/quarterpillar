@@ -17,8 +17,7 @@ const  AdvertiserCategory=(props)=>{
     const businessRegistration = (category)=>{
         
         navigation.navigate('/business-registration', {'category': category,type:props?.route?.params?.type})
-
-    }
+ }
     return (
         // <Swiper style={styles.wrapper} showsButtons={true} horizontal={true} loop={false} activeDotColor={Constants.colors.whiteColor} nextButton={<Icon name='right' style={styles.navigicationIcon} />} prevButton={<Icon name='left' style={styles.navigicationIcon} />}>
         <View style={styles.wrapper}>  
@@ -84,7 +83,7 @@ const  AdvertiserCategory=(props)=>{
                     <View style={globatStyles.overlay}></View>
                     <Text style={styles.categoryName}>Fashion</Text>
             </Pressable>
-            <Pressable onPress={()=>businessRegistration('Life Style')} style={styles.category}>
+            <Pressable onPress={()=>businessRegistration('LifeStyle')} style={styles.category}>
                 <VideoPlayer
                     video={Videos.lifestyle}
                     autoplay
@@ -113,7 +112,7 @@ const  AdvertiserCategory=(props)=>{
                         },
                     }} />
                     <View style={globatStyles.overlay}></View>
-                    <Text style={styles.categoryName}>Life Style</Text>
+                    <Text style={styles.categoryName}>LifeStyle</Text>
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Food')} style={styles.category}>
                 <VideoPlayer

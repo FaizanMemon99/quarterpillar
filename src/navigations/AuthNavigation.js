@@ -66,7 +66,16 @@ import ReelsComments from '../screens/back/explore/ReelsComments'
 import GuideScreen from '../screens/back/explore/GuideScreen'
 import BusinessProfileView from '../screens/back/business/BusinessProfileView'
 import InfluencerProfileView from '../screens/back/business/influencerProfileView'
-
+import NumberLogin from '../screens/front/Numberlogin'
+import VisitProfile from '../screens/back/explore/VisitProfile'
+import SalesDashboard from '../screens/back/business/SalesDashboard'
+import ReturnsDashboard from '../screens/back/business/ReturnsDashboard'
+import Settings from '../screens/back/advertiser/Settings'
+import HelpAndSupports from '../screens/back/business/HelpAndSupports'
+import About from '../screens/back/business/About'
+import SavedCollection from '../screens/back/explore/SavedCollection'
+import NumberOtp from '../screens/front/NumberOtp'
+import SpecificPost from '../screens/back/explore/SpecificPost'
 const Stack = createNativeStackNavigator()
 
 const AuthNavigation=(props)=>{
@@ -94,9 +103,11 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name="/product-overview" component={ProductOverview}/>
                 <Stack.Screen name="/product-preview" component={ProductPreview}/>
                 <Stack.Screen name="/email-verify" component={EmailVerification}/>
+                <Stack.Screen name="/number-verify" component={NumberLogin}/>
                 <Stack.Screen name="/business-signup" component={BusinessSignup} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-login" component={BusinessSignIn} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/email-otp" component={EmailOtp} barStyle={{backgroundColor: 'transparent',}} />
+                <Stack.Screen name="/Number-Otp" component={NumberOtp} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-otp" component={BusinessOtp} barStyle={{backgroundColor: 'transparent',}} initialParams={{authentication: props.authentication}}/>
                 <Stack.Screen name="/categories" component={Category} barStyle={{backgroundColor: 'transparent',}} />
                 <Stack.Screen name="/business-registration" component={BusinessRegistration} />
@@ -119,6 +130,7 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/influencer-registration' component={InfluencerRegistration} />
                 <Stack.Screen name='/influencer-stack-navigation' component={StackNavigationInfluencer} />
                 <Stack.Screen name='/advertiser-signup' component={AdvertiserSignin} />
+                <Stack.Screen name='/HelpAnd-Supports' component={HelpAndSupports} />
                 <Stack.Screen name='/advertiser-otp' component={AdvertiserOtp} />
                 <Stack.Screen name='/advertiser-categories' component={AdvertiserCategory} />
                 <Stack.Screen name='/advertiser-signin-with-pass' component={AdvertiserSiginWithPass} />
@@ -130,8 +142,11 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/profileScreen' component={ProfileScreen}/>
                 <Stack.Screen name='/edit-user-info' component={EditUser}/>
                 <Stack.Screen name='/user-management' component={UserManagement}/>
+                <Stack.Screen name='/settings' component={Settings}/>
+                <Stack.Screen name='/About' component={About}/>
                 <Stack.Screen name='/product-details' component={ProductDetails}/>
                 <Stack.Screen name='/cart' component={Cart}/>
+                <Stack.Screen name='/category' component={Category}/>
                 <Stack.Screen name='/goto-select-address' component={SelectAddress} />
                 <Stack.Screen name='/add-address' component={AddAddress} />
                 <Stack.Screen name='/explore-review' component={ExpoerReview} />
@@ -140,8 +155,12 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/payment-success' component={PaymentSuccess} />
                 <Stack.Screen name='/payment-error' component={PaymentSuccess} />
                 <Stack.Screen name='/my-orders' component={MyOrders} />
-
+                <Stack.Screen name='/visit-profile' component={VisitProfile} />
                 <Stack.Screen name='/GuideScreen' component={GuideScreen } />
+                <Stack.Screen name='/Sales-Dashboard' component={SalesDashboard} />
+                <Stack.Screen name='/Returns-Dashboard' component={ReturnsDashboard} />
+                <Stack.Screen name='/saved-collection' component={SavedCollection} />
+                <Stack.Screen name="/specific-post" component={SpecificPost}/>
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

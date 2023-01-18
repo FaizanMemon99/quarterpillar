@@ -343,6 +343,7 @@ else {
                     <DatePicker
                         modal
                         mode='date'
+                        textColor={'black'}
                         open={open}
                         date={dob?dob:new Date()}
                         onConfirm={(date) => {

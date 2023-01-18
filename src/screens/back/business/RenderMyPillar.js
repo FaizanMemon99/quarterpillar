@@ -92,18 +92,24 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontWeight: '500',
         fontSize: 18,
+        fontFamily:'Aviner',
     },
     ongoingWrapper: {
         padding: 5,
         borderRadius: Constants.borderRadius,
-        backgroundColor: '#80FFB9',
+        backgroundColor: '#00ffff',
+
+        backgroundColor: 'rgba(128, 255, 185, 0.37)',
     },
     onGoing: {
         color: '#04751F',
-        fontFamily: Constants.fontFamily,
+        // fontFamily: Constants.fontFamily,
+        fontFamily:'Aviner',
         fontSize: 14,
-        fontWeight: '800',
-        textTransform:'capitalize'
+        fontWeight: '500',
+        textTransform:'capitalize',
+        lineHeight: 19,
+        fontStyle:'normal'
     },
     cardBody: {
         marginTop: 16,
@@ -126,15 +132,16 @@ const styles = StyleSheet.create({
     btnOutline: {
         padding: 8,
         backgroundColor: 'transparent',
-        borderWidth: 1,
+        borderWidth: 0.8,
         borderColor: '#FF0000',
         borderRadius: Constants.borderRadius,
     },
     btnText: {
-        fontFamily: Constants.fontFamily,
+        fontFamily:'Aviner',
         fontSize: 14,
         fontWeight: '800',
         color: '#FF0000',
+        
     },
 })
 

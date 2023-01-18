@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { 
+import React, { useRef, useEffect } from 'react'
+import {
     View,
     Text,
     Image,
@@ -19,10 +19,11 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 // import { Badge } from 'react-native-elements'
 
-const  CustomAppBar=(props)=>{
+const CustomAppBar = (props) => {
+    const wrapperRef = useRef(null);
     // const [badgeCount,setbadgeCount]=useState(0)
-    const navigation=useNavigation()
-    const dynamicLinkGenerator=async()=>{
+    const navigation = useNavigation()
+    const dynamicLinkGenerator = async () => {
         const link = await dynamicLinks().buildLink({
             link: `https://quarterpillars.com/influencer/${props?.userDetails?.id}`,
             // ios: {
@@ -30,33 +31,34 @@ const  CustomAppBar=(props)=>{
             //   appStoreId: <appstore_id>,
             // },
             android: {
-              packageName: "com.quarterpillars",
+                packageName: "com.quarterpillars",
             },
             domainUriPrefix: 'https://quarterpillars123.page.link',
-          });
-          console.log("link->",link);
-             await Share.share({
-                message:
-                  "Hi, please check my profile:- "+link
-                //   +", "+JSON.parse(item?.item?.image).map((imageData,index)=>`${Constants.BASE_IMAGE_URL}${imageData}`+index==JSON.parse(item?.item?.image).length-1?"":", "),
-                //   ,url:"http://google.com",
-                  ,title:"Profile share"
-              });
-            
-               
-      }
-      const goBack = ()=>{
-        if(props?.backRoute){
-            props?.navigation.navigate(props?.backRoute,{comeBack:true})
+        });
+        console.log("link->", link);
+        await Share.share({
+            message:
+                "Hi, please check my profile:- " + link
+            //   +", "+JSON.parse(item?.item?.image).map((imageData,index)=>`${Constants.BASE_IMAGE_URL}${imageData}`+index==JSON.parse(item?.item?.image).length-1?"":", "),
+            //   ,url:"http://google.com",
+            , title: "Profile share"
+        });
+
+
+    }
+    const goBack = () => {
+        if (props?.backRoute) {
+            props?.navigation.navigate(props?.backRoute, { comeBack: true })
         }
         else
-        props.navigation.goBack() 
+            props.navigation.goBack()
     }
-    const gotoCart = ()=>{
-        navigation.navigate('/cart',{userDetails:props?.userDetails})
+    const gotoCart = () => {
+        navigation.navigate('/cart', { userDetails: props?.userDetails })
     }
+
     const gotoCategory = ()=>{
-        if(props?.userDetails?.role_id==3){
+        if(props?.userDetails?.role_id==2){
             navigation.navigate('/category', {
                 userDetails: props?.userDetails,
               });
@@ -64,76 +66,81 @@ const  CustomAppBar=(props)=>{
         else 
         navigation.navigate('/my-requests',{page:'ongoing',userDetails:props?.userDetails})
     }
-    const gotoDraft = ()=>{
-        props.navigation.navigate('/draft',{userDetails:props?.userDetails})
+
+    const gotoDraft = () => {
+        props.navigation.navigate('/draft', { userDetails: props?.userDetails })
     }
-    useEffect(()=>{
+    useEffect(() => {
         axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
             user_id: props?.userDetails?.id
         }).then((response) => {
-            if(response.data.data.cart_item&&response.data.data.cart_item.length>0){
+            if (response.data.data.cart_item && response.data.data.cart_item.length > 0) {
                 setbadgeCount(response.data.data.cart_item.length)
-                console.log("counteff",response.data.data.cart_item.length)
+                console.log("counteff", response.data.data.cart_item.length)
             }
         })
-        .catch((error)=>{
-            setbadgeCount(0)
-        })
-    },[props])
+            .catch((error) => {
+                setbadgeCount(0)
+            })
+    }, [props])
+    const handleClickAway = () => {
+		console.log('Maybe close the popup');
+	};
+
     return (
         <View style={styles.wrapper}>
             {
-                props.isMainscreen?(
-                    <View style={[styles.logoContainer, props.title?({alignItems: 'center'}):null]}>
-                        <Pressable onPress={()=>props.openDrawer()} style={{zIndex: 999}}>
+                props.isMainscreen ? (
+                    <View style={[styles.logoContainer, props.title ? ({ alignItems: 'center' }) : null]}>
+                        <Pressable onPress={() => props.openDrawer()} style={{ zIndex: 999 }}>
                             {
-                                !props.showDrawer?<Image source={Images.hamburgerMenuIcon} style={{tintColor:props.isReel?'#FFF':'#000'}} />:<AntDesign name='close' style={{color:props.isReel?'#FFF':'#000'}} size={26} />
+                                !props.showDrawer ? <Image source={Images.hamburgerMenuIcon} style={{ tintColor: props.isReel ? '#FFF' : '#000' }} /> : <AntDesign name='close' style={{ color: props.isReel ? '#FFF' : '#000' }} size={26} />
                             }
-                            
+
                         </Pressable>
                         {
-                            props.title?<Text style={[styles.title, {color: props.isReel?'#FFF':'#000'}]}>{props.title}</Text>:(
-                                <View style={{marginStart: 20,marginTop: -12}}>
-                                    
+                            props.title ? <Text style={[styles.title, { color: props.isReel ? '#FFF' : '#000' }]}>{props.title}</Text> : (
+                                <View style={{ marginStart: 20, marginTop: -12 }}>
+
                                 </View>
                             )
                         }
                     </View>
-                    
-                ):(
+
+                ) : (
                     <View style={styles.titleBar}>
-                        <View style={{display:'flex',alignItems:'center',flexDirection:'row'}}>
-                        <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
-                        <Text style={{...styles.title, color: props.isReel?Constants.colors.whiteColor: 'rgba(0, 0, 0, 1)',}}>{props.title}</Text>
-                        {
-                            props.subtitle?<Text style={styles.subtitle}>{props.subtitle}</Text>:null
-                        }
-                        {
-                            props.isDraft?<Text style={styles.draft}>Draft</Text>:null
-                        }
+                        <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                            <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel ? styles.reelBackBtn : styles.backBtn} /></Pressable>
+                            <Text style={{ ...styles.title, color: props.isReel ? Constants.colors.whiteColor : 'rgba(0, 0, 0, 1)', }}>{props.title}</Text>
+                            {
+                                props.subtitle ? <Text style={styles.subtitle}>{props.subtitle}</Text> : null
+                            }
+                            {
+                                props.isDraft ? <Text style={styles.draft}>Draft</Text> : null
+                            }
                         </View>
-                        <View style={{flexDirection:"row"}}>
-                        {props.editable?
-                            
-                            <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.userDetails,type:props?.type})}>
-                            <FontAwesome5Icon name='pen' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
-                            {props?.shareble?<Pressable 
-                            style={{paddingLeft:10}}
-                            onPress={dynamicLinkGenerator}>
-                            <FontAwesome5Icon name='share' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>:null}
-                            </View>
+                        <View style={{ flexDirection: "row" }}>
+                            {props.editable ?
+
+                                <Pressable onPress={() => props.navigation.navigate('/edit-user-info', { userDetails: props?.userDetails, type: props?.type })}>
+                                    <FontAwesome5Icon name='pen' size={24} style={props.isReel ? styles.reelBackBtn : styles.backBtn} /></Pressable> : null}
+                            {props?.shareble ? <Pressable
+                                style={{ paddingLeft: 10 }}
+                                onPress={dynamicLinkGenerator}>
+                                <FontAwesome5Icon name='share' size={24} style={props.isReel ? styles.reelBackBtn : styles.backBtn} /></Pressable> : null}
+                        </View>
                     </View>
                 )
             }
             {
-                props.headerRight?(
-                    <View style={{flexDirection: 'row',}}>
+                props.headerRight ? (
+                    <View style={{ flexDirection: 'row', }}>
                         {/* <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} /> */}
-                        <View style={{position:'relative'}}>
-                        <Feather name='shopping-cart' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} onPress={gotoCart} />
-                        <Text style={[styles.badgeCount,{fontSize:10}]}>
-                            {props?.badgeCount?props?.badgeCount:0}
-                        </Text>
+                        <View style={{ position: 'relative' }}>
+                            <Feather name='shopping-cart' style={[styles.leftIocn, { color: props?.IconColor ? props?.IconColor : '#fff' }]} onPress={gotoCart} />
+                            <Text style={[styles.badgeCount, { fontSize: 10 }]}>
+                                {props?.badgeCount ? props?.badgeCount : 0}
+                            </Text>
                         </View>
                         {/* <View style={{position:'absolute',left:"90%",top:"-30%",backgroundColor:'white',zIndex:99999,width:20,height:20,borderRadius:20/2}}>
                         <Text style={{color:'black',textAlign:'center'}}>
@@ -144,27 +151,28 @@ const  CustomAppBar=(props)=>{
                        </Text>
                             </View>
                         </View> */}
-                        
-                        {!props?.explore&&<Feather name='plus-circle' style={[styles.leftIocn, {color:props?.IconColor?props?.IconColor:'#fff',zIndex: props.newPost?9999:9}]} onPress={()=>props.openPopup()} />}
+
+                        {!props?.explore && <Feather name='plus-circle' style={[styles.leftIocn, { color: props?.IconColor ? props?.IconColor : '#fff', zIndex: props.newPost ? 9999 : 9 }]} onPress={() => props.openPopup()} />}
                         {
-                            props.newPost?<View style={styles.addnewPost}>
+                            props.newPost ? 
+                            <View ref={wrapperRef} style={styles.addnewPost}>
                                 <Text style={styles.item} onPress={gotoCategory}>{
-                                props?.userDetails?.role_id==3?'New Advertisement':
-                                'New Post'}</Text>
+                                    props?.userDetails?.role_id == 3 ? 'New Advertisement' :
+                                        'New Post'}</Text>
                                 <View style={styles.divider}></View>
                                 <Text style={styles.item} onPress={gotoDraft}>Draft</Text>
-                            </View>:null
+                            </View> : null
                         }
                     </View>
-                ):null
+                ) : null
             }
             {
-                props.searchbar?(
-                    <View style={{width: '100%',}}>
+                props.searchbar ? (
+                    <View style={{ width: '100%', }}>
                         <TextInput style={styles.searchbar} placeholder='Search' />
                         <AntDesign name='search1' style={styles.searchIcon} />
                     </View>
-                ):null
+                ) : null
             }
         </View>
     )
@@ -172,7 +180,7 @@ const  CustomAppBar=(props)=>{
 const styles = StyleSheet.create({
     wrapper: {
         padding: Constants.padding,
-        paddingTop: Constants.padding+20,
+        paddingTop: Constants.padding+3,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -181,11 +189,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         zIndex: 99
     },
-    title: {
-        fontFamily: Constants.fontFamily,
-        fontSize: 30,
-        fontWeight: '800',
-    },
+    // title: {
+    //     fontFamily: Constants.fontFamily,
+    //     fontSize: 30,
+    //     fontWeight: '800',
+    // },
     welcome: {
         fontFamily: Constants.fontFamily,
         fontSize: 32,
@@ -211,18 +219,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         zIndex: 99,
-        justifyContent:'space-between',
-        width:'100%'
+        justifyContent: 'space-between',
+        width: '100%'
     },
     title: {
         fontFamily: Constants.fontFamily,
-        fontSize: 26,
+        fontSize: 25,
         fontWeight: '800',
         marginStart: 20,
     },
     leftIocn: {
         color: Constants.colors.whiteColor,
-        fontSize: 28,
+        fontSize: 25,
         marginLeft: 20,
         zIndex: 99,
     },
@@ -243,7 +251,7 @@ const styles = StyleSheet.create({
         backgroundColor: Constants.colors.whiteColor,
         right: 20,
         top: 40,
-        width: "100%",
+        width: "170%",
         zIndex: 9999,
         borderTopLeftRadius: 12,
         borderBottomRightRadius: 12,
@@ -251,6 +259,7 @@ const styles = StyleSheet.create({
     },
     item: {
         padding: 13,
+
     },
     divider: {
         width: '100%',
@@ -279,20 +288,20 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         borderRadius: 5,
     },
-    badgeCount:{
-        position:'absolute',
-  top:-5,
-  right:-10,
-  width:15,
-  height:15,
-  borderRadius:15,
-  textAlign: 'center',
-  backgroundColor: 'red',
-  color:"#fff",
-  fontSize:10,
-  fontWeight:"800",
-//   display:"flex",
-  zIndex:99999
+    badgeCount: {
+        position: 'absolute',
+        top: -5,
+        right: -10,
+        width: 15,
+        height: 15,
+        borderRadius: 15,
+        textAlign: 'center',
+        backgroundColor: 'red',
+        color: "#fff",
+        fontSize: 10,
+        fontWeight: "800",
+        //   display:"flex",
+        zIndex: 99999
     }
 })
 export default CustomAppBar

@@ -111,7 +111,7 @@ const BusinessSignup=(props)=>{
                     <Text style={styles.businessText}>{props?.route?.params?.userType}</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter Mobile Number for verification</Text>
+                <Text style={styles.textBelowBusiness}>Enter Mobile Number and Sign In</Text>
                 <View style={styles.phoneNumberContainer}>
                     <View style={styles.countryCode}>
                         <Image source={Images.indiaFlag} style={styles.countryFlag} />
@@ -159,9 +159,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
-        maxWidth: '60%',
+        maxWidth: '75%',
         textAlign: 'center',
         marginTop: 12,
+        textTransform:'uppercase',
     },
     business: {
         flexDirection: 'row',
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
         paddingStart: 16,
         paddingEnd: 16,
         borderRadius: 5,
+        
     },
     businessText: {
         fontFamily: Constants.fontFamily,
@@ -181,11 +183,12 @@ const styles = StyleSheet.create({
         color: Constants.colors.whiteColor,
         fontWeight: '700',
         marginRight: Constants.margin,
+        textTransform:'uppercase',
     },
     textBelowBusiness: {
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: '400',
         marginBottom: 20,
     },

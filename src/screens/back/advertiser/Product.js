@@ -82,10 +82,10 @@ const Product=(props)=>{
                         setMenuItem(setActiveMenu, activeMenu, 'ant', 'user', 'Profile', navigation, '/edit-user-info',props)
                     }
                     { 
-                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/help-support',props)
+                        setMenuItem(setActiveMenu, activeMenu, 'feather', 'help-circle', 'Help/Support', navigation, '/HelpAnd-Supports',props)
                     }
                     {
-                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/about',props)
+                        setMenuItem(setActiveMenu, activeMenu, 'ant', 'infocirlceo', 'About', navigation, '/About',props)
                     }
                 </ScrollView>
                 <Pressable

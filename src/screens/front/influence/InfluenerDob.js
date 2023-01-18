@@ -65,6 +65,7 @@ const InfluencerDob = () => {
                     <DatePicker
                         modal
                         mode='date'
+                        textColor={'black'}
                         open={open}
                         date={date}
                         onDateChange={setDate}

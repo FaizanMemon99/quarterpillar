@@ -13,7 +13,7 @@ import globatStyles from '../../../shared/globatStyles'
 import CustomAppBar from '../../../components/admin/CustomAppBar'
 import RenderUsers from './RenderUsers'
 import CompanyUsers from './CompanyUsers'
-import { FlashList } from '@shopify/flash-list'
+
 
 const UserManagement = (props) => {
     const [tabs, setTab] = useState('company')
@@ -44,12 +44,12 @@ const UserManagement = (props) => {
                     <Text style={[styles.tab, { color: tabs === 'company' ? Constants.colors.primaryColor : '#676767', textDecorationLine: tabs === 'company' ? 'underline' : 'none', }]} onPress={() => setTab('company')}>Company</Text>
                     <Text style={[styles.tab, { color: tabs === 'appusers' ? Constants.colors.primaryColor : '#676767', textDecorationLine: tabs === 'appusers' ? 'underline' : 'none', }]} onPress={() => setTab('appusers')}>App Users</Text>
                 </View>
-                <FlashList
+                <FlatList
                     data={users}
                     showsVerticalScrollIndicator={false}
                     renderItem={item=>tabs === 'company'?<RenderUsers item={item} />:<CompanyUsers item />}
                     keyExtractor={item=>item?.id?.toString()}
-                    estimatedItemSize={200}/>
+                    />
             </ScrollView>
             <Pressable style={styles.flotingBtn} onPress={()=>setShowAddUser(!showAddUser)}>
                 <View style={styles.flotingBtnInner}>

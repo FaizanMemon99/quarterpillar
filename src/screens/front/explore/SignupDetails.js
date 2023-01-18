@@ -50,6 +50,7 @@ const SignupDetails = (props)=>{
                             open={open}
                             date={date}
                             mode='date'
+                            textColor={'black'}
                             onDateChange={setDate}
                             onConfirm={(date) => {
                                 setOpen(false)

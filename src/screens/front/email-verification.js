@@ -147,7 +147,7 @@ const EmailVerification=(props)=>{
                 </View>
                 <Text style={styles.belowPhoneNumber}>We will send you an OTP to {props?.route?.params?.phoneType?'reset password on your email id':'validate your email id'}.</Text>
                 {
-                    isLoading?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Pressable style={[globatStyles.button, {width: '92%'}]} onPress={generateOtpBusiness}><Text style={globatStyles.btnText}>Generate OTP</Text></Pressable>
+                    isLoading?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Pressable style={[globatStyles.button, {width: '92%'}]} onPress={generateOtpBusiness}><Text style={globatStyles.btnText}>Generate OTPs</Text></Pressable>
                 }
                 {props?.route?.params?.phoneType&&
                 <>
@@ -193,9 +193,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
-        maxWidth: '60%',
+        maxWidth: '75%',
         textAlign: 'center',
         marginTop: 12,
+        textTransform:'uppercase'
     },
     business: {
         flexDirection: 'row',
@@ -215,6 +216,7 @@ const styles = StyleSheet.create({
         color: Constants.colors.whiteColor,
         fontWeight: '700',
         marginRight: Constants.margin,
+        textTransform:'uppercase',
     },
     textBelowBusiness: {
         fontFamily: Constants.fontFamily,

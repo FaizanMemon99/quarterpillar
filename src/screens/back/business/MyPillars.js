@@ -107,13 +107,13 @@ const MyPillars = (props)=>{
                     {loader?
                     <ActivityIndicator size={30} color={'#80FFB9'} style={{marginTop:30}}/>
                     :
-                        <FlashList
+                        <FlatList
                         style={{marginBottom: 80,marginTop:10}}
                         data={tabs=='ongoing'?pillarsData:pillarsEndedData}
                         renderItem={item=><RenderMyPillar pillars={item}  getData={getData} tabs={tabs}/>}
                         keyExtractor={item=>item?.id?.toString()}
                         ListEmptyComponent={EmptyListMessage}
-                        estimatedItemSize={200}/>}
+                        />}
                 </View>
             </ScrollView>
         </View>

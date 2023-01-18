@@ -11,6 +11,7 @@ import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 const CustomAppBar=(props)=>{
     const goBack = ()=>{
@@ -25,6 +26,13 @@ const CustomAppBar=(props)=>{
     const gotoDraft = ()=>{
         props.navigation.navigate('/drafts')
     }
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+      };
+    const onSwipeDown=(gestureState)=> {
+        goBack()
+      }
     return (
         <View style={styles.wrapper}>
             {
@@ -64,13 +72,14 @@ const CustomAppBar=(props)=>{
                         <Feather name='search' style={styles.leftIocn} />
                         <Feather name='shopping-cart' style={styles.leftIocn} onPress={gotoCart} />
                         <Feather name='plus-circle' style={[styles.leftIocn, {zIndex: props.newPost?9999:9}]} onPress={()=>props.openPopup()} />
+                        <GestureRecognizer style={{flex:1}} onSwipeDown={(state) => onSwipeDown(state)} config={config} >
                         {
                             props.newPost?<View style={styles.addnewPost}>
                                 <Text style={styles.item} onPress={gotoCategory}>New Advertisement</Text>
                                 <View style={styles.divider}></View>
                                 <Text style={styles.item} onPress={gotoDraft}>Draft</Text>
                             </View>:null
-                        }
+                        }</GestureRecognizer>
                     </View>
                 ):null
             }

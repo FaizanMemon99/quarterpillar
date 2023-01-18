@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { FlashList } from '@shopify/flash-list'
+
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {
@@ -17,6 +17,7 @@ import CustomTabNavigationAdmin from '../../../navigations/CustomTabNavigationAd
 import Constants from '../../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { FlatList } from 'react-native-gesture-handler'
 
 const BusinessProfileView=(props)=>{
     const [showDrawer, setShowDrawer] = useState(false)
@@ -102,11 +103,11 @@ const BusinessProfileView=(props)=>{
     :<>
     <View style={styles.profileSection}>
          {userData?.products?.length>0?
-         <FlashList
+         <FlatList
          data={userData?.products}
          keyExtractor={(item,index)=>index?.toString()}
          numColumns={2}
-         estimatedItemSize={2}
+         
          renderItem={item=>(
              <View style={styles.profileBgImg} >
              <Image

@@ -42,7 +42,7 @@ const Signin = (props)=>{
                     <Pressable onPress={gotoProduct} style={globatStyles.button}><Text style={globatStyles.btnText}>Sign In</Text></Pressable>
                     <View style={styles.signinContainer}>
                         <Text>Don't have an account?</Text>
-                        <Pressable onPress={gotoSignup}><Text style={styles.signinBtn}> Sign Up</Text></Pressable>
+                        <Pressable onPress={gotoSignup}><Text style={styles.signinBtn}> SignUp</Text></Pressable>
                     </View>
                 </View>
             </ScrollView>

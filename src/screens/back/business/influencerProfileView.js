@@ -17,7 +17,8 @@ import { useNavigation } from '@react-navigation/native'
 import axios from "axios"
 import showToastmsg from '../../../shared/showToastmsg';
 import Video from 'react-native-video'
-import { FlashList } from '@shopify/flash-list'
+import { FlatList } from 'react-native-gesture-handler'
+
 const InfluencerProfileView=(props)=>{
     const navigation=useNavigation()
     const [loader,setLoader]=useState(false)
@@ -100,11 +101,11 @@ const InfluencerProfileView=(props)=>{
                
                <View style={styles.profileSection}>
                     {userData?.posts?.length>0?
-                    <FlashList
+                    <FlatList
                     data={userData?.posts}
                     keyExtractor={(item,index)=>index?.toString()}
                     numColumns={2}
-                    estimatedItemSize={2}
+                    
                     renderItem={item=>(
                         <View style={styles.profileBgImg} >
                         <Video

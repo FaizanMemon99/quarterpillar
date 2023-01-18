@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: Constants.borderRadius,
         backgroundColor: '#80FFB9',
-        marginLeft:30
+        marginRight:25
     },
     onGoing: {
         color: '#04751F',

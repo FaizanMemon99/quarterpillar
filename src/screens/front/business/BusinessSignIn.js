@@ -99,9 +99,13 @@ const BusinessSignIn=(props)=>{
             setIsLoading(false)
         }
     }
+    const gotoOtplogin = () =>{
+        navigation.navigate('/number-verify',{userType:props.route.params.login_type,login_type:props.route.params.login_type,phoneType:"forgotpassword"})
+    }
     const gotoForgotPass = () =>{
         navigation.navigate('/email-verify',{userType:props.route.params.login_type,phoneType:"forgotpassword"})
     }
+
     const gotoCreateAccount = () =>{
         if(props?.route?.params?.login_type=='Business')
         {navigation.navigate('/advertiser-categories',{type:props.route.params.login_type})}
@@ -160,14 +164,17 @@ const BusinessSignIn=(props)=>{
                 <Text style={styles.businessText}>{props?.route?.params?.login_type?props?.route?.params?.login_type:''}</Text>
                     <Image source={Images.businessIcon} />
                 </View>
-                <Text style={styles.textBelowBusiness}>Enter Mobile Number/Email Id/Username</Text>
+                {/* <Text style={styles.textBelowBusiness}>Enter Mobile Number/Email Id/Username</Text> */}
                 <View style={styles.phoneNumberContainer}>
-                    <TextInput value={LoginId} style={styles.textInput} placeholder='Login Credentials' onChangeText={setLoginId} autoFocus/>
+                    <TextInput value={LoginId} style={styles.textInput} placeholder='Email ID' onChangeText={setLoginId} autoFocus/>
                     <View style={{flex: 1, width: '100%', alignItems: 'center',}}>
                         <TextInput value={Password} style={styles.textInput} placeholder='Password' secureTextEntry={!showPass} onChangeText={setPassword}/>
                         <FontAwesome name={showPass?'eye-slash':'eye'} style={styles.eyeIcon} onPress={()=>setShowPass(!showPass)} />
                     </View>
+                    <View style={{flexDirection:'row',}}>
+                    <Text style={styles.otploginPassLink} onPress={gotoOtplogin} >Otp Login</Text>
                     <Text style={styles.forgotPassLink} onPress={gotoForgotPass}>Forgot Password</Text>
+                    </View>
                 </View>
                 <Text style={styles.belowPhoneNumber}></Text>
                 {IsLoading?<ActivityIndicator size={30} color={Constants.colors.whiteColor} />:<Pressable style={[globatStyles.button, {width: '92%', marginTop: 0,}]} onPress={signinverificatoin}><Text style={globatStyles.btnText}>Sign In</Text></Pressable>}
@@ -203,21 +210,20 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
-        maxWidth: '60%',
+        maxWidth: '70%',
         textAlign: 'center',
         marginTop: 12,
+        textTransform:'uppercase',
     },
     business: {
         flexDirection: 'row',
-        marginTop: 12,
-        alignItems: 'center',
-        marginTop: 40,
-        marginBottom: 40,
-        backgroundColor: 'rgba(51, 51, 51, 0.2)',
+        marginTop: 25,
+        alignItems: 'center', textTransform:'uppercase',
         padding:8,
         paddingStart: 16,
         paddingEnd: 16,
         borderRadius: 5,
+       
     },
     businessText: {
         fontFamily: Constants.fontFamily,
@@ -225,7 +231,8 @@ const styles = StyleSheet.create({
         color: Constants.colors.whiteColor,
         fontWeight: '700',
         marginRight: Constants.margin,
-        textTransform:'capitalize'
+        // textTransform:'capitalize'
+        textTransform:'uppercase',
     },
     textBelowBusiness: {
         fontFamily: Constants.fontFamily,
@@ -262,7 +269,16 @@ const styles = StyleSheet.create({
     },
     forgotPassLink: {
         alignSelf: 'flex-end',
-        marginEnd: '5%',
+        // marginEnd: '%',
+        fontSize: 16,
+        color: Constants.colors.primaryColor,
+        fontFamily: Constants.fontFamily,
+        textDecorationLine: 'underline',
+        textDecorationColor: Constants.colors.primaryColor,
+    },
+    otploginPassLink: {
+        alignSelf: 'flex-start',
+        marginEnd: '28%',
         fontSize: 16,
         color: Constants.colors.primaryColor,
         fontFamily: Constants.fontFamily,

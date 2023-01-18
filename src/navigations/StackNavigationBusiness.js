@@ -10,6 +10,7 @@ import AllOrders from '../screens/back/business/AllOrders'
 import SalesReturnDetails from '../screens/back/business/SalesReturnDetails'
 import ProductOverview from '../screens/back/business/ProductOverview'
 
+
 const Stack = createNativeStackNavigator()
 
 const StackNavigationBusiness=(props)=>{
@@ -24,8 +25,10 @@ const StackNavigationBusiness=(props)=>{
                 <Stack.Screen name='/product-overview' component={ProductOverview} />
                 <Stack.Screen name='/edit-user-info' component={EditUser} />
                 <Stack.Screen name='/user-management' component={UserManagement} />
+                
                 <Stack.Screen name='/all-orders' component={AllOrders} />
                 <Stack.Screen name='/sales-return-details' component={SalesReturnDetails} />
+                
             </Stack.Navigator>
     )
 }

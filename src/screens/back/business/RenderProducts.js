@@ -23,7 +23,7 @@ const RenderProducts = ({products,userDetails})=>{
         >
             
             <Image source={{uri:imageUrl}} style={{width: '20%', height: '90%',borderRadius:10}}/>
-            <View>
+            <View style={{marginLeft:4}} >
                 <Text style={styles.productName}>{products.item.product_name}</Text>
                 <View style={styles.lavelAndValue}>
                     <Text style={styles.lavel}>Color: </Text>
@@ -79,12 +79,14 @@ const styles= StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontWeight: '700',
         fontSize: 16,
-        textTransform:'capitalize'
+        textTransform:'capitalize',
+        lineHeight: 37,
     },
     divider: {
         height: 70,
         width: 1,
         backgroundColor: '#9F9F9F',
+        marginRight:2,
     },
     lavelAndValue: {
         flexDirection: 'row',
@@ -101,6 +103,7 @@ const styles= StyleSheet.create({
     inStockText: {
         fontFamily: Constants.fontFamily,
         fontSize: 18,
+        
     },
     inStockOuter: {
         width: 42,

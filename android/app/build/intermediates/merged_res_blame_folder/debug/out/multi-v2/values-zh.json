@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/flymingotech/Android/quarterpillars-beba1f73b299d2834b46276003153a26b2a496ab/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh/values-zh.xml",
+            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh/values-zh.xml",
             "map": [
                 {
-                    "source": "/home/flymingotech/.gradle/caches/transforms-3/2cf66712ce56c5b07864e84dffcc6e11/transformed/jetified-ucrop-2.2.6-native/res/values-zh/values-zh.xml",
+                    "source": "/home/hasan/.gradle/caches/transforms-3/2cf66712ce56c5b07864e84dffcc6e11/transformed/jetified-ucrop-2.2.6-native/res/values-zh/values-zh.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

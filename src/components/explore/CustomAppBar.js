@@ -1,5 +1,5 @@
 import React from 'react'
-import { 
+import {
     View,
     Text,
     Image,
@@ -13,54 +13,52 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
 
-const CustomAppBar=(props)=>{
-const navigation=useNavigation()
-    const goBack = ()=>{
-       
+const CustomAppBar = (props) => {
+    const navigation = useNavigation()
+    const goBack = () => {
         navigation.goBack()
     }
-    const gotoCart = ()=>{
+    const gotoCart = () => {
         props.navigation.navigate('/cart')
     }
     return (
         <View style={styles.wrapper}>
             {
-                props.isMainscreen?(
-                    <View style={[styles.logoContainer, props.title?({alignItems: 'center'}):null]}>
-                        <Pressable onPress={()=>props.navigation.openDrawer()} style={{zIndex: 999}}>
+                props.isMainscreen ? (
+                    <View style={[styles.logoContainer, props.title ? ({ alignItems: 'center' }) : null]}>
+                        <Pressable onPress={() => props.navigation.openDrawer()} style={{ zIndex: 999 }}>
                             <Image source={Images.hamburgerMenuIcon} />
                         </Pressable>
                         {
-                            props.title?<Text style={[styles.title, {color: props.isReel?'#FFF':'#000'}]}>{props.title}</Text>:(
-                                <View style={{marginStart: 20,marginTop: -12}}>
-                                    
+                            props.title ? <Text style={[styles.title, { color: props.isReel ? '#FFF' : '#000' }]}>{props.title}</Text> : (
+                                <View style={{ marginStart: 20, marginTop: -12 }}>
+
                                 </View>
                             )
                         }
                     </View>
-                    
-                ):(
+                ) : (
                     <View style={styles.titleBar}>
-                        <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel?styles.reelBackBtn:styles.backBtn} /></Pressable>
-                        <Text style={{...styles.title, color: props.isReel?Constants.colors.whiteColor: 'rgba(0, 0, 0, 1)'}}>{props.title}</Text>
+                        <Pressable onPress={goBack}><AntDesign name='left' size={24} style={props.isReel ? styles.reelBackBtn : styles.backBtn} /></Pressable>
+                        <Text style={{ ...styles.title, color: props.isReel ? Constants.colors.whiteColor : 'rgba(0, 0, 0, 1)' }}>{props.title}</Text>
                     </View>
                 )
             }
             {
-                props.headerRight?(
-                    <View style={{flexDirection: 'row',}}>
+                props.headerRight ? (
+                    <View style={{ flexDirection: 'row', }}>
                         <Feather name='search' style={styles.leftIocn} />
                         <Feather name='shopping-cart' style={styles.leftIocn} onPress={gotoCart} />
                     </View>
-                ):null
+                ) : null
             }
             {
-                props.searchbar?(
-                    <View style={{width: '100%',}}>
+                props.searchbar ? (
+                    <View style={{ width: '100%', }}>
                         <TextInput style={styles.searchbar} placeholder='Search' />
                         <AntDesign name='search1' style={styles.searchIcon} />
                     </View>
-                ):null
+                ) : null
             }
         </View>
     )

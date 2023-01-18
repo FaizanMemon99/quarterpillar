@@ -29,11 +29,12 @@ const DashBoardLoader = (props) => {
 const Gradient = () => {
     return (
         <LinearGradient
-            colors={['#eeeeee', '#dddddd', '#eeeeee']}
+            colors={['#D3D3D3', '#D3D3D3', '#D3D3D3']}
             start={{ x: 1.0, y: 0.0 }}
             end={{ x: 0.0, y: 0.0 }}
             style={{
                 flex: 1,
+                // marginTop:100,
                 width: 120
             }}
         />
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         marginTop: 12,
-        backgroundColor: '#F1F1F1',
+        backgroundColor: '#A9A9A9',
     }
 })
 

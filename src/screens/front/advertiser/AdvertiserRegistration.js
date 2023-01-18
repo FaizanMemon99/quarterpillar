@@ -3,9 +3,10 @@ import {
     View,
     Text,
     StyleSheet,
-    TextInput,Image,
+    TextInput, Image,
     Pressable,
     ActivityIndicator,
+    Modal
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import SelectDropdown from 'react-native-select-dropdown'
@@ -20,203 +21,254 @@ import Images from '../../../assets/images/Images'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { ScrollView } from 'react-native-gesture-handler'
 import showToastmsg from '../../../shared/showToastmsg'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import axios from 'axios'
+import Dialog, { SlideAnimation, DialogContent, DialogTitle } from 'react-native-popup-dialog';
 
-const AdvertiserRegistration = (props)=>{
+const AdvertiserRegistration = (props) => {
     const navigation = useNavigation()
-    const [cameraImg,setCameraImg]=useState()
-    const [buttonLoader,setButtonLoader]=useState(false)
-    const [fullName,setfullName]=useState()
+    const [cameraImg, setCameraImg] = useState()
+    const [buttonLoader, setButtonLoader] = useState(false)
+    const [fullName, setfullName] = useState()
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    const [password,setpassword]=useState()
-    const [cPassword,setCpassword]=useState()
-    const [username,setUsername]=useState()
-    const [emailId,setemailId]=useState()
-    const [phone,setPhone]=useState()
-    const [companyName,setcompanyName]=useState()
-    const [companyWebsite,setcompanyWebsite]=useState()
-    const [companyAddress,setcompanyAddress]=useState()
-    const [companyOwnerName,setcompanyOwnerName]=useState()
-    const [gstNo,setgstNo]=useState()
-    const [panCard,setpanCard]=useState()
-    const openCamera = async ()=>{
-		try{
-			const result = await launchCamera()
-			setCameraImg(result.assets[0])
-		}
-        catch(err){
-			console.log("err")
-		}
+    const [password, setpassword] = useState()
+    const [cPassword, setCpassword] = useState()
+    const [username, setUsername] = useState()
+    const [emailId, setemailId] = useState()
+    const [phone, setPhone] = useState()
+    const [companyName, setcompanyName] = useState()
+    const [companyWebsite, setcompanyWebsite] = useState()
+    const [companyAddress, setcompanyAddress] = useState()
+    const [companyOwnerName, setcompanyOwnerName] = useState()
+    const [gstNo, setgstNo] = useState()
+    const [panCard, setpanCard] = useState()
+    const [visible, setvisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const choosePhotoFromLibrary = async () => {
+        try {
+            const result = await launchImageLibrary()
+            console.log("folder image", result.assets[0]);
+            setCameraImg(result.assets[0])
+            setvisible(false)
+        }
+        catch (err) {
+            console.log("err")
+        }
     }
-    const choosePhotoFromLibrary = async ()=>{
-		try{
-			const result = await launchImageLibrary()
-			setCameraImg(result.assets[0])
-		}
-        catch(err){
-			console.log("err")
-		}
-    }
-    const removeImg = ()=>{
+    const openCamera = async () => {
+        setCameraImg(null)
+        let options = {
+            mediaType: 'photo',
+            //   maxWidth: 300,
+            //   maxHeight: 550,
+            //   quality: 1,
+            //   videoQuality: 'low',
+            //   durationLimit: 30, //Video max duration in seconds
+            saveToPhotos: false,
+        };
+        let isCameraPermitted = await requestCameraPermission();
+        let isStoragePermitted = await requestExternalWritePermission();
+        if (isCameraPermitted && isStoragePermitted) {
+            launchCamera(options, (response) => {
+                // console.log('Response = ', response);
+
+                if (response.didCancel) {
+                    console.log('User cancelled camera picker');
+                    return;
+                } else if (response.errorCode == 'camera_unavailable') {
+                    console.log('Camera not available on device');
+                    return;
+                } else if (response.errorCode == 'permission') {
+                    console.log('Permission not satisfied');
+                    return;
+                } else if (response.errorCode == 'others') {
+                    console.log(response.errorMessage);
+                    return;
+                }
+                // if(type=='video'){
+                console.log("repsonse image", response);
+                setCameraImg(response.assets[0])
+                // }
+                // else
+                // {setCameraImg(response)};
+            });
+        }
+    };
+
+    const removeImg = () => {
         setCameraImg()
     }
-    const passwordPattern=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    const UrlRegex=/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-    const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/; 
-    const gotoOtherDetails = ()=>{
-        if(!cameraImg){
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const UrlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    const emailIdPattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+    const gotoOtherDetails = () => {
+        if (!cameraImg) {
             showToastmsg('Please add avatar image')
         }
-         else  if(fullName==''||fullName==null){
-            showToastmsg('Please add full name') 
-         }
-         else if(emailId==''||emailId==null){
-             showToastmsg('Please add email id') 
-          }
-          else if(!emailIdPattern.test(emailId)){
-             showToastmsg('Please add valid email id') 
-          }
-          else if(emailId==''||emailId==null){
-            showToastmsg('Please add email id') 
-         }
-         else if(companyName==''||companyName==null){
-            showToastmsg('Please add company name') 
-         }
-         else if(companyAddress==''||companyAddress==null){
-            showToastmsg('Please add company address') 
-         }
-         else if(companyOwnerName==''||companyOwnerName==null){
-            showToastmsg('Please add company owner name') 
-         }
-         else if(gstNo==''||gstNo==null){
-            showToastmsg('Please add gst number') 
-         }
-         else if(!gstPattern.test(gstNo)){
+        else if (fullName == '' || fullName == null) {
+            showToastmsg('Please add full name')
+        }
+        else if (emailId == '' || emailId == null) {
+            showToastmsg('Please add email id')
+        }
+        else if (!emailIdPattern.test(emailId)) {
+            showToastmsg('Please add valid email id')
+        }
+        else if (emailId == '' || emailId == null) {
+            showToastmsg('Please add email id')
+        }
+        else if (companyName == '' || companyName == null) {
+            showToastmsg('Please add company name')
+        }
+        else if (companyAddress == '' || companyAddress == null) {
+            showToastmsg('Please add company address')
+        }
+        else if (companyOwnerName == '' || companyOwnerName == null) {
+            showToastmsg('Please add company owner name')
+        }
+        else if (gstNo == '' || gstNo == null) {
+            showToastmsg('Please add gst number')
+        }
+        else if (!gstPattern.test(gstNo)) {
             showToastmsg('Please enter valid gst number')
-         }
-         else if(panCard==''||panCard==null){
-            showToastmsg('Please add pan card number') 
-         }
-         else if(phone==''||phone==null){
-            showToastmsg('Please add phone') 
-         }
-         else if(phone.length<10){
-            showToastmsg('Please enter 10 digit phone number') 
-         }
-         else if(companyWebsite==''||phone==companyWebsite){
-            showToastmsg('Please add company website') 
-         }
-         else if(!UrlRegex.test(companyWebsite)){
+        }
+        else if (panCard == '' || panCard == null) {
+            showToastmsg('Please add pan card number')
+        }
+        else if (phone == '' || phone == null) {
+            showToastmsg('Please add phone')
+        }
+        else if (phone.length < 10) {
+            showToastmsg('Please enter 10 digit phone number')
+        }
+        else if (companyWebsite == '' || phone == companyWebsite) {
+            showToastmsg('Please add company website')
+        }
+        else if (!UrlRegex.test(companyWebsite)) {
             showToastmsg('Please enter valid website link')
-         }
-         else if(username==''||username==null){
-            showToastmsg('Please add username') 
-         }
-         else if(password==''||password==null){
-            showToastmsg('Please add password') 
-         }
-         else if(!passwordPattern.test(password)){
+        }
+        else if (username == '' || username == null) {
+            showToastmsg('Please add username')
+        }
+        else if (password == '' || password == null) {
+            showToastmsg('Please add password')
+        }
+        else if (!passwordPattern.test(password)) {
             showToastmsg('Password must contain Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character')
         }
-        else if(cPassword==''||cPassword==null){
-            showToastmsg('Please add confirm password') 
-         }
-         else if(password!=cPassword){
-            showToastmsg('Password did not matched with confirm password') 
-         }
-         else {
+        else if (cPassword == '' || cPassword == null) {
+            showToastmsg('Please add confirm password')
+        }
+        else if (password != cPassword) {
+            showToastmsg('Password did not matched with confirm password')
+        }
+        else {
             setButtonLoader(true)
             var formdata = new FormData();
-formdata.append("name",fullName);
-formdata.append("username", username);
-formdata.append("email", emailId);
-formdata.append('profile_avatar', { uri: cameraImg.uri, name: cameraImg.fileName, type:cameraImg.type });
-formdata.append("mobile_number", phone);
-formdata.append("gst", gstNo);
-formdata.append("pan_card", panCard);
-formdata.append("company_name", companyName);
-formdata.append("company_website", companyWebsite);
-formdata.append("company_address", companyAddress);
-formdata.append("campany_Owner_name", companyOwnerName);
-formdata.append("is_email_verified", "false");
-formdata.append("is_mobile_verified", "false");
-formdata.append("is_gst_verified", "false");
-formdata.append("is_pan_card_verified", "false");
-formdata.append("is_company_verified", "false");
-formdata.append("password", password);
-const headers = {
-    'x-device-id': 'stuff',
-    'Content-Type': 'multipart/form-data',
-  }
-  axios.post(`${Constants.BASE_URL}advertiser/registration`,formdata,{
-    headers:headers
-  }).then((response)=>{
-    if(response.status==200){
-        
-        try {
-                axios.post(`${Constants.BASE_URL}auth/mobile-number`,{mobile_number:phone}).then((res)=>{
-                    
-                    if(res.data.response==200){
-                                        setButtonLoader(false)
-                        navigation.navigate('/business-otp',{userDetails: response.data.data.user_details,phoneNumber:phone,userType:props.route.params.type})
-                        // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
+            formdata.append("name", fullName);
+            formdata.append("username", username);
+            formdata.append("email", emailId);
+            formdata.append('profile_avatar', { uri: cameraImg.uri, name: cameraImg.fileName, type: cameraImg.type });
+            formdata.append("mobile_number", phone);
+            formdata.append("gst", gstNo);
+            formdata.append("pan_card", panCard);
+            formdata.append("company_name", companyName);
+            formdata.append("company_website", companyWebsite);
+            formdata.append("company_address", companyAddress);
+            formdata.append("campany_Owner_name", companyOwnerName);
+            formdata.append("is_email_verified", "false");
+            formdata.append("is_mobile_verified", "false");
+            formdata.append("is_gst_verified", "false");
+            formdata.append("is_pan_card_verified", "false");
+            formdata.append("is_company_verified", "false");
+            formdata.append("password", password);
+            formdata.append("age", "40");
+            formdata.append("gender", "male");
+            const headers = {
+                'x-device-id': 'stuff',
+                'Content-Type': 'multipart/form-data',
+            }
+            axios.post(`${Constants.BASE_URL}advertiser/registration`, formdata, {
+                headers: headers
+            }).then((response) => {
+                console.log("form_data=>", response.data)
+                showToastmsg(response.data.msg)
+                if (response.status == 200) {
 
-                        showToastmsg(res.data.msg)
-                        console.log("mobile otp value",res.data.data.otp)
-                    }
-                    else {
+                    try {
+                        axios.post(`${Constants.BASE_URL}auth/mobile-number`, { mobile_number: phone }).then((res) => {
+
+                            if (res.data.response == 200) {
+                                setButtonLoader(false)
+                                navigation.navigate('/business-otp', { userDetails: response.data.data.user_details, phoneNumber: phone, userType: props.route.params.type })
+                                // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
+
+                                showToastmsg(res.data.msg)
+                                console.log("mobile otp value", res.data.data.otp)
+                            }
+                            else {
+                                setButtonLoader(false)
+                                showToastmsg(res.msg)
+                            }
+
+                        }).catch((err) => {
+                            setButtonLoader(false)
+                            console.log("phone number otp error", err)
+                        })
+                    } catch (error) {
                         setButtonLoader(false)
-                        showToastmsg(res.msg)
+                        console.log(error)
                     }
-                    
-                }).catch((err)=>{
+                }
+                else {
                     setButtonLoader(false)
-                    console.log("phone number otp error",err)
-                })
-            
-            
-        } catch (error) {
-            setButtonLoader(false)
-            console.log(error)
+                }
+            }).catch((err) => {
+                setButtonLoader(false)
+                console.log("influencer registration error", err.response);
+            })
         }
-    }
-    else {
-        setButtonLoader(false)
-    }
-    
-}).catch((err)=>{
-    setButtonLoader(false)
-    console.log("influencer registration error",err.response);
-})
-         }        
 
     }
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.heading}>Advertiser Registration</Text>
             <ScrollView>
-            <Text style={styles.subHeading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
-            <Text style={styles.heading}>Avatar image</Text>
-{
-                    cameraImg?(
-                        <>
-                        
-                        <View style={{display:'flex',flexDirection:'row',justifyContent:'center',flexWrap:'wrap',padding: Constants.padding,}}>
-                            
-                                <View style={styles.cameraContainer}>
-                                    <Image source={{uri: cameraImg.uri}} alt='Img' style={{
-                    width: '100%',
-                    height: 100,
-                    resizeMode: 'contain',
-                    margin: 5,marginBottom:20
-                  }}  />
-                                    <Pressable onPress={()=>removeImg()} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
-                                </View>
-                        
-                        </View>
-                        {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+                <Text style={styles.subHeading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
+                <Text style={styles.heading}>Avatar image</Text>
+                <Dialog
+                    visible={visible}
+                    onTouchOutside={() => setvisible(!visible)}
+                    onHardwareBackPress={() => setvisible(!visible)}
+                    dialogTitle={<DialogTitle title="Profile Image" />}
+                    dialogAnimation={new SlideAnimation({
+                        slideFrom: 'bottom',
+                    })}
+                >
+
+                    <DialogContent>
+                    {
+                            cameraImg ? (
+                                <>
+                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', padding: Constants.padding, }}>
+
+
+                                        <View style={styles.cameraContainer}>
+
+                                            <Image source={{ uri: cameraImg.uri }} alt='Img' style={{
+                                                width: '100%',
+                                                height: 100,
+                                                resizeMode: 'contain',
+                                                margin: 5, marginBottom: 20
+                                            }} />
+                                            <Pressable onPress={() => removeImg()} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
+
+                                        </View>
+
+                                    </View>
+                                    {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
                                 <Pressable style={styles.cameraContainer} onPress={openCamera}>
                                     <Image source={Images.cameraIcon} alt='Img' />
                                     <Text style={styles.addCameraText}>Add more</Text>
@@ -226,56 +278,88 @@ const headers = {
                                  <Text style={styles.addCameraText}>Add more</Text>
                              </Pressable>
                              </View> */}
-                        </>
-                        
-                            ):( <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
-                            <Pressable style={styles.cameraContainer} onPress={openCamera}>
-                                <Image source={Images.cameraIcon} alt='Img' />
-                                <Text style={styles.addCameraText}>Add</Text>
-                            </Pressable>
-                             <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
-                             <Feather name="folder-plus" />
-                             <Text style={styles.addCameraText}>Add</Text>
-                         </Pressable>
-                         </View>
+                                </>
+                            ) : (<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+                                <Pressable style={styles.cameraContainer} onPress={openCamera}>
+                                    <Image source={Images.photocamera} alt='Img' style={{ height: 40, width: 40 }} />
+                                    {/* <Text style={styles.addCameraText}>Add</Text> */}
+                                </Pressable>
+                                <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
+                                    <FontAwesome5 name="folder-plus" size={35} />
+                                    {/* <Text style={styles.addCameraText}>Add</Text> */}
+                                </Pressable>
+                            </View>
                             )
+                        }
+                    </DialogContent>
+                </Dialog>
+
+                {
+                    cameraImg ? (
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', padding: Constants.padding, }}>
+
+                            <View style={styles.cameraContainer}>
+                                <Image source={{ uri: cameraImg.uri }} alt='Img' style={{
+                                    width: '100%',
+                                    height: 100,
+                                    resizeMode: 'contain',
+                                    margin: 5, marginBottom: 20
+                                }} />
+                                <Pressable onPress={() => removeImg()} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
+
+                            </View>
+
+                        </View>
+                    ) : (<Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setvisible(!visible)}
+                    >
+                        <Image
+                            style={{ height: 60, width: 60, marginTop: '7%', marginBottom: '2%', alignContent: 'center', alignSelf: 'center', alignItems: 'center' }}
+                            source={Images.Avatarprofile}
+                        />
+                        <Text style={{
+                            alignContent: 'center', alignSelf: 'center', alignItems: 'center', color: '#007635', fontWeight: '700', marginBottom: '2%'
+                        }}>Upload profile</Text>
+                    </Pressable>)
+
                 }
 
-            <TextInput style={globatStyles.inputText} placeholder='Full Name' onChangeText={setfullName} />
-            <TextInput style={globatStyles.inputText} placeholder='User name' onChangeText={setUsername} />
-            <TextInput style={globatStyles.inputText} placeholder='Email ID' onChangeText={setemailId}/>
-            <TextInput style={globatStyles.inputText} placeholder='Company name' onChangeText={setcompanyName}/>
-            <TextInput style={globatStyles.inputText} placeholder='Company website' onChangeText={setcompanyWebsite}/>
-            <TextInput style={globatStyles.inputText} placeholder='Company address' onChangeText={setcompanyAddress}/>
-            <TextInput style={globatStyles.inputText} placeholder='Company owner name' onChangeText={setcompanyOwnerName}/>
-            <TextInput style={globatStyles.inputText} placeholder='Gst number' onChangeText={setgstNo}/>
-            <TextInput style={globatStyles.inputText} placeholder='Pan card number' onChangeText={setpanCard}/>
-            <TextInput keyboardType={'name-phone-pad'} placeholder='Phone number' style={globatStyles.inputText} onChangeText={setPhone}/>
+                <TextInput style={globatStyles.inputText} placeholder='Full Name' onChangeText={setfullName} />
+                <TextInput style={globatStyles.inputText} placeholder='User name' onChangeText={setUsername} />
+                <TextInput style={globatStyles.inputText} placeholder='Email ID' onChangeText={setemailId} />
+                <TextInput style={globatStyles.inputText} placeholder='Company name' onChangeText={setcompanyName} />
+                <TextInput style={globatStyles.inputText} placeholder='Company website' onChangeText={setcompanyWebsite} />
+                <TextInput style={globatStyles.inputText} placeholder='Company address' onChangeText={setcompanyAddress} />
+                <TextInput style={globatStyles.inputText} placeholder='Company owner name' onChangeText={setcompanyOwnerName} />
+                <TextInput style={globatStyles.inputText} placeholder='Gst number' onChangeText={setgstNo} />
+                <TextInput style={globatStyles.inputText} placeholder='Pan card number' onChangeText={setpanCard} />
+                <TextInput keyboardType={'name-phone-pad'} placeholder='Phone number' style={globatStyles.inputText} onChangeText={setPhone} />
 
-                <View style={{marginTop: 12,}}>
-                
+                <View style={{ marginTop: 12, }}>
+
                     <TextInput style={globatStyles.inputText} secureTextEntry={!showPassword} placeholder='Enter Password' onChangeText={setpassword} />
                     {
-                        showPassword?(
-                            <Entypo name='eye-with-line' color='#D0C9D6' size={22} style={styles.password} onPress={()=>setShowPassword(false)} />
-                        ):(
-                            <Entypo name='eye' color='#D0C9D6' size={22} style={styles.password} onPress={()=>setShowPassword(true)} />
+                        showPassword ? (
+                            <Entypo name='eye-with-line' color='#D0C9D6' size={22} style={styles.password} onPress={() => setShowPassword(false)} />
+                        ) : (
+                            <Entypo name='eye' color='#D0C9D6' size={22} style={styles.password} onPress={() => setShowPassword(true)} />
                         )
                     }
                 </View>
                 <View>
                     <TextInput style={globatStyles.inputText} secureTextEntry={!showConfirmPassword} placeholder='Confirm Password' onChangeText={setCpassword} />
                     {
-                        showConfirmPassword?(
-                            <Entypo name='eye-with-line' color='#D0C9D6' size={22} style={styles.password} onPress={()=>setShowConfirmPassword(false)} />
-                        ):(
-                            <Entypo name='eye' color='#D0C9D6' size={22} style={styles.password} onPress={()=>setShowConfirmPassword(true)} />
+                        showConfirmPassword ? (
+                            <Entypo name='eye-with-line' color='#D0C9D6' size={22} style={styles.password} onPress={() => setShowConfirmPassword(false)} />
+                        ) : (
+                            <Entypo name='eye' color='#D0C9D6' size={22} style={styles.password} onPress={() => setShowConfirmPassword(true)} />
                         )
                     }
                 </View>
-            <Pressable style={globatStyles.button}onPress={!buttonLoader&&gotoOtherDetails}>{buttonLoader?<ActivityIndicator size={20} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>Next</Text>}</Pressable>
+                <Pressable style={globatStyles.button} onPress={!buttonLoader && gotoOtherDetails}>{buttonLoader ? <ActivityIndicator size={20} color={Constants.colors.whiteColor} /> : <Text style={globatStyles.btnText}>Next</Text>}</Pressable>
             </ScrollView>
-            </SafeAreaView>    )
+        </SafeAreaView>)
 }
 const styles = StyleSheet.create({
     wrapper: {
@@ -309,13 +393,13 @@ const styles = StyleSheet.create({
     gender: {
         flexDirection: 'row',
     },
-    genderIcon:{
+    genderIcon: {
         fontSize: 24,
         marginTop: 10,
     },
     genderLabel: {
         marginLeft: 8,
-        marginRight: Constants.margin+12,
+        marginRight: Constants.margin + 12,
         marginTop: 10,
     },
     socialIcon: {
@@ -339,6 +423,7 @@ const styles = StyleSheet.create({
         zIndex: 999,
     },
     cameraContainer: {
+
         marginTop: Constants.margin,
         marginBottom: 12,
         width: 90,
@@ -350,6 +435,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: Constants.borderRadius,
+        margin: 20,
     },
     cameraImgContainer: {
         marginTop: Constants.margin,
@@ -384,6 +470,23 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#007635',
         fontWeight: '700'
+    },
+    modalView: {
+        marginTop: '28%',
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 37,
+        shadowColor: "#000",
+        right: 3,
+
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
     },
 })
 

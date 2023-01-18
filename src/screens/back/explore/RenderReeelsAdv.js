@@ -49,7 +49,26 @@ const RenderReeelsAdv = ({ item ,userDetails}) => {
     const gotoMore = () => {
 
     }
-   
+     
+     //  VIEW OF POSt
+    
+     const fetchpostview = () => {
+        axios.post(`${Constants.BASE_URL}advertiser/advertise-post-click`, {
+
+            post_id: item?.item?.id
+        })
+            .then(function (response) {
+                console.log("post_ID_NEW", item?.item?.id)
+                console.log("VIEW_RESPONSE", response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    //  VIEW OF POSt    
+
     const gotoProductDetails = () => {
         navigation.navigate('/product-details',{productDetails:item.item,userDetails:userDetails,
         LikeCount:LikeCount,
@@ -135,7 +154,7 @@ const RenderReeelsAdv = ({ item ,userDetails}) => {
                 refreshing={refresh}
                 onRefresh={()=>Refershpull()}
             />}>
-           <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height+22, zIndex: 999, }} 
+           <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999, }} 
             onLongPress={gotoStoriespage}
             onPress={handleClick}
             >   
@@ -148,7 +167,7 @@ const RenderReeelsAdv = ({ item ,userDetails}) => {
                     }
                 <Video
                     source={{uri:`${Constants.BASE_IMAGE_URL}${item?.item?.video}`}}
-                    // onLoad={(e)=>console.log("onload",e)}
+                    onLoad={(e)=> fetchpostview()}
                     // onBandwidthUpdate={()=>console.log("bandwidht")}
                     // onBuffer={()=>console.log("buffering...")}
                     // onReadyForDisplay={(e)=>console.log("ready display",e)}
@@ -257,7 +276,8 @@ const styles = StyleSheet.create({
     imgContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:"center"
+        justifyContent:"center",
+        right:37
     },
     titlename: {
         fontFamily: Constants.fontFamily,

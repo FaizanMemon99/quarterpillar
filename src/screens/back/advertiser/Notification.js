@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native'
-import { FlashList } from '@shopify/flash-list'
 import React, { useState } from 'react'
 import {
     View,
@@ -105,12 +104,12 @@ const Notification=(props)=>{
                         {tabs==='seen'?<View style={styles.activeTab}></View>:<View style={{...styles.activeTab, backgroundColor: 'transparent'}}></View>}
                     </Pressable>
                 </View>
-                <FlashList 
+                <FlatList 
                     data={tabs==='all'?all:tabs==='seen'?seen:unseen}
                     renderItem={item=><RenderNotification notification={item} />}
                     keyExtractor={item=>item?.id?.toString()}
                     showsVerticalScrollIndicator={false}
-                    estimatedItemSize={200}/>
+                   />
             </ScrollView>
         </View>
     )

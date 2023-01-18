@@ -40,6 +40,7 @@ const Discover = (props) => {
                             navigation.navigate('/advertiser-product',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})
                         }
                         setUsers(users)
+                        
           console.log("data=>",await AsyncStorage.getItem("userDetails"))
         }
         else
@@ -114,7 +115,7 @@ useEffect(()=>{
     return (
         <SafeAreaView style={styles.container}>
         <ScrollView >
-            <Text style={styles.header}>Discover</Text>
+            <Text style={styles.header}>DISCOVER</Text>
             {
                 users?.users && users?.users?.length > 0 ? users?.users?.map(user =>
                     user.role_name !== 'Admin' ? (
@@ -139,7 +140,7 @@ useEffect(()=>{
                                         height: 145,
                                         paddingBottom: Constants.padding,
                                     },
-                                    video: {
+                                    video:{
                                         width: Constants.width,
                                         height: 145,
                                     },
@@ -190,7 +191,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontFamily: Constants.fontFamily,
         fontWeight: '800',
+        fontStyle:'normal',
         marginBottom: Constants.margin,
+        lineHeight: 36,
+        
     },
     discoverMenu: {
         height: 145,
@@ -214,6 +218,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '800',
         color: Constants.colors.whiteColor,
+        textTransform: 'uppercase'
     },
     menuText: {
         fontFamily: Constants.fontFamily,

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/flymingotech/Android/quarterpillars-beba1f73b299d2834b46276003153a26b2a496ab/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-no/values-no.xml",
+            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-no/values-no.xml",
             "map": [
                 {
-                    "source": "/home/flymingotech/Android/quarterpillars-beba1f73b299d2834b46276003153a26b2a496ab/node_modules/react-native-date-picker/android/build/intermediates/packaged_res/debug/values-no/values-no.xml",
+                    "source": "/home/hasan/quarterpillars/node_modules/react-native-date-picker/android/build/intermediates/packaged_res/debug/values-no/values-no.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4",

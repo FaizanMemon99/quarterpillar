@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import {
     View,
@@ -8,10 +9,12 @@ import {
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import Constants from '../../../shared/Constants'
 
+
 const About = (props)=>{
+    const navigation = useNavigation() 
     return (
         <View style={styles.wrapper}>
-            <CustomAppBar navigation={props.navigation} isMainscreen={true} isReel={false} title='About' />
+            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='About' headerRight={false} />
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.aboutSection}>

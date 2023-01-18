@@ -84,7 +84,7 @@ const  Category=(props)=>{
                     <View style={globatStyles.overlay}></View>
                     <Text style={styles.categoryName}>Fashion</Text>
             </Pressable>
-            <Pressable onPress={()=>businessRegistration('Life Style')} style={styles.category}>
+            <Pressable onPress={()=>businessRegistration('LifeStyle')} style={styles.category}>
                 <VideoPlayer
                     video={Videos.lifestyle}
                     autoplay
@@ -114,7 +114,7 @@ const  Category=(props)=>{
                         },
                     }} />
                     <View style={globatStyles.overlay}></View>
-                    <Text style={styles.categoryName}>Life Style</Text>
+                    <Text style={styles.categoryName}>LifeStyle</Text>
             </Pressable>
             <Pressable onPress={()=>businessRegistration('Food')} style={styles.category}>
                 <VideoPlayer

@@ -84,12 +84,12 @@ const MyOrders = (props) => {
                     <ActivityIndicator size={'large'} />
                     :
                     orderData.length > 0 ?
-                        <FlashList
+                        <FlatList
                             data={orderData}
                             renderItem={item => <RenderOrders item={item} />}
                             style={{ paddingBottom: 130, }}
                             keyExtractor={item => item?.id?.toString()}
-                            estimatedItemSize={200} />
+                            />
                         :
                         <View style={{ width: '100%', paddingTop: 20, paddingBottom: 10 }}>
                             <Text style={[styles.headingText, { fontSize: 20, textAlign: 'center' }]}>

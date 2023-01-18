@@ -112,7 +112,7 @@ const  Category=(props)=>{
                         },
                     }} />
                     <View style={globatStyles.overlay}></View>
-                    <Text style={styles.categoryName}>Life Style</Text>
+                    <Text style={styles.categoryName}>LifeStyle</Text>
             </Pressable>
             <Pressable onPress={businessRegistration} style={styles.category}>
                 <VideoPlayer

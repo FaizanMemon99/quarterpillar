@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Pressable,
     FlatList,
-} from 'react-native'
+}from 'react-native'
 import Images from '../../../assets/images/Images'
 import CustomAppBar from '../../../components/business/CustomAppBar'
 import SearchBar from '../../../components/business/SearchBar'
@@ -21,7 +21,7 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import showToastmsg from '../../../shared/showToastmsg'
 import { responsiveFontSize, responsiveHeight, responsiveScreenHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-// import { FlashList } from '@shopify/flash-list'
+
 
 const ProductsScreen=(props)=>{
     const [tabs, setTabs] = useState('travel')
@@ -55,6 +55,7 @@ const ProductsScreen=(props)=>{
     else {
         showToastmsg('Business id not found')
     }
+    
     }
     const openDrawer = ()=>{
         setShowDrawer(!showDrawer)

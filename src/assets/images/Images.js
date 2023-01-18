@@ -78,11 +78,14 @@ const Images = {
     sliderThumb: require('./icons/slider-thumb.png'),
     emoji: require('./icons/imogis/love.png'),
     switchIcon: require('./switch.png'),
-    switchIconBlack: require('./switchblack.png'),
+    // switchIconBlack: require('./switchblack.png'),
     PlusIcon: require('./PlusIcon.png'),
     switchBlack: require('./switchBlack.png'),
     holdpress : require('./holdpress.png'),
     swapdown : require('./swapdown.png'),
     leftright_: require('./leftright_.png'),
+    photocamera: require('./icons/photo-camera.png'),
+    Avatarprofile: require('./icons/Avatarprofile.png'),
+    Addproduct: require('./icons/Addproduct.png'),
 }
 export default Images

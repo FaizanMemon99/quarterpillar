@@ -13,8 +13,10 @@ import RenderReeels from './RenderReeels'
 import { FlashList } from "@shopify/flash-list";
 import { ScrollView } from 'react-native-gesture-handler'
 
-const Reels=({navigation})=>{
+const Reels=({navigation,item})=>{
     const [refresh, setrefresh] = useState(false)
+    const [videos, setVideos] = useState([]);
+    const [currentVideo, setCurrentVideo] = useState(null);
 
     const travelPosts = [
         {id:1, video: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4'},
@@ -40,20 +42,20 @@ const Reels=({navigation})=>{
         {id:15, video: 'http://qp.flymingotech.in/public/videos/adv.mp4'},
         {id:16, video: 'http://qp.flymingotech.in/public/videos/business.mp4'}
     ]
-   
+  
     return (
     
         <Swiper style={styles.wrapper} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
             <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Travel' headerRight={true} />
-
+                {comsole.log("id=>if=>",item?.id)}
                 <FlashList
                     data={travelPosts}
                     style={styles.category} 
                     renderItem={item=><RenderReeels item={item} />}
                     keyExtractor={item=>item?.id?.toString()} 
                     estimatedItemSize={200}
-                     />
+                    />
                 </View>
 
             <View style={styles.reel}>
@@ -67,7 +69,7 @@ const Reels=({navigation})=>{
                     />
             </View>
             <View style={styles.reel}>
-                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Life Style' headerRight={true} />
+                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='LifeStyle' headerRight={true} />
                 <FlashList
                     data={lifestylePosts}
                     style={styles.category}

@@ -12,14 +12,17 @@ import Constants from '../../../shared/Constants'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useNavigation } from '@react-navigation/native'
 
 const HelpAndSupports = (props)=>{
+    const navigation = useNavigation()
+    
     const gotoTermsAndConditions = ()=>{
 
     }
     return (
         <View style={styles.wrapper}>
-            <CustomAppBar navigation={props.navigation} isMainscreen={true} isReel={false} title='Help/Support' />
+            <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Help/Support' headerRight={false} />
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.helpSupportText}>

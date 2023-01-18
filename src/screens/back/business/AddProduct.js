@@ -235,10 +235,11 @@ console.log("folder image",result.assets[0]);
                     resizeMode: 'contain',
                     margin: 5,marginBottom:20
                   }}  />
-                                    <Pressable onPress={()=>removeImg(index)} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
+                         <Pressable onPress={()=>removeImg(index)} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
                                 </View>
                         )}
                         </View>
+                        
                         <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
                                 <Pressable style={styles.cameraContainer} onPress={openCamera}>
                                     <Image source={Images.cameraIcon} alt='Img' />
@@ -378,6 +379,7 @@ console.log("folder image",result.assets[0]);
                     }} />
                     <TextInput style={[globatStyles.inputText, {width: '48%',}]} keyboardType={'number-pad'} onChangeText={text=>setproductPincode(text)} placeholder='Pin Code' />
                 </View>
+                {console.log("see-preview=>",props.route.params.userDetails)}
                 <View style={styles.buttonContainer}>
                     <Pressable onPress={()=>navigation.navigate("/product-preview",{userDetails:props.route.params.userDetails})}
                      style={[globatStyles.button, styles.btnOutline]}><Text style={[globatStyles.btnText, {color: Constants.colors.primaryColor,}]}>PREVIEW</Text></Pressable>

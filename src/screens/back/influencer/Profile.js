@@ -17,7 +17,8 @@ import { useNavigation } from '@react-navigation/native'
 import axios from "axios"
 import showToastmsg from '../../../shared/showToastmsg';
 import Video from 'react-native-video'
-import { FlashList } from '@shopify/flash-list'
+
+import { FlatList } from 'react-native-gesture-handler'
 const Profile=(props)=>{
     const navigation=useNavigation()
     const [loader,setLoader]=useState(false)
@@ -91,7 +92,7 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                <View style={styles.divider}></View>
             <ScrollView style={styles.container}>
                
-               
+             
                
                {loader?
                <ActivityIndicator size={30}/>
@@ -99,13 +100,13 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                
                <View style={styles.profileSection}>
                     {userData?.posts?.length>0?
-                    <FlashList
+                    <FlatList
                     data={userData?.posts}
                     keyExtractor={(item,index)=>index?.toString()}
-                    numColumns={2}
-                    estimatedItemSize={2}
+                    numColumns={2}  
                     renderItem={item=>(
                         <View style={styles.profileBgImg} >
+                                                <Pressable onPress={()=>navigation.navigate("/specific-post",{video:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`,userDetails:props?.route?.params?.userDetails})}>
                         <Video
                         source={{uri:`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`}}
                         // onLoad={(e)=>console.log("onload",e)}
@@ -121,7 +122,8 @@ console.log('images',`${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDet
                         resizeMode={'cover'}
                         style={{width:"100%",height:"100%"}}
                         />
-                            <Image source={Images.profileOne} style={styles.ImgContainer}/>
+                        </Pressable>
+                            
                             <View style={styles.comments}>
                                 <AntDesign name='hearto' size={15} color={Constants.colors.whiteColor} style={{fontWeight:"900"}}/>
                                 <Text style={{fontFamily: Constants.fontFamily,color: Constants.colors.whiteColor,marginStart: 8, marginEnd: 10,
@@ -237,7 +239,7 @@ const styles = StyleSheet.create({
         height:"100%"
     },
     profileBgImg: {
-        width: '100%',
+        width: '50%',
         height: 252,
         resizeMode: 'cover',
         // marginBottom : 4,

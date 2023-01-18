@@ -26,7 +26,9 @@ const RenderShareAndEarn = (props) => {
                         <Text style={{fontFamily: Constants.fontFamily, color: '#A4A4B2'}}>Fashion</Text>
                     </View>
                 </View>
-                <Pressable onPress={gotoShareSuccess} style={[globatStyles.btnOutline, {width: '25%', padding: 6, marginTop: 0, paddingBottom: 0, height: 35,}]}><Text style={globatStyles.btnOutlineText}>Share</Text></Pressable>
+                <Pressable onPress={gotoShareSuccess} style={[globatStyles.btnOutline, {width: '25%', padding: 6, marginTop: 0, paddingBottom: 0, height: 35,}]}>
+                    <Text style={{ color: "#00A928", fontFamily:'Aviner', fontWeight:'500',textAlign:'center',letterSpacing: -0.01}}>Share</Text>
+                </Pressable>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={{width: '70%'}}>

@@ -110,7 +110,7 @@ const AdharVerification = (props)=>{
             </View>
             <View>
                 <Text style={styles.textStyle}>Enter OTP sent to registered no.</Text>
-                <OTPTextInput inputCount={6} inputCellLength={10} textInputStyle={styles.otpField} handleTextChange={(otp)=>setOtp(otp)} inputCellLength={1} />
+                <OTPTextInput inputCount={6} inputCellLength={10} textInputStyle={styles.otpField} handleTextChange={(otp)=>setOtp(otp)}/>
             </View>
             {
                 coundownTime === 0?

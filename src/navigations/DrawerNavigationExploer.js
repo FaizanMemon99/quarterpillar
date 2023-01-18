@@ -16,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import Constants from '../shared/Constants'
+import SavedCollection from '../screens/back/explore/SavedCollection'
 
 
 const Drawer = createDrawerNavigator()
@@ -47,6 +48,10 @@ const DrawerNavigationExploer  = ()=>{
             <Drawer.Screen name="switch-view-as" component={StackNavigationExplore} initialParams={{switchAccount: true}} options={{
                 drawerIcon: props=> <Fontisto style={styles.drawerIcon} name="arrow-swap"/>,
                 drawerLabel: ()=><Text style={styles.drawerLabel}>Switch View As</Text>,
+            }}/>
+            <Drawer.Screen name="Saved Post" component={SavedCollection} options={{
+                drawerIcon: props=> <FontAwesome style={styles.drawerIcon} name="bookmark"/>,
+                drawerLabel: ()=><Text style={styles.drawerLabel}>About</Text>
             }}/>
             <Drawer.Screen name="settings" component={Settings} options={{
                 drawerIcon: props=> <AntDesign style={styles.drawerIcon} name="setting"/>,

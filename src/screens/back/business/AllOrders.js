@@ -16,7 +16,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import Loading from '../../../components/Loading'
-import { FlashList } from '@shopify/flash-list'
 
 
 const AllOrders = (props)=>{

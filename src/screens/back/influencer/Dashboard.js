@@ -18,13 +18,15 @@ import LinearGradient from 'react-native-linear-gradient'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 
-const Dashboard = (props)=>{
-    const [tabs,setTabs] = useState('d')
-    const [loader,setLoader]=useState(false)
-    const [dashBoardData,setdashBoardData]=useState()
-    const goBack = ()=>{
+const Dashboard = (props, { userDetails }) => {
+    const [tabs, setTabs] = useState('y')
+    const [loader, setLoader] = useState(false)
+    const [dashBoardData, setdashBoardData] = useState()
+    const [totalsalesData, settotalsales] = useState()
+    const goBack = () => {
         props.navigation.goBack()
     }
+
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,
@@ -37,7 +39,7 @@ const Dashboard = (props)=>{
         barPercentage: 10,
         useShadowColorFromDataset: false // optional
     }
-    const daileyData = {
+    const yearlyData = {
         labels: ["Mon", "Tue", "Thrus", "Wed", "Fri", "Sat", "Sun"],
         datasets: [
             {
@@ -67,152 +69,160 @@ const Dashboard = (props)=>{
             },
         ],
     }
-    const getDashBoardData=()=>{
+    const getDashBoardData = () => {
         setLoader(true)
-        axios.post(`${Constants.BASE_URL}influencer/dashboard`,
-            {
-                "user_id":props?.route?.params?.userDetails?.id
-            }
-        )
-        .then((response)=>{
-            console.log("response data=>",response.data);
-            setdashBoardData(response.data)
-            setLoader(false)
+        axios.post(`${Constants.BASE_URL}influencer/dashboard`, {
+            user_id: props?.route?.params?.userDetails?.id
         })
-        .catch((error)=>{
-            console.log("error=>",error);
-            showToastmsg("Something went wrong")
-            setLoader(false)
-        })
+            .then((response) => {
+                let tempdata = response?.data.data.influencer_dashboard
+                setdashBoardData(tempdata)
+                console.log("user_id=>", props?.route?.params?.userDetails?.id);
+                console.log("dashbord-influcer-data=>", tempdata);
+                // console.log("dashbord-influcer-data=>", response.data);
+
+                setTimeout(() => {
+                    setLoader(false)
+                }, 1000);
+            })
+            .catch((error) => {
+                setLoader(false)
+                console.log("error->", error);
+                showToastmsg("Something went wrong")
+            })
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         getDashBoardData()
-    },[props])
+
+    }, [])
+
+
     return (
         <View style={StyleSheet.wrapper}>
             <CustomAppBar navigation={props.navigation} isMainscreen={false} isReel={false} title='Dashboard' />
             <ScrollView>
-               {loader?
-               <ActivityIndicator
-               size={35}
-               color={Constants.primaryColor}
-               />
-               :
-                <View style={styles.container}>
-                    <Text style={styles.normalText}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
-                    </Text>
-                    <View style={styles.tabs}>
-                        <Pressable onPress={()=>setTabs('d')}><Text style={[styles.tabText, {backgroundColor: tabs==='d'?Constants.colors.whiteColor:'rgba(0, 169, 40, 0.15)', borderColor: tabs==='d'?Constants.colors.primaryColor: 'transparent', color: tabs==='d'?Constants.colors.primaryColor:'#000000',}]}>Daily</Text></Pressable>
-                        <Pressable onPress={()=>setTabs('w')}><Text style={[styles.tabText, {backgroundColor: tabs==='w'?Constants.colors.whiteColor:'rgba(0, 169, 40, 0.15)', borderColor: tabs==='w'?Constants.colors.primaryColor: 'transparent', color: tabs==='w'?Constants.colors.primaryColor:'#000000',}]}>Weekly</Text></Pressable>
-                        <Pressable onPress={()=>setTabs('m')}><Text style={[styles.tabText, {backgroundColor: tabs==='m'?Constants.colors.whiteColor:'rgba(0, 169, 40, 0.15)', borderColor: tabs==='m'?Constants.colors.primaryColor: 'transparent', color: tabs==='m'?Constants.colors.primaryColor:'#000000',}]}>Monthly</Text></Pressable>
-                    </View>
-                    {
-                        tabs==='d'?(
-                            <View>
-                                <View style={styles.graphHeading}>
-                                    <Text style={styles.headingText}>Daily Sales</Text>
-                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> 2345.17</Text>
+                {loader ?
+                    <ActivityIndicator
+                        size={35}
+                        color={Constants.primaryColor}
+                    />
+                    :
+                    <View style={styles.container}>
+                        <Text style={styles.normalText}>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
+                        </Text>
+                         {console.log("checking_data=>",dashBoardData)}
+                        <View style={styles.tabs}>
+                            <Pressable onPress={() => setTabs('w')}><Text style={[styles.tabText, { backgroundColor: tabs === 'w' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'w' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'w' ? Constants.colors.primaryColor : '#000000', }]}>Weekly</Text></Pressable>
+                            <Pressable onPress={() => setTabs('m')}><Text style={[styles.tabText, { backgroundColor: tabs === 'm' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'm' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'm' ? Constants.colors.primaryColor : '#000000', }]}>Monthly</Text></Pressable>
+                            <Pressable onPress={() => setTabs('y')}><Text style={[styles.tabText, { backgroundColor: tabs === 'y' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'y' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'y' ? Constants.colors.primaryColor : '#000000', }]}>Yearly</Text></Pressable>
+                        </View>
+                        {  tabs === 'w' ? (
+                                <View>
+                                    <View style={styles.graphHeading}>
+                                        <Text style={styles.headingText}>Weekly Sales</Text>
+                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_weekly_amount?parseFloat(parseFloat(dashBoardData?.total_weekly_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                    </View>
+                                    <LineChart
+                                        data={weeklyData}
+                                        width={Constants.width}
+                                        height={220}
+                                        chartConfig={chartConfig}
+                                        yAxisSuffix=''
+                                        barPercentage='10'
+                                        withInnerLines={false}
+                                        withOuterLines={true}
+                                        withShadow={false}
+                                        style={{
+                                            marginLeft: -26,
+                                        }}
+                                        bezier
+                                    />
                                 </View>
-                                <LineChart
-                                    data={daileyData}
-                                    width={Constants.width}
-                                    height={220}
-                                    chartConfig={chartConfig}
-                                    yAxisSuffix=''
-                                    barPercentage='10'
-                                    withInnerLines={false}
-                                    withOuterLines={true}
-                                    withShadow={false}
-                                    style={{
-                                        marginLeft: -26,
-                                    }}
-                                    bezier
-                                />
-                            </View>
-                        ):tabs==='w'?(
-                            <View>
-                                <View style={styles.graphHeading}>
-                                    <Text style={styles.headingText}>Weekly Sales</Text>
-                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> 4345.17</Text>
+                            ) : tabs === 'm' ? (
+                                <View>
+                                    <View style={styles.graphHeading}>
+                                        <Text style={styles.headingText}>Monthly Sales</Text>
+                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_monthly_amount?parseFloat(parseFloat(dashBoardData?.total_monthly_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                    </View>
+                                    <LineChart
+                                        data={monthlyData}
+                                        width={Constants.width}
+                                        height={220}
+                                        chartConfig={chartConfig}
+                                        yAxisSuffix=''
+                                        barPercentage='10'
+                                        withInnerLines={false}
+                                        withOuterLines={true}
+                                        withShadow={false}
+                                        style={{
+                                            marginLeft: -26,
+                                        }}
+                                        bezier
+                                    />
                                 </View>
-                                <LineChart
-                                    data={weeklyData}
-                                    width={Constants.width}
-                                    height={220}
-                                    chartConfig={chartConfig}
-                                    yAxisSuffix=''
-                                    barPercentage='10'
-                                    withInnerLines={false}
-                                    withOuterLines={true}
-                                    withShadow={false}
-                                    style={{
-                                        marginLeft: -26,
-                                    }}
-                                    bezier
-                                />
-                            </View>
-                        ):(
-                            <View>
-                                <View style={styles.graphHeading}>
-                                    <Text style={styles.headingText}>Monthly Sales</Text>
-                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> 50345.17</Text>
+                            ): (
+                                <View>
+                                    <View style={styles.graphHeading}>
+                                        <Text style={styles.headingText}>Yearly Sales</Text>
+                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_yearly_amount?parseFloat(parseFloat(dashBoardData?.total_yearly_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                    </View>
+                                    <LineChart
+                                        data={yearlyData}
+                                        width={Constants.width}
+                                        height={220}
+                                        chartConfig={chartConfig}
+                                        yAxisSuffix=''
+                                        barPercentage='10'
+                                        withInnerLines={false}
+                                        withOuterLines={true}
+                                        withShadow={false}
+                                        style={{
+                                            marginLeft: -26,
+                                        }}
+                                        bezier
+                                    />
                                 </View>
-                                <LineChart
-                                    data={monthlyData}
-                                    width={Constants.width}
-                                    height={220}
-                                    chartConfig={chartConfig}
-                                    yAxisSuffix=''
-                                    barPercentage='10'
-                                    withInnerLines={false}
-                                    withOuterLines={true}
-                                    withShadow={false}
-                                    style={{
-                                        marginLeft: -26,
-                                    }}
-                                    bezier
-                                />
+                            ) 
+                        }
+                        <View style={styles.boxContainer}>
+                            <View style={styles.box}>
+                                <Text style={styles.boxHeading}>Total Sales</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.total_sale?.total_amount?parseFloat(parseFloat(dashBoardData?.total_sale.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.total_sale?.percentage?parseFloat(parseFloat(dashBoardData?.total_sale.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
                             </View>
-                        )
-                    }
-                    <View style={styles.boxContainer}>
-                        <View style={styles.box}>
-                            <Text style={styles.boxHeading}>Total Sales</Text>
-                            <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> 50345.17</Text>
-                            <Text style={styles.boxArrow}><AntDesign name='arrowup' /> 5.86%</Text>
+                            <View style={styles.box}>
+                                <Text style={styles.boxHeading}>Earnings</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.earning?.total_amount?parseFloat(parseFloat(dashBoardData?.earning.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.earning?.percentage?parseFloat(parseFloat(dashBoardData?.earning.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                            </View>
                         </View>
-                        <View style={styles.box}>
-                            <Text style={styles.boxHeading}>Earnings</Text>
-                            <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> 50345.17</Text>
-                            <Text style={styles.boxArrow}><AntDesign name='arrowup' /> 5.86%</Text>
+                        <View style={styles.containerBelow}>
+                            <View>
+                                <Text style={{ fontSize: 22, fontFamily: Constants.fontFamily }}>Impressions</Text>
+                                <LinearGradient style={{ padding: 12, marginTop: 12, }} colors={['rgba(1, 170, 41, 0.09)', 'rgba(196, 196, 196, 0) 102.22%)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                                    <Image source={Images.lineGraphIcon} />
+                                </LinearGradient>
+                            </View>
+                            <View style={{ justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 22, fontWeight: '700' }}> {dashBoardData?.impression?.count?parseFloat(parseFloat(dashBoardData?.impression.count).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                <Text style={{ fontSize: 18, color: Constants.colors.primaryColor }}><AntDesign name='arrowup' size={20} />{dashBoardData?.impression?.percentage?parseFloat(parseFloat(dashBoardData?.impression.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.containerBelow}>
-                        <View>
-                            <Text style={{fontSize: 22, fontFamily: Constants.fontFamily}}>Impressions</Text>
-                            <LinearGradient style={{padding: 12, marginTop: 12,}} colors={['rgba(1, 170, 41, 0.09)','rgba(196, 196, 196, 0) 102.22%)']} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
-                                <Image source={Images.lineGraphIcon} />
-                            </LinearGradient>
+                        <View style={[styles.containerBelow, { marginBottom: 60, }]}>
+                            <View>
+                                <Text style={{ fontSize: 22, fontFamily: Constants.fontFamily }}>Engagements</Text>
+                                <LinearGradient style={{ padding: 12, marginTop: 12, }} colors={['rgba(1, 170, 41, 0.09)', 'rgba(196, 196, 196, 0) 102.22%)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                                    <Image source={Images.lineGraphIcon} />
+                                </LinearGradient>
+                            </View>
+                            <View style={{ justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 22, fontWeight: '700' }}> {dashBoardData?.engagement?.total_amount?parseFloat(parseFloat(dashBoardData?.engagement.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
+                                <Text style={{ fontSize: 18, color: Constants.colors.primaryColor }}><AntDesign name='arrowup' size={20} />{dashBoardData?.engagement?.percentage?parseFloat(parseFloat(dashBoardData?.engagement.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                            </View>
                         </View>
-                        <View style={{justifyContent: 'space-between'}}>
-                            <Text style={{fontSize: 22, fontWeight: '700'}}> 12,001</Text>
-                            <Text style={{fontSize: 18, color: Constants.colors.primaryColor}}><AntDesign name='arrowup' size={20} />5.86%</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.containerBelow, {marginBottom: 60,}]}>
-                        <View>
-                            <Text style={{fontSize: 22, fontFamily: Constants.fontFamily}}>Engagements</Text>
-                            <LinearGradient style={{padding: 12, marginTop: 12,}} colors={['rgba(1, 170, 41, 0.09)','rgba(196, 196, 196, 0) 102.22%)']} start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
-                                <Image source={Images.lineGraphIcon} />
-                            </LinearGradient>
-                        </View>
-                        <View style={{justifyContent: 'space-between'}}>
-                            <Text style={{fontSize: 22, fontWeight: '700'}}> 12,001</Text>
-                            <Text style={{fontSize: 18, color: Constants.colors.primaryColor}}><AntDesign name='arrowup' size={20} />5.86%</Text>
-                        </View>
-                    </View>
-                </View>}
+                    </View>}
             </ScrollView>
         </View>
     )

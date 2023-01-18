@@ -19,13 +19,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="33dp"
+        android:fontFamily="@font/alfa_slab_one"
         android:text="@string/splash_logo_name"
         android:textColor="@color/splash_text_color"
-        android:textSize="32dp"
         android:textFontWeight="400"
-        android:layout_below="@id/logo"
-        android:layout_marginBottom="33dp"/>
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

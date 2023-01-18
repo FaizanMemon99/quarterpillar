@@ -326,8 +326,8 @@ const AddPost = props => {
   formdata:formdata
   })
 }
-  //   axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
-  //   console.log("form data",formdata);
+  // axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
+  // console.log("form data",formdata);
   }
 }
    else

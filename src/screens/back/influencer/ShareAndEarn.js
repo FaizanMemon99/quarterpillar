@@ -48,7 +48,7 @@ const ShareAndEarn = ({ navigation }) => {
                         <Text style={{ fontFamily: Constants.fontFamily, fontSize: 16, fontWeight: '700', color: Constants.colors.primaryColor }}><AntDesign name='arrowup' size={18} /> 5.86 %</Text>
                     </View>
                 </View>
-                <Text style={{fontFamily: Constants.fontFamily, fontSize: 22, marginTop: 12,}}>Campaign List</Text>
+                <Text style={{fontFamily:'Avenir', fontSize: 18, marginTop: 15, marginLeft:16, fontWeight:"500", lineHeight:25 , Color:'#000000' }}>Campaign List</Text>
                 <View style={[styles.tabs, {justifyContent: 'flex-start'}]}>
                     <Pressable onPress={()=>setTabs('latest')}><Text style={[styles.tabTextProduct, {color: tabs==='latest'?Constants.colors.primaryColor:'#000000', textDecorationLine: tabs==='latest'?'underline':'none'}]}>Latest</Text></Pressable>
                     <Pressable onPress={()=>setTabs('shared')}><Text style={[styles.tabTextProduct, {color: tabs==='shared'?Constants.colors.primaryColor:'#000000', textDecorationLine: tabs==='shared'?'underline':'none'}]}>Shared</Text></Pressable>

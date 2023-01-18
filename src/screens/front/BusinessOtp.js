@@ -224,6 +224,7 @@ const BusinessOtp = (props) => {
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter OTP sent to +91-{props.route.params.phoneNumber} <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
                 <OTPTextInput inputCount={4} textInputStyle={styles.otpField} handleTextChange={(otp) => setOtp(otp)} inputCellLength={1}/>
+                
                 {
                     coundownTime === 0?
                     <Text onPress={resendOtp} style={styles.countdown}>Resend OTP</Text>:
@@ -256,9 +257,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: '700',
         color: Constants.colors.whiteColor,
-        maxWidth: '60%',
+        maxWidth: '85%',
         textAlign: 'center',
         marginTop: 12,
+        textTransform:'uppercase',
     },
     business: {
         flexDirection: 'row',
@@ -279,11 +281,12 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginRight: Constants.margin,
         borderRadius: 5,
+        textTransform:'uppercase',
     },
     textBelowBusiness: {
         fontFamily: Constants.fontFamily,
         color: Constants.colors.whiteColor,
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: '400',
         marginBottom: 20,
     },
