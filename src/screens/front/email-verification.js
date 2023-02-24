@@ -22,7 +22,6 @@ import Videos from '../../assets/staticVideos/Videos'
 const EmailVerification=(props)=>{
     const navigation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
-    console.log("props response",props.route.params);
     const [email, setemail] = useState(props?.route?.params?.emailId?props?.route?.params?.emailId:'')
     const [isLoading, setIsLoading] = useState(false)
     const emailIdPattern=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -49,7 +48,6 @@ const EmailVerification=(props)=>{
                         navigation.navigate('/email-otp', 
                         {emailId:email,userType:props?.route?.params?.userType,otpId:response.data.data.otp_id,phoneType:props?.route?.params?.phoneType}
                         )
-                        console.log("email otp",response.data.data.otp,"----",response.data.data.otp_id)
                     }
                 }).catch((error)=>{
                     setIsLoading(false)
@@ -63,7 +61,6 @@ const EmailVerification=(props)=>{
                     setIsLoading(false)
                     if(!response.data.error){
                         navigation.navigate('/email-otp', {userDetails: props?.route?.params?.userDetails,emailId:email,userType:props?.route?.params?.userType})
-                        console.log("email otp",response.data.data.otp)     
                     }
                 }).catch((error)=>{
                     console.log("email otp error",error);

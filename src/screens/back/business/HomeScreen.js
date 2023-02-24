@@ -174,19 +174,21 @@ const HomeScreen = (props) => {
         })
             .then((response) => {
 
-                let tempdata = response?.data?.data?.dashboardDetails
-                if (Array.isArray(response?.data?.data?.dashboardDetails?.cities)) {
+                let tempdata = response?.data?.Dashboard
+                if (Array.isArray(response?.data?.dashboardDetails?.cities)) {
                     tempdata.cities = {}
                 }
                 if (Array.isArray(response?.data?.data?.dashboardDetails?.country)) {
                     tempdata.country = {}
                 }
-                setmaleData(Object.values(tempdata.agerange))
-                setmaleValue(parseInt(tempdata?.gender["male"]))
-                setfemaleValue(parseInt(tempdata?.gender["female"]))
-                setfemaleData(Object.values(tempdata.agerange))
+                // console.log("rssss=>", tempdata);
                 setdashBoardData(tempdata);
-                console.log("rssss=>", tempdata);
+                setmaleData(Object.values(tempdata.AgeRange))
+                setmaleValue(parseInt(tempdata?.Gender["male"]))
+                setfemaleValue(parseInt(tempdata?.Gender["female"]))
+                setfemaleData(Object.values(tempdata.agerange))
+
+
                 setTimeout(() => {
                     setLoader(false)
                 }, 1000);
@@ -215,6 +217,7 @@ const HomeScreen = (props) => {
     };
     return (
         <View style={globatStyles.wrapper}>
+            {/* {console.log("dashsboard_recent_order=>",dashBoardData?.RecentOrder)} */}
             {
                 Animated?.timing(scaleValue, {
                     toValue: 1,
@@ -291,14 +294,16 @@ const HomeScreen = (props) => {
                 <ScrollView style={styles.container}>
                     {/* <SearchBar /> */}
                     <View style={styles.totalRevenue}>
+
                         {loader ? <DashBoardLoader height={50} /> : <><View>
                             <Text style={styles.totalRTevinueText}>Total Revenue</Text>
                             <LinearGradient colors={['rgba(1, 170, 41, 0.09)', 'rgba(196, 196, 196, 0) 102.22%)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientBg}>
                                 <Image source={Images.lineGraphIcon} />
                             </LinearGradient>
                         </View>
+
                             <View>
-                                <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.revenue?.total ? parseFloat(parseFloat(dashBoardData?.revenue.total).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.totalRevinue}><FontAwesome size={18} name='rupee' style={styles.rupeeIcon} /> {dashBoardData?.Revenue?.TotalRevenue ? parseFloat(parseFloat(dashBoardData?.Revenue?.TotalRevenue).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 <View style={styles.percentage}>
                                     <AntDesign name='arrowup' size={22} color={Constants.colors.primaryColor} />
                                     <Text style={styles.numberInPercentage}>{dashBoardData?.revenue ? "5.86" : "0.00"}%</Text>
@@ -315,10 +320,9 @@ const HomeScreen = (props) => {
                             :
                             <View style={styles.impressionBox}>
                                 <Text style={styles.impressionText}>Impressions</Text>
-
                                 <Text style={styles.impressionValue}>
                                     {/* <FontAwesome size={18} name='rupee' style={styles.rupeeIcon} />  */}
-                                    {dashBoardData?.impresion ? parseFloat(parseFloat(dashBoardData?.impresion).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                    {dashBoardData?.Impression?.TotalViews ? parseFloat(parseFloat(dashBoardData?.Impression?.TotalViews).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 <View style={{ flexDirection: 'row', marginTop: 12, }}>
                                     <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
                                     <Text style={styles.impressionInPercentage}>{dashBoardData?.impresion ? "8.6" : "0.00"}%</Text>
@@ -343,8 +347,9 @@ const HomeScreen = (props) => {
                                 <DashBoardLoader height={100} />
                             </View>
                             : <View style={styles.impressionunderBox}>
+
                                 <Text style={styles.impressionunderText}>Orders</Text>
-                                <Text style={styles.impressionValue}>{dashBoardData?.oders ? parseFloat(parseFloat(dashBoardData?.oders).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.impressionValue}>{dashBoardData?.Order?.TotalOrders ? parseFloat(parseFloat(dashBoardData?.Order?.TotalOrders).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 <View style={{ flexDirection: 'row', marginTop: 12, alignItems: 'center' }}>
                                     <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
                                     <Text style={styles.impressionInPercentage}>{dashBoardData?.oders ? "8.6" : "0.00"}%</Text>
@@ -356,9 +361,9 @@ const HomeScreen = (props) => {
                             </View>
 
                             :
-                            <Pressable style={styles.impressionunderBox}  onPress={() => navigation.navigate('/Sales-Dashboard')}>
+                            <Pressable style={styles.impressionunderBox} onPress={() => navigation.navigate('/Sales-Dashboard', { userDetails: props?.route?.params?.userDetails })}>
                                 <Text style={styles.impressionunderText}>Sales</Text>
-                                <Text style={styles.impressionValue}>{dashBoardData?.returns ? parseFloat(parseFloat(dashBoardData?.returns).toFixed(2)).toLocaleString() : "0.00"}
+                                <Text style={styles.impressionValue}>{dashBoardData?.Sale?.ThisMonthSale ? parseFloat(parseFloat(dashBoardData?.Sale?.ThisMonthSale).toFixed(2)).toLocaleString() : "0.00"}
                                 </Text>
                                 <View style={{ flexDirection: 'row', marginTop: 12, }}>
                                     <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
@@ -373,7 +378,8 @@ const HomeScreen = (props) => {
                             </View>
                             : <Pressable style={styles.impressionunderBox} onPress={() => navigation.navigate('/Returns-Dashboard')}>
                                 <Text style={styles.impressionunderText}>Returns</Text>
-                                <Text style={styles.impressionValue}>{dashBoardData?.returns ? parseFloat(parseFloat(dashBoardData?.returns).toFixed(2)).toLocaleString() : "0.00"}
+                                {console.log("=====", dashBoardData?.Return?.TotalReturns)}
+                                <Text style={styles.impressionValue}>{dashBoardData?.Return?.TotalReturns ? parseFloat(parseFloat(dashBoardData?.Return?.TotalReturns).toFixed(2)).toLocaleString() : "0.00"}
                                 </Text>
                                 <View style={{ flexDirection: 'row', marginTop: 12, }}>
                                     <AntDesign name='arrowup' size={18} color={Constants.colors.primaryColor} />
@@ -507,16 +513,16 @@ const HomeScreen = (props) => {
                                         <Text styles={styles.value}>
 
                                             {isNaN(parseFloat((maleValue * 100) /
-                                                allSum((dashBoardData?.gender))).toFixed(2)) ? "0.0" : parseFloat((maleValue * 100) /
-                                                    allSum((dashBoardData?.gender))).toFixed(2)}%
+                                                allSum((dashBoardData?.Gender))).toFixed(2)) ? "0.0" : parseFloat((maleValue * 100) /
+                                                    allSum((dashBoardData?.Gender))).toFixed(2)}%
                                         </Text>
                                     </View>
                                     <View style={styles.circularBarLabel}>
                                         <View style={styles.graphColorFemale}></View>
                                         <Text style={styles.label}>Women</Text>
                                         <Text styles={styles.value}>{isNaN(parseFloat((femaleValue * 100) /
-                                            allSum((dashBoardData?.gender))).toFixed(2)) ? "0.0" : parseFloat((femaleValue * 100) /
-                                                allSum((dashBoardData?.gender))).toFixed(2)}%</Text>
+                                            allSum((dashBoardData?.Gender))).toFixed(2)) ? "0.0" : parseFloat((femaleValue * 100) /
+                                                allSum((dashBoardData?.Gender))).toFixed(2)}%</Text>
                                     </View>
                                 </View>
                                 {maleValue > 0 || femaleValue > 0 ?
@@ -536,6 +542,7 @@ const HomeScreen = (props) => {
                                 }
                             </View>
                         </View>}
+
                     <View style={styles.recentOrderContainer}>
                         <View style={styles.orderHeading}>
                             <Text style={styles.heading}>Recent Orders</Text>
@@ -551,7 +558,7 @@ const HomeScreen = (props) => {
                         {loader ?
                             <DashBoardLoader />
                             : <FlatList
-                                data={dashBoardData?.recent_order}
+                                data={dashBoardData?.RecentOrder}
                                 keyExtractor={item => item?.id?.toString()}
                                 ListEmptyComponent={EmptyListMessage}
                                 renderItem={(item) => <RenderRecentOrders order={item}
@@ -807,9 +814,10 @@ const styles = StyleSheet.create({
         backgroundColor: Constants.colors.whiteColor,
         width: '30%',
         borderRadius: 20,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
-        height: "35%",
+        height: 140,
+
     },
     impressionText: {
         fontFamily: Constants.fontFamily,
@@ -849,7 +857,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     countryWise: {
-        marginTop: -180,
+        marginTop: 20,
         backgroundColor: Constants.colors.whiteColor,
         borderRadius: 20,
     },
@@ -942,7 +950,7 @@ const styles = StyleSheet.create({
     recentOrderContainer: {
         marginTop: 50,
         paddingBottom: 120,
-        marginBottom: 120
+        marginBottom: 200
     },
     orderHeading: {
         flexDirection: 'row',

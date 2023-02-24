@@ -45,6 +45,7 @@ const Product = (props) => {
     const [modalLoader, setmodalLoader] = useState(false)
     const [badgeCount, setbadgeCount] = useState(0)
     const [cartLoader, setcartLoader] = useState(false)
+    const [currindex, setcurrindex] = useState(0)
     // const [cartNumber,setcartNumber]=useState(0)
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
@@ -76,6 +77,9 @@ const Product = (props) => {
 
     const openPopup = () => {
         setNewPost(!newPost)
+    }
+    const closePopup = () => {
+        setNewPost(false)
     }
     const openDrawer = () => {
         setShowDrawer(!showDrawer)
@@ -142,7 +146,6 @@ const Product = (props) => {
     const getReelsApi = async () => {
         setpostLoader(true)
         if (props?.route?.params?.userType == 'explore' || props?.route?.params?.userType == 'influencer') {
-            console.log("this data");
             await axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
                 user_id: props?.userDetails?.id
             }).then((response) => {
@@ -203,8 +206,7 @@ const Product = (props) => {
                 })
         }
     }
-    useEffect(async () => {
-
+    const useEffectFunction = async () => {
         if (!await AsyncStorage.getItem("gesture")) {
             navigation.navigate('/GuideScreen')
         }
@@ -219,7 +221,9 @@ const Product = (props) => {
         //     setcartNumber(0)
         // })
         getReelsApi()
-        // console.log("data=====>");
+    }
+    useEffect(() => {
+        useEffectFunction()
     }, [])
     function isImage() {
         var url = ''
@@ -231,9 +235,14 @@ const Product = (props) => {
         }
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
     }
+    const onChangeIndex = (index) => {
+        setcurrindex(index + 1)
+        //   console.log("onChangeIndex=>",props)
+    }
     // console.log("props value",props?.route?.params?.userType);
     return (
         <View style={globatStyles.wrapper}>
+            {console.log("index_=>", currindex)}
             {
                 Animated.timing(scaleValue, {
                     toValue: showDrawer ? 0.88 : 1,
@@ -446,8 +455,11 @@ const Product = (props) => {
                                             setbadgeCount={setbadgeCount}
                                             getLikeData={getLikeData}
                                             commentData={commentData}
+                                            closePopup={closePopup}
                                         />)}
-                                    keyExtractor={item => item?.id?.toString()} />
+                                    keyExtractor={(item, index) => item?.id?.toString()}
+                                    onChangeIndex={onChangeIndex}
+                                />
                             </View>))}
                         {/* <View style={styles.reel}>
                 <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Fashion' headerRight={true} />
@@ -487,7 +499,6 @@ const Product = (props) => {
                                 <Pressable onPress={getReelsApi}><Text style={[styles.menuName, { color: 'blue', fontSize: 18, textDecorationLine: 'underline' }]}>Refresh</Text></Pressable>
                             </View>
                         </View>
-
                 }
             </Animated.View>
             <Modal
@@ -583,7 +594,7 @@ const setMenuItem = (setActiveMenu, activeMenu, icon, iconName, title, navigatio
             {
                 icon === 'feather' ? <Feather name={iconName} size={26} color={Constants.colors.whiteColor} /> : null
             }
-            
+
             {
                 icon === 'fa5' ? <FontAwesome5 name={iconName} size={26} color={Constants.colors.whiteColor} /> : null
             }

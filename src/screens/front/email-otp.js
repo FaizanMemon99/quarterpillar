@@ -21,27 +21,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import Videos from '../../assets/staticVideos/Videos'
 const EmailOtp = (props) => {
-    
+
     const [otp, setOtp] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [coundownTime, setCountDownTime] = useState(30)
     const navigation = useNavigation()
-    const [optId,setotpId]=useState(props?.route?.params?.otpId)
+    const [optId, setotpId] = useState(props?.route?.params?.otpId)
     const { emailId } = props.route.params
-    useEffect(()=>{
+    useEffect(() => {
         // if(props?.route?.params?.phoneType){
         //     setotpId(props?.route?.params?.otpId)
         // }
-        let timer = setInterval(()=>{
-            if(coundownTime>0){
+        let timer = setInterval(() => {
+            if (coundownTime > 0) {
                 clearInterval(timer)
-                let  coundownT=coundownTime - 1
+                let coundownT = coundownTime - 1
                 setCountDownTime(coundownT)
             }
         }, 1000)
-    },[coundownTime])
-    
-    
+    }, [coundownTime])
+
+
     const verifyOtpBusiness = () => {
         if (otp === '' || otp === null) {
             showToastmsg('Please enter OTP')
@@ -52,91 +52,86 @@ const EmailOtp = (props) => {
     }
     const verifyOtp = async () => {
         setIsLoading(true)
-        console.log("dataval",{
-            "otp": otp,
-                "otp_id": optId
-        }
-         )
-        if(props?.route?.params?.phoneType){
-            axios.post(`${Constants.BASE_URL}auth/forgot-password-verify`,{
+
+        if (props?.route?.params?.phoneType) {
+            axios.post(`${Constants.BASE_URL}auth/forgot-password-verify`, {
                 "otp": otp,
-                    "otp_id": optId
-            }).then((response)=>{
+                "otp_id": optId
+            }).then((response) => {
                 setIsLoading(false)
-                if(!response.data.error){
-                    navigation.navigate("/update-password",{
-                        changeId:response?.data?.data?.user_details?.id,userType:props?.route?.params?.userType
+                if (!response.data.error) {
+                    navigation.navigate("/update-password", {
+                        changeId: response?.data?.data?.user_details?.id, userType: props?.route?.params?.userType
                     })
                 }
-                else{
+                else {
                     showToastmsg(response.data.data.msg);
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 showToastmsg('Otp verification failed')
                 setIsLoading(false)
-                console.log('catch error',err.response);
+                console.log('catch error', err.response);
             })
         }
-        else{
-            axios.post(`${Constants.BASE_URL}auth/email-verify`,{
-                email:emailId,
-                otp:otp
-            }).then(async(response)=>{
-                
-                if(!response.data.error){
-                    let fcmtoken=await AsyncStorage.getItem("fcmtoken");
-                    console.log("fcm token",fcmtoken);
+        else {
+            axios.post(`${Constants.BASE_URL}auth/email-verify`, {
+                email: emailId,
+                otp: otp
+            }).then(async (response) => {
+
+                if (!response.data.error) {
+                    let fcmtoken = await AsyncStorage.getItem("fcmtoken");
                     showToastmsg("Registration successful")
                     await axios.post("https://testfcm.com/api/notify",
-                    {
-                        "postBody": {
-                            "notification": {
-                                "title": `Registration successful`,
-                                "body": `You have registered in as ${props.route.params.userType} successfully`,
-                                "click_action": null,
-                                "icon": null
+                        {
+                            "postBody": {
+                                "notification": {
+                                    "title": `Registration successful`,
+                                    "body": `You have registered in as ${props.route.params.userType} successfully`,
+                                    "click_action": null,
+                                    "icon": null
+                                },
+                                "data": null,
+                                "to": fcmtoken
                             },
-                            "data": null,
-                            "to": fcmtoken
-                        },
-                        "serverKey": "AAAAdLYZPyI:APA91bFVhnrT3tUYJWS5aKMBM9ObqK4LBFIrhwS5CoHHKlnORXOIadVwpjE4QTXMKicbQTxifccSdphB2EF7Jw_jCkyjHciMHGlQ0zvufnNHtAifxqUgQ0Ww01XprMn8a2dVa4EKsNc8"
-                    }
-                    ).then((resp)=>{
+                            "serverKey": "AAAAdLYZPyI:APA91bFVhnrT3tUYJWS5aKMBM9ObqK4LBFIrhwS5CoHHKlnORXOIadVwpjE4QTXMKicbQTxifccSdphB2EF7Jw_jCkyjHciMHGlQ0zvufnNHtAifxqUgQ0Ww01XprMn8a2dVa4EKsNc8"
+                        }
+                    ).then((resp) => {
                         setIsLoading(false)
                     })
-                    .catch((error)=>{
-                        setIsLoading(false)
-                    })
-                    navigation.navigate("/business-login",{
-                        login_type:props?.route?.params?.userType
+                        .catch((error) => {
+                            setIsLoading(false)
+                        })
+                    navigation.navigate("/business-login", {
+                        login_type: props?.route?.params?.userType
                     })
                 }
-                else{
+                else {
                     showToastmsg(response.data.data.msg);
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 showToastmsg('Otp verification failed')
                 setIsLoading(false)
-                console.log('catch error',err.response);
-            }) 
-        //     axios.post(Constants.BASE_URL+endPoints.VERIFY_OTP,{
-        //     mobile_number:phoneNumber,
-        //     otp:otp
-        // }).then((response)=>{
-        //     if(response.status==200){
-        //         setIsLoading(false)
-        //                   navigation.navigate('/business-login',{login_type:props.route.params.userType})
-        //     }
-        //     else {
-        //         setIsLoading(false)
-        //         console.log('error response',response.data);
-        //     }
-        // }).catch((err)=>{
-        //     showToastmsg('Otp verification failed')
-        //     setIsLoading(false)
-        //     console.log('catch error',err.response);
-        // })
-    }
+                console.log('catch error', err.response);
+            })
+            //     axios.post(Constants.BASE_URL+endPoints.VERIFY_OTP,{
+            //     mobile_number:phoneNumber,
+            //     otp:otp
+            // }).then((response)=>{
+            //     if(response.status==200){
+            //         setIsLoading(false)
+            //                   navigation.navigate('/business-login',{login_type:props.route.params.userType})
+            //     }
+            //     else {
+            //         setIsLoading(false)
+            //         console.log('error response',response.data);
+            //     }
+            // }).catch((err)=>{
+            //     showToastmsg('Otp verification failed')
+            //     setIsLoading(false)
+            //     console.log('catch error',err.response);
+            // })
+        }
         // try {
         //     const response = await apiCall('POST', endPoints.VERIFY_OTP, null, { mobile_number: phoneNumber, otp: otp })
         //     if (response && response.error === false && response.data.userExist) {
@@ -147,10 +142,10 @@ const EmailOtp = (props) => {
         //         } catch (error) {
         //             console.log(error)
         //         }
-                
+
         //         // if(response.data.busnisse_details.is_owner_email_verified=="false"){
         //         //     axios.post(`${Constants.BASE_URL}auth/email-otp`,{aadhaar_number:response.data.busnisse_details.owner_email}).then((res)=>{
-                        
+
         //         //         if(!res.data.error){
         //         //             setIsLoading(false)
         //         //             console.log("dataaaa",res.data.data.Mahareferid.map(item=>item))
@@ -162,7 +157,7 @@ const EmailOtp = (props) => {
         //         //     navigation.navigate('/bank-details', {phoneNumber: phoneNumber})
         //         // }
         //         // else{
-                    
+
         //         //     props.route.params.authentication('business')
         //         // }               
         //     }
@@ -181,43 +176,40 @@ const EmailOtp = (props) => {
     // const storeUserDetails = async (data) => {
     //     await storeData('users', data)
     // }
-    const resendOtp = async () =>{
+    const resendOtp = async () => {
         setIsLoading(true)
         try {
-            if(props?.route?.params?.phoneType){
-                axios.post(`${Constants.BASE_URL}auth/forgot-password`,{
-                    "data":emailId
-                }).then((response)=>{
-                    if(!response.data.error){
+            if (props?.route?.params?.phoneType) {
+                axios.post(`${Constants.BASE_URL}auth/forgot-password`, {
+                    "data": emailId
+                }).then((response) => {
+                    if (!response.data.error) {
                         setIsLoading(false)
                         showToastmsg('OTP resend successfully')
-                        setotpId(response.data.data.otp_id)        
+                        setotpId(response.data.data.otp_id)
                         setCountDownTime(30)
-                        console.log(response.data.data.otp,"---",response.data.data.otp_id);
-                        
                     }
-                }).catch((error)=>{
+                }).catch((error) => {
                     console.log(error)
                     showToastmsg('Sorry OTP not sent')
-                    setIsLoading(false)  
+                    setIsLoading(false)
                 })
             }
             else {
-                axios.post(`${Constants.BASE_URL}auth/email-otp`,{
-                    "email":emailId
-                }).then((response)=>{
-                    if(!response.data.error){
+                axios.post(`${Constants.BASE_URL}auth/email-otp`, {
+                    "email": emailId
+                }).then((response) => {
+                    if (!response.data.error) {
                         setIsLoading(false)
                         showToastmsg('OTP resend successfully')
-                        setotpId(response.data.data.otp_id)        
+                        setotpId(response.data.data.otp_id)
                         setCountDownTime(30)
-                        console.log(response.data.data.otp);
-                        
+
                     }
-                }).catch((error)=>{
+                }).catch((error) => {
                     console.log(error)
                     showToastmsg('Sorry OTP not sent')
-                    setIsLoading(false)  
+                    setIsLoading(false)
                 })
             }
         } catch (error) {
@@ -226,20 +218,19 @@ const EmailOtp = (props) => {
             setIsLoading(false)
         }
     }
-    const gotRenterMobileNumber = ()=>{
-        if(props?.route?.params?.phoneType){
-            navigation.navigate('/email-verify',{userType:props.route.params.userType,emailId:props.route.params.emailId,phoneType:props?.route?.params?.phoneType})    
+    const gotRenterMobileNumber = () => {
+        if (props?.route?.params?.phoneType) {
+            navigation.navigate('/email-verify', { userType: props.route.params.userType, emailId: props.route.params.emailId, phoneType: props?.route?.params?.phoneType })
         }
-        else 
-        {navigation.navigate('/email-verify',{userDetails: props.route.params.user_details,userType:props.route.params.userType,emailId:props.route.params.emailId})}
+        else { navigation.navigate('/email-verify', { userDetails: props.route.params.user_details, userType: props.route.params.userType, emailId: props.route.params.emailId }) }
     }
     return (
         <View style={styles.background}>
             <VideoPlayer
-                 video={props?.route?.params?.userType==="Business"?Videos.businessVideo
-                 :props?.route?.params?.userType==="Influencer"?
-                 Videos.influencerVideo:props?.route?.params?.userType==="Explorer"?
-                 Videos.exploreVideo:Videos.advertiserVideo}
+                video={props?.route?.params?.userType === "Business" ? Videos.businessVideo
+                    : props?.route?.params?.userType === "Influencer" ?
+                        Videos.influencerVideo : props?.route?.params?.userType === "Explorer" ?
+                            Videos.exploreVideo : Videos.advertiserVideo}
                 autoplay
                 loop
                 disableSeek
@@ -273,11 +264,11 @@ const EmailOtp = (props) => {
                     <Image source={Images.businessIcon} />
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter OTP sent to {props?.route?.params?.emailId} <Text onPress={gotRenterMobileNumber} ><Image source={Images.editOtpPhone} /></Text></Text>
-                <OTPTextInput inputCount={4} textInputStyle={styles.otpField} handleTextChange={(otp) => setOtp(otp)} inputCellLength={1}/>
+                <OTPTextInput inputCount={4} textInputStyle={styles.otpField} handleTextChange={(otp) => setOtp(otp)} inputCellLength={1} />
                 {
-                    coundownTime === 0?
-                    <Text onPress={resendOtp} style={styles.countdown}>Resend OTP</Text>:
-                    <Text style={{color: Constants.colors.whiteColor, alignSelf: 'flex-end',marginRight: 20}}>Resend In <Text style={styles.countdown}>{coundownTime}</Text></Text>
+                    coundownTime === 0 ?
+                        <Text onPress={resendOtp} style={styles.countdown}>Resend OTP</Text> :
+                        <Text style={{ color: Constants.colors.whiteColor, alignSelf: 'flex-end', marginRight: 20 }}>Resend In <Text style={styles.countdown}>{coundownTime}</Text></Text>
                 }
                 {
                     isLoading ? <ActivityIndicator size={30} color={Constants.colors.whiteColor} /> : <Pressable style={[globatStyles.button, { width: '88%' }]} onPress={verifyOtpBusiness}><Text style={globatStyles.btnText}>Enter OTP</Text></Pressable>

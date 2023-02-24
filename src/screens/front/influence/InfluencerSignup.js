@@ -29,7 +29,7 @@ const InfluencerSignup=()=>{
                 disableSeek
                 resizeMode={'cover'}
                 customStyles={{
-                    wrapper: {
+                    wrapper:{
                         width: Constants.width,
                         height: Constants.height,
                         paddingBottom: Constants.padding,

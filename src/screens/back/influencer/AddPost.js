@@ -269,7 +269,7 @@ const AddPost = props => {
       for(let i=0;i<postImg.length;i++ ){    
         formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
       }
-      formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+      formdata.append('product_video',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
       formdata.append('location', location);
       formdata.append('likes', '0');
       formdata.append('share', '0');
@@ -326,8 +326,8 @@ const AddPost = props => {
   formdata:formdata
   })
 }
-  // axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
-  // console.log("form data",formdata);
+  //   axios.post(`${Constants.BASE_URL}nfluencer/influencer-post-product`);
+  //   console.log("form data",formdata);
   }
 }
    else
@@ -354,7 +354,7 @@ const AddPost = props => {
         for(let i=0;i<postImg.length;i++ ){    
           formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
         }
-        formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+        formdata.append('product_video',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
         formdata.append('location', location);
         formdata.append('likes', '0');
         formdata.append('share', '0');
@@ -390,7 +390,7 @@ const AddPost = props => {
       for(let i=0;i<postImg.length;i++ ){    
         formdata.append('product_image[]', { uri: postImg[i].assets[0].uri, name: postImg[i].assets[0].fileName, type:postImg[i].assets[0].type });
       }
-      formdata.append('product_video[]',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
+      formdata.append('product_video',{ uri: postVideo.assets[0].uri, name: postVideo.assets[0].fileName, type:postVideo.assets[0].type });
       formdata.append('location', location);
       formdata.append('likes', '0');
       formdata.append('share', '0');

@@ -23,273 +23,291 @@ import showToastmsg from '../../../shared/showToastmsg'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
+import { MultiSelect } from 'react-native-element-dropdown'
 
-const AddProduct=(props)=>{
-    const navigation=useNavigation()
-    const [cameraImg, setCameraImg]= useState([])
-    const [isRefundable, setIsrefundalbe]=useState(true)
-    const [cod, setCod]=useState(true)
-    const [productVideoUrl,setproductVideoUrl]=useState()
-    const [productName,setproductName]=useState()
-    const [productBrand,setproductBrand]=useState()
-    const [productUnit,setproductUnit]=useState()
-    const [minimumQuantity,setminimumQuantity]=useState()
-    const [productTags,setproductTags]=useState()
-    const [productDescription,setproductDescription]=useState()
-    const [productUnitPrice,setproductUnitPrice]=useState()
-    const [productSellingPrice,setproductSellingPrice]=useState()
-    const [productDiscount,setproductDiscount]=useState()
-    const [productType,setproductType]=useState()
-    const [productColor,setproductColor]=useState()
-    const [productSize,setproductSize]=useState()
-    const [productVUnits,setproductVUnits]=useState()
-    const [productQuantity,setproductQuantity]=useState()
-    const [productLowStock,setproductLowStock]=useState()
-    const [productTax,setproductTax]=useState()
-    const [productTaxType,setproductTaxType]=useState()
-    const [productCompany,setproductCompany]=useState()
-    const [productDeliveryType,setproductDeliveryType]=useState()
-    const [productPincode,setproductPincode]=useState()
-    const [buttonLoader,setbuttonLoader]=useState(false)
+
+const AddProduct = (props) => {
+    const navigation = useNavigation()
+    const [cameraImg, setCameraImg] = useState([])
+    const [isRefundable, setIsrefundalbe] = useState(true)
+    const [cod, setCod] = useState(true)
+    const [productVideoUrl, setproductVideoUrl] = useState()
+    const [productName, setproductName] = useState()
+    const [productBrand, setproductBrand] = useState() 
+    const [productUnit, setproductUnit] = useState()
+    const [minimumQuantity, setminimumQuantity] = useState()
+    const [productTags, setproductTags] = useState()
+    const [productDescription, setproductDescription] = useState()
+    const [productUnitPrice, setproductUnitPrice] = useState()
+    const [productSellingPrice, setproductSellingPrice] = useState()
+    const [productDiscount, setproductDiscount] = useState()
+    const [productType, setproductType] = useState()
+    const [productColor, setproductColor] = useState()
+    const [productSize, setproductSize] = useState()
+    const [productVUnits, setproductVUnits] = useState()
+    const [productQuantity, setproductQuantity] = useState()
+    const [productLowStock, setproductLowStock] = useState()
+    const [productTax, setproductTax] = useState()
+    const [productTaxType, setproductTaxType] = useState()
+    const [productCompany, setproductCompany] = useState()
+    const [productDeliveryType, setproductDeliveryType] = useState()
+    const [productPincode, setproductPincode] = useState()
+    const [buttonLoader, setbuttonLoader] = useState(false)
     const productUnits = ['CM', 'IN', 'GM']
     const productTypes = ['Type A', 'Type B', 'Type C']
-    const productColors = ['Red', 'Green', 'Blue', 'White', 'Black']
+    // const productColors = ['Red', 'Green', 'Blue', 'White', 'Black']
     const vatType = ['gst', 'sgst', 'igst']
-    const deliveryTypes=['cod','online']
-    const openCamera = async ()=>{
-		try{
-			const result = await launchCamera()
-            console.log("images",result.assets[0])
+    const deliveryTypes = ['cod', 'online']
+    const openCamera = async () => {
+        try {
+            const result = await launchCamera()
+            console.log("images", result.assets[0])
 
-			cameraImg.push(result.assets[0])
+            cameraImg.push(result.assets[0])
             setCameraImg([...cameraImg])
-		}
-        catch(err){
-			console.log("err")
-		}
+        }
+        catch (err) {
+            console.log("err")
+        }
     }
-    const removeImg = (ind)=>{
-        cameraImg.splice(ind,1)
+    const removeImg = (ind) => {
+        cameraImg.splice(ind, 1)
         setCameraImg([...cameraImg])
     }
-    const productUrlRegex=/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-    const gotoProducts = ()=>{
-        if(!cameraImg.length>0){
+    const productUrlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    const gotoProducts = () => {
+        if (!cameraImg.length > 0) {
             showToastmsg('Please add atleast one product image')
         }
-        else if(productVideoUrl==''||productVideoUrl==null){
+        else if (productVideoUrl == '' || productVideoUrl == null) {
             showToastmsg('Please add product video url')
         }
-        else if(!productUrlRegex.test(productVideoUrl)){
+        else if (!productUrlRegex.test(productVideoUrl)) {
             showToastmsg('Please enter valid product video url')
         }
-        else if(productName==''||productName==null){
+        else if (productName == '' || productName == null) {
             showToastmsg('Please add product name')
         }
-        else if(productBrand==''||productBrand==null){
+        else if (productBrand == '' || productBrand == null) {
             showToastmsg('Please add product brand')
         }
-        else if(productUnit==''||productUnit==null){
+        else if (productUnit == '' || productUnit == null) {
             showToastmsg('Please select product unit')
         }
-        else if(minimumQuantity==''||minimumQuantity==null){
+        else if (minimumQuantity == '' || minimumQuantity == null) {
             showToastmsg('Please add product minimum quantity')
         }
-        else if(productTags==''||productTags==null){
+        else if (productTags == '' || productTags == null) {
             showToastmsg('Please add product tags')
         }
-        else if(productDescription==''||productDescription==null){
+        else if (productDescription == '' || productDescription == null) {
             showToastmsg('Please add product description')
         }
-        else if(productUnitPrice==''||productUnitPrice==null){
+        else if (productUnitPrice == '' || productUnitPrice == null) {
             showToastmsg('Please add product unit price')
         }
-        else if(productSellingPrice==''||productSellingPrice==null){
+        else if (productSellingPrice == '' || productSellingPrice == null) {
             showToastmsg('Please add product selling price')
         }
-        else if(productDiscount==''||productDiscount==null){
+        else if (productDiscount == '' || productDiscount == null) {
             showToastmsg('Please add product discount')
         }
-        else if(productType==''||productType==null){
+        else if (productType == '' || productType == null) {
             showToastmsg('Please select product type')
         }
-        else if(productColor==''||productColor==null){
+        else if (selectedItem == '' || selectedItem == null) {
             showToastmsg('Please select product color')
         }
-        else if(productSize==''||productSize==null){
+        else if (productSize == '' || productSize == null) {
             showToastmsg('Please add product size')
         }
-        else if(productVUnits==''||productVUnits==null){
+        else if (productVUnits == '' || productVUnits == null) {
             showToastmsg('Please select product units')
         }
-        else if(productQuantity==''||productQuantity==null){
+        else if (productQuantity == '' || productQuantity == null) {
             showToastmsg('Please add product quantity')
         }
-        else if(productLowStock==''||productLowStock==null){
+        else if (productLowStock == '' || productLowStock == null) {
             showToastmsg('Please add product low stock quantity')
         }
-        else if(productTax==''||productTax==null){
+        else if (productTax == '' || productTax == null) {
             showToastmsg('Please add product tax')
         }
-        else if(productTaxType==''||productTaxType==null){
+        else if (productTaxType == '' || productTaxType == null) {
             showToastmsg('Please select product tax type')
         }
-        else if(productCompany==''||productCompany==null){
+        else if (productCompany == '' || productCompany == null) {
             showToastmsg('Please select product service company')
         }
-        else if(productDeliveryType==''||productDeliveryType==null){
+        else if (productDeliveryType == '' || productDeliveryType == null) {
             showToastmsg('Please select product delivery type')
         }
-        else if(productPincode==''||productPincode==null){
+        else if (productPincode == '' || productPincode == null) {
             showToastmsg('Please add pincode')
         }
-        else 
-        { 
+        else {
             const headers = {
                 'x-device-id': 'stuff',
                 'Content-Type': 'multipart/form-data',
-              }
+            }
             var formdata = new FormData();
-            for(let i=0;i<cameraImg.length;i++ ){    
-                formdata.append('product_image[]', { uri: cameraImg[i].uri, name: cameraImg[i].fileName, type:cameraImg[i].type });
-              }
-            formdata.append("product_category",props?.route?.params?.userDetails?.business?.catorige)
-            formdata.append("product_video_url",productVideoUrl)
-            formdata.append("product_name",productName)
-            formdata.append("product_brand",productBrand)
-            formdata.append("unit_id",productUnit)
-            formdata.append("minimum_qty",minimumQuantity)
-            formdata.append("product_tags",productTags)
-            formdata.append("is_refundable",isRefundable)
-            formdata.append("is_cod",cod)
-            formdata.append("product_description",productDescription)
-            formdata.append("unit_price",productUnitPrice)
-            formdata.append("sales_price",productSellingPrice)
-            formdata.append("dicount",productDiscount)
-            formdata.append("product_type",productType)
-            formdata.append("colors",productColor)
-            formdata.append("sizes",productSize)
-            formdata.append("units",productVUnits)
-            formdata.append("qty",productQuantity)
-            formdata.append("warning_qty",productLowStock)
-            formdata.append("product_tax",productTax)
-            formdata.append("tax_type",productTaxType)
-            formdata.append("service_company",productCompany)
-            formdata.append("delivery_type",productDeliveryType)
-            formdata.append("pin_code",productPincode)
-            formdata.append("business_id",props?.route?.params?.userDetails?.business?.business_id)
+            for (let i = 0; i < cameraImg.length; i++) {
+                formdata.append('product_image[]', { uri: cameraImg[i].uri, name: cameraImg[i].fileName, type: cameraImg[i].type });
+            }
+            formdata.append("product_category", props?.route?.params?.userDetails?.business?.catorige)
+            formdata.append("product_video_url", productVideoUrl)
+            formdata.append("product_name", productName)
+            formdata.append("product_brand", productBrand)
+            formdata.append("unit_id", productUnit)
+            formdata.append("minimum_qty", minimumQuantity)
+            formdata.append("product_tags", productTags)
+            formdata.append("is_refundable", isRefundable)
+            formdata.append("is_cod", cod)
+            formdata.append("product_description", productDescription)
+            formdata.append("unit_price", productUnitPrice)
+            formdata.append("sales_price", productSellingPrice)
+            formdata.append("dicount", productDiscount)
+            formdata.append("product_type", productType)
+            formdata.append("colors", colorsString)
+            formdata.append("sizes", productSize)
+            formdata.append("units", productVUnits)
+            formdata.append("qty", productQuantity)
+            formdata.append("warning_qty", productLowStock)
+            formdata.append("product_tax", productTax)
+            formdata.append("tax_type", productTaxType)
+            formdata.append("service_company", productCompany)
+            formdata.append("delivery_type", productDeliveryType)
+            formdata.append("pin_code", productPincode)
+            formdata.append("business_id", props?.route?.params?.userDetails?.business?.business_id)
             setbuttonLoader(true)
-            console.log("form data object",formdata._parts[0])
-          
-            axios.post(`${Constants.BASE_URL}business/add-product`,formdata,{
+            console.log("form data object", formdata._parts[0])
+
+            axios.post(`${Constants.BASE_URL}business/add-product`, formdata, {
                 headers: headers
-              }).then((res)=>{
-                if(res.status==200){
-                    navigation.navigate('/productScreen',{userDetails:props?.route?.params?.userDetails})
+            }).then((res) => {
+                if (res.status == 200) {
+                    navigation.navigate('/productScreen', { userDetails: props?.route?.params?.userDetails })
                     setbuttonLoader(false)
                 }
                 else {
                     setbuttonLoader(false)
-                    console.log("data1",res.data)
+                    console.log("data1", res.data)
                     showToastmsg(res.data.msg)
                 }
-                
-            }).catch((err)=>{
+
+            }).catch((err) => {
                 setbuttonLoader(false)
-                console.log("product regsitration",err.response)
+                console.log("product regsitration", err.response)
             })
-            
         }
     }
-    const choosePhotoFromLibrary = async ()=>{
-		try{
-			const result = await launchImageLibrary()
-console.log("folder image",result.assets[0]);
-			cameraImg.push(result.assets[0])
+    const choosePhotoFromLibrary = async () => {
+        try {
+            const result = await launchImageLibrary()
+            console.log("folder image", result.assets[0]);
+            cameraImg.push(result.assets[0])
             setCameraImg([...cameraImg])
-		}
-        catch(err){
-			console.log("err")
-		}
+        }
+        catch (err) {
+            console.log("err")
+        }
     }
-    
-     
+
+    const productColors = [
+        { id: 1, name: 'Red' },
+        { id: 2, name: 'Green' },
+        { id: 3, name: 'Blue' },
+        { id: 4, name: 'White' },
+        { id: 5, name: 'Black' }
+    ];
+    const [selectedItem, setSelectedItem] = useState([]);
+    var colorsString = selectedItem.join(', ');
+    console.log(colorsString); // "red, blue"
+
+    console.log("selectedItem =>", selectedItem);
+    let selectedText = "";
+    if (Array.isArray(selectedItem) && selectedItem.length > 0) {
+        selectedText = selectedItem.map(id => {
+          return id;
+        });
+      }
+
     return (
         <View style={styles.wrapper}>
             <CustomAppBar navigation={navigation} isMainscreen={false} isReel={false} title='Add Product' />
             <ScrollView style={styles.container}>
-         
+
                 <Text style={styles.normalText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
                 <Text style={styles.heading}>Product images</Text>
                 {
-                    cameraImg?.length>0?(
+                    cameraImg?.length > 0 ? (
                         <>
-                        
-                        <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',padding: Constants.padding,}}>
-                            
-                        {cameraImg.map((item,index)=>
-                                <View style={styles.cameraContainer}>
-                                    <Image source={{uri: item.uri}} alt='Img' style={{
-                    width: '100%',
-                    height: 100,
-                    resizeMode: 'contain',
-                    margin: 5,marginBottom:20
-                  }}  />
-                         <Pressable onPress={()=>removeImg(index)} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
-                                </View>
-                        )}
-                        </View>
-                        
-                        <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', padding: Constants.padding, }}>
+
+                                {cameraImg.map((item, index) =>
+                                    <View style={styles.cameraContainer}>
+                                        <Image source={{ uri: item.uri }} alt='Img' style={{
+                                            width: '100%',
+                                            height: 100,
+                                            resizeMode: 'contain',
+                                            margin: 5, marginBottom: 20
+                                        }} />
+                                        <Pressable onPress={() => removeImg(index)} style={styles.removeImg}><Text style={styles.removeIcon}>X</Text></Pressable>
+                                    </View>
+                                )}
+                            </View>
+
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
                                 <Pressable style={styles.cameraContainer} onPress={openCamera}>
                                     <Image source={Images.cameraIcon} alt='Img' />
                                     <Text style={styles.addCameraText}>Add more</Text>
                                 </Pressable>
-                                 <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
-                                 <Feather name="folder-plus" style={{fontSize:20}}/>
-                                 <Text style={styles.addCameraText}>Add more</Text>
-                             </Pressable>
-                             </View>
+                                <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
+                                    <Feather name="folder-plus" style={{ fontSize: 20 }} />
+                                    <Text style={styles.addCameraText}>Add more</Text>
+                                </Pressable>
+                            </View>
                         </>
-                        
-                            ):( <View style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
-                            <Pressable style={styles.cameraContainer} onPress={openCamera}>
-                                <Image source={Images.cameraIcon} alt='Img' />
-                                <Text style={styles.addCameraText}>Add</Text>
-                            </Pressable>
-                             <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
-                             <Feather name="folder-plus" />
-                             <Text style={styles.addCameraText}>Add</Text>
-                         </Pressable>
-                         </View>
-                            )
+
+                    ) : (<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <Pressable style={styles.cameraContainer} onPress={openCamera}>
+                            <Image source={Images.cameraIcon} alt='Img' />
+                            <Text style={styles.addCameraText}>Add</Text>
+                        </Pressable>
+                        <Pressable style={styles.cameraContainer} onPress={choosePhotoFromLibrary}>
+                            <Feather name="folder-plus" />
+                            <Text style={styles.addCameraText}>Add</Text>
+                        </Pressable>
+                    </View>
+                    )
                 }
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductVideoUrl(text)} placeholder='Product Video URL' />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductVideoUrl(text)} placeholder='Product Video URL' />
                 <Text style={styles.sectionHeading}>Basic Information</Text>
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductName(text)} placeholder='Product Name' />
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductBrand(text)} placeholder='Brand' />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductName(text)} placeholder='Product Name' />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductBrand(text)} placeholder='Brand' />
                 <SelectDropdown
                     data={productUnits}
                     defaultButtonText='Unit'
                     buttonStyle={globatStyles.dropDownBox}
                     buttonTextStyle={globatStyles.dropdownTextStyle}
                     rowTextStyle={globatStyles.dropDownListStyle}
-                    renderDropdownIcon={()=><AntDesign name='down' />}
+                    renderDropdownIcon={() => <AntDesign name='down' />}
                     onSelect={(selectedItem, index) => {
                         setproductUnit(selectedItem)
-                }} />
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setminimumQuantity(text)} placeholder='Minimum Qty' />
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductTags(text)} placeholder='Tags' />
+                    }} />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setminimumQuantity(text)} placeholder='Minimum Qty' />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductTags(text)} placeholder='Tags' />
                 <View style={styles.isStockCodContainer}>
-                    <Pressable style={styles.codContainer} onPress={()=>setIsrefundalbe(!isRefundable)}>
-                        <View style={isRefundable?styles.inStockOuter:styles.outOfStockOuter}>
-                            <View style={isRefundable?styles.inStockInner:styles.outOfStockInner}></View>
+                    <Pressable style={styles.codContainer} onPress={() => setIsrefundalbe(!isRefundable)}>
+                        <View style={isRefundable ? styles.inStockOuter : styles.outOfStockOuter}>
+                            <View style={isRefundable ? styles.inStockInner : styles.outOfStockInner}></View>
                         </View>
                         <Text style={styles.inStockText}>Refundable</Text>
                     </Pressable>
-                    <Pressable style={[styles.codContainer, {marginStart: Constants.margin+16}]} onPress={()=>setCod(!cod)}>
-                        <View style={cod?styles.inStockOuter:styles.outOfStockOuter}>
-                            <View style={cod?styles.inStockInner:styles.outOfStockInner}></View>
+                    <Pressable style={[styles.codContainer, { marginStart: Constants.margin + 16 }]} onPress={() => setCod(!cod)}>
+                        <View style={cod ? styles.inStockOuter : styles.outOfStockOuter}>
+                            <View style={cod ? styles.inStockInner : styles.outOfStockInner}></View>
                         </View>
                         <Text style={styles.inStockText}>COD</Text>
                     </Pressable>
@@ -298,62 +316,68 @@ console.log("folder image",result.assets[0]);
                     multiline={true}
                     numberOfLines={4}
                     placeholder='Product Description'
-                    onChangeText={text=>setproductDescription(text)}
-                    style={globatStyles.inputText}/>
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductUnitPrice(text)} placeholder='Unit Price' />
-                <TextInput style={globatStyles.inputText} onChangeText={text=>setproductSellingPrice(text)} placeholder='Selling Price' />
-                <View style={{flex: 1, width: '100%',justifyContent:"center",position:"relative"}}>
-                        <TextInput style={globatStyles.inputText} keyboardType={'number-pad'} placeholder='Discount' onChangeText={text=>setproductDiscount(text)} />
-                        <FontAwesome name='percent' style={styles.eyeIcon}/>
-                    </View>
-                                    <SelectDropdown
+                    onChangeText={text => setproductDescription(text)}
+                    style={globatStyles.inputText} />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductUnitPrice(text)} placeholder='Unit Price' />
+                <TextInput style={globatStyles.inputText} onChangeText={text => setproductSellingPrice(text)} placeholder='Selling Price' />
+                <View style={{ flex: 1, width: '100%', justifyContent: "center", position: "relative" }}>
+                    <TextInput style={globatStyles.inputText} keyboardType={'number-pad'} placeholder='Discount' onChangeText={text => setproductDiscount(text)} />
+                    <FontAwesome name='percent' style={styles.eyeIcon} />
+                </View>
+                <SelectDropdown
                     data={productTypes}
                     defaultButtonText='Product Type'
                     buttonStyle={globatStyles.dropDownBox}
                     buttonTextStyle={globatStyles.dropdownTextStyle}
                     rowTextStyle={globatStyles.dropDownListStyle}
-                    renderDropdownIcon={()=><AntDesign name='down' />}
+                    renderDropdownIcon={() => <AntDesign name='down' />}
                     onSelect={(selectedItem, index) => {
                         setproductType(selectedItem)
-                }} />
+                    }} />
                 <Text style={styles.sectionHeading}>Product Variation</Text>
-                <SelectDropdown
+                <MultiSelect
+                    style={styles.dropdown}
+                    placeholderStyle={{ fontSize: 16, color: 'grey', }}
+                    selectedTextStyle={{ fontSize: 16, color: 'black' }}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
                     data={productColors}
-                    defaultButtonText='Colors'
-                    buttonStyle={globatStyles.dropDownBox}
-                    buttonTextStyle={globatStyles.dropdownTextStyle}
-                    rowTextStyle={globatStyles.dropDownListStyle}
-                    renderDropdownIcon={()=><AntDesign name='down' />}
-                    onSelect={(selectedItem, index) => {
-                        setproductColor(selectedItem)
-                }} />
-                <TextInput style={globatStyles.inputText} placeholder='Size' onChangeText={text=>setproductSize(text)}/>
+                    labelField="name"
+                    valueField="name"
+                    placeholder="Color"
+                    value={selectedItem}
+                    onChange={item => {
+                        setSelectedItem(item);
+                    }}
+                    selectedStyle={styles.selectedStyle}
+                />
+                <TextInput style={globatStyles.inputText} placeholder='Size' onChangeText={text => setproductSize(text)} />
                 <SelectDropdown
                     data={productUnits}
                     defaultButtonText='Units'
                     buttonStyle={globatStyles.dropDownBox}
                     buttonTextStyle={globatStyles.dropdownTextStyle}
                     rowTextStyle={globatStyles.dropDownListStyle}
-                    renderDropdownIcon={()=><AntDesign name='down' />}
+                    renderDropdownIcon={() => <AntDesign name='down' />}
                     onSelect={(selectedItem, index) => {
                         setproductVUnits(selectedItem)
-                }} />
-                <TextInput keyboardType={'number-pad'} style={globatStyles.inputText} onChangeText={text=>setproductQuantity(text)} placeholder='Quantity' />
+                    }} />
+                <TextInput keyboardType={'number-pad'} style={globatStyles.inputText} onChangeText={text => setproductQuantity(text)} placeholder='Quantity' />
                 <Text style={styles.sectionHeading}>Low stock quantity warning</Text>
-                <TextInput keyboardType='number-pad' onChangeText={text=>setproductLowStock(text)} style={globatStyles.inputText}  placeholder='Quantity' />
+                <TextInput keyboardType='number-pad' onChangeText={text => setproductLowStock(text)} style={globatStyles.inputText} placeholder='Quantity' />
                 <Text style={styles.sectionHeading}>VAT & TAX</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TextInput keyboardType='number-pad' style={[globatStyles.inputText, {width: '48%',}]} placeholder='Tax' onChangeText={text=>setproductTax(text)}/>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TextInput keyboardType='number-pad' style={[globatStyles.inputText, { width: '48%', }]} placeholder='Tax' onChangeText={text => setproductTax(text)} />
                     <SelectDropdown
                         data={vatType}
                         defaultButtonText='Select Type'
                         buttonStyle={styles.dropDownBox}
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
-                        renderDropdownIcon={()=><AntDesign name='down' />}
+                        renderDropdownIcon={() => <AntDesign name='down' />}
                         onSelect={(selectedItem, index) => {
                             setproductTaxType(selectedItem)
-                    }} />
+                        }} />
                 </View>
                 <Text style={styles.sectionHeading}>Shipping Details</Text>
                 <SelectDropdown
@@ -362,28 +386,28 @@ console.log("folder image",result.assets[0]);
                     buttonStyle={globatStyles.dropDownBox}
                     buttonTextStyle={globatStyles.dropdownTextStyle}
                     rowTextStyle={globatStyles.dropDownListStyle}
-                    renderDropdownIcon={()=><AntDesign name='down' />}
+                    renderDropdownIcon={() => <AntDesign name='down' />}
                     onSelect={(selectedItem, index) => {
                         setproductCompany(selectedItem)
-                }} />
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    }} />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <SelectDropdown
                         data={deliveryTypes}
                         defaultButtonText='Delivery Type'
                         buttonStyle={styles.dropDownBox}
                         buttonTextStyle={globatStyles.dropdownTextStyle}
                         rowTextStyle={globatStyles.dropDownListStyle}
-                        renderDropdownIcon={()=><AntDesign name='down' />}
+                        renderDropdownIcon={() => <AntDesign name='down' />}
                         onSelect={(selectedItem, index) => {
                             setproductDeliveryType(selectedItem)
-                    }} />
-                    <TextInput style={[globatStyles.inputText, {width: '48%',}]} keyboardType={'number-pad'} onChangeText={text=>setproductPincode(text)} placeholder='Pin Code' />
+                        }} />
+                    <TextInput style={[globatStyles.inputText, { width: '48%', }]} keyboardType={'number-pad'} onChangeText={text => setproductPincode(text)} placeholder='Pin Code' />
                 </View>
-                {console.log("see-preview=>",props.route.params.userDetails)}
+                {console.log("see-preview=>", props.route.params.userDetails)}
                 <View style={styles.buttonContainer}>
-                    <Pressable onPress={()=>navigation.navigate("/product-preview",{userDetails:props.route.params.userDetails})}
-                     style={[globatStyles.button, styles.btnOutline]}><Text style={[globatStyles.btnText, {color: Constants.colors.primaryColor,}]}>PREVIEW</Text></Pressable>
-                    <Pressable onPress={!buttonLoader&&gotoProducts} style={[globatStyles.button, , {width: '48%'}]}>{buttonLoader?<ActivityIndicator size={20} color={Constants.colors.whiteColor} />:<Text style={globatStyles.btnText}>ADD </Text>}</Pressable>
+                    <Pressable onPress={() => navigation.navigate("/product-preview", { userDetails: props?.route?.params?.userDetails })}
+                        style={[globatStyles.button, styles.btnOutline]}><Text style={[globatStyles.btnText, { color: Constants.colors.primaryColor, }]}>PREVIEW</Text></Pressable>
+                    <Pressable onPress={!buttonLoader && gotoProducts} style={[globatStyles.button, , { width: '48%' }]}>{buttonLoader ? <ActivityIndicator size={20} color={Constants.colors.whiteColor} /> : <Text style={globatStyles.btnText}>ADD </Text>}</Pressable>
                 </View>
             </ScrollView>
         </View>
@@ -405,7 +429,7 @@ const styles = StyleSheet.create({
         fontFamily: Constants.fontFamily,
         fontSize: 18,
         fontWeight: '700',
-        marginTop: Constants.margin, 
+        marginTop: Constants.margin,
     },
     cameraContainer: {
         marginTop: Constants.margin,
@@ -455,7 +479,7 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     sectionHeading: {
-        paddingTop: Constants.padding+8,
+        paddingTop: Constants.padding + 8,
         paddingBottom: Constants.padding,
         fontFamily: Constants.fontFamily,
         fontSize: 16,
@@ -524,12 +548,21 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: Constants.colors.primaryColor,
-    },eyeIcon: {
+    }, eyeIcon: {
         position: 'absolute',
         top: 20,
         right: 25,
         // color: '#999999',
         // fontSize: 24,
+    },
+    dropdown: {
+        height: 50,
+        borderColor: '#F5FFFA',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        backgroundColor: '#F5FFFA',
+        marginBottom: 18,
     },
 })
 

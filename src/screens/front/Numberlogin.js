@@ -22,7 +22,6 @@ import Videos from '../../assets/staticVideos/Videos'
 const NumberLogin=(props)=>{
     const navigation  = useNavigation()
     const countries = ["+91", "+92", "+93", "+94", "+95"]
-    console.log("props response",props.route.params);
     const [number, setnumber] = useState('');
     const [usertype,setusertype] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -74,22 +73,18 @@ const NumberLogin=(props)=>{
         }
     }
     const userSignup = async () =>{
-        console.log("type==>>",usertype)
         try {
              axios.post(`${Constants.BASE_URL}auth/SendloginOtp`,{
                 "mobile_number":number,
                 "type": usertype,
                 }).then((response)=>{   
-                    console.log("response==>>",response.data)
                     setIsLoading(false)
                     if(response.data.Msg == "Otp sent successfully"){
                        
                         navigation.navigate('/Number-Otp', {userDetails: props?.route?.params?.userDetails,userType:props?.route?.params?.userType,mobile_number:number,login_type: props?.route?.params?.login_type})
-                        console.log("number otp",response.data.otp)     
                     }
                     else if (response.data.Msg== "Number Not Existe"){
                         showToastmsg('Number not existe ')
-                        console.log("Number not existe")
                     }
                 }).catch((error)=>{
                     console.log("number otp error",error);
@@ -145,17 +140,7 @@ const NumberLogin=(props)=>{
                 </View>
                 <Text style={styles.textBelowBusiness}>Enter Your Registered Mobile Number</Text>
                 <View style={styles.phoneNumberContainer}>
-                    {/* <View style={styles.countryCode}>
-                        <Image source={Images.indiaFlag} style={styles.countryFlag} />
-                        <SelectDropdown
-                            data={countries}
-                            buttonStyle={styles.countryDropdown}
-                            defaultValue={+91}
-                            onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index)
-                        }} />
-                        <Image source={Images.dropdownIcon} style={styles.dropdownIcon} />
-                    </View> */}
+                    
                     <TextInput keyboardType={'numeric'} style={styles.textInput} 
                    
                     

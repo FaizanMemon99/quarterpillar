@@ -29,79 +29,70 @@ const Discover = (props) => {
     const getAllUsers = async () => {
         setUsers([])
         const users = await apiCall('GET', endPoints.USER_TYPES, '', '')
-        if(await AsyncStorage.getItem("userDetails"))
-        {
-          console.log("res data=>",await AsyncStorage.getItem("userType"));
-          if(JSON.parse(await AsyncStorage.getItem("userType"))=='Business')
-                        {navigation.navigate('/home',{"userDetails":JSON.parse(await AsyncStorage.getItem("userDetails"))})}
-                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Influencer'||JSON.parse(await AsyncStorage.getItem("userType"))=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails")),userType:JSON.parse(await AsyncStorage.getItem("userType"))})}
-                        else if(JSON.parse(await AsyncStorage.getItem("userType"))=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails")),userType:JSON.parse(await AsyncStorage.getItem("userType"))})}
-                        else {
-                            navigation.navigate('/advertiser-product',{userDetails:JSON.parse(await AsyncStorage.getItem("userDetails"))})
-                        }
-                        setUsers(users)
-                        
-          console.log("data=>",await AsyncStorage.getItem("userDetails"))
+        if (await AsyncStorage.getItem("userDetails")) {
+            if (JSON.parse(await AsyncStorage.getItem("userType")) == 'Business') { navigation.navigate('/home', { "userDetails": JSON.parse(await AsyncStorage.getItem("userDetails")) }) }
+            else if (JSON.parse(await AsyncStorage.getItem("userType")) == 'Influencer' || JSON.parse(await AsyncStorage.getItem("userType")) == 'Advertiser') { navigation.navigate('/influencer-stack-navigation', { userDetails: JSON.parse(await AsyncStorage.getItem("userDetails")), userType: JSON.parse(await AsyncStorage.getItem("userType")) }) }
+            else if (JSON.parse(await AsyncStorage.getItem("userType")) == 'Explorer') { navigation.navigate('/influencer-stack-navigation', { userDetails: JSON.parse(await AsyncStorage.getItem("userDetails")), userType: JSON.parse(await AsyncStorage.getItem("userType")) }) }
+            else {
+                navigation.navigate('/advertiser-product', { userDetails: JSON.parse(await AsyncStorage.getItem("userDetails")) })
+            }
+            setUsers(users)
+
         }
         else
-        setUsers(users)
+            setUsers(users)
     }
 
-    const redirectFn=()=>{
-        if(props.route.params.login_type=='Business')
-                        {navigation.navigate('/home',{"userDetails":response.data.user})}
-                        else if(props.route.params.login_type=='Influencer'||props.route.params.login_type=='Advertiser'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
-                        else if(props.route.params.login_type=='Explorer'){navigation.navigate('/influencer-stack-navigation',{userDetails:response.data.user})}
-                        else {
-                            navigation.navigate('/advertiser-product',{userDetails:response.data.user})
-                        }
+    const redirectFn = () => {
+        if (props.route.params.login_type == 'Business') { navigation.navigate('/home', { "userDetails": response.data.user }) }
+        else if (props.route.params.login_type == 'Influencer' || props.route.params.login_type == 'Advertiser') { navigation.navigate('/influencer-stack-navigation', { userDetails: response.data.user }) }
+        else if (props.route.params.login_type == 'Explorer') { navigation.navigate('/influencer-stack-navigation', { userDetails: response.data.user }) }
+        else {
+            navigation.navigate('/advertiser-product', { userDetails: response.data.user })
+        }
     }
     const handleDynamicLink = link => {
-        console.log("link=>",link.url);
         // Handle dynamic link inside your own application
         if (link.url.includes("business")) {
-            navigation.navigate("/businessView",{userId:link.url.split('business/')[1]})
-          }
-          else if (link.url.includes("influencer")) {
-            navigation.navigate("/influencerView",{userId:link.url.split('influencer/')[1]})
-          }
-          else {
+            navigation.navigate("/businessView", { userId: link.url.split('business/')[1] })
+        }
+        else if (link.url.includes("influencer")) {
+            navigation.navigate("/influencerView", { userId: link.url.split('influencer/')[1] })
+        }
+        else {
 
-          }
-      };
+        }
+    };
     useEffect(() => {
         const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
         // When the component is unmounted, remove the listener
         return () => unsubscribe();
-      }, []);
-     
-useEffect(()=>{
-    if(props?.route?.params?.comeBack){
-        getAllUsers()
-    }
-    dynamicLinks()
-    .getInitialLink()
-    .then(link => {
-      console.log("link url=>",link);
-      if (link.url.includes("business")) {
-        navigation.navigate("/businessView",{userId:link.url.split('business/')[1]})
-      }
-      else if (link.url.includes("influencer")) {
-        navigation.navigate("/influencerView",{userId:link.url.split('influencer/')[1]})
-      }
-      else
-      getAllUsers()
-    }).catch((error)=>{
-        getAllUsers()
-    })
-},[props])
+    }, []);
 
-    
+    useEffect(() => {
+        if (props?.route?.params?.comeBack) {
+            getAllUsers()
+        }
+        dynamicLinks()
+            .getInitialLink()
+            .then(link => {
+                if (link.url.includes("business")) {
+                    navigation.navigate("/businessView", { userId: link.url.split('business/')[1] })
+                }
+                else if (link.url.includes("influencer")) {
+                    navigation.navigate("/influencerView", { userId: link.url.split('influencer/')[1] })
+                }
+                else
+                    getAllUsers()
+            }).catch((error) => {
+                getAllUsers()
+            })
+    }, [props])
     // const gotoExploer = () => {
     //     navigation.navigate('/exploer-registration')
     // }
     const gotoLogin = (val) => {
-        navigation.navigate('/business-login',{login_type:val})
+        navigation.navigate('/business-login', { login_type: val })
     }
     // const gotoInfluencer = () => {
     //     navigation.navigate('/infliencer-signup')
@@ -114,61 +105,61 @@ useEffect(()=>{
     // }
     return (
         <SafeAreaView style={styles.container}>
-        <ScrollView >
-            <Text style={styles.header}>DISCOVER</Text>
-            {
-                users?.users && users?.users?.length > 0 ? users?.users?.map(user =>
-                    user.role_name !== 'Admin' ? (
-                        <Pressable style={{ marginBottom: Constants.margin, }} onPress={()=>gotoLogin(user.role_name)} key={user.id}>
-                            <VideoPlayer
-                            thumbnail={Images.PlusIcon}
-                            onVideoBuffer={(e)=>console.log("buffering",e)}
-                                video={user.role_name==="Business"?Videos.businessVideo
-                                :user.role_name==="Influencer"?
-                                Videos.influencerVideo:user.role_name==="Explorer"?
-                                Videos.exploreVideo:Videos.advertiserVideo}
-                                // video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
-                                autoplay
-                                repeat={true}
-                                muted
-                                loop
-                                disableSeek
-                                resizeMode={'cover'}
-                                customStyles={{
-                                    wrapper: {
-                                        width: Constants.width,
-                                        height: 145,
-                                        paddingBottom: Constants.padding,
-                                    },
-                                    video:{
-                                        width: Constants.width,
-                                        height: 145,
-                                    },
-                                    controls: {
-                                        display: 'none',
-                                    },
-                                    seekBarBackground: {
-                                        backgroundColor: 'transparent',
-                                    },
-                                    seekBarProgress: {
-                                        backgroundColor: 'transparent',
-                                    },
-                                }} />
-                            <View style={globatStyles.overlay}></View>
-                            <View style={styles.discoverContent}>
-                                <View style={styles.menuTextContainer}>
-                                    <Text style={styles.menuTitle}>{user.role_name}</Text>
-                                    <Text style={styles.menuText}>{user.role_description}</Text>
+            <ScrollView >
+                <Text style={styles.header}>DISCOVER</Text>
+                {
+                    users?.users && users?.users?.length > 0 ? users?.users?.map(user =>
+                        user.role_name !== 'Admin' ? (
+                            <Pressable style={{ marginBottom: Constants.margin, }} onPress={() => gotoLogin(user.role_name)} key={user.id}>
+                                <VideoPlayer
+                                    thumbnail={Images.PlusIcon}
+                                    // onVideoBuffer={(e) => console.log("buffering", e)}
+                                    video={user.role_name === "Business" ? Videos.businessVideo
+                                        : user.role_name === "Influencer" ?
+                                            Videos.influencerVideo : user.role_name === "Explorer" ?
+                                                Videos.exploreVideo : Videos.advertiserVideo}
+                                    // video={{ uri: user.role_name==="Business"?"https://acapp.in/uploads/biz1.mp4":user.role_name==="Influencer"?"https://acapp.in/uploads/influencer1.mp4":user.role_name==="Explorer"?"https://acapp.in/uploads/explore.mp4":"https://acapp.in/uploads/adv.mp4"}}
+                                    autoplay
+                                    repeat={true}
+                                    muted
+                                    loop
+                                    disableSeek
+                                    resizeMode={'cover'}
+                                    customStyles={{
+                                        wrapper: {
+                                            width: Constants.width,
+                                            height: 145,
+                                            paddingBottom: Constants.padding,
+                                        },
+                                        video: {
+                                            width: Constants.width,
+                                            height: 145,
+                                        },
+                                        controls: {
+                                            display: 'none',
+                                        },
+                                        seekBarBackground: {
+                                            backgroundColor: 'transparent',
+                                        },
+                                        seekBarProgress: {
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }} />
+                                <View style={globatStyles.overlay}></View>
+                                <View style={styles.discoverContent}>
+                                    <View style={styles.menuTextContainer}>
+                                        <Text style={styles.menuTitle}>{user.role_name}</Text>
+                                        <Text style={styles.menuText}>{user.role_description}</Text>
+                                    </View>
+                                    <View style={styles.menuIcon}>
+                                        <Image source={user.role_name === 'Explorer' ? Images.explorerIcon : user.role_name === 'Influencer' ? Images.influencerIcon : user.role_name === 'Business' ? Images.businessIcon : user.role_name === 'Advertiser' ? Images.advertizerIcon : null} />
+                                    </View>
                                 </View>
-                                <View style={styles.menuIcon}>
-                                    <Image source={user.role_name === 'Explorer' ? Images.explorerIcon : user.role_name === 'Influencer' ? Images.influencerIcon : user.role_name === 'Business' ? Images.businessIcon : user.role_name === 'Advertiser' ? Images.advertizerIcon : null} />
-                                </View>
-                            </View>
-                        </Pressable>
-                    ) : null
-                ) : <Loading />
-            }
-            {/* {
+                            </Pressable>
+                        ) : null
+                    ) : <Loading />
+                }
+                {/* {
                 users.users && users.users.length > 0 ? (
                     <Pressable style={styles.enterAsAdmin} onPress={enterAsAdmin}>
                         <Image source={Images.usaerIcon} style={styles.userIcon} />
@@ -176,7 +167,7 @@ useEffect(()=>{
                     </Pressable>
                 ) : null
             } */}
-        </ScrollView>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -191,10 +182,10 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontFamily: Constants.fontFamily,
         fontWeight: '800',
-        fontStyle:'normal',
+        fontStyle: 'normal',
         marginBottom: Constants.margin,
         lineHeight: 36,
-        
+
     },
     discoverMenu: {
         height: 145,
@@ -237,7 +228,7 @@ const styles = StyleSheet.create({
         borderRadius: Constants.borderRadius,
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom:40
+        marginBottom: 40
     },
     userIcon: {
         marginRight: 12,

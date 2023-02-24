@@ -86,7 +86,7 @@ const Cart = (props) => {
                     <ActivityIndicator />
                     :
                     cartItems.length > 0 ?
-                        <FlashList
+                        <FlatList
                             data={cartItems}
                             style={{ marginBottom: 10, }}
                             showsVerticalScrollIndicator={false}

@@ -8,6 +8,7 @@ import {
     ScrollView,
     Image,
     ActivityIndicator,
+    PermissionsAndroid,
     Modal
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -115,6 +116,7 @@ const BusinessRegistration = (props) => {
         else if (username === '' || username === null) {
             showToastmsg('Username cannot be empty')
         }
+        
         // else if(!usernamePattern.test(username)){
         //     showToastmsg('Username should contain Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character')
         // }
@@ -170,7 +172,7 @@ const BusinessRegistration = (props) => {
             axios.post(`${Constants.BASE_URL}business/registration`, formdata, {
                 headers: headers
             }).then((response) => {
-                console.log("form_data=>",response.data)
+                console.log("form_data=>", response.data)
                 showToastmsg(response.data.msg)
                 if (response.status == 200) {
 
@@ -214,6 +216,43 @@ const BusinessRegistration = (props) => {
             })
         }
     }
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'Camera Permission',
+                        message: 'App needs camera permission',
+                    },
+                );
+                // If CAMERA Permission is granted
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                return false;
+            }
+        } else return true;
+    };
+    const requestExternalWritePermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'External Storage Write Permission',
+                        message: 'App needs write permission',
+                    },
+                );
+                // If WRITE_EXTERNAL_STORAGE Permission is granted
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                console.log('Write permission err', err);
+            }
+            return false;
+        } else return true;
+    };
 
 
     const choosePhotoFromLibrary = async () => {
@@ -229,6 +268,7 @@ const BusinessRegistration = (props) => {
     }
     const openCamera = async () => {
         setCameraImg(null)
+        setvisible(false)
         let options = {
             mediaType: 'photo',
             //   maxWidth: 300,
@@ -272,7 +312,7 @@ const BusinessRegistration = (props) => {
     }
     const businessDocarray = ["With GST", "With Shopact License", "With MCA"]
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false} onPress={() => setModalVisible(!modalVisible)}>
             <View style={styles.wrapper}>
                 <Text style={styles.heading}>Business Registration</Text>
                 <Text style={styles.subHeading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
@@ -288,7 +328,7 @@ const BusinessRegistration = (props) => {
                 >
 
                     <DialogContent>
-                    {
+                        {
                             cameraImg ? (
                                 <>
                                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', padding: Constants.padding, }}>
@@ -380,7 +420,7 @@ const BusinessRegistration = (props) => {
 
                 <TextInput keyboardType={'email-address'} placeholder='Email ID' style={globatStyles.inputText} onChangeText={text => setEmailId(text)} />
                 <TextInput keyboardType={'email-address'} placeholder='Business Email ID' style={globatStyles.inputText} onChangeText={text => setBusinessEmailId(text)} />
-                <TextInput keyboardType={'phone-pad'} style={globatStyles.inputText} maxLength={10}  placeholder='Phone number' onChangeText={(e) => setPhoneNumber(e)} />
+                <TextInput keyboardType={'phone-pad'} style={globatStyles.inputText} maxLength={10} placeholder='Phone number' onChangeText={(e) => setPhoneNumber(e)} />
                 <TextInput keyboardType={'numeric'} maxLength={12} style={globatStyles.inputText} placeholder='Aadhar Number' onChangeText={(e) => setaadharNo(e)} />
                 <TextInput style={globatStyles.inputText} placeholder='Address' onChangeText={(e) => setAddress(e)} />
                 <TextInput style={globatStyles.inputText} placeholder='State' onChangeText={(e) => setstate(e)} />

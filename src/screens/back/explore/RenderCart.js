@@ -15,6 +15,8 @@ import globatStyles from '../../../shared/globatStyles'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import { EventRegister } from 'react-native-event-listeners'
+import { emitConfig } from './RenderReeels'
 
 const RenderCart = ({item,getCartData}) => {
     const [qty, setQty] = useState(item?.item?.data?.qty)
@@ -93,6 +95,7 @@ const RenderCart = ({item,getCartData}) => {
         }).then((response)=>
         {
             if(response.data.response==200){
+                EventRegister.emitEvent(emitConfig.PRODUCT_REMOVED);
                 setDeleteLoader(false)
                 showToastmsg('Cart updated successfully')
                 getCartData(true)

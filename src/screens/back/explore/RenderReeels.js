@@ -34,8 +34,15 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import { useRef } from 'react'
 import ReelsComments from './ReelsComments'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import SearchBar from '../../../components/explore/SearchBar'
+import { EventRegister } from 'react-native-event-listeners'
+export const emitConfig = { API_CALLING: "API_CALLING", PRODUCT_REMOVED: "product removed" }
+//  mujataba App stack
+import { AppState } from 'react-native';
+import { current } from '@reduxjs/toolkit'
+//  mujataba App stack
 
-const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, setbadgeCount }) => {
+const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, setbadgeCount, closePopup, currentindex }) => {
     const [refresh, setrefresh] = useState(false)
     const [like, setLike] = useState(false)
     const [loader, setLoader] = useState(false)
@@ -48,9 +55,14 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const [showCommentPopup, setShowCommentPopup] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
     const [doubleTapCounter, setdoubleTapCounter] = useState(0)
-    const [follows, setfollows] = useState(false)
+    const [follows, setfollows] = useState(true)
     const [islike, setisLike] = useState(false)
     const [save, setsave] = useState(true)
+    const [postid, setpostid] = useState('')
+    const [currentpostid,setcurrentpostid]=useState()
+    //  mujataba App stack
+    const [appState, setAppState] = useState(AppState.currentState);
+    //  mujataba App stack
     // const [postview, setpostview] = useState([])
     const navigation = useNavigation()
     // const [followLoader,setfollowLoader] = useState(false)
@@ -66,6 +78,41 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const gotoMore = () => {
     }
 
+    // mujataba App stack
+    useEffect(() => {
+        setVideoLoader(true)
+        getCartCount()
+        setLikeCount(item?.item?.likes)
+        setshareCount(item?.item?.share)
+        const emitSubscribe = EventRegister.addEventListener(
+            emitConfig.API_CALLING, (msg) => {
+                getCartCount()
+            })
+        const removeSubscribe = EventRegister.addEventListener(
+            emitConfig.PRODUCT_REMOVED, (msg) => {
+                getCartCount()
+            });
+        const productPurchased = EventRegister.addEventListener(
+            emitConfig.PURCHASED, (msg) => {
+                getCartCount()
+            });
+        AppState.addEventListener('change', handleAppStateChange);
+        return () => {
+            EventRegister.removeEventListener(emitSubscribe)
+            EventRegister.removeEventListener(removeSubscribe);
+            EventRegister.removeEventListener(productPurchased);
+            AppState.removeEventListener('change', handleAppStateChange);
+        }
+    }, [])
+    const handleAppStateChange = (nextAppState) => {
+        if (appState.match(/inactive|background/) && nextAppState === 'active') {
+            getCartCount();
+        }
+        setAppState(nextAppState);
+    }
+
+    // mujataba App stack
+
     //  VIEW OF POSt
 
     const fetchpostview = () => {
@@ -74,8 +121,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             post_id: item?.item?.id
         })
             .then(function (response) {
-                console.log("post_ID_NEW", item?.item?.id)
-                console.log("VIEW_RESPONSE", response.data.data);
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -89,9 +135,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             influencer_id: item?.item?.influencer_id,
         }).then((response) => {
-            console.log("follow-user_id=>", userDetails?.id)
-            console.log("Influcer_id=>", item?.item?.influencer_id)
-            console.log("follow=>", response.data)
+
             setfollows(true)
             setfollows(!follows)
         })
@@ -102,9 +146,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             influencer_id: item?.item?.influencer_id,
         }).then((response) => {
-            console.log("unfollow-user_id=>", userDetails?.id)
-            console.log("Influcer_id=>", item?.item?.influencer_id)
-            console.log("unfollow=>", response.data)
+
             setfollows(false)
             setfollows(!follows)
         })
@@ -145,6 +187,9 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const gotoComments = () => {
         navigation.navigate('/reels-comments', { userDetails: userDetails, postDetails: item?.item })
     }
+    const gotoVistelike = () => {
+        navigation.navigate('/LikeProfile-Visit', { userDetails: userDetails, postDetails: item?.item?.id })
+    }
     const shareFn = () => {
 
         axios.post(`${Constants.BASE_URL}post/share-post`, {
@@ -157,7 +202,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const onShare = async () => {
         try {
 
-            console.log("post data=>",);
+
 
             const result = await Share.share({
                 message:
@@ -188,15 +233,11 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-            console.log("add-like-user_id=>", userDetails?.id)
-            console.log("add-like-post_id=>", item?.item?.id)
-            console.log("add-like=>", response.data)
+
             setLike(true)
             setLikeCount(LikeCount + 1)
-
             getLikeData()
         })
-
         // setLike(!like)
     }
 
@@ -205,68 +246,27 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-            console.log("dis-like-user_id=>", userDetails?.id)
-            console.log("dis-like-post_id=>", item?.item?.id)
-            console.log("dis-like=>", response.data)
             setLike(false)
             setLikeCount(LikeCount - 1)
-
             getLikeData()
         })
 
         // setLike(!like)
     }
 
-    // const removeLikeFn = async () => {
-    //     if (likeData.filter((i) => i.user_id == userDetails?.id && i.post_id == item?.item?.id).length > 0){
-    //         await axios.post(`${Constants.BASE_URL}post/${likeData.filter((i) => i.user_id == userDetails?.id && i.post_id == item?.item?.id)[0].id}/dis-like`, {
-    //             user_id: userDetails?.id,
-    //             post_id: item?.item?.id
-    //         }).then(async (response) => {
-    //             console.log("dislike-response=>",response)
-    //             getLikeData()
-    //             setLike(false)
-    //             if (LikeCount > 0) {
-    //                 setLikeCount(LikeCount - 1)
-    //             }
-    //         })
-    //     }else{(console.log("dislike not getting"))}
-
-    //     // setLike(false)
-    // }
-
-    //     <AntDesign
-    //     name={like ? 'heart' : 'hearto'}
-    //     style={[styles.icon, { color: like ? '#f54295' : '#FFF' }]}
-    //     onPress={() => setLike(!like)}
-    // />
-
-
-
-
     const gotoStoriespage = () => {
         // navigation.navigate('/StoriesPage')
         setModalVisible(!modalVisible);
     };
-    // const gotoBuy=()=>{
-    //     navigation.navigate('/cart')
-    // }
-    // navigate to guide screen 
-    // useEffect(()=>{
-    //     setTimeout(() => {
-    //         navigation.navigate('/GuideScreen')
-    //     }, 20000);
 
-    // },[])
-    // 
-    useEffect(() => {
+
+    const getCartCount = () => {
         setVideoLoader(true)
         axios.post(`${Constants.BASE_URL}auth/get-cart-item`, {
             user_id: userDetails?.id
         }).then((response) => {
             if (response.data.data.cart_item && response.data.data.cart_item.length > 0) {
                 setbadgeCount(response.data.data.cart_item.length)
-                console.log("count", response.data.data.cart_item.length);
             }
         })
             .catch((error) => {
@@ -274,99 +274,46 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             })
         setLikeCount(item?.item?.likes)
         setshareCount(item?.item?.share)
-        // console.log(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`);
-        // setLoader(true)
-        // setvideoVar(null)
-        // // console.log("video var",JSON.parse(item?.item?.video)[0]);
-        // axios.get(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, { responseType:'stream' })
-        // .then((response)=> {
-        //     setvideoVar({
-        //         "bitrate": 154604, "duration": 1, 
-        //         "fileName": JSON.parse(item?.item?.video)[0], 
-        //         "fileSize": response.headers["content-length"], "height": 320, "type": "video/mp4", 
-        //         "uri": `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, 
-        //         "width": 240
-        //         })
-        //     // setTimeout(() => {
-        //         setLoader(false)        
-        //     // }, 1000);    
-
-
-        //     // setvideoVar(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`)
-        // }).catch((err)=>{setLoader(false)})
-    }, [])
-
-    useEffect(() => {
-        // setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
-        setCommentCount(commentData.filter((i) => i.post_id == item?.item?.id).length)
-        if (likeData.filter((i) => i.user_id == userDetails?.id && i.post_id == item?.item?.id).length > 0) {
-            // console.log("user data");
-            setLike(true)
-        }
-        else {
-            setLike(false);
-        }
-    }, [likeData, commentData])
-    const handleClick = (e) => {
-        switch (e.detail) {
-            case 1:
-                console.log("click");
-                break;
-            case 2:
-                console.log("double click");
-                break;
-            case 3:
-                console.log("triple click");
-                break;
-        }
-    };
-    const Refershpull = () => {
-        get()
-    }
-    const Visitprofile = () => {
-        navigation.navigate('/visit-profile', {
-            userDetails: item?.item?.id, userDetails: userDetails,
-            // userDetails:item?.item?.influencer_name ,
-        })
-        console.log("Visitprofile", userDetails.age)
     }
 
-    const SavedCollection = () => {
-        axios.post(`${Constants.BASE_URL}influencer/influencerPosts/User/Save/Post`, {
+    // useEffect(() => {
+    //     // setLikeCount(likeData.filter((i)=>i.post_id==item?.item?.id).length)
+    //     setCommentCount(commentData.filter((i) => i.post_id == item?.item?.id).length)
+    //     if (likeData.filter((i) => i.user_id == userDetails?.id && i.post_id == item?.item?.id).length > 0) {
+    //         setLike(true)
+    //     }
+    //     else {
+    //         setLike(false);
+    //     }
+    // }, [likeData, commentData])
+
+
+    const SavedCollection = async () => {
+        await axios.post(`${Constants.BASE_URL}influencer/influencerPosts/User/Save/Post`, {
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-            console.log("Saved_collection-user_id=>", userDetails?.id)
-            console.log("Saved_collection-post_id=>", item?.item?.id)
-            console.log("Saved_collection=>", response.data)
             setsave(false)
-
         })
-
-        console.log("Savedcollection")
     }
+
     const UnSavedCollection = () => {
         axios.post(`${Constants.BASE_URL}influencer/influencerPosts/User/RemoveSavePost`, {
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-            console.log("UnSaved_collection-user_id=>", userDetails?.id)
-            console.log("UnSaved_collection-post_id=>", item?.item?.id)
-            console.log("UnSaved_collection=>", response.data)
             setsave(true)
         })
-        console.log("unsavedcollection")
     }
-
-
-
 
     return (
         <>
-        {loader ? <View style={{ display: 'flex', width: Constants.width, height: Constants.height, justifyContent: 'center', alignItems: 'center' }}>
+            {loader ? <View style={{ display: 'flex', width: Constants.width, height: Constants.height, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator size={30} color={'#80FFB9'} style={{ marginTop: 30 }} /></View> :
-                <ScrollView>
+                <ScrollView onTouchCancel={() => closePopup()}>
                     <StatusBar translucent={true} backgroundColor='black' />
+
+
                     <RBSheet
                         height={500}
                         ref={refRBSheet}
@@ -389,9 +336,11 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
 
                     <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999, }}
                         onLongPress={gotoStoriespage}
-                        onPress={handleClick}
+                        onPress={() => { closePopup(), setpostid(item?.item?.id) }}
                     // onPress={()=> fetchpostview() } 
                     >
+
+
                         <View style={[globatStyles.overlay, { zIndex: 9, height: '100%', backgroundColor: 'transparent' }]}>
 
                         </View>
@@ -399,6 +348,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                             VideoLoader ?
                                 <DashBoardLoader height={Constants.height} /> : null
                         }
+
                         <View style={styles.iconGroup}>
 
                             {like ?
@@ -411,16 +361,17 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
 
                             {!like ?
                                 <AntDesign name={'hearto'}
-
                                     style={[styles.icon, { color: '#FFF' }]}
                                     onPress={() => addLikeFn()}
                                 />
                                 : null}
-
-                            <Text style={[styles.iconText, {
-                                textAlign: "center",
-                                fontWeight: "900"
-                            }]}>{LikeCount ? LikeCount : 0}</Text>
+                            <Pressable onPress={gotoVistelike} >
+                                <Text style={[styles.iconText, {
+                                    textAlign: "center",
+                                    fontWeight: "900"
+                                }]}>{LikeCount ? LikeCount : 0}
+                                </Text>
+                            </Pressable>
                             <AntDesign name='message1' style={styles.icon}
                                 // onPress={gotoComments} 
                                 onPress={() => refRBSheet.current.open()}
@@ -436,11 +387,11 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
 
                             {save ?
                                 <FontAwesome name='bookmark-o' style={styles.icon}
-
                                     onPress={SavedCollection}
                                 />
                                 : null
                             }
+
                             {!save ?
                                 <FontAwesome name='bookmark' style={[styles.icon, { color: '#fff' }]}
                                     onPress={UnSavedCollection}
@@ -449,16 +400,17 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
 
                         <Video
                             source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
-                            onReadyForDisplay={() => fetchpostview()}
-                            // onBandwidthUpdate={()=>console.log("bandwidht")}
-                            // onBuffer={()=>console.log("buffering...")}
-                            // onReadyForDisplay={(e)=>console.log("ready display",e)}
+                            onReadyForDisplay={() => {
+                                fetchpostview();
+                                setcurrentpostid(item?.item?.id)
+                            }}
+                            onLoad={() => closePopup()}
+                            
                             autoplay
                             repeat={true}
                             loop
-                            muted
+                            muted={currentpostid==item?.item?.id?false:true}
                             disableSeek
-                            // onVideoBuffer={(e)=>console.log("bueeee",e)}
                             resizeMode={'cover'}
                             fullscreen
                             style={{ width: "100%", height: "100%" }}
@@ -481,20 +433,28 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                 seekBarProgress: {
                                     backgroundColor: 'transparent',
                                 },
-
                             }} />
 
 
                         <View style={styles.productDetailsContainer}>
                             <View style={styles.imgContainer}>
-                                <View style={{ height: responsiveHeight(2), width: responsiveWidth(17), bottom: 18, right: 10 }}>
-                                    <Image source={
-                                        item?.item?.influencer_details?.influencer?.avatar?{
-                                            uri:`${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`
-                                        }:
-                                        Images.avatar} style={{ marginRight: 20,width:"100%",height:"100%" }} />
+                                <View style={{ height: responsiveHeight(3.5), width: responsiveWidth(17), bottom: 18, right: 10 }}>
+                                    <Pressable onPress={() => navigation.navigate('/visit-profile', {
+                                        userDetails: item?.item?.influencer_details
+                                    })} >
+                                        <Image source={
+                                            item?.item?.influencer_details?.influencer?.avatar ? {
+                                                uri: `${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`
+                                            } :
+                                                Images.avatar} style={{ marginTop: responsiveHeight(1.4), marginLeft: responsiveWidth(4), width: "65%", height: responsiveHeight(5), borderRadius: responsiveWidth(80), }} />
+                                    </Pressable>
+
                                 </View>
-                                <Pressable onPress={() => Visitprofile()}>
+                                <Pressable onPress={() => navigation.navigate('/visit-profile', {
+                                    userDetails: item?.item?.influencer_details
+                                    // userDetails:item?.item?.influencer_name ,
+                                })} >
+
                                     <Text style={styles.titlename}>{item?.item?.influencer_details?.influencer?.name ? item?.item?.influencer_details?.influencer?.name : 'fizaninfluencer'}</Text>
                                 </Pressable>
 
@@ -544,7 +504,6 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                     marginTop: responsiveHeight(1),
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
-
                                 }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>}
                         </View>
 

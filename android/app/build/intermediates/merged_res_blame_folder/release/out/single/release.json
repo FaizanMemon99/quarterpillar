@@ -12,12 +12,20 @@
         "source": "/home/hasan/quarterpillars/android/app/build/generated/res/react/release/raw/src_assets_staticvideos_businessdiscover.mp4"
     },
     {
+        "merged": "/home/hasan/quarterpillars/android/app/build/intermediates/merged_res/release/drawable-mdpi_node_modules_reactnativeelementdropdown_src_assets_down.png.flat",
+        "source": "/home/hasan/quarterpillars/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeelementdropdown_src_assets_down.png"
+    },
+    {
         "merged": "/home/hasan/quarterpillars/android/app/build/intermediates/merged_res/release/drawable-mdpi_src_assets_images_icons_upi.png.flat",
         "source": "/home/hasan/quarterpillars/android/app/build/generated/res/react/release/drawable-mdpi/src_assets_images_icons_upi.png"
     },
     {
         "merged": "/home/hasan/quarterpillars/android/app/build/intermediates/merged_res/release/drawable-hdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
         "source": "/home/hasan/quarterpillars/android/app/build/generated/res/react/release/drawable-hdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "/home/hasan/quarterpillars/android/app/build/intermediates/merged_res/release/drawable-mdpi_node_modules_reactnativeelementdropdown_src_assets_close.png.flat",
+        "source": "/home/hasan/quarterpillars/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeelementdropdown_src_assets_close.png"
     },
     {
         "merged": "/home/hasan/quarterpillars/android/app/build/intermediates/merged_res/release/drawable-mdpi_src_assets_images_profile5.png.flat",

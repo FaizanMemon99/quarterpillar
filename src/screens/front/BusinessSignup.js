@@ -50,7 +50,6 @@ const BusinessSignup=(props)=>{
                         navigation.navigate('/business-otp', 
                         {phoneNumber:mobileNumber,userType:props?.route?.params?.userType,otpId:response.data.data.otp_id,phoneType:props?.route?.params?.phoneType}
                         )
-                        console.log("number otp",response.data.data.otp,"----",response.data.data.otp_id)
                     }
                 }).catch((error)=>{
                     setIsLoading(false)
@@ -61,7 +60,6 @@ const BusinessSignup=(props)=>{
             if(response.error===null && response.data.otp){
                 setIsLoading(false)
                 navigation.navigate('/business-otp', {userDetails: props?.route?.params?.userDetails,phoneNumber:mobileNumber,userType:props?.route?.params?.userType})
-                console.log("number otp",response.data.otp)
             }
             else{
                 setIsLoading(false)

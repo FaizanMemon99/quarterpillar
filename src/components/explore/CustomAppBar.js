@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Pressable,
     TextInput,
+    SafeAreaView,
 } from 'react-native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
@@ -22,6 +23,7 @@ const CustomAppBar = (props) => {
         props.navigation.navigate('/cart')
     }
     return (
+        <SafeAreaView>
         <View style={styles.wrapper}>
             {
                 props.isMainscreen ? (
@@ -61,15 +63,17 @@ const CustomAppBar = (props) => {
                 ) : null
             }
         </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
     wrapper: {
         padding: Constants.padding,
-        // paddingTop: Constants.padding+20,
+        // paddingTop: Constants.padding+10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+
     },
     logoContainer: {
         flexDirection: 'row',

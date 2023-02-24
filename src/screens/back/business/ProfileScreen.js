@@ -38,11 +38,11 @@ const ProfileScreen = (props) => {
     useEffect(() => {
         setLoader(true)
 
-        axios.get(`${Constants.BASE_URL}business/get-my-business-profile/${props?.route?.params?.userDetails?.id}`)
+        axios.get(`${Constants.BASE_URL}business/get-my-business-profile/${props?.route?.params?.type ? props?.route?.params?.userDetails?.business_id : props?.route?.params?.userDetails?.id}`)
             .then((response) => {
                 setLoader(false)
                 setuserData(response.data.data.business);
-                console.log("reponse=>", response.data.data.business);
+                // console.log("reponse=>", response.data.data.business);
             })
             .catch((error) => {
                 console.log("get img error", error.response)
@@ -54,14 +54,14 @@ const ProfileScreen = (props) => {
         <View style={{ flex: 1 }}>
             <CustomAppBar title={props?.route?.params?.type ? '' : 'Hello!'}
                 editable={!props?.route?.params?.type}
-                shareble={true}
-                isInfluencer={props?.route?.params?.type} 
+                shareble={!props?.route?.params?.type}
+                isInfluencer={props?.route?.params?.type}
                 type={UserType}
                 name={props?.route?.params?.type ? props?.route?.params?.userDetails?.username : props?.route?.params?.userDetails?.name} navigation={navigation} isMainscreen={false} isReel={false} openDrawer={openDrawer} userDetails={props?.route?.params?.userDetails} showDrawer={showDrawer} />
             <View style={styles.container}>
-                <ScrollView style={{ marginBottom: 200 }}>
+                <ScrollView style={{ marginBottom: 80 }}>
                     <View style={styles.companyDetails}>
-                    <Pressable onPress={()=>props.navigation.navigate('/edit-user-info',{userDetails:props?.route?.params?.userDetails,type:UserType})}>
+                        <Pressable onPress={() => props.navigation.navigate('/edit-user-info', { userDetails: props?.route?.params?.userDetails, type: UserType })}>
                             <Image source={isImage(props?.route?.params?.type ? `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business_profile_pic}` : `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}`) ?
                                 { uri: props?.route?.params?.type ? `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business_profile_pic}` : `${Constants.BASE_IMAGE_URL}${props?.route?.params?.userDetails?.business?.business_profile_pic}` } : Images.profileIcon} style={styles.companyLogo} />
                         </Pressable>
@@ -75,6 +75,7 @@ const ProfileScreen = (props) => {
                             <Text style={styles.socialValue}>{userData?.products ? userData?.products.length : 0}</Text>
                             <Text style={styles.socialActivity}>Posts</Text>
                         </View>
+
                         <View style={styles.socialContainer}>
                             <Text style={styles.socialValue}>{userData?.following ? userData?.following : 0}</Text>
                             <Text style={styles.socialActivity}>Following</Text>
@@ -97,10 +98,19 @@ const ProfileScreen = (props) => {
                                         estimatedItemSize={2}
                                         renderItem={item => (
                                             <View style={styles.profileBgImg} >
-                                                <Image
-                                                    source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.product_image)[0]}` }}
-                                                    style={{ width: "100%", height: "100%" }}
-                                                />
+                                                <Pressable
+                                                    onPress={() => {
+                                                        props?.route?.params?.type ?
+                                                        navigation.navigate
+                                                            ('/open-camera', { userDetails: props?.route?.params?.userDetails, category: props?.route?.params?.userDetails?.catorige, productData: item?.item }
+                                                            ) : null
+                                                    }}
+                                                >
+                                                    <Image
+                                                        source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.product_image)[0]}` }}
+                                                        style={{ width: "100%", height: "100%" }}
+                                                    />
+                                                </Pressable>
                                                 {/* {console.log("item=>",item?.item)} */}
                                                 {/* <Image source={Images.profileOne} style={{width:'100%',height:"100%"}}/> */}
                                                 <View style={styles.comments}>
@@ -190,7 +200,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // paddingLeft:46
     },
     socialContainer: {
         padding: Constants.padding,

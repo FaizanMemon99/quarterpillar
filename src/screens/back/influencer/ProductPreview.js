@@ -75,12 +75,15 @@ const ProductPreview = (props) => {
                         console.log("response", response);
                     }
                 }).catch((error) => {
+                    setLoader(false)
                     setdraftLoader(false)
                     console.log("error message", error.response);
                     showToastmsg('Cant save post, Please try again later')
                 });
             }
             else {
+console.log("form data value=>",formdata);
+
                 axios.post(`${Constants.BASE_URL}influencer/influencer-post-product`, formdata, {
                     headers: headers
                 }).then((response) => {
@@ -90,13 +93,14 @@ const ProductPreview = (props) => {
                         setdraftLoader(false)
                         console.log("data values", props?.route?.params?.influencerData);
                         showToastmsg(type == 'draft' ? 'Post added to draft successfully' : 'Post added successfully')
-                        navigation.navigate('/influencer-stack-navigation', { userDetails: props?.route?.params?.influencerData?.userDetails })
+                        navigation.navigate('/influencer-stack-navigation', { userDetails: props?.route?.params?.influencerData?.userDetails,userType:"influencer" })
                     }
                     else {
                         setdraftLoader(false)
                         console.log("response", response);
                     }
                 }).catch((error) => {
+                    setLoader(false)
                     setdraftLoader(false)
                     console.log("error message", error.response);
                     showToastmsg('Cant save post, Please try again later')

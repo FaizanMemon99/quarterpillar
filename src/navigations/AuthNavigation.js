@@ -76,6 +76,11 @@ import About from '../screens/back/business/About'
 import SavedCollection from '../screens/back/explore/SavedCollection'
 import NumberOtp from '../screens/front/NumberOtp'
 import SpecificPost from '../screens/back/explore/SpecificPost'
+import SearchBar from '../components/explore/SearchBar'
+import LikeProfileVisit from '../screens/back/explore/LikeProfileVisit'
+import Businessproductpreview from '../screens/back/business/Businessproductpreview'
+import Productedit from '../screens/back/business/Productedit'
+
 const Stack = createNativeStackNavigator()
 
 const AuthNavigation=(props)=>{
@@ -161,6 +166,11 @@ const AuthNavigation=(props)=>{
                 <Stack.Screen name='/Returns-Dashboard' component={ReturnsDashboard} />
                 <Stack.Screen name='/saved-collection' component={SavedCollection} />
                 <Stack.Screen name="/specific-post" component={SpecificPost}/>
+                <Stack.Screen name="/Search-Bar" component={SearchBar}/>
+                <Stack.Screen name="/LikeProfile-Visit" component={LikeProfileVisit} />
+                <Stack.Screen name="/Businessproduct-preview" component={Businessproductpreview} />
+                <Stack.Screen name="/Product-edit" component={Productedit} />
+               
                 {/* <Stack.Screen name='/admin-signin' component={AdminSignin} />
                 <Stack.Screen name='/forgot-password-admin' component={ForgotPasswordAdmin} />
                 <Stack.Screen name='/set-password-admin' component={SetPasswordAdmin} />

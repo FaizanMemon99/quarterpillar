@@ -19,6 +19,8 @@ import Feather from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import { responsiveFontSize } from 'react-native-responsive-dimensions'
+import { EventRegister } from 'react-native-event-listeners'
+import { emitConfig } from './RenderReeels'
 
 const ProductDetails= (props)=>{
     const navigation=useNavigation()
@@ -75,6 +77,7 @@ const ProductDetails= (props)=>{
         })
         .then((response)=>{
             setLoader(false)
+            EventRegister.emit(emitConfig.API_CALLING, "Api called!")
             if(response.data.response==200){
                 navigation.navigate('/cart',{userDetails:props?.route?.params?.userDetails})     
             }

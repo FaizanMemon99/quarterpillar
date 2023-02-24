@@ -56,15 +56,17 @@ const CustomAppBar = (props) => {
     const gotoCart = () => {
         navigation.navigate('/cart', { userDetails: props?.userDetails })
     }
-
-    const gotoCategory = ()=>{
-        if(props?.userDetails?.role_id==2){
+    const gotoSearch=()=>{
+        navigation.navigate('/Search-Bar')
+    }
+    const gotoCategory = () => {
+        if (props?.userDetails?.role_id == 3) {
             navigation.navigate('/category', {
                 userDetails: props?.userDetails,
-              });
+            });
         }
-        else 
-        navigation.navigate('/my-requests',{page:'ongoing',userDetails:props?.userDetails})
+        else
+            navigation.navigate('/my-requests', { page: 'ongoing', userDetails: props?.userDetails })
     }
 
     const gotoDraft = () => {
@@ -75,17 +77,16 @@ const CustomAppBar = (props) => {
             user_id: props?.userDetails?.id
         }).then((response) => {
             if (response.data.data.cart_item && response.data.data.cart_item.length > 0) {
-                setbadgeCount(response.data.data.cart_item.length)
-                console.log("counteff", response.data.data.cart_item.length)
+                props?.setbadgeCount(response.data.data.cart_item.length)
             }
         })
             .catch((error) => {
-                setbadgeCount(0)
+                props?.setbadgeCount(0)
             })
     }, [props])
     const handleClickAway = () => {
-		console.log('Maybe close the popup');
-	};
+        console.log('Maybe close the popup');
+    };
 
     return (
         <View style={styles.wrapper}>
@@ -135,13 +136,14 @@ const CustomAppBar = (props) => {
             {
                 props.headerRight ? (
                     <View style={{ flexDirection: 'row', }}>
-                        {/* <Feather name='search' style={[styles.leftIocn,{color:props?.IconColor?props?.IconColor:'#fff'}]} /> */}
+                        <Feather name='search' style={[styles.leftIocn, { color: props?.IconColor ? props?.IconColor : '#fff' }]} onPress={gotoSearch}/>
                         <View style={{ position: 'relative' }}>
                             <Feather name='shopping-cart' style={[styles.leftIocn, { color: props?.IconColor ? props?.IconColor : '#fff' }]} onPress={gotoCart} />
                             <Text style={[styles.badgeCount, { fontSize: 10 }]}>
                                 {props?.badgeCount ? props?.badgeCount : 0}
                             </Text>
                         </View>
+
                         {/* <View style={{position:'absolute',left:"90%",top:"-30%",backgroundColor:'white',zIndex:99999,width:20,height:20,borderRadius:20/2}}>
                         <Text style={{color:'black',textAlign:'center'}}>
                         {props.cartLoader?
@@ -154,14 +156,14 @@ const CustomAppBar = (props) => {
 
                         {!props?.explore && <Feather name='plus-circle' style={[styles.leftIocn, { color: props?.IconColor ? props?.IconColor : '#fff', zIndex: props.newPost ? 9999 : 9 }]} onPress={() => props.openPopup()} />}
                         {
-                            props.newPost ? 
-                            <View ref={wrapperRef} style={styles.addnewPost}>
-                                <Text style={styles.item} onPress={gotoCategory}>{
-                                    props?.userDetails?.role_id == 3 ? 'New Advertisement' :
-                                        'New Post'}</Text>
-                                <View style={styles.divider}></View>
-                                <Text style={styles.item} onPress={gotoDraft}>Draft</Text>
-                            </View> : null
+                            props.newPost ?
+                                <View ref={wrapperRef} style={styles.addnewPost}>
+                                    <Text style={styles.item} onPress={gotoCategory}>{
+                                        props?.userDetails?.role_id == 3 ? 'New Advertisement' :
+                                            'New Post'}</Text>
+                                    <View style={styles.divider}></View>
+                                    <Text style={styles.item} onPress={gotoDraft}>Draft</Text>
+                                </View> : null
                         }
                     </View>
                 ) : null
@@ -170,7 +172,7 @@ const CustomAppBar = (props) => {
                 props.searchbar ? (
                     <View style={{ width: '100%', }}>
                         <TextInput style={styles.searchbar} placeholder='Search' />
-                        <AntDesign name='search1' style={styles.searchIcon} />
+                        {/* <AntDesign name='search1' style={styles.searchIcon} /> */}
                     </View>
                 ) : null
             }
@@ -180,7 +182,7 @@ const CustomAppBar = (props) => {
 const styles = StyleSheet.create({
     wrapper: {
         padding: Constants.padding,
-        paddingTop: Constants.padding+3,
+        paddingTop: Constants.padding + 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

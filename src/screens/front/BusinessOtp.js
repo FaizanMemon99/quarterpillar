@@ -81,13 +81,15 @@ const BusinessOtp = (props) => {
             mobile_number:phoneNumber,
             otp:otp
         }).then((response)=>{
-            if(response.status==200){
+            console.log("otp",response.data.msg )
+            if(response.data.msg == "User Found"){
                 setIsLoading(false)
                         //   navigation.navigate('/email-verification',{login_type:props.route.params.userType})
                           navigation.navigate('/email-verify',{userType:props.route.params.userType,userDetails: props.route.params.userDetails,emailId: props.route.params.userDetails?.email})
             }
             else {
                 setIsLoading(false)
+                showToastmsg("OTP not matched" )
                 console.log('error response',response.data);
             }
         }).catch((err)=>{
@@ -151,7 +153,7 @@ const BusinessOtp = (props) => {
                         setotpId(response.data.data.otp_id)        
                         showToastmsg('OTP resend successfully')
                         setCountDownTime(30)
-                        console.log(response.data.data.otp);
+                        console.log("resend_otp",response.data.data.otp);
                     }
                 }).catch((error)=>{
                     console.log(error)

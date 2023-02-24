@@ -119,16 +119,16 @@ const InfluencerRegistration = (props) => {
     const choosePhotoFromLibrary = async () => {
         try {
             const result = await launchImageLibrary()
-            console.log("folder image", result.assets[0]);
             setCameraImg(result.assets[0])
             setvisible(false)
         }
         catch (err) {
-            console.log("err")
+            console.log("err", err)
         }
     }
     const openCamera = async () => {
         setCameraImg(null)
+        setvisible(false)
         let options = {
             mediaType: 'photo',
             //   maxWidth: 300,
@@ -158,7 +158,6 @@ const InfluencerRegistration = (props) => {
                     return;
                 }
                 // if(type=='video'){
-                console.log("repsonse image", response);
                 setCameraImg(response.assets[0])
                 // }
                 // else
@@ -311,7 +310,6 @@ const InfluencerRegistration = (props) => {
             axios.post(props.route.params.type == 'Explorer' ? `${Constants.BASE_URL}explore/registration` : `${Constants.BASE_URL}influencer/registration`, formdata, {
                 headers: headers
             }).then((response) => {
-                console.log("form_data=>", response.data)
                 showToastmsg(response.data.msg)
                 if (response.status == 200) {
 
@@ -323,9 +321,6 @@ const InfluencerRegistration = (props) => {
                                 navigation.navigate('/business-otp', { userDetails: response.data.data.user_details, phoneNumber: phone, userType: props.route.params.type })
                                 // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
                                 showToastmsg(res.data.msg)
-                                console.log("mobile otp value", res.data.data.otp)
-                                console.log("mobile data response", res.data.data)
-                                console.log("mobile data response", res.data.data)
                             }
                             else {
                                 setButtonLoader(false)
@@ -447,7 +442,6 @@ const InfluencerRegistration = (props) => {
                     </Pressable>)
 
                 }
-
 
                 <TextInput style={globatStyles.inputText} placeholder='Full Name' onChangeText={setfullName} />
                 <TextInput style={globatStyles.inputText} placeholder='Email ID' onChangeText={setemailId} />
@@ -689,7 +683,6 @@ const styles = StyleSheet.create({
         zIndex: 999,
     },
     cameraContainer: {
-
         marginTop: Constants.margin,
         marginBottom: 12,
         width: 90,
@@ -745,7 +738,6 @@ const styles = StyleSheet.create({
         padding: 37,
         shadowColor: "#000",
         right: 3,
-
         shadowOffset: {
             width: 0,
             height: 2

@@ -39,10 +39,11 @@ const VisitProfile = (props) => {
     }
     useEffect(() => {
         setLoader(true)
-        axios.get(`${Constants.BASE_URL}${props?.route?.params?.userDetails?.role_id == 2 ? `influencer/get-influencer-profile/${props?.route?.params?.userDetails?.id}` :
+        axios.get(`${Constants.BASE_URL}${props?.route?.params?.userDetails?.role_id == 2 ? `influencer/get-influencer-profile/${props?.route?.params?.userDetails?.influencer.influencer_id}` :
             props?.route?.params?.userDetails?.role_id == 1 ? `business/get-my-business-profile/${props?.route?.params?.userDetails?.id}` : ""
             }`)
             .then((response) => {
+                console.log("idid=>", props?.route?.params?.userDetails?.influencer.influencer_id)
                 setLoader(false)
                 if (response.data.data.influencers)
                     setuserData(response.data.data.influencers)
@@ -91,8 +92,6 @@ const VisitProfile = (props) => {
             <View style={styles.divider}></View>
             <ScrollView style={styles.container}>
 
-
-
                 {loader ?
                     <ActivityIndicator size={30} />
                     : <>
@@ -103,25 +102,26 @@ const VisitProfile = (props) => {
                                     data={userData?.posts}
                                     keyExtractor={(item, index) => index?.toString()}
                                     numColumns={2}
-                                    estimatedItemSize={2}
+                                    estimatedItemSize={200}
                                     renderItem={item => (
                                         <View style={styles.profileBgImg} >
-                                            <Video
-                                                source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
-                                                // onLoad={(e)=>console.log("onload",e)}
-                                                // onBandwidthUpdate={()=>console.log("bandwidht")}
-                                                // onBuffer={()=>console.log("buffering...")}
-                                                // onReadyForDisplay={(e)=>console.log("ready display",e)}
-                                                autoplay
-                                                repeat={true}
-                                                loop
-                                                muted
-                                                disableSeek
-                                                // onVideoBuffer={(e)=>console.log("bueeee",e)}
-                                                resizeMode={'cover'}
-                                                style={{ width: "100%", height: "100%" }}
-                                            />
-                                            <Image source={Images.profileOne} style={styles.ImgContainer} />
+                                            <Pressable onPress={() => navigation.navigate("/specific-post", { video: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`, userDetails: props?.route?.params?.userDetails })}>
+                                                <Video
+                                                    source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
+                                                    // onLoad={(e)=>console.log("onload",e)}
+                                                    // onBandwidthUpdate={()=>console.log("bandwidht")}
+                                                    // onBuffer={()=>console.log("buffering...")}
+                                                    // onReadyForDisplay={(e)=>console.log("ready display",e)}
+                                                    autoplay
+                                                    repeat={true}
+                                                    loop
+                                                    muted
+                                                    disableSeek
+                                                    // onVideoBuffer={(e)=>console.log("bueeee",e)}
+                                                    resizeMode={'cover'}
+                                                    style={{ width: "100%", height: "100%" }}
+                                                />
+                                            </Pressable>
                                             <View style={styles.comments}>
                                                 <AntDesign name='hearto' size={15} color={Constants.colors.whiteColor} style={{ fontWeight: "900" }} />
                                                 <Text style={{

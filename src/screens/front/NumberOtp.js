@@ -72,15 +72,11 @@ const NumberOtp = (props) => {
         setIsLoading(true)
         try {
             let fcmtoken = await AsyncStorage.getItem("fcmtoken");
-            console.log("fcm token", fcmtoken);
-
             if (mobile_number == '' || mobile_number == null || otp == '' || otp == null) {
                 setIsLoading(false)
                 showToastmsg('Please enter Otp ')
             }
             else {
-                console.log("lgin name", props?.route?.params?.login_type);
-                console.log("login data=>", { mobile_number: mobile_number, otp: otp, type: usertype });
                 const response = await apiCall('POST', 'auth/VerifyWithOtp', null, { mobile_number: mobile_number, otp: otp, type: usertype })
                 if (response && response.error === false) {
                     try {
@@ -112,14 +108,13 @@ const NumberOtp = (props) => {
                                     setIsLoading(false)
                                 })
                             showToastmsg("Login successfull")
-                            console.log("login type", props.route.params.login_type)
                             await AsyncStorage.setItem("userDetails", JSON.stringify(response.data.user));
                             await AsyncStorage.setItem("userType", JSON.stringify(usertype));
-                            if (props.route.params.login_type == 'Business') { navigation.navigate('/home', { "userDetails": response.data.user, userType: props?.route?.params?.login_type }) }
+                            if (props.route.params.login_type == 'Business') { navigation.navigate('/home', { userDetails: response.data.user ,userType: props?.route?.params?.login_type  }) }
                             else if (props.route.params.login_type == 'Influencer' || props.route.params.login_type == 'Advertiser') { navigation.navigate('/influencer-stack-navigation', { userDetails: response.data.user, userType: props?.route?.params?.login_type }) }
                             else if (props.route.params.login_type == 'Explorer') { navigation.navigate('/influencer-stack-navigation', { userDetails: response.data.user, userType: props?.route?.params?.login_type }) }
                             else {
-                                navigation.navigate('/advertiser-product', { userDetails: response.data.user })
+                                navigation.navigate('/advertiser-product', { userDetails: response.data.user ,userType: props?.route?.params?.login_type })
                             }
 
                             // await AsyncStorage.setItem('users', JSON.stringify({ token: response.data.token, userRole: props?.route?.params?.login_type, userDetails: response.data.user }))
@@ -147,11 +142,7 @@ const NumberOtp = (props) => {
     // }
     const resendOtp = async () => {
         setIsLoading(true)
-        console.log("dataval", {
-            "otp": otp,
-            "mobile_number": mobile_number
-        }
-        )
+        
         axios.post(`${Constants.BASE_URL}auth/VerifyWithOtp`, {
             "mobile_number": mobile_number,
             "otp": otp,

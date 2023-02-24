@@ -6,6 +6,7 @@ import {
     TextInput, Image,
     Pressable,
     ActivityIndicator,
+    PermissionsAndroid,
     Modal
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -45,10 +46,46 @@ const AdvertiserRegistration = (props) => {
     const [panCard, setpanCard] = useState()
     const [visible, setvisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'Camera Permission',
+                        message: 'App needs camera permission',
+                    },
+                );
+                // If CAMERA Permission is granted
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                return false;
+            }
+        } else return true;
+    };
+    const requestExternalWritePermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'External Storage Write Permission',
+                        message: 'App needs write permission',
+                    },
+                );
+                // If WRITE_EXTERNAL_STORAGE Permission is granted
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                console.log('Write permission err', err);
+            }
+            return false;
+        } else return true;
+    };
     const choosePhotoFromLibrary = async () => {
         try {
             const result = await launchImageLibrary()
-            console.log("folder image", result.assets[0]);
             setCameraImg(result.assets[0])
             setvisible(false)
         }
@@ -58,6 +95,7 @@ const AdvertiserRegistration = (props) => {
     }
     const openCamera = async () => {
         setCameraImg(null)
+        setvisible(false)
         let options = {
             mediaType: 'photo',
             //   maxWidth: 300,
@@ -87,7 +125,6 @@ const AdvertiserRegistration = (props) => {
                     return;
                 }
                 // if(type=='video'){
-                console.log("repsonse image", response);
                 setCameraImg(response.assets[0])
                 // }
                 // else
@@ -193,7 +230,6 @@ const AdvertiserRegistration = (props) => {
             axios.post(`${Constants.BASE_URL}advertiser/registration`, formdata, {
                 headers: headers
             }).then((response) => {
-                console.log("form_data=>", response.data)
                 showToastmsg(response.data.msg)
                 if (response.status == 200) {
 
@@ -206,7 +242,6 @@ const AdvertiserRegistration = (props) => {
                                 // navigation.navigate('/influencer-stack-navigation',{userDetails:res.data.data.user_details.influencer})   
 
                                 showToastmsg(res.data.msg)
-                                console.log("mobile otp value", res.data.data.otp)
                             }
                             else {
                                 setButtonLoader(false)
@@ -235,7 +270,7 @@ const AdvertiserRegistration = (props) => {
     return (
         <SafeAreaView style={styles.wrapper}>
             <Text style={styles.heading}>Advertiser Registration</Text>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false} onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={styles.subHeading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .</Text>
                 <Text style={styles.heading}>Avatar image</Text>
                 <Dialog
@@ -249,7 +284,7 @@ const AdvertiserRegistration = (props) => {
                 >
 
                     <DialogContent>
-                    {
+                        {
                             cameraImg ? (
                                 <>
                                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', padding: Constants.padding, }}>
@@ -324,6 +359,7 @@ const AdvertiserRegistration = (props) => {
                     </Pressable>)
 
                 }
+
 
                 <TextInput style={globatStyles.inputText} placeholder='Full Name' onChangeText={setfullName} />
                 <TextInput style={globatStyles.inputText} placeholder='User name' onChangeText={setUsername} />

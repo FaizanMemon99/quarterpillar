@@ -36,7 +36,6 @@ import PreviewAd from '../screens/back/advertiser/PreviewAd'
 const Stack = createNativeStackNavigator()
 
 const StackNavigationInfluencer=(props)=>{
-    console.log("adadadad",props.route.params);
     return (
         <>
             <StatusBar backgroundColor="transparent" translucent={true} />

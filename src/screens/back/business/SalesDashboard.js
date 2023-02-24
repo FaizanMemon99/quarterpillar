@@ -26,7 +26,6 @@ const SalesDashboard = (props, { userDetails }) => {
     const goBack = () => {
         props.navigation.goBack()
     }
-
     const chartConfig = {
         backgroundGradientFrom: "#FFFFFF",
         backgroundGradientFromOpacity: 0,
@@ -71,16 +70,14 @@ const SalesDashboard = (props, { userDetails }) => {
     }
     const getDashBoardData = () => {
         setLoader(true)
-        axios.post(`${Constants.BASE_URL}influencer/dashboard`, {
+        axios.post(`${Constants.BASE_URL}business/Get/SalesDashboard`, {
             user_id: props?.route?.params?.userDetails?.id
         })
             .then((response) => {
-                let tempdata = response?.data.data.influencer_dashboard
+                let tempdata = response?.data
                 setdashBoardData(tempdata)
                 console.log("user_id=>", props?.route?.params?.userDetails?.id);
                 console.log("dashbord-influcer-data=>", tempdata);
-                // console.log("dashbord-influcer-data=>", response.data);
-
                 setTimeout(() => {
                     setLoader(false)
                 }, 1000);
@@ -112,104 +109,104 @@ const SalesDashboard = (props, { userDetails }) => {
                         <Text style={styles.normalText}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
                         </Text>
-                         {console.log("checking_data=>",dashBoardData)}
+                        {console.log("checking_data=>", dashBoardData)}
                         <View style={styles.tabs}>
                             <Pressable onPress={() => setTabs('w')}><Text style={[styles.tabText, { backgroundColor: tabs === 'w' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'w' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'w' ? Constants.colors.primaryColor : '#000000', }]}>Weekly</Text></Pressable>
                             <Pressable onPress={() => setTabs('m')}><Text style={[styles.tabText, { backgroundColor: tabs === 'm' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'm' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'm' ? Constants.colors.primaryColor : '#000000', }]}>Monthly</Text></Pressable>
                             <Pressable onPress={() => setTabs('y')}><Text style={[styles.tabText, { backgroundColor: tabs === 'y' ? Constants.colors.whiteColor : 'rgba(0, 169, 40, 0.15)', borderColor: tabs === 'y' ? Constants.colors.primaryColor : 'transparent', color: tabs === 'y' ? Constants.colors.primaryColor : '#000000', }]}>Yearly</Text></Pressable>
                         </View>
-                        {  tabs === 'w' ? (
-                                <View>
-                                    <View style={styles.graphHeading}>
-                                        <Text style={styles.headingText}>Weekly Sales</Text>
-                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_weekly_amoun?parseFloat(parseFloat(dashBoardData?.total_weekly_amoun).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                    </View>
-                                    <LineChart
-                                        data={weeklyData}
-                                        width={Constants.width}
-                                        height={220}
-                                        chartConfig={chartConfig}
-                                        yAxisSuffix=''
-                                        barPercentage='10'
-                                        withInnerLines={false}
-                                        withOuterLines={true}
-                                        withShadow={false}
-                                        style={{
-                                            marginLeft: -26,
-                                        }}
-                                        bezier
-                                    />
+                        {tabs === 'w' ? (
+                            <View>
+                                <View style={styles.graphHeading}>
+                                    <Text style={styles.headingText}>Weekly Sales</Text>
+                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_weekly_amoun ? parseFloat(parseFloat(dashBoardData?.total_weekly_amoun).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 </View>
-                            ) : tabs === 'm' ? (
-                                <View>
-                                    <View style={styles.graphHeading}>
-                                        <Text style={styles.headingText}>Monthly Sales</Text>
-                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_monthly_amount?parseFloat(parseFloat(dashBoardData?.total_monthly_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                    </View>
-                                    <LineChart
-                                        data={monthlyData}
-                                        width={Constants.width}
-                                        height={220}
-                                        chartConfig={chartConfig}
-                                        yAxisSuffix=''
-                                        barPercentage='10'
-                                        withInnerLines={false}
-                                        withOuterLines={true}
-                                        withShadow={false}
-                                        style={{
-                                            marginLeft: -26,
-                                        }}
-                                        bezier
-                                    />
+                                <LineChart
+                                    data={weeklyData}
+                                    width={Constants.width}
+                                    height={220}
+                                    chartConfig={chartConfig}
+                                    yAxisSuffix=''
+                                    barPercentage='10'
+                                    withInnerLines={false}
+                                    withOuterLines={true}
+                                    withShadow={false}
+                                    style={{
+                                        marginLeft: -26,
+                                    }}
+                                    bezier
+                                />
+                            </View>
+                        ) : tabs === 'm' ? (
+                            <View>
+                                <View style={styles.graphHeading}>
+                                    <Text style={styles.headingText}>Monthly Sales</Text>
+                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_monthly_amount ? parseFloat(parseFloat(dashBoardData?.total_monthly_amount).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 </View>
-                            ): (
-                                <View>
-                                    <View style={styles.graphHeading}>
-                                        <Text style={styles.headingText}>Yearly Sales</Text>
-                                        <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_yearly_amount?parseFloat(parseFloat(dashBoardData?.total_yearly_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                    </View>
-                                    <LineChart
-                                        data={yearlyData}
-                                        width={Constants.width}
-                                        height={220}
-                                        chartConfig={chartConfig}
-                                        yAxisSuffix=''
-                                        barPercentage='10'
-                                        withInnerLines={false}
-                                        withOuterLines={true}
-                                        withShadow={false}
-                                        style={{
-                                            marginLeft: -26,
-                                        }}
-                                        bezier
-                                    />
+                                <LineChart
+                                    data={monthlyData}
+                                    width={Constants.width}
+                                    height={220}
+                                    chartConfig={chartConfig}
+                                    yAxisSuffix=''
+                                    barPercentage='10'
+                                    withInnerLines={false}
+                                    withOuterLines={true}
+                                    withShadow={false}
+                                    style={{
+                                        marginLeft: -26,
+                                    }}
+                                    bezier
+                                />
+                            </View>
+                        ) : (
+                            <View>
+                                <View style={styles.graphHeading}>
+                                    <Text style={styles.headingText}>Yearly Sales</Text>
+                                    <Text style={styles.headingValue}><FontAwesome name='rupee' size={18} /> {dashBoardData?.total_yearly_amount ? parseFloat(parseFloat(dashBoardData?.total_yearly_amount).toFixed(2)).toLocaleString() : "0.00"}</Text>
                                 </View>
-                            ) 
+                                <LineChart
+                                    data={yearlyData}
+                                    width={Constants.width}
+                                    height={220}
+                                    chartConfig={chartConfig}
+                                    yAxisSuffix=''
+                                    barPercentage='10'
+                                    withInnerLines={false}
+                                    withOuterLines={true}
+                                    withShadow={false}
+                                    style={{
+                                        marginLeft: -26,
+                                    }}
+                                    bezier
+                                />
+                            </View>
+                        )
                         }
                         <View style={styles.boxContainer}>
                             <View style={styles.box}>
                                 <Text style={styles.boxHeading}>Gross Sales</Text>
-                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.total_sale?.total_amount?parseFloat(parseFloat(dashBoardData?.total_sale.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.total_sale?.percentage?parseFloat(parseFloat(dashBoardData?.total_sale.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.data?.Monthly?.GrossSales?.Total ? parseFloat(parseFloat(dashBoardData?.data?.Monthly?.GrossSales?.Total).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.total_sale?.percentage ? parseFloat(parseFloat(dashBoardData?.total_sale.percentage).toFixed(2)).toLocaleString() : "0.00"}%</Text>
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.boxHeading}>Net Sales</Text>
-                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.earning?.total_amount?parseFloat(parseFloat(dashBoardData?.earning.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.earning?.percentage?parseFloat(parseFloat(dashBoardData?.earning.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.earning?.total_amount ? parseFloat(parseFloat(dashBoardData?.earning.total_amount).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.earning?.percentage ? parseFloat(parseFloat(dashBoardData?.earning.percentage).toFixed(2)).toLocaleString() : "0.00"}%</Text>
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.boxHeading}>Discounts</Text>
-                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.total_sale?.total_amount?parseFloat(parseFloat(dashBoardData?.total_sale.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.total_sale?.percentage?parseFloat(parseFloat(dashBoardData?.total_sale.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.data?.Monthly?.Discount?.Amount ? parseFloat(parseFloat(dashBoardData?.data?.Monthly?.Discount?.Total).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.total_sale?.percentage ? parseFloat(parseFloat(dashBoardData?.total_sale.percentage).toFixed(2)).toLocaleString() : "0.00"}%</Text>
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.boxHeading}>Tax</Text>
-                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.earning?.total_amount?parseFloat(parseFloat(dashBoardData?.earning.total_amount).toFixed(2)).toLocaleString():"0.00"}</Text>
-                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.earning?.percentage?parseFloat(parseFloat(dashBoardData?.earning.percentage).toFixed(2)).toLocaleString():"0.00"}%</Text>
+                                <Text style={styles.boxValue}><FontAwesome name='rupee' size={20} /> {dashBoardData?.data?.Monthly?.Discount?.Amount ? parseFloat(parseFloat(dashBoardData?.data?.Monthly?.Discount?.Amount).toFixed(2)).toLocaleString() : "0.00"}</Text>
+                                <Text style={styles.boxArrow}><AntDesign name='arrowup' /> {dashBoardData?.earning?.percentage ? parseFloat(parseFloat(dashBoardData?.earning.percentage).toFixed(2)).toLocaleString() : "0.00"}%</Text>
                             </View>
                         </View>
-                        
-                        
+
+
                     </View>}
             </ScrollView>
         </View>
@@ -295,7 +292,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: Constants.margin,
         marginBottom: Constants.margin,
-        marginBottom:'30%',
+        marginBottom: '30%',
     },
     box: {
         padding: Constants.padding,
@@ -304,7 +301,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Constants.colors.primaryColor,
-        borderRadius: Constants.borderRadius+10,
+        borderRadius: Constants.borderRadius + 10,
         marginTop: 12,
     },
     boxHeading: {

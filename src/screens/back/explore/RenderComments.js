@@ -16,6 +16,7 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { TextInput } from 'react-native-gesture-handler'
+import LinearGradient from 'react-native-linear-gradient'
 const RenderComments = ({ item, userDetails, commentLikeData, getAllLikes }) => {
     // console.log("item=>",item?.item);
     const [like, setLike] = useState(false)
@@ -89,6 +90,7 @@ setReplydata([...replydata])
     }, [commentLikeData])
     return (
         <View style={styles.container}>
+           
             <View style={{ flex: 1, flexDirection: "row" }}>
                 <View style={{ width: "20%", }}>
                     <Image source={Images.avatar} style={{ width: "100%", resizeMode: "cover", height: undefined, aspectRatio: 1 }} />
@@ -186,6 +188,7 @@ setReplydata([...replydata])
 
                 </View>
             </View>
+           
         </View>
     )
 }

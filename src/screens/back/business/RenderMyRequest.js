@@ -22,6 +22,7 @@ const RenderMyRequest = ({pillars,tabs,getBussinessRequests})=>{
             "collobration_id":pillars?.item?.collabration_id,
             "status":status
         }).then((response)=>{
+            console.log("collobration",pillars?.item?.collabration_id)
             if(response.data.response==200){
                 setLoader(false)
                 showToastmsg(`Collaboration ${status} successfully`)

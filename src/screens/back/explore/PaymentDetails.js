@@ -23,6 +23,8 @@ import {Platform, Button, NativeModules,NativeEventEmitter} from 'react-native';
 import EasebuzzCheckout from 'react-native-easebuzz-kit';
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
+import { EventRegister } from 'react-native-event-listeners'
+import { emitConfig } from './RenderReeels'
 const PaymentDetails = (props)=>{
     const navigation=useNavigation()
     const [paymentOption, setPaymentOption] = useState('online')
@@ -199,6 +201,7 @@ const PaymentDetails = (props)=>{
             "cart_id":cartItems[i].data.cart_id
         }).then((response)=>{
             setLoader(false)
+            EventRegister.emitEvent(emitConfig.PRODUCT_REMOVED);
             navigation.navigate('/payment-success',{amount:totalPrice})
         })
         .catch((error)=>{
