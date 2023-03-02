@@ -45,7 +45,7 @@ import { current } from '@reduxjs/toolkit'
 
 const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, setbadgeCount, closePopup, currentindex }) => {
     const [refresh, setrefresh] = useState(false)
-    const [like, setLike] = useState(false)
+    const [like, setLike] = useState(item.item.IsLiked === "No")
     const [loader, setLoader] = useState(false)
     const [followLoader, setfollowLoader] = useState(false)
     const [VideoLoader, setVideoLoader] = useState(false)
@@ -61,6 +61,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const [save, setsave] = useState(true)
     const [postid, setpostid] = useState('')
     const [currentpostid, setcurrentpostid] = useState()
+   
     //  mujataba App stack
     const [appState, setAppState] = useState(AppState.currentState);
     //  mujataba App stack
@@ -234,12 +235,12 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-
-            setLike(true)
+            setLike(!like)
+            // setLike(true)
             setLikeCount(LikeCount + 1)
             getLikeData()
         })
-        // setLike(!like)
+       
     }
 
     const removeLikeFn = () => {
@@ -247,12 +248,13 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             user_id: userDetails?.id,
             post_id: item?.item?.id
         }).then((response) => {
-            setLike(false)
+            setLike(!like)
+            // setLike(false)
             setLikeCount(LikeCount - 1)
             getLikeData()
         })
 
-        // setLike(!like)
+        // 
     }
 
     const gotoStoriespage = () => {
@@ -340,7 +342,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                         onPress={() => { closePopup(), setpostid(item?.item?.id) }}
                     // onPress={()=> fetchpostview() } 
                     >
-
+                        {/* {console.log("reels_data",item)} */}
 
                         <View style={[globatStyles.overlay, { zIndex: 9, height: '100%', backgroundColor: 'transparent' }]}>
 
@@ -398,45 +400,45 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                     onPress={UnSavedCollection}
                                 /> : null}
                         </View>
-                        
-                            <Video
-                                source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
-                                onReadyForDisplay={() => {
-                                    fetchpostview();
-                                    setcurrentpostid(item?.item?.id)
-                                }}
-                                onLoad={() => closePopup()}
 
-                                autoplay
-                                repeat={true}
-                                loop
-                                muted={currentpostid == item?.item?.id ? false : true}
-                                disableSeek
-                                resizeMode={'cover'}
-                                fullscreen
-                                style={{ width: "100%", height: "100%" }}
-                                customStyles={{
-                                    wrapper: {
-                                        width: '100%',
-                                        height: '100%',
-                                        paddingBottom: Constants.padding,
-                                    },
-                                    video: {
-                                        width: '100%',
-                                        height: '103%',
-                                    },
-                                    controls: {
-                                        display: 'none',
-                                    },
-                                    seekBarBackground: {
-                                        backgroundColor: 'transparent',
-                                    },
-                                    seekBarProgress: {
-                                        backgroundColor: 'transparent',
-                                    },
-                                }} />
+                        <Video
+                            source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
+                            onReadyForDisplay={() => {
+                                fetchpostview();
+                                setcurrentpostid(item?.item?.id)
+                            }}
+                            onLoad={() => closePopup()}
 
-                        
+                            autoplay
+                            repeat={true}
+                            loop
+                            muted={currentpostid == item?.item?.id ? false : true}
+                            disableSeek
+                            resizeMode={'cover'}
+                            fullscreen
+                            style={{ width: "100%", height: "100%" }}
+                            customStyles={{
+                                wrapper: {
+                                    width: '100%',
+                                    height: '100%',
+                                    paddingBottom: Constants.padding,
+                                },
+                                video: {
+                                    width: '100%',
+                                    height: '103%',
+                                },
+                                controls: {
+                                    display: 'none',
+                                },
+                                seekBarBackground: {
+                                    backgroundColor: 'transparent',
+                                },
+                                seekBarProgress: {
+                                    backgroundColor: 'transparent',
+                                },
+                            }} />
+
+
                         <View style={styles.productDetailsContainer}>
                             <View style={styles.imgContainer}>
                                 <View style={{ height: responsiveHeight(3.5), width: responsiveWidth(17), bottom: 18, right: 10 }}>
