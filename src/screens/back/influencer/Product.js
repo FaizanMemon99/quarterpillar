@@ -29,6 +29,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import RenderReeelsAdv from '../explore/RenderReeelsAdv'
+import VideoCompress from 'react-native-video-compressor'
 
 const Product = (props) => {
     const navigation = useNavigation()
@@ -195,6 +196,7 @@ const Product = (props) => {
                 advertiser_id: props?.route?.params?.userDetails?.id
             }).then((response) => {
                 setpostLoader(false)
+
                 if (response.data.data.post_details) {
                     setpostData(response.data.data.post_details.filter((i) => i.post_status == 'complete'))
                 }
@@ -222,6 +224,8 @@ const Product = (props) => {
         // })
         getReelsApi()
     }
+
+
     useEffect(() => {
         useEffectFunction()
     }, [])
@@ -239,6 +243,7 @@ const Product = (props) => {
         setcurrindex(index + 1)
         //   console.log("onChangeIndex=>",props)
     }
+
     // console.log("props value",props?.route?.params?.userType);
     return (
         <View style={globatStyles.wrapper}>
@@ -421,6 +426,7 @@ const Product = (props) => {
                         ):null
                     }
                 </ImageBackground> */}
+                {/* {console.log("post_data", postData[0].video)} */}
                 {postLoader ?
                     <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', backgroundColor: '#e5e5e5' }}>
                         <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
@@ -444,7 +450,9 @@ const Product = (props) => {
                                     // cartLoader={cartLoader}
                                     // cartNumber={cartNumber}
                                     headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer} />
+
                                 <SwiperFlatList
+
                                     data={[data]}
                                     style={[styles.category, { borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }]}
                                     renderItem={item => (props?.route?.params?.userDetails?.role_id == 3 ?

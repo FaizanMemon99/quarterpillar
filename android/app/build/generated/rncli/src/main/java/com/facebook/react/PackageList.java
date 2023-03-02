@@ -59,6 +59,8 @@ import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 // react-native-video
 import com.brentvatne.react.ReactVideoPackage;
+// react-native-video-compressor
+import com.react.videocompressor.VideoComPressorPackage;
 // rn-fetch-blob
 import com.RNFetchBlob.RNFetchBlobPackage;
 
@@ -130,6 +132,7 @@ public class PackageList {
       new SvgPackage(),
       new VectorIconsPackage(),
       new ReactVideoPackage(),
+      new VideoComPressorPackage(),
       new RNFetchBlobPackage()
     ));
   }

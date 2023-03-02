@@ -17,7 +17,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 
 const RenderSearchPosts = ({ item }) => {
     const image = item?.item?.product_image
-    console.log("this images on post", image);
+    // console.log("this images on post", image);
 
     // const [first, setfirst] = useState(JSON.parse(item?.item?.product_image))
     // console.log("this images on post",first);

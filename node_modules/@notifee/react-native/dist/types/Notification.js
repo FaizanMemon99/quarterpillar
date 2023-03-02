@@ -21,11 +21,11 @@ var EventType;
     EventType[EventType["UNKNOWN"] = -1] = "UNKNOWN";
     /**
      * Event type is sent when the user dismisses a notification. This is triggered via the user swiping
-     * the notification from the notification shade or performing "Clear all" notifications.
+     * the notification from the notification shade.
+     *
+     * On Android, the event is also sent when performing "Clear all" notifications unlike on iOS.
      *
      * This event is **not** sent when a notification is cancelled or times out.
-     *
-     * @platform android Android
      */
     EventType[EventType["DISMISSED"] = 0] = "DISMISSED";
     /**
@@ -71,6 +71,12 @@ var EventType;
      * Event type is sent when a notification trigger is created.
      */
     EventType[EventType["TRIGGER_NOTIFICATION_CREATED"] = 7] = "TRIGGER_NOTIFICATION_CREATED";
+    /**
+     * **ANDROID ONLY**
+     *
+     * Event type is sent when a notification wants to start a foreground service but a foreground service is already started.
+     */
+    EventType[EventType["FG_ALREADY_EXIST"] = 8] = "FG_ALREADY_EXIST";
 })(EventType = exports.EventType || (exports.EventType = {}));
 /**
  * An enum representing the notification authorization status for this app on the device.

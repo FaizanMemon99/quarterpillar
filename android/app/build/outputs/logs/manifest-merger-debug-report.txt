@@ -36,19 +36,19 @@ MERGED from [:react-native-splash-screen] /home/hasan/quarterpillars/node_module
 MERGED from [:react-native-svg] /home/hasan/quarterpillars/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-vector-icons] /home/hasan/quarterpillars/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-video] /home/hasan/quarterpillars/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-video-compressor] /home/hasan/quarterpillars/node_modules/react-native-video-compressor/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-45:12
 MERGED from [com.facebook.react:react-native:0.68.2] /home/hasan/.gradle/caches/transforms-3/a74d02b4ffa8d4f612111958a87992aa/transformed/jetified-react-native-0.68.2/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] /home/hasan/.gradle/caches/transforms-3/37a2460304c532deef765f83bd4ca73f/transformed/swiperefreshlayout-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [org.webkit:android-jsc:r250230] /home/hasan/.gradle/caches/transforms-3/0071d93bd0a0e0281274ae825240c939/transformed/jetified-android-jsc-r250230/AndroidManifest.xml:2:1-11:12
 MERGED from [:shopify_flash-list] /home/hasan/quarterpillars/node_modules/@shopify/flash-list/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-reanimated] /home/hasan/quarterpillars/node_modules/react-native-reanimated/android/build/.transforms/ac73d214eb3b9585c64e0ca47a18080a/transformed/jetified-react-native-reanimated-68-jsc/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:17:1-61:12
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:17:1-61:12
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:15:1-33:12
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:15:1-37:12
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] /home/hasan/.gradle/caches/transforms-3/7e37a21cce336e3abfb414d5a46204d4/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:15:1-41:12
 MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /home/hasan/.gradle/caches/transforms-3/4eeb3709fafdd028a58a45282916312e/transformed/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:15:1-32:12
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:17:1-38:12
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:17:1-37:12
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /home/hasan/.gradle/caches/transforms-3/82f2847e7df92f4d738de5ff4cebc5cf/transformed/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-installations:17.1.0] /home/hasan/.gradle/caches/transforms-3/2811bb7644f3298226b06e11087fe7b4/transformed/jetified-firebase-installations-17.1.0/AndroidManifest.xml:2:1-23:12
@@ -71,6 +71,8 @@ MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] /home/hasan/.gradle/c
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/hasan/.gradle/caches/transforms-3/ea9ea0b56a15b5fd7fa7afb3cd259404/transformed/constraintlayout-2.0.1/AndroidManifest.xml:2:1-11:12
 MERGED from [com.github.yalantis:ucrop:2.2.6-native] /home/hasan/.gradle/caches/transforms-3/2cf66712ce56c5b07864e84dffcc6e11/transformed/jetified-ucrop-2.2.6-native/AndroidManifest.xml:2:1-11:12
 MERGED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:2:1-17:12
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/hasan/.gradle/caches/transforms-3/2a8e8c2fb7ad3ae74cccfc35cf93d329/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:2:1-9:12
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:2:1-19:12
 MERGED from [androidx.appcompat:appcompat:1.3.0] /home/hasan/.gradle/caches/transforms-3/43ec0b0b32f637fb964f988b9499640b/transformed/appcompat-1.3.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:17:1-145:12
 MERGED from [androidx.room:room-runtime:2.2.5] /home/hasan/.gradle/caches/transforms-3/2008794e6006b24a0199f8306b48bba8/transformed/room-runtime-2.2.5/AndroidManifest.xml:17:1-31:12
@@ -86,8 +88,8 @@ MERGED from [androidx.exifinterface:exifinterface:1.3.3] /home/hasan/.gradle/cac
 MERGED from [androidx.core:core-ktx:1.5.0] /home/hasan/.gradle/caches/transforms-3/3e8e4e918d10d58d1daa723652a4eecd/transformed/jetified-core-ktx-1.5.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.4] /home/hasan/.gradle/caches/transforms-3/09c5338714a309c8ff8f3e7a681872f5/transformed/jetified-play-services-auth-base-18.0.4/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /home/hasan/.gradle/caches/transforms-3/42852b17905239851b83e0433d30bfb4/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:16:1-24:12
-MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.1] /home/hasan/.gradle/caches/transforms-3/8e5438de33373a827bf9b1f730f655fe/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml:2:1-13:12
+MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/03ad704e471f8cc48d8d5af7048f2d45/transformed/jetified-firebase-installations-interop-17.1.0/AndroidManifest.xml:15:1-22:12
 MERGED from [com.google.android.gms:play-services-tasks:18.0.1] /home/hasan/.gradle/caches/transforms-3/0a866fd36731755722b5e162e675a708/transformed/jetified-play-services-tasks-18.0.1/AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.android.gms:play-services-measurement:21.2.0] /home/hasan/.gradle/caches/transforms-3/36a80da5f4d349d797cface6cdd1d322/transformed/jetified-play-services-measurement-21.2.0/AndroidManifest.xml:17:1-46:12
@@ -132,13 +134,13 @@ MERGED from [androidx.print:print:1.0.0] /home/hasan/.gradle/caches/transforms-3
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] /home/hasan/.gradle/caches/transforms-3/9c249e6e56928bd6f90fb2d6689e144f/transformed/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.facebook.fresco:middleware:2.6.0] /home/hasan/.gradle/caches/transforms-3/04201c2ee58d4e3216b36b476eb90419/transformed/jetified-middleware-2.6.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:ui-common:2.6.0] /home/hasan/.gradle/caches/transforms-3/9b7275bd8bc8c9c2cd62408bfd25a70c/transformed/jetified-ui-common-2.6.0/AndroidManifest.xml:2:1-9:12
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:2:1-84:12
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:2:1-84:12
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/hasan/.gradle/caches/transforms-3/771e5cbe556f8e9390bc84c609221a1b/transformed/jetified-eventbus-3.3.1/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:fbcore:2.6.0] /home/hasan/.gradle/caches/transforms-3/f4dd2e3e44b8e6a34988eb49676d6bd2/transformed/jetified-fbcore-2.6.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.github.henninghall:numberpickerview:v1.1.5] /home/hasan/.gradle/caches/transforms-3/1ee931008100695b50b1c342a8d062b7/transformed/jetified-numberpickerview-v1.1.5/AndroidManifest.xml:2:1-11:12
 MERGED from [net.time4j:time4j-android:4.8-2021a] /home/hasan/.gradle/caches/transforms-3/9950ac4ec7af949a094759c01acc1854/transformed/jetified-time4j-android-4.8-2021a/AndroidManifest.xml:2:1-13:12
 MERGED from [fr.avianey.com.viewpagerindicator:library:2.4.1] /home/hasan/.gradle/caches/transforms-3/12462359984b448fd3d9ee18776ca0f1/transformed/jetified-library-2.4.1/AndroidManifest.xml:3:1-9:12
 MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/hasan/.gradle/caches/transforms-3/6203e1e263fb87fc6e16fe98faef0d6d/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:2:1-52:12
-MERGED from [com.yqritc:android-scalablevideoview:1.0.4] /home/hasan/.gradle/caches/transforms-3/4cee76b96af4b81a132b5d1ebc762ef2/transformed/jetified-android-scalablevideoview-1.0.4/AndroidManifest.xml:2:1-12:12
 INJECTED from /home/hasan/quarterpillars/android/app/src/debug/AndroidManifest.xml:2:1-13:12
 INJECTED from /home/hasan/quarterpillars/android/app/src/debug/AndroidManifest.xml:2:1-13:12
 INJECTED from /home/hasan/quarterpillars/android/app/src/debug/AndroidManifest.xml:2:1-13:12
@@ -201,8 +203,6 @@ MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-bl
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:25:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:25:5-67
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:22:5-67
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:22:5-67
 MERGED from [com.google.firebase:firebase-installations:17.1.0] /home/hasan/.gradle/caches/transforms-3/2811bb7644f3298226b06e11087fe7b4/transformed/jetified-firebase-installations-17.1.0/AndroidManifest.xml:10:5-67
@@ -215,12 +215,14 @@ MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home/hasan/.gradle/caches/transforms-3/4ea201a583f369ae108914f0f0859ed5/transformed/jetified-play-services-measurement-impl-21.2.0/AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:23:5-67
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:14:5-67
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:14:5-67
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:14:5-67
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:14:5-67
 	android:name
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:13:22-64
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:14:5-80
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:11:5-80
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:11:5-80
 	android:name
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:14:22-77
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
@@ -233,6 +235,8 @@ MERGED from [:react-native-image-crop-picker] /home/hasan/quarterpillars/node_mo
 MERGED from [:react-native-image-crop-picker] /home/hasan/quarterpillars/node_modules/react-native-image-crop-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:5-81
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:31:5-81
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:31:5-81
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:12:5-81
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:12:5-81
 	android:name
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:15:22-78
 uses-permission#android.permission.MANAGE_EXTERNAL_STORAGE
@@ -287,8 +291,8 @@ MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-bl
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:33:5-43:19
 MERGED from [com.facebook.react:react-native:0.68.2] /home/hasan/.gradle/caches/transforms-3/a74d02b4ffa8d4f612111958a87992aa/transformed/jetified-react-native-0.68.2/AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.react:react-native:0.68.2] /home/hasan/.gradle/caches/transforms-3/a74d02b4ffa8d4f612111958a87992aa/transformed/jetified-react-native-0.68.2/AndroidManifest.xml:9:5-20
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:30:5-59:19
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:30:5-59:19
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:30:5-59:19
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:30:5-59:19
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:23:5-31:19
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:23:5-31:19
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:27:5-35:19
@@ -297,8 +301,6 @@ MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] /home/has
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] /home/hasan/.gradle/caches/transforms-3/7e37a21cce336e3abfb414d5a46204d4/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:25:5-39:19
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:22:5-30:19
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:22:5-30:19
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:28:5-36:19
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:28:5-36:19
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:27:5-35:19
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:27:5-35:19
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /home/hasan/.gradle/caches/transforms-3/82f2847e7df92f4d738de5ff4cebc5cf/transformed/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
@@ -313,6 +315,8 @@ MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/hasan/.grad
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/hasan/.gradle/caches/transforms-3/ea9ea0b56a15b5fd7fa7afb3cd259404/transformed/constraintlayout-2.0.1/AndroidManifest.xml:9:5-20
 MERGED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:11:5-15:19
 MERGED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:11:5-15:19
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:14:5-17:38
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:14:5-17:38
 MERGED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:30:5-143:19
 MERGED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:30:5-143:19
 MERGED from [androidx.room:room-runtime:2.2.5] /home/hasan/.gradle/caches/transforms-3/2008794e6006b24a0199f8306b48bba8/transformed/room-runtime-2.2.5/AndroidManifest.xml:24:5-29:19
@@ -345,8 +349,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/hasan
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/hasan/.gradle/caches/transforms-3/f07ae093b0ff57e8d9b7a4e196f04f52/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] /home/hasan/.gradle/caches/transforms-3/917e2d892e83a1612073c04129935213/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] /home/hasan/.gradle/caches/transforms-3/917e2d892e83a1612073c04129935213/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:25:5-31:19
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:26:5-82:19
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:26:5-82:19
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:26:5-82:19
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:26:5-82:19
 MERGED from [net.time4j:time4j-android:4.8-2021a] /home/hasan/.gradle/caches/transforms-3/9950ac4ec7af949a094759c01acc1854/transformed/jetified-time4j-android-4.8-2021a/AndroidManifest.xml:11:5-20
 MERGED from [net.time4j:time4j-android:4.8-2021a] /home/hasan/.gradle/caches/transforms-3/9950ac4ec7af949a094759c01acc1854/transformed/jetified-time4j-android-4.8-2021a/AndroidManifest.xml:11:5-20
 	android:appComponentFactory
@@ -373,6 +377,7 @@ MERGED from [net.time4j:time4j-android:4.8-2021a] /home/hasan/.gradle/caches/tra
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:33:7-33
 		REJECTED from [:peb-lib-android-x:] /home/hasan/.gradle/caches/transforms-3/205600b6da28ae7ae1f495e4b54ebf31/transformed/jetified-peb-lib-android-x/AndroidManifest.xml:17:9-35
 		REJECTED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:12:9-35
+		REJECTED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:15:9-35
 	android:theme
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:34:7-38
 		ADDED from /home/hasan/quarterpillars/android/app/src/main/AndroidManifest.xml:34:7-38
@@ -492,6 +497,8 @@ MERGED from [:react-native-vector-icons] /home/hasan/quarterpillars/node_modules
 MERGED from [:react-native-vector-icons] /home/hasan/quarterpillars/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-video] /home/hasan/quarterpillars/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-video] /home/hasan/quarterpillars/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-video-compressor] /home/hasan/quarterpillars/node_modules/react-native-video-compressor/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-video-compressor] /home/hasan/quarterpillars/node_modules/react-native-video-compressor/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-native:0.68.2] /home/hasan/.gradle/caches/transforms-3/a74d02b4ffa8d4f612111958a87992aa/transformed/jetified-react-native-0.68.2/AndroidManifest.xml:5:5-7:41
@@ -504,8 +511,8 @@ MERGED from [:shopify_flash-list] /home/hasan/quarterpillars/node_modules/@shopi
 MERGED from [:shopify_flash-list] /home/hasan/quarterpillars/node_modules/@shopify/flash-list/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-reanimated] /home/hasan/quarterpillars/node_modules/react-native-reanimated/android/build/.transforms/ac73d214eb3b9585c64e0ca47a18080a/transformed/jetified-react-native-reanimated-68-jsc/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-reanimated] /home/hasan/quarterpillars/node_modules/react-native-reanimated/android/build/.transforms/ac73d214eb3b9585c64e0ca47a18080a/transformed/jetified-react-native-reanimated-68-jsc/AndroidManifest.xml:5:5-7:41
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:18:5-20:41
@@ -516,8 +523,6 @@ MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /home/hasan/.gra
 MERGED from [com.google.firebase:firebase-encoders-json:18.0.0] /home/hasan/.gradle/caches/transforms-3/4eeb3709fafdd028a58a45282916312e/transformed/jetified-firebase-encoders-json-18.0.0/AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:18:5-20:41
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /home/hasan/.gradle/caches/transforms-3/82f2847e7df92f4d738de5ff4cebc5cf/transformed/jetified-firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
@@ -562,6 +567,10 @@ MERGED from [com.github.yalantis:ucrop:2.2.6-native] /home/hasan/.gradle/caches/
 MERGED from [com.github.yalantis:ucrop:2.2.6-native] /home/hasan/.gradle/caches/transforms-3/2cf66712ce56c5b07864e84dffcc6e11/transformed/jetified-ucrop-2.2.6-native/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.prscX:photo-editor-android:master] /home/hasan/.gradle/caches/transforms-3/f24f240de9fed887228bb5c7d541661c/transformed/jetified-photo-editor-android-master/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/hasan/.gradle/caches/transforms-3/2a8e8c2fb7ad3ae74cccfc35cf93d329/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/hasan/.gradle/caches/transforms-3/2a8e8c2fb7ad3ae74cccfc35cf93d329/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.NaughtyHotpot:VideoCompressor:0.1.2] /home/hasan/.gradle/caches/transforms-3/180cbd5d8d19c7ae089abcb6de91d542/transformed/jetified-VideoCompressor-0.1.2/AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.appcompat:appcompat:1.3.0] /home/hasan/.gradle/caches/transforms-3/43ec0b0b32f637fb964f988b9499640b/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.3.0] /home/hasan/.gradle/caches/transforms-3/43ec0b0b32f637fb964f988b9499640b/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:21:5-23:41
@@ -592,10 +601,10 @@ MERGED from [com.google.android.gms:play-services-auth-base:18.0.4] /home/hasan/
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.4] /home/hasan/.gradle/caches/transforms-3/09c5338714a309c8ff8f3e7a681872f5/transformed/jetified-play-services-auth-base-18.0.4/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /home/hasan/.gradle/caches/transforms-3/42852b17905239851b83e0433d30bfb4/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-base:18.0.1] /home/hasan/.gradle/caches/transforms-3/42852b17905239851b83e0433d30bfb4/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:18:5-43
-MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.1] /home/hasan/.gradle/caches/transforms-3/8e5438de33373a827bf9b1f730f655fe/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.1] /home/hasan/.gradle/caches/transforms-3/8e5438de33373a827bf9b1f730f655fe/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/14b7c3981db45bd8c2028a19d740e75f/transformed/jetified-firebase-iid-interop-17.1.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/03ad704e471f8cc48d8d5af7048f2d45/transformed/jetified-firebase-installations-interop-17.1.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.firebase:firebase-installations-interop:17.1.0] /home/hasan/.gradle/caches/transforms-3/03ad704e471f8cc48d8d5af7048f2d45/transformed/jetified-firebase-installations-interop-17.1.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.android.gms:play-services-tasks:18.0.1] /home/hasan/.gradle/caches/transforms-3/0a866fd36731755722b5e162e675a708/transformed/jetified-play-services-tasks-18.0.1/AndroidManifest.xml:4:5-43
@@ -684,8 +693,10 @@ MERGED from [com.facebook.fresco:middleware:2.6.0] /home/hasan/.gradle/caches/tr
 MERGED from [com.facebook.fresco:middleware:2.6.0] /home/hasan/.gradle/caches/transforms-3/04201c2ee58d4e3216b36b476eb90419/transformed/jetified-middleware-2.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:ui-common:2.6.0] /home/hasan/.gradle/caches/transforms-3/9b7275bd8bc8c9c2cd62408bfd25a70c/transformed/jetified-ui-common-2.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:ui-common:2.6.0] /home/hasan/.gradle/caches/transforms-3/9b7275bd8bc8c9c2cd62408bfd25a70c/transformed/jetified-ui-common-2.6.0/AndroidManifest.xml:5:5-7:41
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:5:5-7:41
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:5:5-7:41
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:5:5-7:41
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:5:5-7:41
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/hasan/.gradle/caches/transforms-3/771e5cbe556f8e9390bc84c609221a1b/transformed/jetified-eventbus-3.3.1/AndroidManifest.xml:5:5-7:41
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/hasan/.gradle/caches/transforms-3/771e5cbe556f8e9390bc84c609221a1b/transformed/jetified-eventbus-3.3.1/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:fbcore:2.6.0] /home/hasan/.gradle/caches/transforms-3/f4dd2e3e44b8e6a34988eb49676d6bd2/transformed/jetified-fbcore-2.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:fbcore:2.6.0] /home/hasan/.gradle/caches/transforms-3/f4dd2e3e44b8e6a34988eb49676d6bd2/transformed/jetified-fbcore-2.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.github.henninghall:numberpickerview:v1.1.5] /home/hasan/.gradle/caches/transforms-3/1ee931008100695b50b1c342a8d062b7/transformed/jetified-numberpickerview-v1.1.5/AndroidManifest.xml:7:5-9:41
@@ -696,8 +707,6 @@ MERGED from [fr.avianey.com.viewpagerindicator:library:2.4.1] /home/hasan/.gradl
 MERGED from [fr.avianey.com.viewpagerindicator:library:2.4.1] /home/hasan/.gradle/caches/transforms-3/12462359984b448fd3d9ee18776ca0f1/transformed/jetified-library-2.4.1/AndroidManifest.xml:8:5-43
 MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/hasan/.gradle/caches/transforms-3/6203e1e263fb87fc6e16fe98faef0d6d/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:7:5-9:41
 MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/hasan/.gradle/caches/transforms-3/6203e1e263fb87fc6e16fe98faef0d6d/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:7:5-9:41
-MERGED from [com.yqritc:android-scalablevideoview:1.0.4] /home/hasan/.gradle/caches/transforms-3/4cee76b96af4b81a132b5d1ebc762ef2/transformed/jetified-android-scalablevideoview-1.0.4/AndroidManifest.xml:8:5-10:41
-MERGED from [com.yqritc:android-scalablevideoview:1.0.4] /home/hasan/.gradle/caches/transforms-3/4cee76b96af4b81a132b5d1ebc762ef2/transformed/jetified-android-scalablevideoview-1.0.4/AndroidManifest.xml:8:5-10:41
 INJECTED from /home/hasan/quarterpillars/android/app/src/debug/AndroidManifest.xml
 INJECTED from /home/hasan/quarterpillars/android/app/src/debug/AndroidManifest.xml
 	tools:overrideLibrary
@@ -732,14 +741,12 @@ MERGED from [:react-native-firebase_messaging] /home/hasan/quarterpillars/node_m
 MERGED from [:react-native-firebase_messaging] /home/hasan/quarterpillars/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-79
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:25:5-79
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:25:5-79
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] /home/hasan/.gradle/caches/transforms-3/0e475b929f8f16f7994f70e72eb4d886/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] /home/hasan/.gradle/caches/transforms-3/7e37a21cce336e3abfb414d5a46204d4/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:22:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] /home/hasan/.gradle/caches/transforms-3/7e37a21cce336e3abfb414d5a46204d4/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:22:5-79
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:22:5-79
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:22:5-79
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-installations:17.1.0] /home/hasan/.gradle/caches/transforms-3/2811bb7644f3298226b06e11087fe7b4/transformed/jetified-firebase-installations-17.1.0/AndroidManifest.xml:9:5-79
@@ -754,8 +761,8 @@ MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home/hasan/.gradle/caches/transforms-3/4ea201a583f369ae108914f0f0859ed5/transformed/jetified-play-services-measurement-impl-21.2.0/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:24:5-79
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:11:5-79
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:11:5-79
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:11:5-79
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:11:5-79
 	android:name
 		ADDED from [:peb-lib-android-x:] /home/hasan/.gradle/caches/transforms-3/205600b6da28ae7ae1f495e4b54ebf31/transformed/jetified-peb-lib-android-x/AndroidManifest.xml:14:22-76
 activity#com.easebuzz.payment.kit.PWEBankPageActivity
@@ -796,10 +803,8 @@ MERGED from [:react-native-firebase_messaging] /home/hasan/quarterpillars/node_m
 MERGED from [:react-native-firebase_messaging] /home/hasan/quarterpillars/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:5-68
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:19:5-68
 MERGED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:19:5-68
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:26:5-68
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:26:5-68
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:24:5-68
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:24:5-68
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:26:5-68
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:26:5-68
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:24:5-68
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:24:5-68
 MERGED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:25:5-68
@@ -812,8 +817,8 @@ MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home/hasan/.gradle/caches/transforms-3/4ea201a583f369ae108914f0f0859ed5/transformed/jetified-play-services-measurement-impl-21.2.0/AndroidManifest.xml:25:5-68
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:25:5-68
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/b12872efb271c747967b1715a5b85120/transformed/jetified-play-services-measurement-sdk-api-21.2.0/AndroidManifest.xml:25:5-68
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:10:5-68
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:10:5-68
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:10:5-68
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:10:5-68
 	android:name
 		ADDED from [:react-native-firebase_dynamic-links] /home/hasan/quarterpillars/node_modules/@react-native-firebase/dynamic-links/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:22-65
 service#io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService
@@ -874,14 +879,12 @@ ADDED from [:react-native-firebase_app] /home/hasan/quarterpillars/node_modules/
 		ADDED from [:react-native-firebase_app] /home/hasan/quarterpillars/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-63
 service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:react-native-firebase_app] /home/hasan/quarterpillars/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:9-23:19
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:52:9-58:19
-MERGED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:52:9-58:19
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:52:9-58:19
+MERGED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:52:9-58:19
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:24:9-30:19
 MERGED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:24:9-30:19
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:23:9-29:19
 MERGED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:23:9-29:19
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:29:9-35:19
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:29:9-35:19
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:28:9-34:19
 MERGED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:28:9-34:19
 MERGED from [com.google.firebase:firebase-installations:17.1.0] /home/hasan/.gradle/caches/transforms-3/2811bb7644f3298226b06e11087fe7b4/transformed/jetified-firebase-installations-17.1.0/AndroidManifest.xml:14:9-20:19
@@ -989,41 +992,39 @@ ADDED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blo
 	android:name
 		ADDED from [:rn-fetch-blob] /home/hasan/quarterpillars/node_modules/rn-fetch-blob/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:35:13-62
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:25:5-77
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:9:5-77
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:9:5-77
+ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:25:5-77
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:9:5-77
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:9:5-77
 	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:25:22-74
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:25:22-74
 uses-permission#com.google.android.c2dm.permission.RECEIVE
-ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:28:5-82
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:26:5-82
-MERGED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:26:5-82
+ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:28:5-82
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.1] /home/hasan/.gradle/caches/transforms-3/8e5438de33373a827bf9b1f730f655fe/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml:11:5-82
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.1] /home/hasan/.gradle/caches/transforms-3/8e5438de33373a827bf9b1f730f655fe/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml:11:5-82
 	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:28:22-79
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:28:22-79
 receiver#com.google.firebase.iid.FirebaseInstanceIdReceiver
-ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:31:9-38:20
+ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:31:9-38:20
 	android:exported
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:33:13-36
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:33:13-36
 	android:permission
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:34:13-73
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:34:13-73
 	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:32:13-78
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:32:13-78
 service#com.google.firebase.messaging.FirebaseMessagingService
-ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:44:9-51:19
+ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:44:9-51:19
 	android:exported
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:47:13-37
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:47:13-37
 	android:directBootAware
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:46:13-43
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:46:13-43
 	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:45:13-82
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:45:13-82
 meta-data#com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar
-ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:55:13-57:85
+ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:55:13-57:85
 	android:value
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:57:17-82
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:57:17-82
 	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.1.0] /home/hasan/.gradle/caches/transforms-3/f104754a8a89e31641e41a6fa63e6628/transformed/jetified-firebase-messaging-23.1.0/AndroidManifest.xml:56:17-119
+		ADDED from [com.google.firebase:firebase-messaging:23.1.1] /home/hasan/.gradle/caches/transforms-3/c5534eb8e284b22d1dc1913f3c975277/transformed/jetified-firebase-messaging-23.1.1/AndroidManifest.xml:56:17-119
 meta-data#com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar
 ADDED from [com.google.firebase:firebase-datatransport:18.1.7] /home/hasan/.gradle/caches/transforms-3/07c74b195cabb59beb37cd70bb80e935/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:27:13-29:85
 	android:value
@@ -1064,12 +1065,6 @@ ADDED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.grad
 		ADDED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:28:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-dynamic-links:21.1.0] /home/hasan/.gradle/caches/transforms-3/7c8ad0f0128dc7afc57a58abdce02f51/transformed/jetified-firebase-dynamic-links-21.1.0/AndroidManifest.xml:27:17-133
-meta-data#com.google.firebase.components:com.google.firebase.iid.Registrar
-ADDED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:32:13-34:85
-	android:value
-		ADDED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:34:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-iid:21.1.0] /home/hasan/.gradle/caches/transforms-3/356015da5e3ead52481b357a503a6856/transformed/jetified-firebase-iid-21.1.0/AndroidManifest.xml:33:17-96
 uses-permission#com.google.android.gms.permission.AD_ID
 ADDED from [com.google.android.gms:play-services-measurement-api:21.2.0] /home/hasan/.gradle/caches/transforms-3/216c3a0f875cf0e0082dbf06fe137fea/transformed/jetified-play-services-measurement-api-21.2.0/AndroidManifest.xml:25:5-79
 MERGED from [com.google.android.gms:play-services-measurement-impl:21.2.0] /home/hasan/.gradle/caches/transforms-3/4ea201a583f369ae108914f0f0859ed5/transformed/jetified-play-services-measurement-impl-21.2.0/AndroidManifest.xml:27:5-79
@@ -1106,14 +1101,14 @@ ADDED from [com.google.firebase:firebase-common:20.2.0] /home/hasan/.gradle/cach
 		ADDED from [com.google.firebase:firebase-common:20.2.0] /home/hasan/.gradle/caches/transforms-3/9d9564e92fd0325d8f33c11752abcd24/transformed/jetified-firebase-common-20.2.0/AndroidManifest.xml:26:13-77
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
 ADDED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:27:5-81
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:12:5-81
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:12:5-81
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:12:5-81
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:12:5-81
 	android:name
 		ADDED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:27:22-78
 uses-permission#android.permission.FOREGROUND_SERVICE
 ADDED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:28:5-77
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:15:5-77
-MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:15:5-77
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:15:5-77
+MERGED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:15:5-77
 	android:name
 		ADDED from [androidx.work:work-runtime:2.7.1] /home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/AndroidManifest.xml:28:22-74
 provider#androidx.startup.InitializationProvider
@@ -1387,109 +1382,109 @@ ADDED from [com.google.android.gms:play-services-basement:18.1.0] /home/hasan/.g
 	android:name
 		ADDED from [com.google.android.gms:play-services-basement:18.1.0] /home/hasan/.gradle/caches/transforms-3/f7c5e71a6eeb47066040e9c466bb099b/transformed/jetified-play-services-basement-18.1.0/AndroidManifest.xml:22:13-58
 uses-permission#android.permission.VIBRATE
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:13:5-66
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:13:5-66
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:13:22-63
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:13:22-63
 uses-permission#android.permission.USE_FULL_SCREEN_INTENT
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:16:5-81
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:16:5-81
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:16:22-78
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:16:22-78
 uses-permission#android.permission.SCHEDULE_EXACT_ALARM
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:17:5-79
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:17:5-79
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:17:22-76
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:17:22-76
 uses-permission#android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:18:5-20:38
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:18:5-20:38
 	android:maxSdkVersion
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:20:9-35
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:20:9-35
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:19:9-73
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:19:9-73
 uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:22:5-24:38
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:22:5-24:38
 	android:minSdkVersion
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:24:9-35
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:24:9-35
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:23:9-69
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:23:9-69
 service#app.notifee.core.ReceiverService
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:29:9-31:40
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:29:9-31:40
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:31:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:31:13-37
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:30:13-60
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:30:13-60
 activity#app.notifee.core.NotificationReceiverActivity
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:33:9-39:75
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:33:9-39:75
 	android:excludeFromRecents
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:35:13-46
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:35:13-46
 	android:noHistory
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:37:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:37:13-37
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:36:13-36
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:36:13-36
 	android:theme
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:39:13-72
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:39:13-72
 	android:taskAffinity
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:38:13-36
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:38:13-36
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:34:13-73
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:34:13-73
 service#app.notifee.core.ForegroundService
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:42:9-44:40
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:42:9-44:40
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:44:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:44:13-37
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:43:13-62
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:43:13-62
 receiver#app.notifee.core.RebootBroadcastReceiver
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:46:9-54:20
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:46:9-54:20
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:48:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:48:13-37
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:47:13-68
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:47:13-68
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.QUICKBOOT_POWERON+action:name:com.htc.intent.action.QUICKBOOT_POWERON
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:49:13-53:29
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:49:13-53:29
 action#android.intent.action.QUICKBOOT_POWERON
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:51:17-82
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:51:17-82
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:51:25-79
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:51:25-79
 action#com.htc.intent.action.QUICKBOOT_POWERON
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:52:17-82
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:52:17-82
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:52:25-79
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:52:25-79
 receiver#app.notifee.core.AlarmPermissionBroadcastReceiver
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:55:9-61:20
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:55:9-61:20
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:57:13-36
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:57:13-36
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:56:13-77
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:56:13-77
 intent-filter#action:name:android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:58:13-60:29
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:58:13-60:29
 action#android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:59:17-107
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:59:17-107
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:59:25-104
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:59:25-104
 receiver#app.notifee.core.NotificationAlarmReceiver
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:62:9-70:20
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:62:9-70:20
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:64:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:64:13-37
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:63:13-70
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:63:13-70
 receiver#app.notifee.core.BlockStateBroadcastReceiver
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:73:9-81:20
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:73:9-81:20
 	android:exported
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:75:13-37
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:75:13-37
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:74:13-72
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:74:13-72
 intent-filter#action:name:android.app.action.APP_BLOCK_STATE_CHANGED+action:name:android.app.action.NOTIFICATION_CHANNEL_BLOCK_STATE_CHANGED+action:name:android.app.action.NOTIFICATION_CHANNEL_GROUP_BLOCK_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:76:13-80:29
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:76:13-80:29
 action#android.app.action.APP_BLOCK_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:77:17-85
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:77:17-85
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:77:25-82
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:77:25-82
 action#android.app.action.NOTIFICATION_CHANNEL_BLOCK_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:78:17-102
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:78:17-102
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:78:25-99
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:78:25-99
 action#android.app.action.NOTIFICATION_CHANNEL_GROUP_BLOCK_STATE_CHANGED
-ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:79:17-108
+ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:79:17-108
 	android:name
-		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/2116c10a88231f7c6f79699a0ef9616b/transformed/jetified-core-202108261754/AndroidManifest.xml:79:25-105
+		ADDED from [app.notifee:core:202108261754] /home/hasan/.gradle/caches/transforms-3/8d4fdc7d0bda0255d6432f6063e1b749/transformed/jetified-core-202108261754/AndroidManifest.xml:79:25-105
 uses-permission#com.sec.android.provider.badge.permission.READ
 ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/hasan/.gradle/caches/transforms-3/6203e1e263fb87fc6e16fe98faef0d6d/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:19:5-86
 	android:name

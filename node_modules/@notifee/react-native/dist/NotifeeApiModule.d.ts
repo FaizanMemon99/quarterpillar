@@ -12,11 +12,11 @@ export default class NotifeeApiModule extends NotifeeNativeModule implements Mod
     getDisplayedNotifications: () => Promise<DisplayedNotification[]>;
     isChannelBlocked: (channelId: string) => Promise<boolean>;
     isChannelCreated: (channelId: string) => Promise<boolean>;
-    cancelAllNotifications: (notificationIds?: string[] | undefined, tag?: string | undefined) => Promise<void>;
-    cancelDisplayedNotifications: (notificationIds?: string[] | undefined, tag?: string | undefined) => Promise<void>;
-    cancelTriggerNotifications: (notificationIds?: string[] | undefined) => Promise<void>;
-    cancelNotification: (notificationId: string, tag?: string | undefined) => Promise<void>;
-    cancelDisplayedNotification: (notificationId: string, tag?: string | undefined) => Promise<void>;
+    cancelAllNotifications: (notificationIds?: string[], tag?: string) => Promise<void>;
+    cancelDisplayedNotifications: (notificationIds?: string[], tag?: string) => Promise<void>;
+    cancelTriggerNotifications: (notificationIds?: string[]) => Promise<void>;
+    cancelNotification: (notificationId: string, tag?: string) => Promise<void>;
+    cancelDisplayedNotification: (notificationId: string, tag?: string) => Promise<void>;
     cancelTriggerNotification: (notificationId: string) => Promise<void>;
     createChannel: (channel: AndroidChannel) => Promise<string>;
     createChannels: (channels: AndroidChannel[]) => Promise<void>;
@@ -34,7 +34,7 @@ export default class NotifeeApiModule extends NotifeeNativeModule implements Mod
     getInitialNotification: () => Promise<InitialNotification | null>;
     onBackgroundEvent: (observer: (event: Event) => Promise<void>) => void;
     onForegroundEvent: (observer: (event: Event) => void) => (() => void);
-    openNotificationSettings: (channelId?: string | undefined) => Promise<void>;
+    openNotificationSettings: (channelId?: string) => Promise<void>;
     requestPermission: (permissions?: IOSNotificationPermissions) => Promise<NotificationSettings>;
     registerForegroundService(runner: (notification: Notification) => Promise<void>): void;
     setNotificationCategories: (categories: IOSNotificationCategory[]) => Promise<void>;
@@ -42,8 +42,8 @@ export default class NotifeeApiModule extends NotifeeNativeModule implements Mod
     getNotificationSettings: () => Promise<NotificationSettings>;
     getBadgeCount: () => Promise<number>;
     setBadgeCount: (count: number) => Promise<void>;
-    incrementBadgeCount: (incrementBy?: number | undefined) => Promise<void>;
-    decrementBadgeCount: (decrementBy?: number | undefined) => Promise<void>;
+    incrementBadgeCount: (incrementBy?: number) => Promise<void>;
+    decrementBadgeCount: (decrementBy?: number) => Promise<void>;
     isBatteryOptimizationEnabled: () => Promise<boolean>;
     openBatteryOptimizationSettings: () => Promise<void>;
     getPowerManagerInfo: () => Promise<PowerManagerInfo>;
