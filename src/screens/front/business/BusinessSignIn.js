@@ -8,7 +8,7 @@ import {
     TextInput,
     ActivityIndicator,
 } from 'react-native'
-import VideoPlayer from 'react-native-video-player'
+import Video from 'react-native-video'
 import { useNavigation } from '@react-navigation/native'
 import Images from '../../../assets/images/Images'
 import Constants from '../../../shared/Constants'
@@ -25,6 +25,12 @@ const BusinessSignIn = (props) => {
     const [IsLoading, setIsLoading] = useState(false)
     const [LoginId, setLoginId] = useState('')
     const [Password, setPassword] = useState('')
+    const bufferConfig = {
+        minBufferMs: 3000,
+        maxBufferMs: 6000,
+        bufferForPlaybackMs: 1500,
+        bufferForPlaybackAfterRebufferMs: 3000,
+      };
     const signinverificatoin = async () => {
         setIsLoading(true)
         try {
@@ -122,7 +128,48 @@ const BusinessSignIn = (props) => {
 
     return (
         <View style={styles.background}>
-            <VideoPlayer
+        <Video
+                        source={props?.route?.params?.login_type === "Business" ? Videos.businessVideo
+                        : props?.route?.params?.login_type === "Influencer" ?
+                            Videos.influencerVideo : props?.route?.params?.login_type === "Explorer" ?
+                                Videos.exploreVideo : Videos.advertiserVideo}
+                        // onReadyForDisplay={() => {
+                        //     fetchpostview();
+                        //     setcurrentpostid(item?.item?.id)
+                        // }}
+                        // onLoad={() => closePopup()}
+                        // onBuffer={handleBuffer}
+                        useBuffer={true}
+                        bufferConfig={bufferConfig}
+                        autoplay
+                        repeat={true}
+                        loop
+                        // muted={currentpostid == item?.item?.id ? false : true}
+                        disableSeek
+                        resizeMode={'cover'}
+                        // fullscreen
+                        style={{ width: Constants.width, height: Constants.height }}
+                        customStyles={{
+                            wrapper: {
+                                width: '100%',
+                                height: 145,
+                                paddingBottom: Constants.padding,
+                            },
+                            video: {
+                                width: '100%',
+                                height: 145,
+                            },
+                            controls: {
+                                display: 'none',
+                            },
+                            seekBarBackground: {
+                                backgroundColor: 'transparent',
+                            },
+                            seekBarProgress: {
+                                backgroundColor: 'transparent',
+                            },
+                        }} />
+            {/*<VideoPlayer
                 video={props?.route?.params?.login_type === "Business" ? Videos.businessVideo
                     : props?.route?.params?.login_type === "Influencer" ?
                         Videos.influencerVideo : props?.route?.params?.login_type === "Explorer" ?
@@ -149,7 +196,7 @@ const BusinessSignIn = (props) => {
                     seekBarProgress: {
                         backgroundColor: 'transparent',
                     },
-                }} />
+                }} />*/}
             <View style={globatStyles.overlay}></View>
             <View style={styles.container}>
                 <Image source={Images.logo} />

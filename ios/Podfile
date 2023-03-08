@@ -45,6 +45,10 @@ target 'Test' do
 
   pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
 
+  pod 'react-native-video-cache', :path => '../node_modules/react-native-video-cache'
+
+  pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
+
   target 'TestTests' do
     inherit! :complete
     # Pods for testing

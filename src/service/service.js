@@ -17,7 +17,7 @@ export const apiCall = async ( method, endPoint, params, data,type )=>{
 	axios.defaults.headers.common['Accept'] 		= 'application/json'
 	axios.defaults.headers.common['Content-Type'] 	= 'application/json;charset=UTF-8'
     let url = `${Constants.BASE_URL}${endPoint}`
-    console.log("data val",url)
+    
     if(method!=='POST'){
         if(params){
             url+=`/${params}`

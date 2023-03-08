@@ -66,7 +66,7 @@ const ProductPreview = (props) => {
                     if (response.status == 200) {
 
                         setdraftLoader(false)
-                        console.log("data values", props?.route?.params?.influencerData);
+                        
                         showToastmsg(type == 'draft' ? 'Post added to draft successfully' : 'Post added successfully')
                         navigation.navigate('/influencer-stack-navigation', { userDetails: props?.route?.params?.influencerData?.userDetails })
                     }
@@ -82,7 +82,7 @@ const ProductPreview = (props) => {
                 });
             }
             else {
-console.log("form data value=>",formdata);
+
 
                 axios.post(`${Constants.BASE_URL}influencer/influencer-post-product`, formdata, {
                     headers: headers
@@ -91,7 +91,7 @@ console.log("form data value=>",formdata);
                     if (response.status == 200) {
 
                         setdraftLoader(false)
-                        console.log("data values", props?.route?.params?.influencerData);
+                        
                         showToastmsg(type == 'draft' ? 'Post added to draft successfully' : 'Post added successfully')
                         navigation.navigate('/influencer-stack-navigation', { userDetails: props?.route?.params?.influencerData?.userDetails,userType:"influencer" })
                     }

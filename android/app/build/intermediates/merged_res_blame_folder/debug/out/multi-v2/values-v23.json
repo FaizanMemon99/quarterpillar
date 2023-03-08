@@ -1,20 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
+            "outputFile": "/Users/admin/Desktop/quarterpillar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/5ccb82d82ba4deb0acad05d1cc217fbd/transformed/work-runtime-2.7.1/res/values-v23/values-v23.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,121",
-                        "endColumns": "65,62",
-                        "endOffsets": "116,179"
-                    }
-                },
-                {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/43ec0b0b32f637fb964f988b9499640b/transformed/appcompat-1.3.0/res/values-v23/values-v23.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/4ec27a0d1675639fe1b08fdc1cd57d9d/transformed/appcompat-1.3.0/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,20,34,35,36,39,43,44,45,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -33,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/f592455bc6e7663b5dfe6b20737a45b1/transformed/cardview-1.0.0/res/values-v23/values-v23.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/8397bbe68fc5e0867f33f4ef2ec9138b/transformed/cardview-1.0.0/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -52,7 +42,7 @@
                     }
                 },
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/96d0428c00e25fb3add130f61a866b51/transformed/material-1.3.0/res/values-v23/values-v23.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/947e593430c45e43f6fdc23e9e38ffdc/transformed/material-1.3.0/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2,6",
                         "startColumns": "4,4",
@@ -68,6 +58,16 @@
                         "endLines": "58,62",
                         "endColumns": "10,10",
                         "endOffsets": "4063,4336"
+                    }
+                },
+                {
+                    "source": "/Users/admin/.gradle/caches/transforms-3/0d76a6697292eb6c94e86421d0e1b74b/transformed/work-runtime-2.7.1/res/values-v23/values-v23.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,121",
+                        "endColumns": "65,62",
+                        "endOffsets": "116,179"
                     }
                 }
             ]

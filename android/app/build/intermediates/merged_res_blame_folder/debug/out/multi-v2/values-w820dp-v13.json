@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
+            "outputFile": "/Users/admin/Desktop/quarterpillar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
             "map": [
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/205600b6da28ae7ae1f495e4b54ebf31/transformed/jetified-peb-lib-android-x/res/values-w820dp-v13/values-w820dp-v13.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/e9115789112e245f6ffd8446ec466b05/transformed/jetified-peb-lib-android-x/res/values-w820dp-v13/values-w820dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

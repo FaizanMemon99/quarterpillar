@@ -77,6 +77,8 @@ allprojects {
         }
          // ADD THIS
       maven { url 'https://maven.google.com' }
-
+     maven {
+            url "$rootDir/../node_modules/react-native-video-cache/android/libs"
+        }
     }
 }

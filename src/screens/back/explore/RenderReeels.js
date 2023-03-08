@@ -38,8 +38,11 @@ import SearchBar from '../../../components/explore/SearchBar'
 import { EventRegister } from 'react-native-event-listeners'
 export const emitConfig = { API_CALLING: "API_CALLING", PRODUCT_REMOVED: "product removed" }
 //  mujataba App stack
-import { AppState } from 'react-native';
-import { current } from '@reduxjs/toolkit'
+// import { AppState } from 'react-native';
+import convertToProxyURL from 'react-native-video-cache';
+
+import FastImage from 'react-native-fast-image'
+
 // import { LazyloadView } from 'react-native-lazyload'
 //  mujataba App stack
 
@@ -61,10 +64,28 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
     const [save, setsave] = useState(true)
     const [postid, setpostid] = useState('')
     const [currentpostid, setcurrentpostid] = useState()
-   
+    const [isPlaying, setIsPlaying] = useState(false);
     //  mujataba App stack
-    const [appState, setAppState] = useState(AppState.currentState);
+    // const [appState, setAppState] = useState(AppState.currentState);
     //  mujataba App stack
+
+
+    const playerRef=useRef(null)
+    const handlePlay=()=>{
+        setIsPlaying(true)
+    }
+    const handleBuffer=({isBuffering})=>{
+        if(isBuffering)
+        console.log('Buffering...');
+        else
+        console.log('Buffering completed');
+    }
+    const bufferConfig = {
+        minBufferMs: 5000,
+        maxBufferMs: 10000,
+        bufferForPlaybackMs: 3000,
+        bufferForPlaybackAfterRebufferMs: 5000,
+      };
     // const [postview, setpostview] = useState([])
     const navigation = useNavigation()
     // const [followLoader,setfollowLoader] = useState(false)
@@ -86,25 +107,25 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
         getCartCount()
         setLikeCount(item?.item?.likes)
         setshareCount(item?.item?.share)
-        const emitSubscribe = EventRegister.addEventListener(
-            emitConfig.API_CALLING, (msg) => {
-                getCartCount()
-            })
-        const removeSubscribe = EventRegister.addEventListener(
-            emitConfig.PRODUCT_REMOVED, (msg) => {
-                getCartCount()
-            });
-        const productPurchased = EventRegister.addEventListener(
-            emitConfig.PURCHASED, (msg) => {
-                getCartCount()
-            });
-        AppState.addEventListener('change', handleAppStateChange);
-        return () => {
-            EventRegister.removeEventListener(emitSubscribe)
-            EventRegister.removeEventListener(removeSubscribe);
-            EventRegister.removeEventListener(productPurchased);
-            AppState.removeEventListener('change', handleAppStateChange);
-        }
+        // const emitSubscribe = EventRegister.addEventListener(
+        //     emitConfig.API_CALLING, (msg) => {
+        //         getCartCount()
+        //     })
+        // const removeSubscribe = EventRegister.addEventListener(
+        //     emitConfig.PRODUCT_REMOVED, (msg) => {
+        //         getCartCount()
+        //     });
+        // const productPurchased = EventRegister.addEventListener(
+        //     emitConfig.PURCHASED, (msg) => {
+        //         getCartCount()
+        //     });
+        // AppState.addEventListener('change', handleAppStateChange);
+        // return () => {
+        //     EventRegister.removeEventListener(emitSubscribe)
+        //     EventRegister.removeEventListener(removeSubscribe);
+        //     EventRegister.removeEventListener(productPurchased);
+        //     AppState.removeEventListener('change', handleAppStateChange);
+        // }
     }, [])
     const handleAppStateChange = (nextAppState) => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
@@ -314,11 +335,8 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
             {loader ? <View style={{ display: 'flex', width: Constants.width, height: Constants.height, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator size={30} color={'#80FFB9'} style={{ marginTop: 30 }} /></View> :
                 <ScrollView onTouchCancel={() => closePopup()}>
-                    <StatusBar translucent={true} backgroundColor='black' />
-
-
                     <RBSheet
-                        height={500}
+                        height={700}
                         ref={refRBSheet}
                         closeOnDragDown={true}
                         closeOnPressMask={true}
@@ -337,7 +355,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                         />
                     </RBSheet>
 
-                    <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999, }}
+                    <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999,position:'relative' }}
                         onLongPress={gotoStoriespage}
                         onPress={() => { closePopup(), setpostid(item?.item?.id) }}
                     // onPress={()=> fetchpostview() } 
@@ -400,22 +418,23 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                     onPress={UnSavedCollection}
                                 /> : null}
                         </View>
-
                         <Video
-                            source={{ uri: `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}` }}
+                            source={{ uri: convertToProxyURL(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`) }}
                             onReadyForDisplay={() => {
                                 fetchpostview();
                                 setcurrentpostid(item?.item?.id)
                             }}
                             onLoad={() => closePopup()}
-
+                            onBuffer={handleBuffer}
+                            useBuffer={true}
+                            bufferConfig={bufferConfig}
                             autoplay
                             repeat={true}
                             loop
                             muted={currentpostid == item?.item?.id ? false : true}
                             disableSeek
                             resizeMode={'cover'}
-                            fullscreen
+                            // fullscreen
                             style={{ width: "100%", height: "100%" }}
                             customStyles={{
                                 wrapper: {
@@ -439,17 +458,40 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                             }} />
 
 
-                        <View style={styles.productDetailsContainer}>
+                        {userDetails?.id===3?null:
+                            <View style={styles.productDetailsContainer}>
                             <View style={styles.imgContainer}>
-                                <View style={{ height: responsiveHeight(3.5), width: responsiveWidth(17), bottom: 18, right: 10 }}>
+                                <View style={{ 
+                                    height: responsiveHeight(3.5),
+                                     width: responsiveWidth(17), bottom: 18, right: 10 }}>
                                     <Pressable onPress={() => navigation.navigate('/visit-profile', {
                                         userDetails: item?.item?.influencer_details
                                     })} >
-                                        <Image source={
-                                            item?.item?.influencer_details?.influencer?.avatar ? {
-                                                uri: `${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`
-                                            } :
-                                                Images.avatar} style={{ marginTop: responsiveHeight(1.4), marginLeft: responsiveWidth(4), width: "65%", height: responsiveHeight(5), borderRadius: responsiveWidth(80), }} />
+                                    <Image
+                                    style={{ marginTop: responsiveHeight(1.4), marginLeft: responsiveWidth(4), width: "65%", height: responsiveHeight(5), borderRadius: responsiveWidth(80), }}
+                                    source={item?.item?.influencer_details?.influencer?.avatar ?
+                                        {uri:convertToProxyURL(`${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`),
+                                        cache: FastImage.cacheControl.cacheOnly,
+                                        priority: FastImage.priority.fast
+                                    }
+                                        :Images.avatar}
+                                    />
+{/*                                        <ImageCache
+                                        defaultPlaceholderSource={Images.avatar}
+                                        uri={item?.item?.influencer_details?.influencer?.avatar ?
+                                            `${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`
+                                            :Images.avatar}
+                                        // source={
+                                        //     item?.item?.influencer_details?.influencer?.avatar ? {
+                                        //         uri: `${Constants.BASE_IMAGE_URL}${item?.item?.influencer_details?.influencer?.avatar}`
+                                        //     } :
+                                        //         Images.avatar} 
+                                        ttl={3600}
+                                        useQueryParamsInCacheKey={true}
+                                        permanent={false}
+                                        activityIndicatorProps={{ color: 'green' }}
+                                        fileDirName="my-cache-directory"
+                                        style={{ marginTop: responsiveHeight(1.4), marginLeft: responsiveWidth(4), width: "65%", height: responsiveHeight(5), borderRadius: responsiveWidth(80), }} />*/}
                                     </Pressable>
 
                                 </View>
@@ -508,7 +550,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                 }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>}
-                        </View>
+                        </View>}
 
                         <Modal
                             animationType="slide"
@@ -563,8 +605,8 @@ const styles = StyleSheet.create({
         // paddingBottom: 2,
         opacity: 0.9,
         position: 'absolute',
-        width: '92%',
-        bottom: 0,
+        width: '100%',
+        bottom: '10%',
         left: '3%',
         zIndex: 99,
         marginBottom: responsiveHeight(-1),

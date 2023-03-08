@@ -19,8 +19,11 @@ import {requestUserPermission,NotificationListener} from "./src/pushNotification
 import { InAppNotificationProvider } from 'react-native-in-app-notification';
 import PushNotification from 'react-native-push-notification'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import pako from 'pako';
+
 
 const App = (props) => {
+  // console.disableYellowBox = true;
     const [auth, setAuth] = useState('')
     const requestCameraPermission = async () => {
         if (Platform.OS === 'android') {
@@ -69,11 +72,11 @@ const App = (props) => {
         // const userdetails=await AsyncStorage.getItem("userDetails")  
         return fcmtoken
       }
-    useEffect(() => {
+      const renderFunction=()=>{
         PermissionFunction()
         requestUserPermission()
         NotificationListener()
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
+        //const unsubscribe = messaging().onMessage(async remoteMessage => {
         //   PushNotification.createChannel(
         //     {
         //       channelId: "specialid", // (required)
@@ -90,13 +93,16 @@ const App = (props) => {
         //     title:remoteMessage.notification.title,
         //     message:remoteMessage.notification.body
         // })
-          console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-        });
+       //   console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+       // });
         
         
         // return unsubscribe;
         SplashScreen.hide()
       
+      }
+    useEffect(() => {
+        renderFunction()
     }, [])
 
     const authentication = (type) => {
@@ -105,6 +111,21 @@ const App = (props) => {
 
     }
     
+    const blobToBase64 = (blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    };
+  
+  useEffect(()=>{
+      // getVideo()
+      // downloadAndStoreVideo("http://qp.flymingotech.in/quarterpillars_backend/public/video/262/ff5ab57.mp4")
+  },[])
     return (
         <Provider store={store}>
           <InAppNotificationProvider>

@@ -8,7 +8,7 @@ import {
     Pressable,
     BackHandler,
 } from 'react-native'
-import VideoPlayer from 'react-native-video-player'
+import Video from 'react-native-video'
 import { useNavigation } from '@react-navigation/native'
 import Images from '../../assets/images/Images'
 import Constants from '../../shared/Constants'
@@ -17,7 +17,7 @@ import { apiCall } from '../../service/service'
 import endPoints from '../../shared/endPoints'
 import Loading from '../../components/Loading'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Video from 'react-native-video'
+// import Video from 'react-native-video'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Videos from '../../assets/staticVideos/Videos'
 import dynamicLinks from '@react-native-firebase/dynamic-links';
@@ -103,6 +103,12 @@ const Discover = (props) => {
     // const enterAsAdmin = () => {
     //     //navigation.navigate('/admin-signin')
     // }
+    const bufferConfig = {
+        minBufferMs: 2000,
+        maxBufferMs: 4000,
+        bufferForPlaybackMs: 500,
+        bufferForPlaybackAfterRebufferMs: 2000,
+      };
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView >
@@ -111,10 +117,11 @@ const Discover = (props) => {
                     users?.users && users?.users?.length > 0 ? users?.users?.map(user =>
                         user.role_name !== 'Admin' ? (
                             <Pressable style={{ marginBottom: Constants.margin, }} onPress={() => gotoLogin(user.role_name)} key={user.id}>
-                                <VideoPlayer
+                               {/* <Video
+                                useBuffer={true}
                                     thumbnail={Images.PlusIcon}
                                     // onVideoBuffer={(e) => console.log("buffering", e)}
-                                    video={user.role_name === "Business" ? Videos.businessVideo
+                                    source={user.role_name === "Business" ? Videos.businessVideo
                                         : user.role_name === "Influencer" ?
                                             Videos.influencerVideo : user.role_name === "Explorer" ?
                                                 Videos.exploreVideo : Videos.advertiserVideo}
@@ -144,7 +151,49 @@ const Discover = (props) => {
                                         seekBarProgress: {
                                             backgroundColor: 'transparent',
                                         },
-                                    }} />
+                                    }} />*/}
+
+                        <Video
+                        source={user.role_name === "Business" ? Videos.businessVideo
+                        : user.role_name === "Influencer" ?
+                            Videos.influencerVideo : user.role_name === "Explorer" ?
+                                Videos.exploreVideo : Videos.advertiserVideo}
+                        // onReadyForDisplay={() => {
+                        //     fetchpostview();
+                        //     setcurrentpostid(item?.item?.id)
+                        // }}
+                        // onLoad={() => closePopup()}
+                        // onBuffer={handleBuffer}
+                        useBuffer={true}
+                        bufferConfig={bufferConfig}
+                        autoplay
+                        repeat={true}
+                        loop
+                        // muted={currentpostid == item?.item?.id ? false : true}
+                        disableSeek
+                        resizeMode={'cover'}
+                        // fullscreen
+                        style={{ width: "100%", height: 145 }}
+                        customStyles={{
+                            wrapper: {
+                                width: '100%',
+                                height: 145,
+                                paddingBottom: Constants.padding,
+                            },
+                            video: {
+                                width: '100%',
+                                height: 145,
+                            },
+                            controls: {
+                                display: 'none',
+                            },
+                            seekBarBackground: {
+                                backgroundColor: 'transparent',
+                            },
+                            seekBarProgress: {
+                                backgroundColor: 'transparent',
+                            },
+                        }} />
                                 <View style={globatStyles.overlay}></View>
                                 <View style={styles.discoverContent}>
                                     <View style={styles.menuTextContainer}>

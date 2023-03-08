@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh/values-zh.xml",
+            "outputFile": "/Users/admin/Desktop/quarterpillar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh/values-zh.xml",
             "map": [
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/2cf66712ce56c5b07864e84dffcc6e11/transformed/jetified-ucrop-2.2.6-native/res/values-zh/values-zh.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/de310d1392c43e66fe01013b64214b5f/transformed/jetified-ucrop-2.2.6-native/res/values-zh/values-zh.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

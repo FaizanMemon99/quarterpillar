@@ -30,6 +30,7 @@ import axios from 'axios'
 import showToastmsg from '../../../shared/showToastmsg'
 import RenderReeelsAdv from '../explore/RenderReeelsAdv'
 import VideoCompress from 'react-native-video-compressor'
+import RenderReelPageNew from './RenderReelPageNew'
 
 const Product = (props) => {
     const navigation = useNavigation()
@@ -47,40 +48,15 @@ const Product = (props) => {
     const [badgeCount, setbadgeCount] = useState(0)
     const [cartLoader, setcartLoader] = useState(false)
     const [currindex, setcurrindex] = useState(0)
+    const [pageTitle,setpageTitle]=useState('Travel')
+    const [currentInd, setcurrentInd] = useState(0)
     // const [cartNumber,setcartNumber]=useState(0)
     const offsetValue = useRef(new Animated.Value(0)).current
     const scaleValue = useRef(new Animated.Value(1)).current
-
-    const travelPosts = [
-        { id: 1, video: 'http://qp.flymingotech.in/public/videos/videoTravel.mp4' },
-        { id: 2, video: 'http://qp.flymingotech.in/public/videos/inf.mp4' },
-        { id: 3, video: 'http://qp.flymingotech.in/public/videos/adv.mp4' },
-        { id: 4, video: 'http://qp.flymingotech.in/public/videos/business.mp4' }
-    ]
-    const fashionPosts = [
-        { id: 5, video: 'http://qp.flymingotech.in/public/videos/food.mp4' },
-        { id: 6, video: 'http://qp.flymingotech.in/public/videos/inf.mp4' },
-        { id: 7, video: 'http://qp.flymingotech.in/public/videos/adv.mp4' },
-        { id: 8, video: 'http://qp.flymingotech.in/public/videos/business.mp4' }
-    ]
-    const lifestylePosts = [
-        { id: 9, video: 'http://qp.flymingotech.in/public/videos/videoFashion.mp4' },
-        { id: 10, video: 'http://qp.flymingotech.in/public/videos/inf.mp4' },
-        { id: 11, video: 'http://qp.flymingotech.in/public/videos/adv.mp4' },
-        { id: 12, video: 'http://qp.flymingotech.in/public/videos/business.mp4' },
-    ]
-    const foodPosts = [
-        { id: 13, video: 'http://qp.flymingotech.in/public/videos/lifesty.mp4' },
-        { id: 14, video: 'http://qp.flymingotech.in/public/videos/inf.mp4' },
-        { id: 15, video: 'http://qp.flymingotech.in/public/videos/adv.mp4' },
-        { id: 16, video: 'http://qp.flymingotech.in/public/videos/business.mp4' }
-    ]
+    const titleTypes=['Travel','Fashion','Life Style','Food']
 
     const openPopup = () => {
         setNewPost(!newPost)
-    }
-    const closePopup = () => {
-        setNewPost(false)
     }
     const openDrawer = () => {
         setShowDrawer(!showDrawer)
@@ -127,6 +103,9 @@ const Product = (props) => {
                 setpostLoader(false)
                 console.log("error val=>", error);
             })
+    }
+    const closePopup = () => {
+        setNewPost(false)
     }
     const getAllComments = () => {
         // setLoader(true)
@@ -240,14 +219,14 @@ const Product = (props) => {
         return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
     }
     const onChangeIndex = (index) => {
+
         setcurrindex(index + 1)
-        //   console.log("onChangeIndex=>",props)
+          console.log("onChangeIndex=>",index)
     }
 
     // console.log("props value",props?.route?.params?.userType);
     return (
         <View style={globatStyles.wrapper}>
-            {console.log("index_=>", currindex)}
             {
                 Animated.timing(scaleValue, {
                     toValue: showDrawer ? 0.88 : 1,
@@ -432,68 +411,47 @@ const Product = (props) => {
                         <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
                     </View>
                     :
-                    postData.length > 0 ? <Swiper style={{ backgroundColor: 'black', borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
-                        {postLoader ?
-                            <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-                                <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
-                            </View>
-                            :
-                            postData.map((data, i) => (<View style={styles.reel} key={i + 1}>
-                                <CustomAppBar navigation={navigation} isMainscreen={true}
-                                    explore={props?.route?.params?.userType == 'explore'}
-                                    userDetails={props?.route?.params?.userDetails}
-                                    isReel={true}
-                                    badgeCount={badgeCount}
+                    postData.length > 0 ?
+                    <View style={{width:Constants.width,height:Constants.height,backgroundColor:'black'}}>
+                    
+                            <Swiper
+                            loadMinimalLoader={
+                                <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', backgroundColor: '#e5e5e5' }}>
+                        <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
+                    </View>
+                            }
+                            onIndexChanged={(ind)=>setcurrentInd(ind)}
+                            style={{ backgroundColor: 'black', borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
+                           {titleTypes.map((rec)=>
+                            postData.filter((i)=>i.post_type===rec).length>0?<>
+                            <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title={rec} headerRight={true}
+                            openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}
+                            badgeCount={badgeCount}
                                     setbadgeCount={setbadgeCount}
-                                    title={props?.route?.params?.userType == 'advertiser' ? data.advertise_type :
-                                        data.post_type}
-                                    // cartLoader={cartLoader}
-                                    // cartNumber={cartNumber}
-                                    headerRight={true} openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer} />
+                            />
+                           <RenderReelPageNew
+                           likeData={likeData}
+                           setbadgeCount={setbadgeCount}
+                           getLikeData={getLikeData}
+                           commentData={commentData}
+                           closePopup={closePopup}
+                           setcurrentInd={setcurrentInd}
+                           currentInd={currentInd}
+                           pageTitle={rec}
+                           setpageTitle={setpageTitle}
+                           postLoader={postLoader}
+                           postData={postData}
+                           styles={styles}
+                           showDrawer={showDrawer}
+                           userDetails={props?.route?.params?.userDetails}
+                           />
+                           </>:null
+                            )
 
-                                <SwiperFlatList
-
-                                    data={[data]}
-                                    style={[styles.category, { borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }]}
-                                    renderItem={item => (props?.route?.params?.userDetails?.role_id == 3 ?
-                                        <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails}
-                                        /> :
-                                        <RenderReeels item={item} userDetails={props?.route?.params?.userDetails}
-                                            likeData={likeData}
-                                            setbadgeCount={setbadgeCount}
-                                            getLikeData={getLikeData}
-                                            commentData={commentData}
-                                            closePopup={closePopup}
-                                        />)}
-                                    keyExtractor={(item, index) => item?.id?.toString()}
-                                    onChangeIndex={onChangeIndex}
-                                />
-                            </View>))}
-                        {/* <View style={styles.reel}>
-                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Fashion' headerRight={true} />
-                <SwiperFlatList
-                    data={fashionPosts}
-                    style={styles.category}
-                    renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
-            </View>
-            <View style={styles.reel}>
-                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Life Style' headerRight={true} />
-                <SwiperFlatList
-                    data={lifestylePosts}
-                    style={styles.category}
-                    renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
-            </View>
-            <View style={styles.reel}>
-                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title='Food' headerRight={true} />
-                <SwiperFlatList
-                    data={foodPosts}
-                    style={styles.category}
-                    renderItem={item=><RenderReeels item={item} />}
-                    keyExtractor={item=>item?.id?.toString()} />
-            </View> */}
-                    </Swiper> :
+                           }
+                            </Swiper>
+                    </View>
+                    :
 
                         <View style={[styles.productDetailsBg, { backgroundColor: '#e5e5e5', borderRadius: showDrawer ? Constants.borderRadius + 50 : 0, }]}>
                             <CustomAppBar navigation={navigation} isMainscreen={true}
@@ -671,7 +629,8 @@ const styles = StyleSheet.create({
         padding: Constants.padding,
     },
     category: {
-        position: 'absolute',
+        // position: 'absolute',
+        height:Constants.height,
         left: 90,
         top: -15,
         backgroundColor: '#1B3F24',

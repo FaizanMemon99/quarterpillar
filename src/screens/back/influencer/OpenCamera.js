@@ -18,7 +18,7 @@ import {
   launchImageLibrary
 } from 'react-native-image-picker';
 import PhotoEditor from 'react-native-photo-editor'
-import VideoPlayer from 'react-native-video-player'
+import Video from 'react-native-video'
 
 const OpenCamera = (props) => {
   const navigation = useNavigation()
@@ -87,7 +87,7 @@ const OpenCamera = (props) => {
       maxWidth: 300,
       maxHeight: 550,
       allowsEditing: true,
-      quality: 1,
+      quality: 0,
       videoQuality: 'low',
       durationLimit: 10, //Video max duration in seconds
       saveToPhotos: false,
@@ -112,7 +112,7 @@ const OpenCamera = (props) => {
           return;
         }
         // if(type=='video'){
-        console.log("repsonse video", response);
+        
         setVideo(response)
         // }
         // else
@@ -150,7 +150,12 @@ const OpenCamera = (props) => {
   useEffect(() => {
     if (!video) { captureImage('video') }
   }, [])
-
+  const bufferConfig = {
+    minBufferMs: 3000,
+    maxBufferMs: 6000,
+    bufferForPlaybackMs: 1500,
+    bufferForPlaybackAfterRebufferMs: 3000,
+  };
   return (
     <View style={[globatStyles.wrapper, { backgroundColor: '#000000' }]}>
       <StatusBar translucent={true} backgroundColor='transparent' />
@@ -159,11 +164,14 @@ const OpenCamera = (props) => {
         <View style={styles.imgContainer}>
           {cameraImg && <Image source={{ uri: cameraImg.assets[0].uri }} alt='Img' style={styles.cameraImg} />}
           {video &&
-            <VideoPlayer
-              video={{ uri: video.assets[0].uri }}
+            <Video
+            useBuffer={true}
+            bufferConfig={bufferConfig}
+              source={{ uri: video.assets[0].uri }}
               autoplay
               repeat={true}
               resizeMode={'cover'}
+              style={{width:Constants.width,height:Constants.height}}
               customStyles={{
                 wrapper: {
                   width: Constants.width,

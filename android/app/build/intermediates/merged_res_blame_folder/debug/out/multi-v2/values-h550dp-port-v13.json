@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/hasan/quarterpillars/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h550dp-port-v13/values-h550dp-port-v13.xml",
+            "outputFile": "/Users/admin/Desktop/quarterpillar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h550dp-port-v13/values-h550dp-port-v13.xml",
             "map": [
                 {
-                    "source": "/home/hasan/.gradle/caches/transforms-3/96d0428c00e25fb3add130f61a866b51/transformed/material-1.3.0/res/values-h550dp-port-v13/values-h550dp-port-v13.xml",
+                    "source": "/Users/admin/.gradle/caches/transforms-3/947e593430c45e43f6fdc23e9e38ffdc/transformed/material-1.3.0/res/values-h550dp-port-v13/values-h550dp-port-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

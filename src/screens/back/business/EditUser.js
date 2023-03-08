@@ -38,7 +38,7 @@ const EditUser = (props)=>{
     const [subCategory, setSubCategory] = useState('')
     const categories = ['Xyz', 'abc', 'xyz123', 'abc123']
     const UserType=Object.keys(props.route.params.userDetails)[Object.keys(props.route.params.userDetails).length-1]
-    console.log('data val',props?.route?.params);
+    
     const gotoUserManagement = ()=>{
         if(!cameraImg){
             showToastmsg('Please add profile image')

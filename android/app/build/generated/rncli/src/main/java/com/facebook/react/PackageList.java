@@ -31,6 +31,8 @@ import com.shopify.reactnative.flash_list.ReactNativeFlashListPackage;
 import com.henninghall.date_picker.DatePickerPackage;
 // react-native-easebuzz-kit
 import com.easebuzz.EasebuzzKitPackage;
+// react-native-fast-image
+import com.dylanvann.fastimage.FastImageViewPackage;
 // react-native-fs
 import com.rnfs.RNFSPackage;
 // react-native-gesture-handler
@@ -59,6 +61,8 @@ import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 // react-native-video
 import com.brentvatne.react.ReactVideoPackage;
+// react-native-video-cache
+import com.reactnative.videocache.VideoCachePackage;
 // react-native-video-compressor
 import com.react.videocompressor.VideoComPressorPackage;
 // rn-fetch-blob
@@ -118,6 +122,7 @@ public class PackageList {
       new ReactNativeFlashListPackage(),
       new DatePickerPackage(),
       new EasebuzzKitPackage(),
+      new FastImageViewPackage(),
       new RNFSPackage(),
       new RNGestureHandlerPackage(),
       new PickerPackage(),
@@ -132,6 +137,7 @@ public class PackageList {
       new SvgPackage(),
       new VectorIconsPackage(),
       new ReactVideoPackage(),
+      new VideoCachePackage(),
       new VideoComPressorPackage(),
       new RNFetchBlobPackage()
     ));
