@@ -23,6 +23,39 @@ const RenderReelPageNew=({postLoader,postData,styles,showDrawer,likeData,
                                     <ActivityIndicator size={40} color={Constants.colors.primaryColor} />
                                 </View>
                                 :
+                                userDetails?.id===3?
+                                postData?.map((data,i)=>(<View style={[styles.reel,{width:'100%',height:'100%'}]} key={i + 1}>
+                                    
+                                    <SwiperFlatList
+        
+                                        data={[data]}
+                                        style={[styles.category, 
+                                            { borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }
+                                        ]}
+                                        // renderItem={item => (props?.route?.params?.userDetails?.role_id == 3 ?
+                                        //     <RenderReeelsAdv item={item} userDetails={props?.route?.params?.userDetails}
+                                        //     /> :
+                                        //     <RenderReeels item={item} userDetails={props?.route?.params?.userDetails}
+                                        //         likeData={likeData}
+                                        //         setbadgeCount={setbadgeCount}
+                                        //         getLikeData={getLikeData}
+                                        //         commentData={commentData}
+                                        //         closePopup={closePopup}
+                                        //     />)}
+                                        renderItem={(item)=>
+                                            <RenderReeels item={item} userDetails={userDetails}
+                                            likeData={likeData}
+                                            setbadgeCount={setbadgeCount}
+                                            getLikeData={getLikeData}
+                                            commentData={commentData}
+                                            closePopup={closePopup}
+                                        />                                         
+                                        }
+                                        keyExtractor={(item, index) => item?.id?.toString()}
+                                        // onChangeIndex={onChangeIndex}
+                                    />
+                                </View>))
+                                :
                                 postData.filter((i)=>i.post_type===pageTitle).length>0?
                                 postData.filter((i)=>i.post_type===pageTitle)
                                 .map((data, i) => (

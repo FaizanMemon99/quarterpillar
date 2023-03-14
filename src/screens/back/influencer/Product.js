@@ -79,7 +79,7 @@ const Product = (props) => {
             .then((response) => {
                 setmodalLoader(false)
                 AsyncStorage.clear()
-                console.log("repsonse data=>", response.data);
+                
                 if (!response.data.error) {
                     navigation.navigate('/business-login', { login_type: props?.route?.params?.userType == "influencer" ? "Explorer" : props?.route?.params?.userType == "explore" ? "Influencer" : "Business", userName: props?.route?.params?.userDetails?.name })
                     console.log("reponse=>", response.data.error)
@@ -221,7 +221,7 @@ const Product = (props) => {
     const onChangeIndex = (index) => {
 
         setcurrindex(index + 1)
-          console.log("onChangeIndex=>",index)
+          
     }
 
     // console.log("props value",props?.route?.params?.userType);
@@ -343,7 +343,7 @@ const Product = (props) => {
                     } */}
                     </ScrollView>}
                 <Pressable
-                    onPress={() => { navigation.navigate('/'), console.log("logout fn"), AsyncStorage.clear() }}
+                    onPress={() => { navigation.navigate('/'), AsyncStorage.clear() }}
                     style={{ flexDirection: 'row', margin: 12, marginLeft: 0, marginBottom: 52, backgroundColor: 'rgba(60, 255, 106, 0.47)', padding: 16, width: '62%', }}>
                     <AntDesign name='logout' size={22} color={Constants.colors.whiteColor} />
                     <Text style={{ color: Constants.colors.whiteColor, fontFamily: Constants.fontFamily, fontWeight: '700', fontSize: 18, marginLeft: 12, }}>Logout</Text>
@@ -412,7 +412,7 @@ const Product = (props) => {
                     </View>
                     :
                     postData.length > 0 ?
-                    <View style={{width:Constants.width,height:Constants.height,backgroundColor:'black'}}>
+                    <View style={{width:Constants.width,height:'100%',backgroundColor:'black'}}>
                     
                             <Swiper
                             loadMinimalLoader={
@@ -422,13 +422,37 @@ const Product = (props) => {
                             }
                             onIndexChanged={(ind)=>setcurrentInd(ind)}
                             style={{ backgroundColor: 'black', borderRadius: showDrawer ? Constants.borderRadius + 50 : 0 }} horizontal={false} showsButtons={false} loop={false} dot={<View></View>} activeDot={<View></View>}>
-                           {titleTypes.map((rec)=>
-                            postData.filter((i)=>i.post_type===rec).length>0?<>
+                            {props?.route?.params?.userDetails?.role_id == 3?
+                                <View style={{height:'100%'}}>
+                                <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title={'Ads'} headerRight={true}
+                            openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}
+                            badgeCount={badgeCount}
+                                    setbadgeCount={setbadgeCount}
+                            />
+                                <RenderReelPageNew
+                                likeData={likeData}
+                                setbadgeCount={setbadgeCount}
+                                getLikeData={getLikeData}
+                                commentData={commentData}
+                                closePopup={closePopup}
+                                setcurrentInd={setcurrentInd}
+                                currentInd={currentInd}
+                                setpageTitle={setpageTitle}
+                                postLoader={postLoader}
+                                postData={postData}
+                                styles={styles}
+                                showDrawer={showDrawer}
+                                userDetails={props?.route?.params?.userDetails}
+                                />
+                                </View>
+                           :titleTypes.map((rec)=>
+                            postData.filter((i)=>i.post_type===rec).length>0?<View style={{height:'100%'}}>
                             <CustomAppBar navigation={navigation} isMainscreen={true} isReel={true} title={rec} headerRight={true}
                             openPopup={openPopup} newPost={newPost} openDrawer={openDrawer} showDrawer={showDrawer}
                             badgeCount={badgeCount}
                                     setbadgeCount={setbadgeCount}
                             />
+                            
                            <RenderReelPageNew
                            likeData={likeData}
                            setbadgeCount={setbadgeCount}
@@ -445,7 +469,7 @@ const Product = (props) => {
                            showDrawer={showDrawer}
                            userDetails={props?.route?.params?.userDetails}
                            />
-                           </>:null
+                           </View>:null
                             )
 
                            }

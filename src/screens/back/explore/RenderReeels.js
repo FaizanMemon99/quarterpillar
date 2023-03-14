@@ -103,8 +103,9 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
 
     // mujataba App stack
     useEffect(() => {
-        setVideoLoader(true)
-        getCartCount()
+        if(userDetails?.role_id!==3)
+        {setVideoLoader(true)
+        getCartCount()}
         setLikeCount(item?.item?.likes)
         setshareCount(item?.item?.share)
         // const emitSubscribe = EventRegister.addEventListener(
@@ -355,7 +356,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                         />
                     </RBSheet>
 
-                    <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height, zIndex: 999,position:'relative' }}
+                    <Pressable style={{ flex: 1, width: Constants.width, height: Constants.height-10, zIndex: 999,position:'relative' }}
                         onLongPress={gotoStoriespage}
                         onPress={() => { closePopup(), setpostid(item?.item?.id) }}
                     // onPress={()=> fetchpostview() } 
@@ -370,7 +371,8 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                 <DashBoardLoader height={Constants.height} /> : null
                         }
 
-                        <View style={styles.iconGroup}>
+                       {userDetails?.role_id===3?null:
+                         <View style={styles.iconGroup}>
 
                             {like ?
                                 <AntDesign name={'heart'} style={[styles.icon, { color: '#f54295' }]}
@@ -417,51 +419,55 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                 <FontAwesome name='bookmark' style={[styles.icon, { color: '#fff' }]}
                                     onPress={UnSavedCollection}
                                 /> : null}
-                        </View>
+                        </View>}
+                        
                         <Video
-                            source={{ uri: convertToProxyURL(`${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`) }}
-                            onReadyForDisplay={() => {
-                                fetchpostview();
-                                setcurrentpostid(item?.item?.id)
-                            }}
-                            onLoad={() => closePopup()}
-                            onBuffer={handleBuffer}
-                            useBuffer={true}
-                            bufferConfig={bufferConfig}
-                            autoplay
-                            repeat={true}
-                            loop
-                            muted={currentpostid == item?.item?.id ? false : true}
-                            disableSeek
-                            resizeMode={'cover'}
-                            // fullscreen
-                            style={{ width: "100%", height: "100%" }}
-                            customStyles={{
-                                wrapper: {
-                                    width: '100%',
-                                    height: '100%',
-                                    paddingBottom: Constants.padding,
-                                },
-                                video: {
-                                    width: '100%',
+                        source={{ uri: convertToProxyURL(
+                            userDetails?.role_id===3?
+                            `${Constants.BASE_IMAGE_URL}${item?.item?.video}`
+                            :
+                            `${Constants.BASE_IMAGE_URL}${JSON.parse(item?.item?.video)[0]}`) }}
+                        onReadyForDisplay={() => {
+                            userDetails?.id===3?null:fetchpostview();
+                            setcurrentpostid(item?.item?.id)
+                        }}
+                        onLoad={() => closePopup()}
+                        onBuffer={handleBuffer}
+                        useBuffer={true}
+                        bufferConfig={bufferConfig}
+                        autoplay
+                        repeat={true}
+                        loop
+                        muted={currentpostid == item?.item?.id ? false : true}
+                        disableSeek
+                        resizeMode={'cover'}
+                        // fullscreen
+                        style={{ width: "100%", height: "100%" }}
+                        customStyles={{
+                            wrapper: {
+                                width: '100%',
+                                height: '100%',
+                                paddingBottom: Constants.padding,
+                            },
+                            video: {
+                                width: '100%',
                                     height: '103%',
-                                },
-                                controls: {
-                                    display: 'none',
-                                },
-                                seekBarBackground: {
-                                    backgroundColor: 'transparent',
-                                },
-                                seekBarProgress: {
-                                    backgroundColor: 'transparent',
-                                },
-                            }} />
+                            },
+                            controls: {
+                                display: 'none',
+                            },
+                            seekBarBackground: {
+                                backgroundColor: 'transparent',
+                            },
+                            seekBarProgress: {
+                                backgroundColor: 'transparent',
+                            },
+                        }} />
 
-
-                        {userDetails?.id===3?null:
                             <View style={styles.productDetailsContainer}>
                             <View style={styles.imgContainer}>
-                                <View style={{ 
+                               {userDetails?.role_id===3?null:
+                                 <View style={{ 
                                     height: responsiveHeight(3.5),
                                      width: responsiveWidth(17), bottom: 18, right: 10 }}>
                                     <Pressable onPress={() => navigation.navigate('/visit-profile', {
@@ -494,17 +500,24 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                         style={{ marginTop: responsiveHeight(1.4), marginLeft: responsiveWidth(4), width: "65%", height: responsiveHeight(5), borderRadius: responsiveWidth(80), }} />*/}
                                     </Pressable>
 
-                                </View>
-                                <Pressable onPress={() => navigation.navigate('/visit-profile', {
+                                </View>}
+                                <Pressable onPress={() => 
+                                    userDetails?.role_id===3?null:
+                                    navigation.navigate('/visit-profile', {
                                     userDetails: item?.item?.influencer_details
                                     // userDetails:item?.item?.influencer_name ,
                                 })} >
 
-                                    <Text style={styles.titlename}>{item?.item?.influencer_details?.influencer?.name ? item?.item?.influencer_details?.influencer?.name : 'fizaninfluencer'}</Text>
+                                    <Text style={styles.titlename}>{
+                                        item?.item?.influencer_details?.influencer?.name ? item?.item?.influencer_details?.influencer?.name : 
+                                        item?.item?.advertiser?.advertise_name?
+                                        advertise_name:
+                                        'fizaninfluencer'}</Text>
                                 </Pressable>
-
-
-                                {follows ? <Pressable style={globatStyles.followBtn} onPress={Addfollow}>
+                                {userDetails?.role_id===3?null:
+                                    <>
+                                {
+                                    follows ? <Pressable style={globatStyles.followBtn} onPress={Addfollow}>
                                     {/* onPress={follow}
                                     style={globatStyles.followBtn}><Text style={[globatStyles.followBtnText, { fontSize: responsiveFontSize(1.2) }]}>{
                                         follows ? "Following" :
@@ -533,13 +546,20 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                 </Pressable>
                                     : null
                                 }
+                                </>}
 
                             </View>
-                            <Text style={styles.desc}>
-                                {item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
+                            
+                                <Text style={styles.desc}>
+                                {
+                                    userDetails?.role_id===3?
+                                    item?.item?.advertise_description
+                                    :
+                                    item?.item?.description}...<Text onPress={gotoMore}><Text style={styles.moreBtn}>more</Text></Text>
                             </Text>
-                            <Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>
-                            {item?.item?.influencer_id === userDetails?.id ? null :
+                            {userDetails?.role_id===3?null:<Text style={styles.minsAgo}>{moment(new Date(item?.item?.created_at)).fromNow()}</Text>}
+                            {userDetails?.role_id===3?null:
+                                item?.item?.influencer_id === userDetails?.id ? null :
                                 <Pressable onPress={gotoProductDetails} style={{
                                     backgroundColor: Constants.colors.primaryColor,
                                     padding: 14,
@@ -550,7 +570,7 @@ const RenderReeels = ({ item, userDetails, likeData, commentData, getLikeData, s
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                 }}><Text style={globatStyles.btnText}>Buy</Text><FontAwesome name='angle-right' size={20} color={Constants.colors.whiteColor} /></Pressable>}
-                        </View>}
+                        </View>
 
                         <Modal
                             animationType="slide"
@@ -617,7 +637,8 @@ const styles = StyleSheet.create({
     imgContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: "center"
+        marginLeft: responsiveWidth(2)
+        // justifyContent: "center"
     },
     titlename: {
         fontFamily: Constants.fontFamily,
